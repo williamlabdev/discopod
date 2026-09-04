@@ -24,6 +24,16 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
  * which is the same defect the discovery page's eyebrow had: a promise about
  * audio DiscoPod does not make. Keep every claim here to what the product
  * itself does — it ranks — and it stays true whatever the catalogue holds.
+ *
+ * **There is deliberately no share image.** `og.png` was three revisions stale
+ * at once: it is branded "Tuned", it reads "Learn English through real
+ * conversations" — the exact sentence both corrections above removed from the
+ * code — and it draws an A1–C2 ladder, the CEFR scale ADR 0003 decision 7 has
+ * not settled. Every text fix landed in the markup and none of them reached
+ * the picture, so the image kept saying what the page had stopped saying.
+ * A link with no card is worse-looking than one with a card; a card that
+ * contradicts the product is worse than both. It comes back when a new image
+ * is made, and whoever makes it should read this block first.
  */
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -34,14 +44,14 @@ export const metadata: Metadata = {
     title: 'DiscoPod — Podcasts at your level',
     description:
       "Podcast episodes ranked by whether you can follow them, not by what's popular.",
-    images: [{ url: '/og.png', width: 1733, height: 908, alt: 'Podcasts at your level.' }],
   },
   twitter: {
-    card: 'summary_large_image',
+    // `summary`, not `summary_large_image`: the large card is a promise of an
+    // image this metadata no longer supplies.
+    card: 'summary',
     title: 'DiscoPod — Podcasts at your level',
     description:
       "Podcast episodes ranked by whether you can follow them, not by what's popular.",
-    images: ['/og.png'],
   },
 };
 
