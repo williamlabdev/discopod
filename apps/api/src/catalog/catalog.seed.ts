@@ -48,7 +48,10 @@ interface SeedFile {
   file: string;
 }
 
-const SEED_FILES: SeedFile[] = [{ pair: SEED_PAIR, file: 'catalog.seed.json' }];
+const SEED_FILES: SeedFile[] = [
+  { pair: SEED_PAIR, file: 'catalog.seed.json' },
+  { pair: { speaks: 'en', learning: 'zh-Hans' }, file: 'catalog.zh-Hans.seed.json' },
+];
 
 /**
  * What a seed's audio is spoken in, derived from its pair rather than typed
@@ -79,11 +82,37 @@ function authoredIn<T>(pair: LanguagePair, value: T): Localized<T> {
  */
 interface SeedRow {
   id: number;
+  /**
+   * The show's id, given rather than derived, for shows whose title cannot
+   * produce one.
+   *
+   * `slug()` keeps `[a-z0-9]` and drops everything else, which is the right
+   * answer for a Latin title and returns the empty string for a Chinese one.
+   * The alternatives were both worse: transliterating 中文维基百科有声条目 into
+   * pinyin is a guess of exactly the kind ADR 0006 forbids for scripts, and
+   * hashing the title produces an id no human can read in a URL or a palette
+   * key. So the id becomes data for the seeds that need it, and stays derived
+   * for the one that already works — an omitted `showId` is not a defect.
+   *
+   * Ids are also the join between the API and the web app's palette table, so
+   * deriving them from prose was always fragile: retitling a show would have
+   * silently moved every episode to a new id. Naming it here is the fix for
+   * that too, and the reason this is a field rather than a special case inside
+   * `slug()`.
+   */
+  showId?: string;
   title: string;
   author: string;
   topic: string;
   duration: string;
   episode: string;
+  /**
+   * ADR 0003 decision 2 classifies this as scalar, in the show's language.
+   * `catalog.zh-Hans.seed.json` writes it in English anyway, deliberately: a
+   * description is read before listening, so a Mandarin blurb on a Mandarin
+   * episode is unreadable to the learner the card is for. The field wants to be
+   * `Localized`; ADR 0009 decision 7 says why that migration is not here yet.
+   */
   description: string;
   tags: string[];
   level: LearningLevel;
@@ -94,6 +123,7 @@ interface SeedRow {
   learningGoal: string;
   audioSrc?: string;
   sourceUrl?: string;
+  licence?: { name: string; url: string };
   verifiedLesson?: boolean;
   transcript: { time: string; seconds?: number; speaker?: string; text: string; highlight?: string }[];
   vocabulary: { term: string; type: string; meaning: string; example: string }[];
@@ -203,7 +233,14 @@ function loadSeedFile(
   const rows = JSON.parse(readFileSync(seedPath(file), 'utf8')) as SeedRow[];
 
   for (const row of rows) {
-    const showId = slug(row.title);
+    const showId = row.showId ?? slug(row.title);
+    if (!showId) {
+      throw new Error(
+        `Seed ${file} has a show "${row.title}" whose title slugs to nothing, so it has no ` +
+          `id. That happens whenever the title is written in a non-Latin script; give the ` +
+          `row an explicit "showId".`,
+      );
+    }
     const profile = buildProfile(row, pair);
 
     const existing = shows.get(showId);
@@ -223,6 +260,7 @@ function loadSeedFile(
         description: row.description,
         profile,
         sourceUrl: row.sourceUrl,
+        licence: row.licence,
       });
     }
 

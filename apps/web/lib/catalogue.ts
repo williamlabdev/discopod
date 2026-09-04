@@ -65,6 +65,13 @@ export interface EpisodeCard {
    * buildProfile in apps/api/src/catalog/catalog.seed.ts.
    */
   voices: string;
+  /**
+   * The same number `voices` is formatted from, kept because the page makes a
+   * claim that depends on it — an episode with one speaker is not a
+   * conversation — and re-deriving that by parsing "One voice" back into a
+   * number would be reading prose to recover a fact we already had.
+   */
+  speakerCount: number;
   duration: string;
   newWords: number;
   publisherTranscript: boolean;
@@ -110,6 +117,7 @@ export interface EpisodeDetail extends EpisodeCard {
   audioSrc?: string;
   sourceUrl?: string;
   sourceLabel?: string;
+  licence?: { name: string; url: string };
   transcript: TranscriptLine[];
   vocabulary: VocabularyItem[];
   questions: { prompt: string; options: string[]; answer: number }[];
@@ -132,20 +140,47 @@ function wordProbe(word: string): string {
   return `(?:${[...stems].map(escapeRegExp).join('|')})`;
 }
 
+function locate(cue: TranscriptCue) {
+  return {
+    sentence: cue.text,
+    speaker: cue.speaker,
+    timestampMs: cue.startMs,
+    seconds: Math.round(cue.startMs / 1000),
+  };
+}
+
+/** Any Han character. Enough to know the term is not written with spaces. */
+const HAN = /\p{Script=Han}/u;
+
 /**
  * Find where a term is spoken, most specific match first.
  *
  * A vocabulary term is written in its citation form and the transcript has it
  * conjugated, split, or built with different function words — all twenty-eight
- * terms in the current catalogue are present, but only twenty-five survive a
- * literal match. So try three readings in order of confidence: the phrase, the
- * phrase with one word dropped in ("try again" → "try that again"), then its
- * longest word ("on behalf of" → "on our behalf"). Order matters: the head word
- * alone can occur earlier than the phrase, and the earlier cue would be the
- * wrong place to send a learner.
+ * English terms in the current catalogue are present, but only twenty-five
+ * survive a literal match. So try three readings in order of confidence: the
+ * phrase, the phrase with one word dropped in ("try again" → "try that again"),
+ * then its longest word ("on behalf of" → "on our behalf"). Order matters: the
+ * head word alone can occur earlier than the phrase, and the earlier cue would
+ * be the wrong place to send a learner.
+ *
+ * All of that is English morphology, and none of it survives contact with
+ * Chinese. A Han term has no spaces to split on, no inflections to stem, and no
+ * `\b` to anchor against — Han characters are not `\w`, so `\b佛塔` matches
+ * nothing, ever. Episode 101 is where that showed: five vocabulary entries, all
+ * five plainly present in the transcript, all five rendering "we couldn't
+ * locate this word". So a Han term is matched as a substring, which is what
+ * "this word appears in this line" means in a script written without spaces.
  */
 function findOccurrence(term: string, transcript: TranscriptCue[]) {
-  const words = term.trim().split(/\s+/);
+  const needle = term.trim();
+
+  if (HAN.test(needle)) {
+    const cue = transcript.find((entry) => entry.text.includes(needle));
+    return cue ? locate(cue) : undefined;
+  }
+
+  const words = needle.split(/\s+/);
   const head = [...words].sort((a, b) => b.length - a.length)[0];
 
   const probes = [
@@ -156,14 +191,7 @@ function findOccurrence(term: string, transcript: TranscriptCue[]) {
 
   for (const probe of probes) {
     const cue = transcript.find((entry) => probe.test(entry.text));
-    if (cue) {
-      return {
-        sentence: cue.text,
-        speaker: cue.speaker,
-        timestampMs: cue.startMs,
-        seconds: Math.round(cue.startMs / 1000),
-      };
-    }
+    if (cue) return locate(cue);
   }
 
   return undefined;
@@ -197,6 +225,7 @@ function toCard(ranked: RankedEpisode, show: Show | undefined, pair: LanguagePai
     levelReason: pick(episode.profile.reason, pair.speaks, `Episode ${episode.id} profile.reason`),
     speed: formatSpeechRate(episode.profile.speechRate),
     voices: formatVoices(episode.profile.speakerCount),
+    speakerCount: episode.profile.speakerCount,
     duration: formatDuration(episode.durationSeconds),
     newWords: episode.newWordCount,
     publisherTranscript: episode.publisherTranscript,
@@ -297,6 +326,7 @@ export async function loadEpisodeDetail(
     audioSrc: episode.audioUrl,
     sourceUrl: show?.sourceUrl,
     sourceLabel: show ? `${show.publisher} · ${episode.title}` : undefined,
+    licence: show?.licence,
     transcript: episode.transcript.map((cue) => ({
       time: formatCueTime(cue.startMs),
       seconds: Math.round(cue.startMs / 1000),

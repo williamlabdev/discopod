@@ -1,6 +1,6 @@
 # Handoff
 
-State of the repo as of 2026-09-04, for whoever picks this up next.
+State of the repo as of 2026-09-05, for whoever picks this up next.
 
 ## What this is
 
@@ -106,17 +106,56 @@ conversational speed, owned and labelled as extrapolation rather than measuremen
 **So no Mandarin episode is blocked on anybody's reply any more.** What is left is
 ordinary work, listed below.
 
-Two defects surfaced by actually rendering the API's output, both fixed: `?topic=` was
-accepted by validation and then silently ignored, and `Math.round(30/60)` made a
-30-second episode read *"1 minutes"*.
+**There is Mandarin on screen** (2026-09-05). Episode **101**, `en → zh-Hans`: the opening
+paragraph of the Chinese Wikipedia article on 大雁塔, read aloud by the Spoken Wikipedia
+volunteer Yu chuan, CC BY-SA. 103 seconds, 21 cues, 5 vocabulary entries, 3 questions,
+measured at 140 cpm. The route `/en/zh-Hans/episode/101` prerenders.
+
+**Read [ADR 0009](docs/adr/0009-the-first-mandarin-episode-is-a-read-encyclopedia-article.md)
+before adding a second one.** A read-aloud encyclopedia article is not a programme, and
+that is a real strain on ADR 0007's rule that nothing enters the catalogue the product
+would not choose on its merits — it is admitted on the one distinction FSI fails (a person's
+own pace, not a teaching pace), and the mismatch is recorded rather than argued away. TED
+中文 was rejected on licence: CC BY-NC-**ND**, and a transcript-first player is squarely a
+derivative. ADR 0009 also carries three things that will bite whoever comes next: `cefr`
+is now demonstrably the wrong field name (HSK, not CEFR, for Mandarin), `description` is
+in English against ADR 0003 decision 2 and deliberately so, and the ASR corrected the
+published article text once — the cue at 00:44 carries what the reader actually said.
+
+Provenance for the audio lives in `apps/web/public/audio/ATTRIBUTION.md`, including the
+two source discrepancies (which revision was read, and CC BY-SA 3.0 vs 4.0) and how the
+history settles the first.
+
+Five defects surfaced by actually rendering the API's output, all fixed:
+
+- `?topic=` was accepted by validation and then silently ignored.
+- `Math.round(30/60)` made a 30-second episode read *"1 minutes"*.
+- The `Math.floor` that fixed **that** made the 103-second Mandarin episode read
+  *"1 minute"* in its ranked reason while its own card said *"2 min"*. The branch now tests
+  the duration rather than the rounded minutes, so both ends hold.
+- **`findOccurrence` could not find a Chinese word in a Chinese transcript.** All five of
+  episode 101's vocabulary entries rendered *"we couldn't locate this word in the
+  transcript"* against a transcript containing every one of them. The probe ladder is
+  English morphology — split on spaces, stem the inflection, anchor on `\b` — and Han
+  characters are not `\w`, so `\b佛塔` matches nothing, ever. A Han term is now matched as
+  a substring, which is what "this word appears in this line" means in a script written
+  without spaces.
+- **The episode page's headline was a hardcoded claim about the audio.** *"Learn from a
+  real conversation."* is true of the VOA lesson, where Anna and Pete talk to each other,
+  and false of one person reading an article aloud. It now branches on `speakerCount`.
+
+The last two are the same lesson twice: **both passed lint, typecheck and build, and both
+were only visible on screen.** There are no tests under `apps/`, so rendering the page is
+the verification step, not a nicety.
 
 **Not done:** the deploy of the cut-over — the commit below is pushed, but check Render
 finished both services before trusting the live site.
 
 ## Next steps, in order
 
-1. **Get one Mandarin episode on screen.** With `cpm` calibrated (ADR 0008) this was three
-   pieces of ordinary work and no waiting. **Two are done; only the content is left.**
+1. ~~**Get one Mandarin episode on screen.**~~ **Done 2026-09-05.** With `cpm` calibrated
+   (ADR 0008) this was three pieces of ordinary work and no waiting. All three are done;
+   what each one cost is kept below, because the next Mandarin episode walks the same path.
    - ~~`catalog.seed.ts` is hardcoded to one pair.~~ Done 2026-09-05. `loadSeedCatalog`
      reads a `SEED_FILES` list of `{ pair, file }` descriptors and merges them. Adding a
      Mandarin episode is now: drop a JSON file in `catalog/data/`, add one line to
@@ -127,13 +166,20 @@ finished both services before trusting the live site.
      every web request. An omitted `learning` means the *default pair*, not "no filter".
      `assertEpisode` on the web side checks it too, because an episode in the wrong
      `learning` is the failure that renders perfectly and is still wrong.
-   - **The audio and the transcript themselves — the only remaining piece.** There is now
-     working local ASR (`mlx-whisper`, 16m40s in 22.8 s — see
-     `apps/api/src/ingest/README.md`), so timings are no longer the constraint. A source
-     that publishes its own script is still worth more, because then ASR supplies the
-     timings and the publisher's text checks the words.
+   - ~~The audio and the transcript themselves.~~ Done 2026-09-05, as episode 101. The
+     shape that worked, and is worth repeating: **ASR supplies the timings, the publisher's
+     text checks the words, and the audio wins any disagreement about what was said.**
+     `mlx-whisper` large-v3-turbo, run against the *shipped* mp3 rather than the source
+     file so the timings are measured on what a learner actually hears — which also proved
+     the excerpt was not clipped at either end. The published article text corrected four
+     ASR homophones; the ASR corrected the published text once. Two things the loader
+     needed on the way: an explicit `showId` (`slug()` returns `""` for a Chinese title,
+     and both alternatives — pinyin, or a hash — are a guess or unreadable), and a
+     `Show.licence` field, because a link credits the author while share-alike also
+     requires naming the terms.
 
-   Nothing here needs `reason.render.ts` touched — it already renders `cpm` in 字.
+   Nothing here needed `reason.render.ts` touched for language — it already renders `cpm`
+   in 字. It did need its duration branch fixed; see the defect note above.
 2. **Write to Taiwanese Mandarin podcasters.** Still worth doing, for content rather than
    as a prerequisite: leads are Cozy Mandarin, Convo Chinese, Learn Taiwanese Mandarin.
    It no longer blocks anything, so it runs in parallel with everything below.

@@ -6,7 +6,10 @@
  * second client (a mobile app, a widget) would want its own. So the palette
  * lives here, keyed by show id, and the API stays a domain service.
  *
- * Show ids come from `slug(show.title)` in the API's seed loader.
+ * Show ids come from the API's seed loader — `slug(show.title)` for a Latin
+ * title, or the row's explicit `showId` where a title cannot produce one. A
+ * miss here is not a bug: `paletteFor` hashes to a stable fallback, so a show
+ * added to the catalogue looks deliberate before anyone chooses its colour.
  */
 
 import type { SpeechRate } from './catalog-api';
@@ -15,6 +18,7 @@ type Palette = { tone: string; ink: string };
 
 const PALETTE: Record<string, Palette> = {
   'let-s-learn-english': { tone: 'bg-[#f7b267]', ink: 'text-[#342115]' },
+  'zh-wikipedia-spoken': { tone: 'bg-[#c98a6b]', ink: 'text-[#2e1a12]' },
   'how-i-built-this': { tone: 'bg-[#ff895d]', ink: 'text-[#2b1e1a]' },
   'hidden-brain': { tone: 'bg-[#9bc7b0]', ink: 'text-[#173028]' },
   '99-invisible': { tone: 'bg-[#aab8e8]', ink: 'text-[#1d2440]' },

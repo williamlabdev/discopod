@@ -77,6 +77,13 @@ Not as a seeded episode, not as a temporary row, not behind a flag. The catalogu
 source stays what `CLAUDE.md` says it is, and nothing enters it that the product would not
 choose on its merits.
 
+> **Strained by [ADR 0009](0009-the-first-mandarin-episode-is-a-read-encyclopedia-article.md)**
+> — the first Mandarin episode is a Spoken Wikipedia reading, which the product would not
+> choose over a podcast. It is admitted on the distinction FSI fails, that the delivery is
+> a person's own pace rather than a teaching pace, and the mismatch with this sentence is
+> recorded there rather than argued away. Decisions 1–3 are otherwise untouched: FSI stays
+> the fixture and never catalogue content.
+
 ### 2. FSI becomes the fixture for the ASR and alignment pipeline
 
 This is a promotion of a sort, and it is what the module 09 finding buys. Building an

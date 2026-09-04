@@ -177,14 +177,27 @@ export function EpisodeLearning({ episode, pair }: { episode: EpisodeDetail; pai
               <p className="text-xs font-semibold uppercase tracking-[0.15em] text-primary">Listening lesson · {episode.topic}</p>
               {episode.publisherTranscript && <span className="rounded-full bg-[#e4f0e9] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] text-[#416b55]">Real audio + transcript</span>}
             </div>
-            <h2 className="mt-3 max-w-3xl font-serif text-4xl leading-[1.02] tracking-[-0.045em] sm:text-6xl">Learn from a real conversation.</h2>
+            {/* This heading was a constant, and it was a claim about the
+                episode: "a real conversation". True of the VOA lesson, where
+                Anna and Pete talk to each other; false of episode 101, which is
+                one person reading an article aloud. The promise the heading is
+                making is that the audio is real rather than a textbook
+                recording, and that survives a single speaker — the word
+                "conversation" is the part that does not. */}
+            <h2 className="mt-3 max-w-3xl font-serif text-4xl leading-[1.02] tracking-[-0.045em] sm:text-6xl">{episode.speakerCount > 1 ? 'Learn from a real conversation.' : 'Learn from real speech.'}</h2>
             <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground">{episode.learningGoal}</p>
             <div className="mt-7 flex flex-wrap gap-3 text-sm">
               <span className="flex items-center gap-2 rounded-full bg-secondary px-3 py-2"><Clock3 className="size-4" />{episode.duration}</span>
               <span className="flex items-center gap-2 rounded-full bg-secondary px-3 py-2"><Gauge className="size-4" />{episode.speed}</span>
               <span className="flex items-center gap-2 rounded-full bg-secondary px-3 py-2"><BookOpenText className="size-4" />{episode.newWords} new words</span>
             </div>
-            {episode.sourceUrl && <p className="mt-5 text-xs leading-5 text-muted-foreground">Audio and transcript: <a className="font-semibold text-foreground underline decoration-border underline-offset-4" href={episode.sourceUrl} rel="noreferrer" target="_blank">{episode.sourceLabel}</a>. Used with credit for language learning.</p>}
+            {/* A link credits the author; it does not name the terms, and under
+                share-alike those are two obligations rather than one. So a show
+                that states a licence gets it printed here, next to the credit,
+                where someone reading the page can see it. A show without one
+                keeps the wording this line has always had — absent is "nobody
+                established the terms", which is not a claim we may round up. */}
+            {episode.sourceUrl && <p className="mt-5 text-xs leading-5 text-muted-foreground">Audio and transcript: <a className="font-semibold text-foreground underline decoration-border underline-offset-4" href={episode.sourceUrl} rel="noreferrer" target="_blank">{episode.sourceLabel}</a>. {episode.licence ? <>Excerpted and re-timed for language learning, under <a className="font-semibold text-foreground underline decoration-border underline-offset-4" href={episode.licence.url} rel="license noreferrer" target="_blank">{episode.licence.name}</a>.</> : <>Used with credit for language learning.</>}</p>}
           </div>
         </section>
 
