@@ -29,11 +29,11 @@ build → static export → API boot + HTTP smoke test, all under `NODE_ENV=prod
 - `.github/workflows/ci.yml` — mirrors Render's build exactly.
 
 **Pushed, and CI is green** (2026-09-04). The repo is public at
-<https://github.com/williamlabdev/podcast-discovery>: a single root commit `da78d1a`, 120 files,
+<https://github.com/williamlabdev/discopod>: a single root commit `da78d1a`, 120 files,
 `main` tracking `origin/main`. `../upload-to-github.sh` did the wipe-and-reinit, so the old
 ChatGPT sites remote and the `clean-main` / stale `main` branches are gone with the discarded
 `.git` — there is nothing left to tidy. CI run
-[33861169089](https://github.com/williamlabdev/podcast-discovery/actions/runs/33861169089)
+[33861169089](https://github.com/williamlabdev/discopod/actions/runs/33861169089)
 passed in 1m13s: `npm ci --include=dev`, lint, typecheck, build, the static-export check and the
 API smoke test.
 
@@ -48,7 +48,7 @@ API smoke test.
 
 The old step 1 — push and confirm CI — is done; see *Where things stand*. What remains:
 
-1. **Deploy.** Render → New → Blueprint → connect `williamlabdev/podcast-discovery` → fill the
+1. **Deploy.** Render → New → Blueprint → connect `williamlabdev/discopod` → fill the
    three prompted URLs (`NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_API_URL`, `WEB_ORIGIN`). This needs
    a human in the Render web UI. Note the free API instance sleeps after 15 minutes idle and
    takes ~1 minute to wake; the static site does not sleep.
