@@ -43,6 +43,23 @@ episode serves a first pass with everything visible and a second pass with nothi
 but sound and characters. **Going ear-only is a one-tap graduation, not a settings
 trip.**
 
+**Support comes in rungs, not a switch.** The learner who hits a sentence they can't
+follow shouldn't have to leave the language to get past it. The first step is *in other
+words* — the same sentence said differently, still in the target language, with the
+difficult expression kept and explained in place rather than swapped for an easy one.
+The native-language side is the step after that, for when the first one wasn't enough.
+
+This matters more than it sounds. Simplified input removes the hard structure, which
+means it removes the exact thing the learner needed. Elaborated input keeps it and adds
+redundancy around it — the way a good host defines a term mid-sentence and carries on.
+Every show gets that property on demand, and the learner meets the hard expression
+twice: once cold, once explained.
+
+Which rung a learner stops at is also the sharpest thing we know about them. Resolving
+at *in other words* means they are at the edge of what they can follow, which is exactly
+where we are trying to put them. Reaching for the native-language side means we aimed
+too high.
+
 ### 2. A show is a difficulty profile, not a feed
 
 Publisher, episode count, and last-published date are the least useful facts about a

@@ -4,8 +4,9 @@ A podcast app for language learners, ranked by whether a learner can follow an e
 ear rather than by charts, downloads or recency.
 
 **Read [HANDOFF.md](HANDOFF.md) first** — current state, next steps, and the traps already
-paid for. Then [docs/VISION.md](docs/VISION.md) for the product and
-[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the system.
+paid for. Then [docs/VISION.md](docs/VISION.md) for the product,
+[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the system, and
+[docs/REQUIREMENTS.md](docs/REQUIREMENTS.md) for numbered requirements not yet built.
 
 ## Layout
 
