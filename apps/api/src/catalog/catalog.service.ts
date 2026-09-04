@@ -62,9 +62,20 @@ export class CatalogService {
    * returned with the reasoning stated. Never recommend without a reason.
    */
   async startHere(level: LearningLevel): Promise<RankedEpisode | null> {
-    const ranked = await this.listEpisodes({ level: undefined, sort: 'suitability' });
-    const forLevel = ranked.filter((item) => item.episode.profile.level === level);
-    return (forLevel[0] ?? ranked[0]) ?? null;
+    const episodes = await this.repository.findEpisodes();
+    if (episodes.length === 0) return null;
+
+    // Score for *this* learner, then prefer an episode pitched at their level.
+    // Going through listEpisodes({ level }) would filter and score in one step,
+    // but the fallback below needs the rest of the catalogue scored the same
+    // way. Passing `level: undefined` scored everything as Intermediate, so a
+    // Beginner could be told a 130 wpm episode was "at a pace you can follow"
+    // — the reason was computed for a learner who was not the one reading it.
+    const ranked = episodes
+      .map((episode) => this.rank(episode, level))
+      .sort((a, b) => b.suitability - a.suitability);
+
+    return ranked.find((item) => item.episode.profile.level === level) ?? ranked[0];
   }
 
   /**

@@ -53,3 +53,13 @@ export function formatDuration(seconds: number): string {
 export function formatSpeechRate(wordsPerMinute: number): string {
   return `${wordsPerMinute} wpm`;
 }
+
+/**
+ * "One voice" / "3 voices". Counted from the distinct speakers in the
+ * transcript, so unlike coverage or slang load this is a measurement rather
+ * than a restatement of the level — which is why it is the only other profile
+ * dimension the cards show. See EpisodeCard.voices.
+ */
+export function formatVoices(speakerCount: number): string {
+  return speakerCount === 1 ? 'One voice' : `${speakerCount} voices`;
+}

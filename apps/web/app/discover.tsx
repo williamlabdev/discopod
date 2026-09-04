@@ -16,6 +16,7 @@ import {
   Play,
   Search,
   Sparkles,
+  Users,
   X,
 } from 'lucide-react';
 
@@ -74,6 +75,7 @@ export function Discover({ catalogue }: { catalogue: DiscoverCatalogue }) {
     });
   }, [activeInterest, activeLevel, catalogue, query]);
 
+  const startHere = catalogue.startHere[activeLevel];
   const interests = useMemo(() => ['All', ...catalogue.topics], [catalogue.topics]);
   const everyCard = useMemo(() => LEARNING_LEVELS.flatMap((level) => catalogue.byLevel[level]), [catalogue]);
 
@@ -212,6 +214,36 @@ export function Discover({ catalogue }: { catalogue: DiscoverCatalogue }) {
           </div>
         </section>
 
+        {/* The API's own answer to "where should this learner begin?", asked of
+            the whole catalogue. Deliberately outside the interest and search
+            filters below: it is a starting point, not a result, and narrowing
+            it by topic would turn it back into the first row of a list. */}
+        {startHere && (
+          <section aria-labelledby="start-here-heading" className="mb-10 overflow-hidden rounded-[26px] border border-border bg-card shadow-[0_12px_35px_rgba(48,42,35,0.05)]">
+            <div className="grid gap-0 sm:grid-cols-[150px_1fr]">
+              <div className={`${startHere.tone} ${startHere.ink} relative flex flex-col justify-between p-5`}>
+                <span className="text-xs font-semibold uppercase tracking-[0.12em] opacity-60">{startHere.topic}</span>
+                <p className="relative mt-6 font-serif text-2xl leading-[0.95] tracking-[-0.04em]">{startHere.showTitle}</p>
+                <span className="absolute -bottom-8 -left-6 size-24 rounded-full border-[16px] border-white/30" aria-hidden="true" />
+              </div>
+              <div className="p-5 sm:p-6">
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+                  <p className="text-xs font-semibold uppercase tracking-[0.13em] text-primary">Step 2 · Start here</p>
+                  <span className="rounded-full bg-secondary px-2.5 py-1 text-xs font-medium text-secondary-foreground">{startHere.suitability}% fit</span>
+                </div>
+                <h2 id="start-here-heading" className="mt-2 font-serif text-2xl tracking-[-0.03em]">{startHere.episodeTitle}</h2>
+                <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">{startHere.fitReason}</p>
+                <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-muted-foreground">
+                  <span className="flex items-center gap-1.5"><Gauge className="size-3.5" />{startHere.speed}</span>
+                  <span className="flex items-center gap-1.5"><Users className="size-3.5" />{startHere.voices}</span>
+                  <span className="flex items-center gap-1.5"><Clock3 className="size-3.5" />{startHere.duration}</span>
+                </div>
+                <a className="mt-5 inline-flex h-10 items-center gap-2 rounded-full bg-foreground px-5 text-sm font-semibold text-background transition hover:bg-foreground/85" href={`/episode/${startHere.id}`}>Start with this one<ArrowRight className="size-4" /></a>
+              </div>
+            </div>
+          </section>
+        )}
+
         <section aria-labelledby="interests-heading" className="border-t border-border/70 pt-6">
           <div className="flex flex-wrap items-center gap-2.5">
             <h2 id="interests-heading" className="mr-3 text-sm font-medium">Browse by interest</h2>
@@ -265,6 +297,7 @@ export function Discover({ catalogue }: { catalogue: DiscoverCatalogue }) {
                         <p className="mt-1.5 text-xs leading-5 text-muted-foreground">{card.levelReason}</p>
                         <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-border/70 pt-3 text-xs text-muted-foreground">
                           <span className="flex items-center gap-1.5"><Gauge className="size-3.5" />{card.speed}</span>
+                          <span className="flex items-center gap-1.5"><Users className="size-3.5" />{card.voices}</span>
                           <span className="flex items-center gap-1.5"><BookOpenText className="size-3.5" />{card.newWords} new words</span>
                           <span className="flex items-center gap-1.5"><Clock3 className="size-3.5" />{card.duration}</span>
                         </div>

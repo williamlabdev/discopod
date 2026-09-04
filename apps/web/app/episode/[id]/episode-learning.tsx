@@ -26,6 +26,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import type { EpisodeDetail } from '@/lib/catalogue';
+import { createSavedWord, readSavedWords, type SavedWord } from '@/lib/saved-words';
 
 function TranscriptLine({ text, highlight }: { text: string; highlight?: string }) {
   if (!highlight || !text.includes(highlight)) return <>{text}</>;
@@ -41,7 +42,7 @@ export function EpisodeLearning({ episode }: { episode: EpisodeDetail }) {
   const [demoProgress, setDemoProgress] = useState(0);
   const [speed, setSpeed] = useState(1);
   const [complete, setComplete] = useState(false);
-  const [savedWords, setSavedWords] = useState<string[]>([]);
+  const [savedWords, setSavedWords] = useState<SavedWord[]>([]);
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [checked, setChecked] = useState(false);
   const [hydrated, setHydrated] = useState(false);
@@ -102,10 +103,12 @@ export function EpisodeLearning({ episode }: { episode: EpisodeDetail }) {
       try {
         const stored = window.localStorage.getItem(storageKey);
         if (stored) {
-          const value = JSON.parse(stored) as { currentTime?: number; complete?: boolean; savedWords?: string[]; answers?: Record<number, number>; checked?: boolean };
+          const value = JSON.parse(stored) as { currentTime?: number; complete?: boolean; savedWords?: unknown; answers?: Record<number, number>; checked?: boolean };
           setCurrentTime(value.currentTime ?? 0);
           setComplete(Boolean(value.complete));
-          setSavedWords(value.savedWords ?? []);
+          // Words saved before this stored bare terms; readSavedWords rebuilds
+          // their sentence, speaker and timestamp rather than dropping them.
+          setSavedWords(readSavedWords(value.savedWords, episode.id, episode.vocabulary));
           setAnswers(value.answers ?? {});
           setChecked(Boolean(value.checked));
         }
@@ -114,7 +117,7 @@ export function EpisodeLearning({ episode }: { episode: EpisodeDetail }) {
       }
       setHydrated(true);
     });
-  }, [storageKey]);
+  }, [episode.id, episode.vocabulary, storageKey]);
 
   useEffect(() => {
     if (!hydrated) return;
@@ -221,8 +224,47 @@ export function EpisodeLearning({ episode }: { episode: EpisodeDetail }) {
             <div className="mb-6 flex flex-col justify-between gap-3 sm:flex-row sm:items-end"><div><p className="text-xs font-semibold uppercase tracking-[0.12em] text-primary">From this episode</p><h3 className="mt-1 font-serif text-3xl tracking-[-0.035em]">Words worth keeping</h3></div><p className="text-sm text-muted-foreground">{savedWords.length} saved to your word list</p></div>
             <div className="grid gap-4 md:grid-cols-2">
               {episode.vocabulary.map((word) => {
-                const isSaved = savedWords.includes(word.term);
-                return <article key={word.term} className="rounded-[22px] border border-border bg-card p-5 sm:p-6"><div className="flex items-start justify-between gap-4"><div><div className="flex items-baseline gap-2"><h4 className="font-serif text-2xl">{word.term}</h4><span className="text-xs italic text-muted-foreground">{word.type}</span></div><p className="mt-3 text-sm leading-6">{word.meaning}</p></div><Button variant={isSaved ? 'secondary' : 'outline'} size="icon" className="rounded-full" aria-label={`${isSaved ? 'Remove' : 'Save'} ${word.term}`} onClick={() => setSavedWords((current) => isSaved ? current.filter((item) => item !== word.term) : [...current, word.term])}>{isSaved ? <Check /> : <Bookmark />}</Button></div><p className="mt-5 border-l-2 border-primary/40 pl-3 text-sm italic leading-6 text-muted-foreground">“{word.example}”</p></article>;
+                const isSaved = savedWords.some((item) => item.term === word.term);
+                const heard = word.occurrence;
+                return (
+                  <article key={word.term} className="rounded-[22px] border border-border bg-card p-5 sm:p-6">
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <div className="flex items-baseline gap-2"><h4 className="font-serif text-2xl">{word.term}</h4><span className="text-xs italic text-muted-foreground">{word.type}</span></div>
+                        <p className="mt-3 text-sm leading-6">{word.meaning}</p>
+                      </div>
+                      <Button
+                        variant={isSaved ? 'secondary' : 'outline'}
+                        size="icon"
+                        className="rounded-full"
+                        aria-label={`${isSaved ? 'Remove' : 'Save'} ${word.term}`}
+                        onClick={() => setSavedWords((current) => (isSaved ? current.filter((item) => item.term !== word.term) : [...current, createSavedWord(episode.id, word)]))}
+                      >
+                        {isSaved ? <Check /> : <Bookmark />}
+                      </Button>
+                    </div>
+
+                    {/* The line as it was said, when the term can be located in the
+                        transcript — that sentence, speaker and timestamp are what the
+                        word keeps when it is saved. When it cannot, fall back to the
+                        authored example and say so, rather than passing the example
+                        off as something the learner will hear. The fallback claims
+                        only that the search failed, not that the word is absent. */}
+                    <p className="mt-5 border-l-2 border-primary/40 pl-3 text-sm italic leading-6 text-muted-foreground">“{heard?.sentence ?? word.example}”</p>
+                    <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[11px] text-muted-foreground">
+                      {heard ? (
+                        <>
+                          {heard.speaker && <span className="font-semibold text-foreground">{heard.speaker}</span>}
+                          <button type="button" onClick={() => seekTo(heard.seconds)} className="flex items-center gap-1 rounded-full bg-secondary px-2.5 py-1 font-semibold transition hover:bg-secondary/70">
+                            <Play className="size-3 fill-current" />Hear it at {formatTime(heard.seconds)}
+                          </button>
+                        </>
+                      ) : (
+                        <span>Example sentence — we couldn’t locate this word in the transcript.</span>
+                      )}
+                    </div>
+                  </article>
+                );
               })}
             </div>
           </TabsContent>

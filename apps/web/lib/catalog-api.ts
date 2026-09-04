@@ -170,6 +170,17 @@ export async function fetchRankedEpisodes(level?: LearningLevel): Promise<Ranked
   return ranked.map((item) => assertRanked(item, where));
 }
 
+/**
+ * The single "start here" pick for a level, with its reasoning. Returns null
+ * only for an empty catalogue — a level with no episodes of its own falls back
+ * to the best episode overall, still scored for this learner.
+ */
+export async function fetchStartHere(level: LearningLevel): Promise<RankedEpisode | null> {
+  const where = `/episodes/start-here?level=${level}`;
+  const ranked = await get<RankedEpisode | null>(where);
+  return ranked ? assertRanked(ranked, where) : null;
+}
+
 export async function fetchEpisode(id: string): Promise<Episode | null> {
   const url = `${baseUrl()}/episodes/${encodeURIComponent(id)}`;
   const response = await fetch(url, { cache: 'force-cache' });

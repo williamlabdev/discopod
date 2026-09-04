@@ -14,11 +14,13 @@ import {
   fetchEpisode,
   fetchRankedEpisodes,
   fetchShows,
+  fetchStartHere,
   type LearningLevel,
   type RankedEpisode,
   type Show,
+  type TranscriptCue,
 } from './catalog-api';
-import { formatDuration, formatSpeechRate, paletteFor } from './presentation';
+import { formatDuration, formatSpeechRate, formatVoices, paletteFor } from './presentation';
 
 export const LEARNING_LEVELS: LearningLevel[] = ['Beginner', 'Intermediate', 'Advanced'];
 
@@ -42,6 +44,15 @@ export interface EpisodeCard {
   /** The profile's own one-line reason — shown on the card. */
   levelReason: string;
   speed: string;
+  /**
+   * "One voice" / "3 voices". The only profile dimension besides speech rate
+   * that the cards show, because it is the only other one that is measured:
+   * vocabularyCoverage, slangLoad and accentLoad are currently derived from the
+   * level (and accentLoad is a constant), so showing them would dress a
+   * restatement of the level up as a second opinion about the episode. See
+   * buildProfile in apps/api/src/catalog/catalog.seed.ts.
+   */
+  voices: string;
   duration: string;
   newWords: number;
   publisherTranscript: boolean;
@@ -57,16 +68,86 @@ export interface TranscriptLine {
   highlight?: string;
 }
 
+/**
+ * A vocabulary entry, located in the transcript where it can be.
+ *
+ * `occurrence` is what lets a saved word carry its audio context — the sentence
+ * as it was actually said, who said it, and when — instead of just the term.
+ * It is optional because findOccurrence can fail to locate a term — every term
+ * in the current catalogue is found, but ingested episodes will not all be so
+ * cooperative. Those save with the authored example as their sentence and no
+ * timestamp, rather than being given a fabricated one.
+ */
+export interface VocabularyItem {
+  term: string;
+  type: string;
+  meaning: string;
+  example: string;
+  occurrence?: { sentence: string; speaker?: string; timestampMs: number; seconds: number };
+}
+
 export interface EpisodeDetail extends EpisodeCard {
   learningGoal: string;
   audioSrc?: string;
   sourceUrl?: string;
   sourceLabel?: string;
   transcript: TranscriptLine[];
-  vocabulary: { term: string; type: string; meaning: string; example: string }[];
+  vocabulary: VocabularyItem[];
   questions: { prompt: string; options: string[]; answer: number }[];
   previousId: string;
   nextId: string;
+}
+
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+/**
+ * One word of a term, tolerant of inflection. Anchored at a word start and left
+ * open at the end so "resist" reaches "resisting", plus the two English endings
+ * that change the stem rather than extend it: y→i ("community"/"communities")
+ * and a dropped silent e ("make"/"making").
+ */
+function wordProbe(word: string): string {
+  const stems = new Set([word, word.replace(/y$/i, 'i'), word.replace(/e$/i, '')]);
+  return `(?:${[...stems].map(escapeRegExp).join('|')})`;
+}
+
+/**
+ * Find where a term is spoken, most specific match first.
+ *
+ * A vocabulary term is written in its citation form and the transcript has it
+ * conjugated, split, or built with different function words — all twenty-eight
+ * terms in the current catalogue are present, but only twenty-five survive a
+ * literal match. So try three readings in order of confidence: the phrase, the
+ * phrase with one word dropped in ("try again" → "try that again"), then its
+ * longest word ("on behalf of" → "on our behalf"). Order matters: the head word
+ * alone can occur earlier than the phrase, and the earlier cue would be the
+ * wrong place to send a learner.
+ */
+function findOccurrence(term: string, transcript: TranscriptCue[]) {
+  const words = term.trim().split(/\s+/);
+  const head = [...words].sort((a, b) => b.length - a.length)[0];
+
+  const probes = [
+    new RegExp(`\\b${words.map(wordProbe).join('\\s+')}`, 'i'),
+    new RegExp(`\\b${words.map(wordProbe).join('\\s+(?:\\w+\\s+)?')}`, 'i'),
+    new RegExp(`\\b${wordProbe(head)}`, 'i'),
+  ];
+
+  for (const probe of probes) {
+    const cue = transcript.find((entry) => probe.test(entry.text));
+    if (cue) {
+      return {
+        sentence: cue.text,
+        speaker: cue.speaker,
+        timestampMs: cue.startMs,
+        seconds: Math.round(cue.startMs / 1000),
+      };
+    }
+  }
+
+  return undefined;
 }
 
 function formatCueTime(startMs: number): string {
@@ -96,6 +177,7 @@ function toCard(ranked: RankedEpisode, show: Show | undefined): EpisodeCard {
     fitReason: ranked.reason,
     levelReason: episode.profile.reason,
     speed: formatSpeechRate(episode.profile.speechRate),
+    voices: formatVoices(episode.profile.speakerCount),
     duration: formatDuration(episode.durationSeconds),
     newWords: episode.newWordCount,
     publisherTranscript: episode.publisherTranscript,
@@ -112,6 +194,14 @@ async function showsById(): Promise<Map<string, Show>> {
 export interface DiscoverCatalogue {
   /** Ranked separately per level: the same episode scores differently by level. */
   byLevel: Record<LearningLevel, EpisodeCard[]>;
+  /**
+   * The API's own "start here" pick per level. Not `byLevel[level][0]`: that is
+   * the top of a list this app then filters by interest and search, while this
+   * is the API answering "where should this learner begin?" over the whole
+   * catalogue. Keeping the API's answer is the point — the vision puts a start
+   * here pick above the list, with its reasoning, not a relabelled first row.
+   */
+  startHere: Record<LearningLevel, EpisodeCard | null>;
   /** Every primary topic present in the catalogue, for the interest filter. */
   topics: string[];
 }
@@ -120,15 +210,29 @@ export async function loadDiscoverCatalogue(): Promise<DiscoverCatalogue> {
   const shows = await showsById();
   const perLevel = await Promise.all(
     LEARNING_LEVELS.map(async (level) => {
-      const ranked = await fetchRankedEpisodes(level);
-      return [level, ranked.map((item) => toCard(item, shows.get(item.episode.showId)))] as const;
+      const [ranked, first] = await Promise.all([
+        fetchRankedEpisodes(level),
+        fetchStartHere(level),
+      ]);
+      return [
+        level,
+        ranked.map((item) => toCard(item, shows.get(item.episode.showId))),
+        first ? toCard(first, shows.get(first.episode.showId)) : null,
+      ] as const;
     }),
   );
 
-  const byLevel = Object.fromEntries(perLevel) as Record<LearningLevel, EpisodeCard[]>;
+  const byLevel = Object.fromEntries(perLevel.map(([level, cards]) => [level, cards])) as Record<
+    LearningLevel,
+    EpisodeCard[]
+  >;
+  const startHere = Object.fromEntries(
+    perLevel.map(([level, , first]) => [level, first]),
+  ) as Record<LearningLevel, EpisodeCard | null>;
+
   const topics = [...new Set([...shows.values()].map((show) => show.topics[0]).filter(Boolean))];
 
-  return { byLevel, topics: topics.sort((a, b) => a.localeCompare(b)) };
+  return { byLevel, startHere, topics: topics.sort((a, b) => a.localeCompare(b)) };
 }
 
 /** Every episode id, in the API's default ranking order. Drives the static routes. */
@@ -177,6 +281,7 @@ export async function loadEpisodeDetail(id: string): Promise<EpisodeDetail | nul
       type: entry_.partOfSpeech,
       meaning: entry_.meaning,
       example: entry_.example,
+      occurrence: findOccurrence(entry_.term, episode.transcript),
     })),
     questions: episode.questions.map((question) => ({
       prompt: question.prompt,
