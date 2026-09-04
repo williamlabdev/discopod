@@ -184,7 +184,13 @@ export function EpisodeLearning({ episode, pair }: { episode: EpisodeDetail; pai
               <span className="flex items-center gap-2 rounded-full bg-secondary px-3 py-2"><Gauge className="size-4" />{episode.speed}</span>
               <span className="flex items-center gap-2 rounded-full bg-secondary px-3 py-2"><BookOpenText className="size-4" />{episode.newWords} new words</span>
             </div>
-            {episode.sourceUrl && <p className="mt-5 text-xs leading-5 text-muted-foreground">Audio and transcript: <a className="font-semibold text-foreground underline decoration-border underline-offset-4" href={episode.sourceUrl} rel="noreferrer" target="_blank">{episode.sourceLabel}</a>. Used with credit for language learning.</p>}
+            {/* A link credits the author; it does not name the terms, and under
+                share-alike those are two obligations rather than one. So a show
+                that states a licence gets it printed here, next to the credit,
+                where someone reading the page can see it. A show without one
+                keeps the wording this line has always had — absent is "nobody
+                established the terms", which is not a claim we may round up. */}
+            {episode.sourceUrl && <p className="mt-5 text-xs leading-5 text-muted-foreground">Audio and transcript: <a className="font-semibold text-foreground underline decoration-border underline-offset-4" href={episode.sourceUrl} rel="noreferrer" target="_blank">{episode.sourceLabel}</a>. {episode.licence ? <>Excerpted and re-timed for language learning, under <a className="font-semibold text-foreground underline decoration-border underline-offset-4" href={episode.licence.url} rel="license noreferrer" target="_blank">{episode.licence.name}</a>.</> : <>Used with credit for language learning.</>}</p>}
           </div>
         </section>
 

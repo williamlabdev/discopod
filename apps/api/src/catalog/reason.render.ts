@@ -44,11 +44,16 @@ type Renderer = (facts: ReasonFacts) => string;
 
 const RENDERERS: Partial<Record<LanguageTag, Renderer>> = {
   en: (facts) => {
-    // floor, not round: a 30-second episode rounds up to "1 minutes", which is
-    // both the wrong number and the wrong plural.
-    const minutes = Math.floor(facts.durationSeconds / 60);
+    // The seconds branch is chosen by the duration, not by the rounded minutes:
+    // rounding first would call a 30-second episode "1 minutes", which is both
+    // the wrong number and the wrong plural. Flooring instead was the earlier
+    // fix for that, and it bought the same bug at the other end — a 103-second
+    // episode became "1 minute" on the page where its card said "2 min". Above
+    // a minute this rounds, so the two now name the same number; the card is
+    // formatDuration in apps/web/lib/presentation.ts.
+    const minutes = Math.round(facts.durationSeconds / 60);
     const length =
-      minutes >= 1
+      facts.durationSeconds >= 60
         ? `${minutes} minute${minutes === 1 ? '' : 's'}`
         : `${facts.durationSeconds} seconds`;
     const voices = facts.speakerCount === 1 ? 'one voice' : `${facts.speakerCount} voices`;
@@ -58,8 +63,10 @@ const RENDERERS: Partial<Record<LanguageTag, Renderer>> = {
   },
 
   'zh-Hant': (facts) => {
-    const minutes = Math.floor(facts.durationSeconds / 60);
-    const length = minutes >= 1 ? `${minutes} 分鐘` : `${facts.durationSeconds} 秒`;
+    // Same rule as the English renderer above, and for the same reason: the
+    // branch is on the duration, the rounding happens after it.
+    const minutes = Math.round(facts.durationSeconds / 60);
+    const length = facts.durationSeconds >= 60 ? `${minutes} 分鐘` : `${facts.durationSeconds} 秒`;
     // 一個人聲 / 3 個人聲: the count word is spelled out at one and left as a
     // numeral above it, the way a Chinese sentence actually reads.
     const voices = facts.speakerCount === 1 ? '一個人聲' : `${facts.speakerCount} 個人聲`;

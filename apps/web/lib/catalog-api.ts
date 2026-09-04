@@ -58,6 +58,8 @@ export interface Show {
   description: string;
   profile: DifficultyProfile;
   sourceUrl?: string;
+  /** Terms the audio is used under. Absent is "not stated", never "free". */
+  licence?: { name: string; url: string };
 }
 
 export interface TranscriptCue {

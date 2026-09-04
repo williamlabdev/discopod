@@ -51,6 +51,21 @@ export interface Show {
   description: string;
   profile: DifficultyProfile;
   sourceUrl?: string;
+  /**
+   * The terms this show's audio is used under, carried so the page can name
+   * them rather than gesture at them.
+   *
+   * A link to the source credits the author; it does not state a licence, and
+   * under a share-alike licence those are two separate obligations. The first
+   * show that needs this is the spoken Wikipedia reading, which is CC BY-SA:
+   * naming the licence is a condition of using it at all, so it is data about
+   * the show and not decoration on a page.
+   *
+   * Optional, because "no licence named" and "public domain" are different
+   * answers and neither should be invented. A show without this renders the
+   * credit line it always rendered.
+   */
+  licence?: { name: string; url: string };
 }
 
 export interface TranscriptCue {

@@ -110,6 +110,7 @@ export interface EpisodeDetail extends EpisodeCard {
   audioSrc?: string;
   sourceUrl?: string;
   sourceLabel?: string;
+  licence?: { name: string; url: string };
   transcript: TranscriptLine[];
   vocabulary: VocabularyItem[];
   questions: { prompt: string; options: string[]; answer: number }[];
@@ -297,6 +298,7 @@ export async function loadEpisodeDetail(
     audioSrc: episode.audioUrl,
     sourceUrl: show?.sourceUrl,
     sourceLabel: show ? `${show.publisher} · ${episode.title}` : undefined,
+    licence: show?.licence,
     transcript: episode.transcript.map((cue) => ({
       time: formatCueTime(cue.startMs),
       seconds: Math.round(cue.startMs / 1000),

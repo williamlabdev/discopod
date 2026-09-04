@@ -124,6 +124,15 @@ Applied to `catalog.types.ts`:
 - `TranscriptCue.text`, `VocabularyEntry.term`, `VocabularyEntry.example`, `title`,
   `description` — unchanged, scalar, in the show's language.
 
+  > **`description` is wrong here, and episode 101 is where it shows.** A description is
+  > read *before* listening, by someone who by definition cannot yet follow the audio, so a
+  > Mandarin blurb on a Mandarin episode is unreadable to the learner the card is for. This
+  > row was decided while every show was English and the two answers could not differ — the
+  > same invisible default this ADR exists to remove. Episode 101 deviates deliberately and
+  > ships its description in English; see
+  > [ADR 0009](0009-the-first-mandarin-episode-is-a-read-encyclopedia-article.md)
+  > decision 7 for why the `Localized` migration was not done in that change.
+
 ### 3. A missing translation is an exclusion, not a fallback
 
 `Localized` is `Partial` so absence is representable. The rule: **an episode missing the
@@ -191,6 +200,13 @@ proficiency: { scale: 'CEFR' | 'HSK' | 'TOCFL'; band: string }
 learner of Chinese is placed by HSK or TOCFL. The scale belongs to the **learning**
 language, not to the pair, and hardcoding one of them is the same unstated default this
 ADR exists to remove.
+
+> **First wrong answer shipped, 2026-09-05.** Episode 101 (`en → zh-Hans`) carries
+> `cefr: "B1"` on a Mandarin recording, where HSK is the conventional scale and CEFR
+> alignment is contested. The value is an owned judgement, labelled as one in
+> [ADR 0009](0009-the-first-mandarin-episode-is-a-read-encyclopedia-article.md) decision 6;
+> the field is still lying about which scale it is. This decision now has a caller with a
+> concrete defect behind it rather than a hypothetical one.
 
 ## What this ADR does not do
 
