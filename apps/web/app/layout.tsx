@@ -19,6 +19,11 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
  * who came for another. A pair's own pages name their own languages — see
  * `app/[speaks]/[learning]/episode/[id]/page.tsx`, which builds its title from
  * `LANGUAGE_NAMES[pair.learning]`.
+ *
+ * The share descriptions said "Learn a language through real conversations",
+ * which is the same defect the discovery page's eyebrow had: a promise about
+ * audio DiscoPod does not make. Keep every claim here to what the product
+ * itself does — it ranks — and it stays true whatever the catalogue holds.
  */
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -27,13 +32,15 @@ export const metadata: Metadata = {
     'Learn a language through podcast episodes matched to your listening level and interests.',
   openGraph: {
     title: 'DiscoPod — Podcasts at your level',
-    description: 'Learn a language through real conversations.',
+    description:
+      "Podcast episodes ranked by whether you can follow them, not by what's popular.",
     images: [{ url: '/og.png', width: 1733, height: 908, alt: 'Podcasts at your level.' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'DiscoPod — Podcasts at your level',
-    description: 'Learn a language through real conversations.',
+    description:
+      "Podcast episodes ranked by whether you can follow them, not by what's popular.",
     images: ['/og.png'],
   },
 };

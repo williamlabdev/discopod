@@ -192,7 +192,22 @@ export function Discover({
 
         <section id="discover" className="grid gap-12 pb-14 pt-14 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-end lg:pt-20">
           <div>
-            <p className="mb-5 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground"><Sparkles className="size-3.5 text-primary" />Learn through real conversations</p>
+            {/* This said "Learn through real conversations", which was a promise
+                about the audio — and DiscoPod does not make the audio, so the
+                line was only ever as true as whatever the catalogue happened to
+                hold. It went false the day `en → zh-Hant` shipped with one
+                person reading an encyclopedia article aloud.
+
+                The episode page fixed the same class of bug by branching on
+                `speakerCount`, and that is right there: it describes one
+                recording. This describes the product, and the only claim the
+                product can always keep is about its own behaviour — how it
+                ranks (VISION: by whether a learner can follow an episode by
+                ear, not by charts, downloads or recency). The eyebrow states
+                the method; the h1 states the promise. Don't derive this from
+                the catalogue: a brand line that changes when a second episode
+                lands is not a brand line. */}
+            <p className="mb-5 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground"><Sparkles className="size-3.5 text-primary" />Ranked by what you can follow</p>
             <h1 className="max-w-3xl font-serif text-[clamp(3rem,7vw,6.8rem)] leading-[0.9] tracking-[-0.055em]">Podcasts at <em className="font-normal text-primary">your level.</em></h1>
           </div>
           <div className="pb-1">
