@@ -106,27 +106,56 @@ conversational speed, owned and labelled as extrapolation rather than measuremen
 **So no Mandarin episode is blocked on anybody's reply any more.** What is left is
 ordinary work, listed below.
 
-**There is Mandarin on screen** (2026-09-05). Episode **101**, `en → zh-Hans`: the opening
-paragraph of the Chinese Wikipedia article on 大雁塔, read aloud by the Spoken Wikipedia
-volunteer Yu chuan, CC BY-SA. 103 seconds, 21 cues, 5 vocabulary entries, 3 questions,
-measured at 140 cpm. The route `/en/zh-Hans/episode/101` prerenders.
+**The Chinese DiscoPod teaches is Traditional, and that is now a decision** (2026-09-05).
+[ADR 0010](docs/adr/0010-the-chinese-discopod-teaches-is-traditional.md).
 
-**Read [ADR 0009](docs/adr/0009-the-first-mandarin-episode-is-a-read-encyclopedia-article.md)
-before adding a second one.** A read-aloud encyclopedia article is not a programme, and
-that is a real strain on ADR 0007's rule that nothing enters the catalogue the product
-would not choose on its merits — it is admitted on the one distinction FSI fails (a person's
-own pace, not a teaching pace), and the mismatch is recorded rather than argued away. TED
-中文 was rejected on licence: CC BY-NC-**ND**, and a transcript-first player is squarely a
-derivative. ADR 0009 also carries three things that will bite whoever comes next: `cefr`
-is now demonstrably the wrong field name (HSK, not CEFR, for Mandarin), `description` is
-in English against ADR 0003 decision 2 and deliberately so, and the ASR corrected the
-published article text once — the cue at 00:44 carries what the reader actually said.
+Episode 101 was Simplified for no reason anyone chose — ADR 0009 picked a *recording*, and
+its script became the product's answer by default. 101, its audio, its VTT, its seed file
+and the whole `en → zh-Hans` pair are deleted. Pairs are derived from content
+(`CatalogService.listPairs`), so the route left on its own.
 
-Provenance for the audio lives in `apps/web/public/audio/ATTRIBUTION.md`, including the
-two source discrepancies (which revision was read, and CC BY-SA 3.0 vs 4.0) and how the
-history settles the first.
+**There is Traditional Mandarin on screen.** Episode **102**, `en → zh-Hant`: the opening
+paragraph of the Chinese Wikipedia article on **海山漁港**, a fishing harbour on the Hsinchu
+coast, read by **Yuriy kosygin** — the volunteer who wrote the article. CC BY-SA 4.0,
+84 seconds, 17 cues, 5 vocabulary entries, 3 questions, measured at **144 cpm**.
+`/en/zh-Hant/episode/102` prerenders; the build emits 9 routes.
 
-Five defects surfaced by actually rendering the API's output, all fixed:
+**Read ADR 0010 before adding a third one.** Four things in it will bite:
+
+- **The strain on ADR 0007 did not go away.** 102 has the same shape as 101 — one person
+  reading an encyclopedia article, which the product would not choose over a podcast. Two
+  attempts in, the reading is that freely-licensed Mandarin *programmes* are the scarce
+  thing, not freely-licensed Mandarin audio. TED 中文 stays rejected on licence
+  (CC BY-NC-**ND**; a transcript-first player is squarely a derivative).
+- **A Commons `Zh-tw-` prefix is the narrator's accent, not the script.** Spoken Chinese
+  Wikipedia is overwhelmingly Simplified-authored and several `Zh-tw-` files read Simplified
+  articles, so the filename is no evidence at all. Evidence lives in the article: Traditional
+  forms throughout, no `{{NoteTA}}`, and — the strongest signal — the `海山-{里}-` markup, a
+  Traditional author suppressing auto-conversion of one character.
+- **`mlx-whisper` decodes Mandarin into Simplified.** Cue *characters* come from the
+  published wikitext; the ASR supplies *timings only*. Using its text would destroy the one
+  property the episode was chosen for and pass every check in the repo. `ATTRIBUTION.md`
+  says so in the file an editor will have open.
+- **`cefr: "B1"` is still the wrong field name** (HSK or TOCFL, not CEFR, for Mandarin).
+  ADR 0003 decision 7, sixth caller, second shipped wrong answer.
+
+`description` is no longer the deviation ADR 0009 confessed to: `Episode.description` is
+`Localized`, keyed by the learner's language, on the missing-key-is-exclusion rule.
+`Show.description` stays scalar — nothing renders it and the overlay is keyed by episode id.
+
+Seed files are named **by pair** (`catalog.en-zh-Hant.seed.json`), because
+`catalog.zh-Hant.seed.json` would have sat next to the overlay `catalog.zh-Hant.json` and
+meant something unrelated on the other axis.
+
+Provenance lives in `apps/web/public/audio/ATTRIBUTION.md`, including the three text/audio
+discrepancies. The rule applied to them is evidence, not precedence: where the ASR is
+confident and reproducible it wins (the omitted 約 at 00:15, the added 以及…等 at 01:20);
+where it is not, the published text stands and the disagreement is recorded (**北距** at
+00:10, where the ASR hears 北至 and a re-decode returned a training-data watermark instead
+of an answer). 北距 is kept out of the vocabulary list for that reason, and the unresolved
+row is what `verifiedLesson: false` is paying for.
+
+Eight defects surfaced by actually rendering the API's output, all fixed:
 
 - `?topic=` was accepted by validation and then silently ignored.
 - `Math.round(30/60)` made a 30-second episode read *"1 minutes"*.
@@ -143,10 +172,33 @@ Five defects surfaced by actually rendering the API's output, all fixed:
 - **The episode page's headline was a hardcoded claim about the audio.** *"Learn from a
   real conversation."* is true of the VOA lesson, where Anna and Pete talk to each other,
   and false of one person reading an article aloud. It now branches on `speakerCount`.
+- **A ranked reason ended in two full stops.** `renderReason`'s English template appends
+  `.` after the authored half (`reason.render.ts`), so a `levelReason` that punctuates its
+  own end produces *"…a list of six fish.."*. The Chinese renderer has a comment warning
+  about exactly this; the English one did not, and episode 102 walked into it.
+- **The same reason stated 144 cpm twice** — once in the rendered prefix and once in the
+  authored half restating it in words. Episode 101's `levelReason` had the same redundancy
+  and nobody noticed, because nobody read the two halves as one sentence.
+- **Chinese data was written with halfwidth punctuation.** Episode 102's transcript used
+  ASCII `,` where the published article uses `，`, and the title used ASCII parentheses.
+  In a Chinese-learning product the transcript is the material, so this was a fidelity bug,
+  not a style preference. `catalog.zh-Hant.json` had the same halfwidth `,` `?` `!`
+  throughout from an earlier session and was corrected with it — English `sourcePrompt`
+  anchors and the deliberately-English question options were left alone.
 
-The last two are the same lesson twice: **both passed lint, typecheck and build, and both
-were only visible on screen.** There are no tests under `apps/`, so rendering the page is
-the verification step, not a nicety.
+The last five are the same lesson five times: **every one of them passed lint, typecheck
+and build, and every one was only visible on screen.** There are no tests under `apps/`, so
+rendering the page is the verification step, not a nicety.
+
+**`npm run dev` does not start the web server.** The root script is
+`npm run dev --workspaces --if-present`, which runs workspaces *sequentially*; the API's
+`nest start --watch` never exits, so `@discopod/web` is never reached. `CLAUDE.md` documents
+"web :3000, api :3001", which does not happen. Start them separately —
+`npm run dev --workspace @discopod/api` and `npm run dev --workspace @discopod/web` — until
+the root script is fixed to run them concurrently. Related: `nest start --watch` does **not**
+watch the `assets` glob, so editing a seed JSON needs an API restart before the change is
+served, and `next dev` caches the API's answers under `.next/cache/fetch-cache`
+(`cache: 'force-cache'` in `catalog-api.ts`), so it needs one too.
 
 **Not done:** the deploy of the cut-over — the commit below is pushed, but check Render
 finished both services before trusting the live site.
@@ -166,15 +218,17 @@ finished both services before trusting the live site.
      every web request. An omitted `learning` means the *default pair*, not "no filter".
      `assertEpisode` on the web side checks it too, because an episode in the wrong
      `learning` is the failure that renders perfectly and is still wrong.
-   - ~~The audio and the transcript themselves.~~ Done 2026-09-05, as episode 101. The
-     shape that worked, and is worth repeating: **ASR supplies the timings, the publisher's
-     text checks the words, and the audio wins any disagreement about what was said.**
-     `mlx-whisper` large-v3-turbo, run against the *shipped* mp3 rather than the source
-     file so the timings are measured on what a learner actually hears — which also proved
-     the excerpt was not clipped at either end. The published article text corrected four
-     ASR homophones; the ASR corrected the published text once. Two things the loader
-     needed on the way: an explicit `showId` (`slug()` returns `""` for a Chinese title,
-     and both alternatives — pinyin, or a hash — are a guess or unreadable), and a
+   - ~~The audio and the transcript themselves.~~ Done 2026-09-05, as episode 101, then
+     redone as **episode 102** when ADR 0010 made the script a decision. The pipeline
+     survived the swap unchanged and is worth repeating: **the ASR supplies the timings,
+     the published text supplies the characters, and a disagreement is settled by
+     evidence rather than by precedence.** `mlx-whisper` large-v3-turbo, run against the
+     *shipped* mp3 rather than the source file so the timings are measured on what a
+     learner actually hears — which also proves the excerpt is not clipped at either end.
+     **The ASR's text is never the transcript**: it decodes Mandarin into Simplified, so
+     for a Traditional catalogue that substitution is silent and total. Two things the
+     loader needed on the way: an explicit `showId` (`slug()` returns `""` for a Chinese
+     title, and both alternatives — pinyin, or a hash — are a guess or unreadable), and a
      `Show.licence` field, because a link credits the author while share-alike also
      requires naming the terms.
 

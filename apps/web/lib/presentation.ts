@@ -18,13 +18,13 @@ type Palette = { tone: string; ink: string };
 
 const PALETTE: Record<string, Palette> = {
   'let-s-learn-english': { tone: 'bg-[#f7b267]', ink: 'text-[#342115]' },
-  'zh-wikipedia-spoken': { tone: 'bg-[#c98a6b]', ink: 'text-[#2e1a12]' },
   'how-i-built-this': { tone: 'bg-[#ff895d]', ink: 'text-[#2b1e1a]' },
   'hidden-brain': { tone: 'bg-[#9bc7b0]', ink: 'text-[#173028]' },
   '99-invisible': { tone: 'bg-[#aab8e8]', ink: 'text-[#1d2440]' },
   'search-engine': { tone: 'bg-[#f2c766]', ink: 'text-[#2f2918]' },
   ologies: { tone: 'bg-[#d6a7cd]', ink: 'text-[#3f2037]' },
   'articles-of-interest': { tone: 'bg-[#98c9d7]', ink: 'text-[#17303a]' },
+  'zh-wikipedia-spoken': { tone: 'bg-[#7fb0a8]', ink: 'text-[#122b28]' },
 };
 
 /** Deterministic fallback, so an ingested show still gets a stable colour. */

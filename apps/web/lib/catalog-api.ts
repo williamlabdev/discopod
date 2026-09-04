@@ -88,7 +88,8 @@ export interface Episode {
   id: string;
   showId: string;
   title: string;
-  description: string;
+  /** Read before listening, so it is the learner's language, not the show's. */
+  description: Localized;
   durationSeconds: number;
   audioUrl?: string;
   publisherTranscript: boolean;
@@ -179,6 +180,10 @@ function assertEpisode(episode: Episode, pair: LanguagePair, where: string): Epi
     problems.push('profile.speechRate{value,unit}');
   }
   if (!has(episode?.learningGoal, speaks)) problems.push(`learningGoal[${speaks}]`);
+  // An API still sending a bare string here is one from before ADR 0010, when
+  // the blurb was written in the language being learned — the one language the
+  // reader of a blurb is known not to have yet.
+  if (!has(episode?.description, speaks)) problems.push(`description[${speaks}]`);
   if (!Array.isArray(episode?.transcript) || episode.transcript.length === 0) {
     problems.push('transcript');
   }

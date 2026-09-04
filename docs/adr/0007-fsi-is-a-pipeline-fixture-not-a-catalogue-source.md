@@ -83,6 +83,14 @@ choose on its merits.
 > a person's own pace rather than a teaching pace, and the mismatch with this sentence is
 > recorded there rather than argued away. Decisions 1–3 are otherwise untouched: FSI stays
 > the fixture and never catalogue content.
+>
+> **The strain outlived that episode.** ADR 0009 was superseded by
+> [ADR 0010](0010-the-chinese-discopod-teaches-is-traditional.md) and episode 101 deleted,
+> but its replacement — episode 102, 海山漁港 — has the same shape: one person reading an
+> encyclopedia article. Changing the script did not discharge this objection, and ADR 0010
+> inherits the confession whole rather than restating it as solved. Two attempts in, the
+> reading is that freely-licensed Mandarin *programmes* are the scarce thing, not
+> freely-licensed Mandarin audio.
 
 ### 2. FSI becomes the fixture for the ASR and alignment pipeline
 

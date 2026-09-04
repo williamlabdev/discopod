@@ -341,7 +341,7 @@ export class CatalogService {
     // both looking for the same episode.
     const haystack = [
       episode.title,
-      episode.description,
+      ...Object.values(episode.description),
       ...Object.values(episode.learningGoal),
       episode.profile.cefr,
       ...episode.vocabulary.map((entry) => entry.term),

@@ -1,0 +1,186 @@
+[
+  {
+    "id": 102,
+    "showId": "zh-wikipedia-spoken",
+    "title": "中文維基百科有聲條目",
+    "author": "維基百科社群 · 朗讀 Yuriy kosygin",
+    "topic": "Places",
+    "duration": "84 sec",
+    "episode": "海山漁港（條目導言）",
+    "description": "The opening paragraph of the Chinese Wikipedia article on Haishan Fishing Port, a working harbour of fishing rafts and sampans on the Hsinchu coast of Taiwan, read aloud by the Taiwanese volunteer who wrote the article.",
+    "tags": [
+      "geography",
+      "taiwan",
+      "fishing",
+      "reference",
+      "read aloud"
+    ],
+    "level": "Intermediate",
+    "cefr": "B1",
+    "speed": "≈ 144 cpm",
+    "newWords": 5,
+    "levelReason": "A third of the passage is silence — 35 pauses in 84 seconds — so each clause lands before the next one starts. The speed is not what makes this Intermediate; the vocabulary is: harbour and inshore-fishing terms arrive one per sentence with no repetition, and the last two lines are a list of six fish",
+    "learningGoal": "Follow a Taiwanese reference article read at teaching pace, and learn the frame Chinese uses to put a place on the map: 位於 for the address, 西臨 for what it faces, and a compass direction with a distance for everything nearby.",
+    "audioSrc": "/audio/haishan-lead.mp3",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Zh-%E6%B5%B7%E5%B1%B1%E6%BC%81%E6%B8%AF.ogg",
+    "licence": {
+      "name": "CC BY-SA 4.0",
+      "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+    },
+    "verifiedLesson": false,
+    "transcript": [
+      {
+        "time": "00:00",
+        "seconds": 0,
+        "text": "海山漁港，",
+        "highlight": "漁港"
+      },
+      {
+        "time": "00:03",
+        "seconds": 2.76,
+        "text": "位於新竹市香山區海山里西濱公路旁，",
+        "highlight": "位於"
+      },
+      {
+        "time": "00:08",
+        "seconds": 8.28,
+        "text": "西臨台灣海峽，",
+        "highlight": "西臨"
+      },
+      {
+        "time": "00:10",
+        "seconds": 10.1,
+        "text": "北距新竹漁港11.5公里，"
+      },
+      {
+        "time": "00:15",
+        "seconds": 14.98,
+        "text": "東北至新竹市區8公里，"
+      },
+      {
+        "time": "00:20",
+        "seconds": 19.68,
+        "text": "屬於第二類漁港，"
+      },
+      {
+        "time": "00:22",
+        "seconds": 22.32,
+        "text": "目前泊地面積約4公頃，",
+        "highlight": "泊地"
+      },
+      {
+        "time": "00:26",
+        "seconds": 25.62,
+        "text": "可供350艘以上的漁筏停泊、",
+        "highlight": "漁筏"
+      },
+      {
+        "time": "00:30",
+        "seconds": 30.0,
+        "text": "港區配合產業道路佈置，"
+      },
+      {
+        "time": "00:35",
+        "seconds": 34.54,
+        "text": "主要提供平時即季風期漁筏、"
+      },
+      {
+        "time": "00:38",
+        "seconds": 38.24,
+        "text": "舢舨停靠，",
+        "highlight": "停靠"
+      },
+      {
+        "time": "00:41",
+        "seconds": 41.36,
+        "text": "颱風時仍須拖曳上岸或駛往鄰近的新竹漁港避風。"
+      },
+      {
+        "time": "00:49",
+        "seconds": 48.56,
+        "text": "為僅次於新竹漁港之新竹市沿海第二個專業漁港。"
+      },
+      {
+        "time": "00:56",
+        "seconds": 55.9,
+        "text": "該港船隻多經營沿岸定置網、刺網、一支釣等漁業或於沿岸插蚵、淺海養殖，"
+      },
+      {
+        "time": "01:09",
+        "seconds": 69.1,
+        "text": "一般均為當日往返。"
+      },
+      {
+        "time": "01:13",
+        "seconds": 73.26,
+        "text": "漁獲物以烏魚、鯛、烏賊、白帶魚、鰆魚"
+      },
+      {
+        "time": "01:20",
+        "seconds": 80.06,
+        "text": "以及鯊魚類等為主。"
+      }
+    ],
+    "vocabulary": [
+      {
+        "term": "位於",
+        "type": "phrase",
+        "meaning": "Is located at. The standard opening move of a Chinese reference article about a place — it comes before the address, not after it.",
+        "example": "位於新竹市香山區海山里西濱公路旁，"
+      },
+      {
+        "term": "西臨",
+        "type": "verb",
+        "meaning": "Borders on the west. 臨 is to face or adjoin; put any compass direction in front of it to say which side something faces.",
+        "example": "西臨台灣海峽，"
+      },
+      {
+        "term": "泊地",
+        "type": "noun",
+        "meaning": "Anchorage — the sheltered water inside a harbour where boats moor. Measured in hectares, as here, rather than in berths.",
+        "example": "目前泊地面積約4公頃，"
+      },
+      {
+        "term": "漁筏",
+        "type": "noun",
+        "meaning": "A fishing raft: the small flat craft Taiwanese crews use close to shore. Smaller than a trawler, and counted in hundreds at a harbour this size.",
+        "example": "可供350艘以上的漁筏停泊、"
+      },
+      {
+        "term": "停靠",
+        "type": "verb",
+        "meaning": "To pull in and moor. Used of a boat at a harbour and, just as commonly, of a train calling at a station.",
+        "example": "舢舨停靠，"
+      }
+    ],
+    "questions": [
+      {
+        "prompt": "Where is Haishan Fishing Port?",
+        "options": [
+          "On the Hsinchu coast, facing the Taiwan Strait",
+          "On Taiwan's east coast, facing the Pacific",
+          "On an offshore island in the Taiwan Strait"
+        ],
+        "answer": 0
+      },
+      {
+        "prompt": "What kind of boats does it mainly serve?",
+        "options": [
+          "Deep-sea trawlers that stay out for weeks",
+          "Small fishing rafts and sampans working close to shore",
+          "Container ships and car ferries"
+        ],
+        "answer": 1
+      },
+      {
+        "prompt": "What happens to the boats when a typhoon comes?",
+        "options": [
+          "They shelter behind the breakwater inside the harbour",
+          "They are hauled ashore or moved to nearby Hsinchu Fishing Harbour",
+          "They put out to sea to ride out the storm"
+        ],
+        "answer": 1
+      }
+    ]
+  }
+]
