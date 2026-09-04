@@ -1,10 +1,17 @@
 # Mirrors what Render does on a deploy, so a green CI run means the deploy builds.
 # Same Node version (.nvmrc), same NODE_ENV, same install flags.
+#
+# Runs on every branch push and exactly once per commit — see the `if:` on the
+# job for why `pull_request` is declared but usually skipped.
 name: CI
 
 on:
+  # Every branch, not just main: a feature branch that only gets checked when
+  # someone opens a PR is a branch whose first red run arrives after the work is
+  # finished. `'**'` is branches only — a tag push would re-run a commit that
+  # already ran here.
   push:
-    branches: [main]
+    branches: ['**']
   pull_request:
   workflow_dispatch:
 
@@ -14,6 +21,15 @@ concurrency:
 
 jobs:
   build:
+    # Skip the duplicate: once a PR is open, a push to its branch fires both
+    # `push` and `pull_request` and would run this twice on one commit. The push
+    # run is the one that survives — check runs attach to the SHA, so it still
+    # shows in the PR's checks. Fork PRs have no push event in this repo, so
+    # they keep their `pull_request` run; that is what the second clause is for,
+    # and dropping `pull_request` entirely would leave them unchecked.
+    if: >-
+      github.event_name != 'pull_request' ||
+      github.event.pull_request.head.repo.full_name != github.repository
     runs-on: ubuntu-latest
     env:
       NODE_ENV: production
