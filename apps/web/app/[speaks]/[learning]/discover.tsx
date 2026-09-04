@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import Image from 'next/image';
 import {
   ArrowRight,
   ArrowUpRight,
@@ -356,18 +355,18 @@ export function Discover({
           </div>
         </section>
 
-        <section id="library" className="mt-20 overflow-hidden rounded-[30px] bg-foreground text-background">
-          <div className="grid lg:grid-cols-[1fr_1.25fr]">
-            <div className="p-8 sm:p-12 lg:p-14">
-              <p className="mb-5 text-xs font-semibold uppercase tracking-[0.16em] text-background/55">Your learning list</p>
-              <h2 className="max-w-md font-serif text-4xl leading-[1.03] tracking-[-0.045em] sm:text-5xl">A better way to practice listening.</h2>
-              <p className="mt-5 max-w-md text-sm leading-6 text-background/65">Save episodes for your next study session. Every listen comes with a readable transcript and vocabulary help. You have {saved.length} {saved.length === 1 ? 'lesson' : 'lessons'} waiting.</p>
-              <Button className="mt-8 h-11 rounded-full bg-background px-5 text-foreground hover:bg-background/85">Open my learning list<ArrowRight /></Button>
-            </div>
-            <div className="relative min-h-72 overflow-hidden bg-[#ff895d] p-5 sm:p-8">
-              <Image className="h-full min-h-64 w-full rounded-[22px] object-cover object-center shadow-2xl" src="/og.png" width={1733} height={908} priority alt="DiscoPod language-learning artwork with headphones and transcript-inspired sound waves" />
-            </div>
-          </div>
+        {/* One column, because the artwork it sat beside was `og.png` and that
+            image is gone — `layout.tsx` says why. A grid with one cell left
+            would either stretch this copy across the whole band or leave half
+            of it empty, so the grid goes with the picture. The measures
+            (`max-w-*`) do the job the narrow column used to do: keep the line
+            length readable now that the band is full width. Put the two-column
+            grid back when there is an image worth putting back. */}
+        <section id="library" className="mt-20 rounded-[30px] bg-foreground p-8 text-background sm:p-12 lg:p-14">
+          <p className="mb-5 text-xs font-semibold uppercase tracking-[0.16em] text-background/55">Your learning list</p>
+          <h2 className="max-w-2xl font-serif text-4xl leading-[1.03] tracking-[-0.045em] sm:text-5xl">A better way to practice listening.</h2>
+          <p className="mt-5 max-w-xl text-sm leading-6 text-background/65">Save episodes for your next study session. Every listen comes with a readable transcript and vocabulary help. You have {saved.length} {saved.length === 1 ? 'lesson' : 'lessons'} waiting.</p>
+          <Button className="mt-8 h-11 rounded-full bg-background px-5 text-foreground hover:bg-background/85">Open my learning list<ArrowRight /></Button>
         </section>
 
         <footer className="mt-8 flex flex-col gap-3 border-t border-border py-8 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
