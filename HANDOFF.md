@@ -28,13 +28,17 @@ build → static export → API boot + HTTP smoke test, all under `NODE_ENV=prod
 - `render.yaml` — Blueprint for both services. Not yet deployed.
 - `.github/workflows/ci.yml` — mirrors Render's build exactly.
 
+**Pushed, and CI is green** (2026-09-04). The repo is public at
+<https://github.com/williamlabdev/podcast-discovery>: a single root commit `da78d1a`, 120 files,
+`main` tracking `origin/main`. `../upload-to-github.sh` did the wipe-and-reinit, so the old
+ChatGPT sites remote and the `clean-main` / stale `main` branches are gone with the discarded
+`.git` — there is nothing left to tidy. CI run
+[33861169089](https://github.com/williamlabdev/podcast-discovery/actions/runs/33861169089)
+passed in 1m13s: `npm ci --include=dev`, lint, typecheck, build, the static-export check and the
+API smoke test.
+
 **Not done:**
 
-- **The repo has never been pushed.** `origin` still points at the old ChatGPT sites remote.
-  `../upload-to-github.sh` is the intended path: it wipes `.git`, re-inits with a single clean
-  commit, and pushes to `williamlabdev/podcast-discovery` as a public repo.
-- Current local branch is `clean-main`; the stale `main` and `remotes/origin/main` still exist.
-  The upload script discards all of it, so don't spend effort tidying branches.
 - Nothing has been deployed to Render yet.
 - **The web app does not call the API.** It still reads `apps/web/lib/podcasts.ts`, which
   duplicates `apps/api/src/catalog/data/catalog.seed.json`. Closing this is the next
@@ -42,16 +46,18 @@ build → static export → API boot + HTTP smoke test, all under `NODE_ENV=prod
 
 ## Next steps, in order
 
-1. **Push.** `cd .. && bash upload-to-github.sh`, then confirm the CI run goes green.
-2. **Deploy.** Render → New → Blueprint → connect the repo → fill the three prompted URLs
-   (`NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_API_URL`, `WEB_ORIGIN`). Note the free API instance
-   sleeps after 15 minutes idle and takes ~1 minute to wake; the static site does not sleep.
-3. **Cut the web app over to the API.** Replace the `lib/podcasts.ts` import with fetches to
+The old step 1 — push and confirm CI — is done; see *Where things stand*. What remains:
+
+1. **Deploy.** Render → New → Blueprint → connect `williamlabdev/podcast-discovery` → fill the
+   three prompted URLs (`NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_API_URL`, `WEB_ORIGIN`). This needs
+   a human in the Render web UI. Note the free API instance sleeps after 15 minutes idle and
+   takes ~1 minute to wake; the static site does not sleep.
+2. **Cut the web app over to the API.** Replace the `lib/podcasts.ts` import with fetches to
    `NEXT_PUBLIC_API_URL`. This ends the duplication and is the point at which the API stops
    being decorative. Note it also ends the pure static export — plan which build mode you want.
-4. **Persistence.** Write a Postgres adapter for `CatalogRepository` and bind it in
+3. **Persistence.** Write a Postgres adapter for `CatalogRepository` and bind it in
    `CatalogModule`; the in-memory one stays for tests. Saved words need the same treatment.
-5. **Then** the larger vision pieces: RSS ingestion, the ASR/translation pipeline, learner
+4. **Then** the larger vision pieces: RSS ingestion, the ASR/translation pipeline, learner
    auth (the `x-learner-id` header is a placeholder), and the completion-by-level ranking signal.
 
 ## Traps already paid for — do not re-learn these
@@ -75,7 +81,7 @@ build → static export → API boot + HTTP smoke test, all under `NODE_ENV=prod
 - `apps/web/components/ui/**` and `hooks/use-mobile.ts` are vendored shadcn output and are
   excluded from lint. Regenerate them with the shadcn CLI; don't hand-maintain them.
 - `apps/api/src/catalog/data/catalog.seed.json` is generated from `apps/web/lib/podcasts.ts`,
-  not hand-edited. Until step 3 above lands, the two must not drift.
+  not hand-edited. Until the API cut-over (step 2) lands, the two must not drift.
 - Every ranked result carries a `reason`. The vision's "state the reason" principle is enforced
   by the return type — keep it that way.
 - The completion-by-level ranking signal is deliberately absent, not stubbed. Do not fake an
@@ -100,6 +106,13 @@ In the parent `work/` folder: `_to_delete/` (the pre-restructure tree and its ol
 `tuned-*.tar.gz` build artifacts, `social-card/` and `learning-social-card/` (the latter is
 byte-identical to `apps/web/public/og.png`), and a stray `work/package-lock.json` that belongs
 to nothing. All are safe to delete; none are referenced by the repo.
+
+`upload-to-github.sh` also lives there. It has done its job and now refuses to run again: it
+aborts if `origin` already points at the repo (`FORCE=1` overrides). Two bugs in it were fixed
+on 2026-09-04 after they bit — an unbraced `$REPO` immediately followed by a full-width paren
+was scanned as one variable name and died under `set -u`, and the script did no `nvm use`, so it
+validated with whatever Node happened to be active. It now preflights Node version and `gh`
+login *before* it deletes `.git`, rather than after.
 
 ## Unverified
 
