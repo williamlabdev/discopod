@@ -113,7 +113,23 @@ ADR 0004's block is untouched. What changes is that it can no longer be waved at
 imminent answer. The unit stays uncalibrated, every Mandarin episode stays excluded from
 every catalogue, and the exclusion stays loud.
 
+> **Overtaken by [ADR 0008](0008-calibrate-cpm-by-extrapolation-and-label-it.md),
+> 2026-09-04.** The row was filled by extrapolation from `wpm`, not by measurement and not
+> from any recording. FSI stays ruled out on exactly the grounds above — a rate taken from
+> a teaching-speed drill tape would still be precise and false. What this decision got
+> wrong is only its assumption that the row was waiting on a *source*.
+
 ### 5. The critical path for the Mandarin direction is permission, not engineering
+
+> **Corrected by [ADR 0008](0008-calibrate-cpm-by-extrapolation-and-label-it.md),
+> 2026-09-04.** Two errors, and the second is the one that cost time. First, "public domain
+> cannot supply natural running speech" was generalised from FSI to the whole public
+> domain, and is false of it — VOA's Chinese output is a US government work and is running
+> speech. Second, and worse: `COMFORTABLE_RATE` is a claim about *listeners*, not about
+> recordings, so no source of any licence was ever going to supply it. This decision put
+> a correspondence deadline in front of a row that only needed somebody to decide. The
+> letters are still worth writing, for content; they were never the blocker they are
+> described as here.
 
 The first Mandarin catalogue row needs three things at once: audio we may distribute, a
 transcript we may distribute, and speech that is actually running speech at a natural

@@ -143,6 +143,13 @@ speaker's Mandarin pages say 繁體中文, as the pair chooser on `/` already do
   is a licensing and pedagogy question, not an architectural one.
 - **It does not calibrate `cpm`.** That row is a claim someone has to stand behind, and
   this ADR's whole point is that it may not be invented in passing to unblock a build.
+
+  > **Superseded by [ADR 0008](0008-calibrate-cpm-by-extrapolation-and-label-it.md),
+  > 2026-09-04.** The row now exists, by extrapolation from the `wpm` row rather than by
+  > measurement, owned and labelled as such. ADR 0008 does not claim to clear the bar this
+  > sentence sets; it argues the bar was set against unattributed numbers and states its
+  > own reasoning where it can be attacked. Decision 3 below — an uncalibrated unit
+  > excludes — is untouched and still governs every unit that has no row.
 - **It does not localize the interface.** The UI copy around the one corrected word is
   still English for every pair. Writing that word correctly does not pretend otherwise.
 - **It does not touch `proficiency`.** ADR 0003 decision 7 (`cefr` → scale-qualified band)
@@ -158,7 +165,9 @@ speaker's Mandarin pages say 繁體中文, as the pair chooser on `/` already do
 - **Adding Mandarin audio is now blocked on a number.** Ingesting a Chinese show is not
   enough — it will be excluded from every catalogue until a `cpm` row exists. That block is
   deliberate: it fails at the point where the missing knowledge is, instead of at the point
-  where a learner is told an episode is followable.
+  where a learner is told an episode is followable. *(Lifted 2026-09-04 by
+  [ADR 0008](0008-calibrate-cpm-by-extrapolation-and-label-it.md). The block did its job:
+  it held for four ADRs and was released by a decision rather than by a build.)*
 - **The exclusion is invisible from outside.** An episode dropped for an uncalibrated unit
   looks, over HTTP, exactly like an episode that does not exist. The same was already true
   of ADR 0003's translation exclusions; `catalog-api.ts`'s `assertEpisode` remains the

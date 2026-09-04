@@ -54,22 +54,43 @@ export function rateUnitFor(language: SpokenLanguage): SpeechRateUnit {
 /**
  * The rate a learner at each level can comfortably follow, per unit.
  *
- * Deliberately `Partial`, and deliberately holding only `wpm`. Numbers for
- * `cpm` exist in the literature, but not ones this project has checked against
- * its own listeners, and inventing three of them would be the same act as
- * inventing a suitability score: a fabricated ranking signal wearing the same
- * clothes as a measured one. An uncalibrated unit is therefore an exclusion,
- * exactly as an untranslated episode is — `CatalogService.speaksTo` will not
- * put an episode it cannot honestly rank into anyone's catalogue.
+ * Still `Partial`, and the type stays that way on purpose: a unit with no row
+ * is an exclusion, exactly as an untranslated episode is. `speaksTo` will not
+ * put an episode it cannot honestly rank into anyone's catalogue, and the next
+ * spoken language added to `RATE_UNIT` inherits that rule rather than a
+ * default.
  *
- * Adding Chinese audio to this app means adding a `cpm` row here, and that row
- * is a claim someone has to stand behind.
+ * ## Where the numbers come from
+ *
+ * `wpm` is the original row and predates this comment.
+ *
+ * `cpm` is **extrapolated, not measured**, and that is the whole of its
+ * provenance. It is set at the same ratios to natural conversational speed that
+ * the `wpm` row sits at for English: against ~155 wpm, the English thresholds
+ * are 0.71 / 0.94 / 1.16, and Mandarin conversational speech of ~240 characters
+ * per minute puts those ratios at 170 / 225 / 280. Rounded to 170 / 220 / 280.
+ *
+ * This is a claim, and it is stated in a form that can be argued with — the
+ * anchor rate, the ratios and the arithmetic are all here, so disagreeing with
+ * it means disagreeing with one of them rather than with a bare number. That is
+ * the bar ADR 0004 sets: not that the figure be proven, but that somebody own
+ * it and show their working. William owns these three, 2026-09-04.
+ *
+ * It is not calibrated against this project's own listeners, and nothing here
+ * pretends otherwise. Replace it with measured thresholds when there are any;
+ * until then, a Mandarin episode's suitability score is as good as this
+ * extrapolation and no better.
  */
 const COMFORTABLE_RATE: Partial<Record<SpeechRateUnit, Record<LearningLevel, number>>> = {
   wpm: {
     Beginner: 110,
     Intermediate: 145,
     Advanced: 180,
+  },
+  cpm: {
+    Beginner: 170,
+    Intermediate: 220,
+    Advanced: 280,
   },
 };
 

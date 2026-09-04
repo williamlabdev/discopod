@@ -57,7 +57,12 @@ FSI's *Standard Chinese*, a US government work in the public domain.
 
 It is a fixture and never a catalogue source. Do not seed it into `catalog.seed.json`, and
 do not take a `cpm` measurement from it — it is 1970s language-lab audio read at teaching
-speed, so the rate is real and means the wrong thing. ADR 0004's block on `cpm` stands.
+speed, so the rate is real and means the wrong thing.
+
+ADR 0004's block on `cpm` was lifted on 2026-09-04 by
+[ADR 0008](../../../../docs/adr/0008-calibrate-cpm-by-extrapolation-and-label-it.md), which
+filled the row by extrapolation from `wpm` rather than from any recording. That does not
+change the sentence above: FSI is still not where a rate comes from.
 
 Two tapes, chosen because they are continuous connected speech rather than drill:
 

@@ -175,6 +175,12 @@ was never translated.
   > detected pause. The conclusion survives on better grounds — teaching-speed 1970s
   > language-lab audio, and no aligned text — and FSI is now the ASR pipeline's fixture
   > rather than a catalogue candidate.
+
+  > **`cpm` was calibrated on 2026-09-04 by
+  > [ADR 0008](0008-calibrate-cpm-by-extrapolation-and-label-it.md)** — 170 / 220 / 280,
+  > extrapolated from the `wpm` row and labelled as extrapolation. So "still has no `cpm`
+  > row" above is now false, and ADR 0004's block no longer stands between a Mandarin
+  > episode and a catalogue. Everything else in this bullet holds, FSI included.
 - **It does not touch `proficiency`.** ADR 0003 decision 7 (`cefr` → scale-qualified
   band) is the same shape of defect as this one — a value whose scale is implied — and it
   is still outstanding, now with ADR 0004, ADR 0005 and R24 waiting on it.

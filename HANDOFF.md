@@ -90,9 +90,21 @@ public domain, complete on archive.org. Six tapes were measured. The drill tapes
 40–51% silence with speech in 1–2 second fragments, and module 09 is the opposite:
 continuous connected speech, one tape running 27 minutes without a detected pause. It is
 still not catalogue content — no aligned text, and a `cpm` measured off 1970s language-lab
-audio would be precise and false. So it becomes the ASR pipeline's test fixture, and the
-first Mandarin row has to come from a publisher who says yes.
+audio would be precise and false. So it becomes the ASR pipeline's test fixture.
 [ADR 0007](docs/adr/0007-fsi-is-a-pipeline-fixture-not-a-catalogue-source.md).
+
+**And then ADR 0007 said the wrong thing about what happens next, which is worth reading
+before trusting anything else in this file.** It concluded that the Mandarin direction was
+blocked on permission from a publisher. It is not, and the mistake is instructive:
+`COMFORTABLE_RATE` is a claim about what a *listener* can follow, not a property of any
+recording, so no source — licensed, public domain or otherwise — was ever going to supply
+it. A whole next-step ordering was built on a blocker that did not exist. The row is now
+filled: `cpm` = 170 / 220 / 280, extrapolated from the `wpm` row at the same ratios to
+conversational speed, owned and labelled as extrapolation rather than measurement.
+[ADR 0008](docs/adr/0008-calibrate-cpm-by-extrapolation-and-label-it.md).
+
+**So no Mandarin episode is blocked on anybody's reply any more.** What is left is
+ordinary work, listed below.
 
 Two defects surfaced by actually rendering the API's output, both fixed: `?topic=` was
 accepted by validation and then silently ignored, and `Math.round(30/60)` made a
@@ -103,17 +115,27 @@ finished both services before trusting the live site.
 
 ## Next steps, in order
 
-1. **Write to Taiwanese Mandarin podcasters for permission.** This is first because it is
-   the only item with somebody else's reply time in front of it, and the whole Mandarin
-   direction queues behind it. Every pair the app serves today has `learning: 'en'`; the
-   first row going the other way needs audio *and* a transcript we may distribute, at a
-   natural speaking rate. [ADR 0007](docs/adr/0007-fsi-is-a-pipeline-fixture-not-a-catalogue-source.md)
-   establishes that the public domain cannot supply the third of those, so this is
-   correspondence, not code. Leads: Cozy Mandarin, Convo Chinese, Learn Taiwanese Mandarin.
-   Start the letters, then do 2 while they sit in someone's inbox.
-2. **Persistence.** Write a Postgres adapter for `CatalogRepository` and bind it in
+1. **Get one Mandarin episode on screen.** With `cpm` calibrated (ADR 0008) this is now
+   three pieces of ordinary work and no waiting:
+   - `catalog.seed.ts` is hardcoded to one pair — `SEED_PAIR`, `SEED_SPOKEN` and
+     `authoredInSeedLanguage()` between them fix every language fact in the file. Its own
+     comment names the extension: *"A second script arrives the way a second language does
+     — as its own file, not as a column."* So `loadSeedCatalog` takes a `{ pair, path }`
+     descriptor and runs once per seed file.
+   - `GET /episodes` filters on `speaks` and not `learning`, and `lib/catalogue.ts:233`
+     passes only `pair.speaks`. Until both take `learning`, a Mandarin episode also appears
+     on the `en → en` page. ADR 0006 predicted this exact bug; it is now reachable.
+   - The audio and the transcript themselves. There is no local ASR on this machine (only
+     `ffmpeg`), so a source that publishes a script *alongside* its audio is worth much more
+     than a better-sounding one that does not.
+
+   Nothing here needs `reason.render.ts` touched — it already renders `cpm` in 字.
+2. **Write to Taiwanese Mandarin podcasters.** Still worth doing, for content rather than
+   as a prerequisite: leads are Cozy Mandarin, Convo Chinese, Learn Taiwanese Mandarin.
+   It no longer blocks anything, so it runs in parallel with everything below.
+3. **Persistence.** Write a Postgres adapter for `CatalogRepository` and bind it in
    `CatalogModule`; the in-memory one stays for tests. Saved words need the same treatment.
-3. **Then** the larger vision pieces: RSS ingestion, the ASR/translation pipeline, learner
+4. **Then** the larger vision pieces: RSS ingestion, the ASR/translation pipeline, learner
    auth (the `x-learner-id` header is a placeholder), and the completion-by-level ranking signal.
    The ASR pipeline has a fixture waiting for it — see the Mandarin fixture section in
    `apps/api/src/ingest/README.md`. It is a fixture, not content.
