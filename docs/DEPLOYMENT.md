@@ -130,8 +130,9 @@ Render does.
 - Free Postgres expires 30 days after creation (14-day grace period before deletion) —
   it cannot be the datastore for a long-lived demo.
 
-Verified against Render's blueprint spec and free-tier docs; the Blueprint itself has
-not been deployed yet.
+Verified against Render's blueprint spec and free-tier docs, then deployed on
+2026-09-04 — both services built clean from the Blueprint on the first attempt, and the
+docs-only commit that followed rebuilt neither, which is `buildFilter` doing its job.
 
 ## Demo checklist
 
@@ -150,4 +151,8 @@ static-export modes), `nest build`, and the API answering `/health`, `/shows`,
 `/episodes`, `/episodes/start-here`, `/episodes/:id/transcript`, `POST /me/words`,
 plus 400 on an invalid payload and 404 on a missing episode.
 
-Not verified: the Dockerfiles, and any hosting provider's own build pipeline.
+Verified in production on Render: both builds, `/api/health`, `start-here` returning a
+stated reason, and the CORS header matching `WEB_ORIGIN`.
+
+Not verified: the Dockerfiles. Render's build pipeline is now exercised; no other
+provider's is.

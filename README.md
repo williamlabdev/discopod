@@ -10,6 +10,12 @@ Read [docs/VISION.md](docs/VISION.md) for the product thinking, and
 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for how the system is shaped — including an
 honest table of what is built and what is not.
 
+**Live:** <https://discopod-web.onrender.com> — the discovery UI and player.
+The API is separate at <https://discopod-api.onrender.com/api/health>; it runs on a free
+instance, so the first request after 15 idle minutes waits out a cold start. The two do
+not talk to each other yet — the web app reads its catalogue from the repo. See the state
+table in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#the-domain-and-where-it-lives).
+
 ![DiscoPod](docs/social-preview-v1.png)
 
 ## Repo layout
@@ -70,8 +76,9 @@ can go on any file host:
 STATIC_EXPORT=1 npm run build --workspace @discopod/web   # → apps/web/out/
 ```
 
-Full options — managed hosts, Docker Compose, and what has actually been verified — are
-in [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
+Both services above run on Render from `render.yaml` in the repo root, so a push to
+`main` deploys. Full options — managed hosts, Docker Compose, and what has actually been
+verified — are in [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
 
 ## Content credits
 

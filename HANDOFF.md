@@ -25,7 +25,7 @@ build → static export → API boot + HTTP smoke test, all under `NODE_ENV=prod
   a complete static `out/`.
 - `apps/api` — NestJS 11. Catalogue, difficulty profiles, suitability ranking, `start-here`
   with stated reasons, saved words. Storage behind `CatalogRepository` with an in-memory adapter.
-- `render.yaml` — Blueprint for both services. Not yet deployed.
+- `render.yaml` — Blueprint for both services. Deployed; see below.
 - `.github/workflows/ci.yml` — mirrors Render's build exactly.
 
 **Pushed, and CI is green** (2026-09-04). The repo is public at
@@ -37,27 +37,36 @@ ChatGPT sites remote and the `clean-main` / stale `main` branches are gone with 
 passed in 1m13s: `npm ci --include=dev`, lint, typecheck, build, the static-export check and the
 API smoke test.
 
+**Deployed** (2026-09-04). Blueprint `discopod` (`exs-dad9mvbncjis738h68mg`) built both
+services from `b92129d`:
+
+| Service | URL | Notes |
+| --- | --- | --- |
+| `discopod-web` | <https://discopod-web.onrender.com> | Static, never sleeps. Build 8m25s. |
+| `discopod-api` | <https://discopod-api.onrender.com> | Free plan — sleeps after 15 min idle, ~50s cold start. Build 8m07s. |
+
+Verified live against the checklist in `docs/DEPLOYMENT.md`: `/api/health` answers,
+`start-here?level=Beginner` returns an episode carrying its `reason`, and the API's
+`access-control-allow-origin` is the web origin, so `WEB_ORIGIN` is wired correctly.
+`buildFilter` was confirmed by accident and then on purpose: the docs-only commit
+`3d6c228` produced no deploy on either service.
+
 **Not done:**
 
-- Nothing has been deployed to Render yet.
 - **The web app does not call the API.** It still reads `apps/web/lib/podcasts.ts`, which
   duplicates `apps/api/src/catalog/data/catalog.seed.json`. Closing this is the next
   meaningful change — see *Next steps*.
 
 ## Next steps, in order
 
-The old step 1 — push and confirm CI — is done; see *Where things stand*. What remains:
+Push, CI and the Render deploy are all done; see *Where things stand*. What remains:
 
-1. **Deploy.** Render → New → Blueprint → connect `williamlabdev/discopod` → fill the
-   three prompted URLs (`NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_API_URL`, `WEB_ORIGIN`). This needs
-   a human in the Render web UI. Note the free API instance sleeps after 15 minutes idle and
-   takes ~1 minute to wake; the static site does not sleep.
-2. **Cut the web app over to the API.** Replace the `lib/podcasts.ts` import with fetches to
+1. **Cut the web app over to the API.** Replace the `lib/podcasts.ts` import with fetches to
    `NEXT_PUBLIC_API_URL`. This ends the duplication and is the point at which the API stops
    being decorative. Note it also ends the pure static export — plan which build mode you want.
-3. **Persistence.** Write a Postgres adapter for `CatalogRepository` and bind it in
+2. **Persistence.** Write a Postgres adapter for `CatalogRepository` and bind it in
    `CatalogModule`; the in-memory one stays for tests. Saved words need the same treatment.
-4. **Then** the larger vision pieces: RSS ingestion, the ASR/translation pipeline, learner
+3. **Then** the larger vision pieces: RSS ingestion, the ASR/translation pipeline, learner
    auth (the `x-learner-id` header is a placeholder), and the completion-by-level ranking signal.
 
 ## Traps already paid for — do not re-learn these
@@ -81,7 +90,7 @@ The old step 1 — push and confirm CI — is done; see *Where things stand*. Wh
 - `apps/web/components/ui/**` and `hooks/use-mobile.ts` are vendored shadcn output and are
   excluded from lint. Regenerate them with the shadcn CLI; don't hand-maintain them.
 - `apps/api/src/catalog/data/catalog.seed.json` is generated from `apps/web/lib/podcasts.ts`,
-  not hand-edited. Until the API cut-over (step 2) lands, the two must not drift.
+  not hand-edited. Until the API cut-over (step 1) lands, the two must not drift.
 - Every ranked result carries a `reason`. The vision's "state the reason" principle is enforced
   by the return type — keep it that way.
 - The completion-by-level ranking signal is deliberately absent, not stubbed. Do not fake an
