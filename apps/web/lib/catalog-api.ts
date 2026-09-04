@@ -12,6 +12,8 @@
  * CATALOG_API_URL comes from.
  */
 
+import { ACTIVE_PAIR, has, type LanguageTag, type Localized } from './language';
+
 export type LearningLevel = 'Beginner' | 'Intermediate' | 'Advanced';
 
 export interface DifficultyProfile {
@@ -23,14 +25,14 @@ export interface DifficultyProfile {
   level: LearningLevel;
   cefr: string;
   /** Plain-language reason, shown to the learner. Never rank without one. */
-  reason: string;
+  reason: Localized;
 }
 
 export interface Show {
   id: string;
   title: string;
   publisher: string;
-  language: string;
+  language: LanguageTag;
   topics: string[];
   description: string;
   profile: DifficultyProfile;
@@ -42,20 +44,20 @@ export interface TranscriptCue {
   endMs?: number;
   speaker?: string;
   text: string;
-  translation?: string;
+  translation?: Localized;
   highlight?: string;
 }
 
 export interface VocabularyEntry {
   term: string;
   partOfSpeech: string;
-  meaning: string;
+  meaning: Localized;
   example: string;
 }
 
 export interface ComprehensionQuestion {
-  prompt: string;
-  options: string[];
+  prompt: Localized;
+  options: Localized<string[]>;
   answerIndex: number;
 }
 
@@ -67,7 +69,7 @@ export interface Episode {
   durationSeconds: number;
   audioUrl?: string;
   publisherTranscript: boolean;
-  learningGoal: string;
+  learningGoal: Localized;
   newWordCount: number;
   profile: DifficultyProfile;
   transcript: TranscriptCue[];
@@ -123,23 +125,47 @@ async function get<T>(path: string): Promise<T> {
  * Fail loudly on a contract change. Everything checked here is something a
  * page renders; an episode missing any of it is a broken page, and a broken
  * build is the cheaper way to find that out.
+ *
+ * The `Localized` fields are checked for the *active pair's* language, not for
+ * mere presence. An episode carrying a reason in some language, but not in the
+ * one this build renders, has nothing to say to this learner — ADR 0003 calls
+ * that exclusion from the pair's catalogue, and this is where it is enforced.
+ * Right now it can only fire on a drifted API, because the pair is `en → en`
+ * and the seed authors every field; it is written for the pair after that.
  */
 function assertEpisode(episode: Episode, where: string): Episode {
   const problems: string[] = [];
 
   if (!episode?.id) problems.push('id');
   if (!episode?.showId) problems.push('showId');
-  if (!episode?.profile?.reason) problems.push('profile.reason');
+  if (!has(episode?.profile?.reason)) problems.push(`profile.reason[${ACTIVE_PAIR.speaks}]`);
   if (!episode?.profile?.level) problems.push('profile.level');
+  if (!has(episode?.learningGoal)) problems.push(`learningGoal[${ACTIVE_PAIR.speaks}]`);
   if (!Array.isArray(episode?.transcript) || episode.transcript.length === 0) {
     problems.push('transcript');
   }
-  if (!Array.isArray(episode?.vocabulary)) problems.push('vocabulary');
-  if (!Array.isArray(episode?.questions)) problems.push('questions');
+
+  if (!Array.isArray(episode?.vocabulary)) {
+    problems.push('vocabulary');
+  } else {
+    const untranslated = episode.vocabulary.filter((entry) => !has(entry.meaning));
+    if (untranslated.length > 0) {
+      problems.push(
+        `${untranslated.length} vocabulary meaning(s) with no ${ACTIVE_PAIR.speaks}: ` +
+          untranslated.map((entry) => entry.term).join(', '),
+      );
+    }
+  }
+
+  if (!Array.isArray(episode?.questions)) {
+    problems.push('questions');
+  } else if (episode.questions.some((q) => !has(q.prompt) || !has(q.options))) {
+    problems.push(`question prompt/options with no ${ACTIVE_PAIR.speaks}`);
+  }
 
   if (problems.length > 0) {
     throw new Error(
-      `Episode ${episode?.id ?? '(no id)'} from ${where} is missing: ${problems.join(', ')}`,
+      `Episode ${episode?.id ?? '(no id)'} from ${where} is missing: ${problems.join('; ')}`,
     );
   }
 

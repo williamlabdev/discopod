@@ -10,7 +10,8 @@ an episode by ear rather than by charts or recency. Read in this order:
 1. [docs/VISION.md](docs/VISION.md) — the product. Written by the owner; treat it as the spec.
 2. [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — system shape, and an explicit table of what is built vs not.
 3. [docs/adr/0001-…](docs/adr/0001-decouple-from-cloudflare-and-add-nestjs-api.md) — why the stack looks like this.
-4. [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) — deploy paths and the traps already hit.
+4. [docs/adr/0003-…](docs/adr/0003-model-the-learner-language-pair.md) — the language-pair model. Read before touching the catalogue types, ingestion, or routes.
+5. [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) — deploy paths and the traps already hit.
 
 It started as a Codex-generated single-page site called "Tuned" hosted on OpenAI's sites
 platform, which answered HTTP 401 to anonymous visitors. It has since been rebuilt as an

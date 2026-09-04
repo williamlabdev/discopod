@@ -34,6 +34,11 @@ npm run lint && npm run typecheck && npm run build
   changing what they instruct agents to do shows up in a diff instead of arriving
   silently. Read that diff; don't wave it through.
 - Every ranked result must carry its `reason`. Never fabricate the completion ranking signal.
+- Learner-language text (`profile.reason`, `learningGoal`, `vocabulary[].meaning`, question
+  `prompt`/`options`, cue `translation`) is `Localized` — keyed by the learner's language.
+  Show-language text (titles, `term`, `example`, cue `text`) stays scalar. Unwrap only through
+  `pick()` (web) or `requireLanguage()` (api): **a missing key is an exclusion, never a fallback
+  to English.** The catalogue is declared `en → en` (`SEED_PAIR`, `ACTIVE_PAIR`). See ADR 0003.
 - The catalogue's single source is `apps/api/src/catalog/data/catalog.seed.json`. The web app
   fetches it from the API during `next build` (`apps/web/scripts/build.mjs`) — don't
   reintroduce a catalogue module in `apps/web`, and don't make the browser call the API

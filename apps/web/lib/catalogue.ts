@@ -20,12 +20,20 @@ import {
   type Show,
   type TranscriptCue,
 } from './catalog-api';
+import { pick } from './language';
 import { formatDuration, formatSpeechRate, formatVoices, paletteFor } from './presentation';
 
 export const LEARNING_LEVELS: LearningLevel[] = ['Beginner', 'Intermediate', 'Advanced'];
 
 export type { LearningLevel };
 
+/**
+ * The view models below are flat strings, not `Localized` maps, on purpose.
+ * This module is the boundary: the API's language-keyed fields are unwrapped
+ * here for one pair, once, at build time, so components render text and never
+ * choose a language. `pick` throws if the active pair's key is absent — see
+ * lib/language.ts and ADR 0003.
+ */
 export interface EpisodeCard {
   id: string;
   showId: string;
@@ -175,7 +183,7 @@ function toCard(ranked: RankedEpisode, show: Show | undefined): EpisodeCard {
     cefr: episode.profile.cefr,
     suitability: ranked.suitability,
     fitReason: ranked.reason,
-    levelReason: episode.profile.reason,
+    levelReason: pick(episode.profile.reason, `Episode ${episode.id} profile.reason`),
     speed: formatSpeechRate(episode.profile.speechRate),
     voices: formatVoices(episode.profile.speakerCount),
     duration: formatDuration(episode.durationSeconds),
@@ -265,7 +273,7 @@ export async function loadEpisodeDetail(id: string): Promise<EpisodeDetail | nul
 
   return {
     ...toCard(entry, show),
-    learningGoal: episode.learningGoal,
+    learningGoal: pick(episode.learningGoal, `Episode ${id} learningGoal`),
     audioSrc: episode.audioUrl,
     sourceUrl: show?.sourceUrl,
     sourceLabel: show ? `${show.publisher} · ${episode.title}` : undefined,
@@ -279,13 +287,13 @@ export async function loadEpisodeDetail(id: string): Promise<EpisodeDetail | nul
     vocabulary: episode.vocabulary.map((entry_) => ({
       term: entry_.term,
       type: entry_.partOfSpeech,
-      meaning: entry_.meaning,
+      meaning: pick(entry_.meaning, `Episode ${id} vocabulary "${entry_.term}" meaning`),
       example: entry_.example,
       occurrence: findOccurrence(entry_.term, episode.transcript),
     })),
-    questions: episode.questions.map((question) => ({
-      prompt: question.prompt,
-      options: question.options,
+    questions: episode.questions.map((question, index) => ({
+      prompt: pick(question.prompt, `Episode ${id} question ${index + 1} prompt`),
+      options: pick(question.options, `Episode ${id} question ${index + 1} options`),
       answer: question.answerIndex,
     })),
     previousId,

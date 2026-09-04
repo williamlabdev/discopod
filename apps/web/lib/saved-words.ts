@@ -17,8 +17,17 @@
  */
 
 import type { VocabularyItem } from './catalogue';
+import { ACTIVE_PAIR, isLanguageTag, type LanguageTag } from './language';
 
 export interface SavedWord {
+  /**
+   * The pair this word was saved under. `meaning` is written in `speaks` and
+   * `term` is a word of `learning`. A learner may hold more than one pair over
+   * their life with the app, and a bare gloss with no language on it cannot be
+   * reviewed correctly afterwards — ADR 0003, decision 5.
+   */
+  speaks: LanguageTag;
+  learning: LanguageTag;
   term: string;
   meaning: string;
   /** As it was actually said, where the term is spoken in the episode. */
@@ -37,6 +46,8 @@ export interface SavedWord {
 
 export function createSavedWord(episodeId: string, item: VocabularyItem): SavedWord {
   return {
+    speaks: ACTIVE_PAIR.speaks,
+    learning: ACTIVE_PAIR.learning,
     term: item.term,
     meaning: item.meaning,
     // The spoken line where it exists, the authored example where it does not.
@@ -47,6 +58,16 @@ export function createSavedWord(episodeId: string, item: VocabularyItem): SavedW
     savedAt: new Date().toISOString(),
   };
 }
+
+/**
+ * The pair a record written before the pair existed must have been saved under.
+ *
+ * A fact, not a guess: only an `en → en` build ever wrote a record without one.
+ * Deliberately not ACTIVE_PAIR — once a second pair ships, that would relabel
+ * an old English gloss as Chinese, which is exactly the silent mislabelling
+ * this model exists to prevent.
+ */
+const LEGACY_PAIR = { speaks: 'en', learning: 'en' } as const;
 
 /**
  * Read saved words out of stored progress, upgrading the old `string[]` shape.
@@ -73,6 +94,8 @@ export function readSavedWords(stored: unknown, episodeId: string, vocabulary: V
 
     return [
       {
+        speaks: isLanguageTag(record.speaks) ? record.speaks : LEGACY_PAIR.speaks,
+        learning: isLanguageTag(record.learning) ? record.learning : LEGACY_PAIR.learning,
         term: record.term,
         meaning: typeof record.meaning === 'string' ? record.meaning : '',
         sentence: record.sentence,

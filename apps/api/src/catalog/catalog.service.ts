@@ -8,6 +8,17 @@ import type {
   RankedEpisode,
   Show,
 } from './catalog.types';
+import { requireLanguage, SUPPORTED_PAIRS, type LanguageTag } from './language.types';
+
+/**
+ * Whose language the composed reason is written in.
+ *
+ * A parameter with a default rather than a literal, so the call sites already
+ * name the fact instead of assuming it. It is not yet a request parameter:
+ * ADR 0002 bakes the catalogue at build time, so the pair becomes a route
+ * segment, not a query string — and that route work is not this change.
+ */
+const DEFAULT_SPEAKS: LanguageTag = SUPPORTED_PAIRS[0].speaks;
 
 /** Speech rate a learner at each level can comfortably follow, in wpm. */
 const COMFORTABLE_RATE: Record<LearningLevel, number> = {
@@ -111,7 +122,24 @@ export class CatalogService {
     };
   }
 
-  private explain(episode: Episode, level: LearningLevel): string {
+  /**
+   * The ranked reason, composed for one reader.
+   *
+   * Still an English sentence: the pluralisation and the word order below are
+   * English, and Chinese has neither. Translating it is a renderer, not a
+   * string — ADR 0003 leaves it on the list rather than the bill. What changes
+   * here is that the authored half is now *fetched* in a named language, so
+   * the day the renderer arrives it has a seam to arrive at.
+   *
+   * `requireLanguage` throws rather than dropping the authored half. A reason
+   * that silently loses the sentence explaining the level is a ranked result
+   * without its reason, which this product does not ship.
+   */
+  private explain(
+    episode: Episode,
+    level: LearningLevel,
+    speaks: LanguageTag = DEFAULT_SPEAKS,
+  ): string {
     // floor, not round: a 30-second episode rounds up to "1 minutes", which is
     // both the wrong number and the wrong plural.
     const minutes = Math.floor(episode.durationSeconds / 60);
@@ -128,7 +156,13 @@ export class CatalogService {
         ? 'at a pace you can follow'
         : 'faster than your usual pace';
 
-    return `${length}, ${voices}, ${episode.profile.speechRate} wpm — ${pace}. ${episode.profile.reason}.`;
+    const authored = requireLanguage(
+      episode.profile.reason,
+      speaks,
+      `Episode ${episode.id} profile.reason`,
+    );
+
+    return `${length}, ${voices}, ${episode.profile.speechRate} wpm — ${pace}. ${authored}.`;
   }
 
   private async showIdsWithTopic(topic: string): Promise<Set<string>> {
@@ -142,10 +176,13 @@ export class CatalogService {
   }
 
   private matches(episode: Episode, search: string): boolean {
+    // Search spans every authored language, not just the caller's: a learner
+    // typing in their own language and a learner typing an English term are
+    // both looking for the same episode.
     const haystack = [
       episode.title,
       episode.description,
-      episode.learningGoal,
+      ...Object.values(episode.learningGoal),
       episode.profile.cefr,
       ...episode.vocabulary.map((entry) => entry.term),
     ]

@@ -8,10 +8,38 @@ import type {
   Show,
   TranscriptCue,
 } from './catalog.types';
+import type { LanguagePair, Localized } from './language.types';
+
+/**
+ * The pair this seed is written for, declared rather than assumed.
+ *
+ * Seven episodes with English audio and English explanations. That is
+ * `en → en`, which is degenerate — it describes a catalogue that does not yet
+ * do the thing the product is for — and saying so is the point. See ADR 0003,
+ * decision 6.
+ */
+export const SEED_PAIR = { speaks: 'en', learning: 'en' } as const satisfies LanguagePair;
+
+/**
+ * Lift a flat seed string into the pair's own language.
+ *
+ * The seed JSON stays flat and this loader does the wrapping. Nesting the JSON
+ * would rewrite seventy-odd rows to say what one constant already says, and it
+ * would say it once per row — seven chances to disagree with itself. A second
+ * language arrives as its own overlay file keyed by episode id, not by editing
+ * this one; that path is designed for, not built, and it will need writing
+ * properly the first time it is exercised.
+ */
+function authoredInSeedLanguage<T>(value: T): Localized<T> {
+  return { [SEED_PAIR.speaks]: value };
+}
 
 /**
  * Shape of the legacy demo catalogue that shipped inside the web app.
  * Kept as a seed so the API has real content before ingestion exists.
+ *
+ * Deliberately flat: every string here is in one of the two languages of
+ * SEED_PAIR, and which one it is, is a property of the field, not of the row.
  */
 interface SeedRow {
   id: number;
@@ -85,7 +113,7 @@ function buildProfile(row: SeedRow): DifficultyProfile {
     accentLoad: 0.2,
     level: row.level,
     cefr: row.cefr,
-    reason: row.levelReason,
+    reason: authoredInSeedLanguage(row.levelReason),
   };
 }
 
@@ -104,7 +132,7 @@ export function loadSeedCatalog(): { shows: Show[]; episodes: Episode[] } {
         id: showId,
         title: row.title,
         publisher: row.author,
-        language: 'en',
+        language: SEED_PAIR.learning,
         topics: [row.topic, ...row.tags],
         description: row.description,
         profile,
@@ -127,19 +155,19 @@ export function loadSeedCatalog(): { shows: Show[]; episodes: Episode[] } {
       durationSeconds: parseDurationSeconds(row.duration),
       audioUrl: row.audioSrc,
       publisherTranscript: row.verifiedLesson === true,
-      learningGoal: row.learningGoal,
+      learningGoal: authoredInSeedLanguage(row.learningGoal),
       newWordCount: row.newWords,
       profile,
       transcript,
       vocabulary: row.vocabulary.map((entry) => ({
         term: entry.term,
         partOfSpeech: entry.type,
-        meaning: entry.meaning,
+        meaning: authoredInSeedLanguage(entry.meaning),
         example: entry.example,
       })),
       questions: row.questions.map((question) => ({
-        prompt: question.prompt,
-        options: question.options,
+        prompt: authoredInSeedLanguage(question.prompt),
+        options: authoredInSeedLanguage(question.options),
         answerIndex: question.answer,
       })),
     });
