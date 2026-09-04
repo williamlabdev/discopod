@@ -12,9 +12,12 @@ honest table of what is built and what is not.
 
 **Live:** <https://discopod-web.onrender.com> — the discovery UI and player.
 The API is separate at <https://discopod-api.onrender.com/api/health>; it runs on a free
-instance, so the first request after 15 idle minutes waits out a cold start. The two do
-not talk to each other yet — the web app reads its catalogue from the repo. See the state
-table in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#the-domain-and-where-it-lives).
+instance, so the first request after 15 idle minutes waits out a cold start.
+
+The site is a static export, and the browser never calls the API: the web app fetches the
+catalogue from `@discopod/api` **at build time** and ships the ranking as HTML, so a
+sleeping API can't slow down a visitor. See
+[ADR 0002](docs/adr/0002-fetch-the-catalogue-at-build-time.md).
 
 ![DiscoPod](docs/social-preview-v1.png)
 

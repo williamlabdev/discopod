@@ -51,22 +51,24 @@ Verified live against the checklist in `docs/DEPLOYMENT.md`: `/api/health` answe
 `buildFilter` was confirmed by accident and then on purpose: the docs-only commit
 `3d6c228` produced no deploy on either service.
 
-**Not done:**
+**The web app reads from the API.** `apps/web/lib/podcasts.ts` is deleted; the catalogue
+comes from `@discopod/api` over HTTP during `next build`, so the static export keeps its
+speed and the deployed site never waits on the sleeping API. Cards show the suitability
+the API computes instead of the old hand-written `match` numbers. Reasoning and the
+rejected runtime-fetch alternative: [ADR 0002](docs/adr/0002-fetch-the-catalogue-at-build-time.md).
 
-- **The web app does not call the API.** It still reads `apps/web/lib/podcasts.ts`, which
-  duplicates `apps/api/src/catalog/data/catalog.seed.json`. Closing this is the next
-  meaningful change — see *Next steps*.
+Two defects surfaced by actually rendering the API's output, both fixed: `?topic=` was
+accepted by validation and then silently ignored, and `Math.round(30/60)` made a
+30-second episode read *"1 minutes"*.
+
+**Not done:** the deploy of the cut-over — the commit below is pushed, but check Render
+finished both services before trusting the live site.
 
 ## Next steps, in order
 
-Push, CI and the Render deploy are all done; see *Where things stand*. What remains:
-
-1. **Cut the web app over to the API.** Replace the `lib/podcasts.ts` import with fetches to
-   `NEXT_PUBLIC_API_URL`. This ends the duplication and is the point at which the API stops
-   being decorative. Note it also ends the pure static export — plan which build mode you want.
-2. **Persistence.** Write a Postgres adapter for `CatalogRepository` and bind it in
+1. **Persistence.** Write a Postgres adapter for `CatalogRepository` and bind it in
    `CatalogModule`; the in-memory one stays for tests. Saved words need the same treatment.
-3. **Then** the larger vision pieces: RSS ingestion, the ASR/translation pipeline, learner
+2. **Then** the larger vision pieces: RSS ingestion, the ASR/translation pipeline, learner
    auth (the `x-learner-id` header is a placeholder), and the completion-by-level ranking signal.
 
 ## Traps already paid for — do not re-learn these
@@ -89,8 +91,12 @@ Push, CI and the Render deploy are all done; see *Where things stand*. What rema
 
 - `apps/web/components/ui/**` and `hooks/use-mobile.ts` are vendored shadcn output and are
   excluded from lint. Regenerate them with the shadcn CLI; don't hand-maintain them.
-- `apps/api/src/catalog/data/catalog.seed.json` is generated from `apps/web/lib/podcasts.ts`,
-  not hand-edited. Until the API cut-over (step 1) lands, the two must not drift.
+- `apps/api/src/catalog/data/catalog.seed.json` is the catalogue's single source. The web
+  app has no copy — it fetches from the API at build time. Edit the seed, not the UI.
+- The web build depends on `apps/api/dist`. The root `build` script names the two workspaces
+  in order for that reason; don't put it back to `--workspaces`, which only works by
+  alphabetical luck. `apps/api/**` is in the web service's `buildFilter` for the same reason:
+  drop it and a seed change deploys a new API while the site serves the old ranking.
 - Every ranked result carries a `reason`. The vision's "state the reason" principle is enforced
   by the return type — keep it that way.
 - The completion-by-level ranking signal is deliberately absent, not stubbed. Do not fake an

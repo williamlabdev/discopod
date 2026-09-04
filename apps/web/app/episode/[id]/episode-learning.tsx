@@ -25,7 +25,7 @@ import {
 
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import type { Podcast } from '@/lib/podcasts';
+import type { EpisodeDetail } from '@/lib/catalogue';
 
 function TranscriptLine({ text, highlight }: { text: string; highlight?: string }) {
   if (!highlight || !text.includes(highlight)) return <>{text}</>;
@@ -33,7 +33,7 @@ function TranscriptLine({ text, highlight }: { text: string; highlight?: string 
   return <>{before}<mark className="rounded bg-[#f5d8ad] px-1 text-inherit">{highlight}</mark>{after}</>;
 }
 
-export function EpisodeLearning({ podcast }: { podcast: Podcast }) {
+export function EpisodeLearning({ episode }: { episode: EpisodeDetail }) {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [playing, setPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -46,18 +46,18 @@ export function EpisodeLearning({ podcast }: { podcast: Podcast }) {
   const [checked, setChecked] = useState(false);
   const [hydrated, setHydrated] = useState(false);
 
-  const storageKey = `tuned-progress-${podcast.id}`;
-  const hasAudio = Boolean(podcast.audioSrc);
+  const storageKey = `tuned-progress-${episode.id}`;
+  const hasAudio = Boolean(episode.audioSrc);
   const progress = hasAudio && audioDuration ? (currentTime / audioDuration) * 100 : demoProgress;
   const activeTranscriptIndex = useMemo(() => {
     let active = 0;
-    podcast.transcript.forEach((line, index) => {
+    episode.transcript.forEach((line, index) => {
       if ((line.seconds ?? 0) <= currentTime) active = index;
     });
     return active;
-  }, [currentTime, podcast.transcript]);
+  }, [currentTime, episode.transcript]);
 
-  const correctCount = podcast.questions.filter((question, index) => answers[index] === question.answer).length;
+  const correctCount = episode.questions.filter((question, index) => answers[index] === question.answer).length;
   const formatTime = (value: number) => {
     if (!Number.isFinite(value)) return '00:00';
     const minutes = Math.floor(value / 60);
@@ -137,33 +137,33 @@ export function EpisodeLearning({ podcast }: { podcast: Podcast }) {
         </header>
 
         <section className="grid gap-8 py-10 lg:grid-cols-[360px_1fr] lg:items-center lg:py-14">
-          <div className={`${podcast.tone} ${podcast.ink} relative aspect-square overflow-hidden rounded-[28px] p-7 shadow-[0_24px_70px_rgba(48,42,35,0.12)]`}>
-            <span className="text-xs font-semibold uppercase tracking-[0.14em] opacity-60">{podcast.title}</span>
-            <h1 className="mt-12 max-w-[9ch] font-serif text-[clamp(2.5rem,5vw,4.25rem)] leading-[0.9] tracking-[-0.055em]">{podcast.episode}</h1>
-            <span className="absolute bottom-6 left-6 rounded-full bg-white/55 px-3 py-1.5 text-xs font-semibold backdrop-blur-sm">{podcast.level} · {podcast.cefr}</span>
+          <div className={`${episode.tone} ${episode.ink} relative aspect-square overflow-hidden rounded-[28px] p-7 shadow-[0_24px_70px_rgba(48,42,35,0.12)]`}>
+            <span className="text-xs font-semibold uppercase tracking-[0.14em] opacity-60">{episode.showTitle}</span>
+            <h1 className="mt-12 max-w-[9ch] font-serif text-[clamp(2.5rem,5vw,4.25rem)] leading-[0.9] tracking-[-0.055em]">{episode.episodeTitle}</h1>
+            <span className="absolute bottom-6 left-6 rounded-full bg-white/55 px-3 py-1.5 text-xs font-semibold backdrop-blur-sm">{episode.level} · {episode.cefr}</span>
             <span className="absolute -bottom-12 -right-10 size-40 rounded-full border-[24px] border-white/25" aria-hidden="true" />
           </div>
           <div>
             <div className="flex flex-wrap items-center gap-2">
-              <p className="text-xs font-semibold uppercase tracking-[0.15em] text-primary">Listening lesson · {podcast.topic}</p>
-              {podcast.verifiedLesson && <span className="rounded-full bg-[#e4f0e9] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] text-[#416b55]">Real audio + transcript</span>}
+              <p className="text-xs font-semibold uppercase tracking-[0.15em] text-primary">Listening lesson · {episode.topic}</p>
+              {episode.publisherTranscript && <span className="rounded-full bg-[#e4f0e9] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] text-[#416b55]">Real audio + transcript</span>}
             </div>
             <h2 className="mt-3 max-w-3xl font-serif text-4xl leading-[1.02] tracking-[-0.045em] sm:text-6xl">Learn from a real conversation.</h2>
-            <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground">{podcast.learningGoal}</p>
+            <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground">{episode.learningGoal}</p>
             <div className="mt-7 flex flex-wrap gap-3 text-sm">
-              <span className="flex items-center gap-2 rounded-full bg-secondary px-3 py-2"><Clock3 className="size-4" />{podcast.duration}</span>
-              <span className="flex items-center gap-2 rounded-full bg-secondary px-3 py-2"><Gauge className="size-4" />{podcast.speed}</span>
-              <span className="flex items-center gap-2 rounded-full bg-secondary px-3 py-2"><BookOpenText className="size-4" />{podcast.newWords} new words</span>
+              <span className="flex items-center gap-2 rounded-full bg-secondary px-3 py-2"><Clock3 className="size-4" />{episode.duration}</span>
+              <span className="flex items-center gap-2 rounded-full bg-secondary px-3 py-2"><Gauge className="size-4" />{episode.speed}</span>
+              <span className="flex items-center gap-2 rounded-full bg-secondary px-3 py-2"><BookOpenText className="size-4" />{episode.newWords} new words</span>
             </div>
-            {podcast.sourceUrl && <p className="mt-5 text-xs leading-5 text-muted-foreground">Audio and transcript: <a className="font-semibold text-foreground underline decoration-border underline-offset-4" href={podcast.sourceUrl} rel="noreferrer" target="_blank">{podcast.sourceLabel}</a>. Used with credit for language learning.</p>}
+            {episode.sourceUrl && <p className="mt-5 text-xs leading-5 text-muted-foreground">Audio and transcript: <a className="font-semibold text-foreground underline decoration-border underline-offset-4" href={episode.sourceUrl} rel="noreferrer" target="_blank">{episode.sourceLabel}</a>. Used with credit for language learning.</p>}
           </div>
         </section>
 
         <section className="rounded-[26px] border border-border bg-card p-5 shadow-[0_14px_45px_rgba(48,42,35,0.06)] sm:p-7" aria-label="Episode player">
-          {podcast.audioSrc && (
+          {episode.audioSrc && (
             <audio
               ref={audioRef}
-              src={podcast.audioSrc}
+              src={episode.audioSrc}
               preload="metadata"
               onLoadedMetadata={(event) => {
                 setAudioDuration(event.currentTarget.duration);
@@ -184,7 +184,7 @@ export function EpisodeLearning({ podcast }: { podcast: Podcast }) {
               <button className="block h-5 w-full py-2" type="button" aria-label="Seek episode" onClick={(event) => { const rect = event.currentTarget.getBoundingClientRect(); const ratio = (event.clientX - rect.left) / rect.width; if (hasAudio) seekTo(ratio * audioDuration); else setDemoProgress(Math.round(ratio * 100)); }}>
                 <span className="block h-1.5 overflow-hidden rounded-full bg-secondary"><span className="block h-full rounded-full bg-primary" style={{ width: `${progress}%` }} /></span>
               </button>
-              <div className="mt-1 flex justify-between text-xs text-muted-foreground"><span>{hasAudio ? formatTime(currentTime) : `${Math.round(progress)}%`}</span><span>{hasAudio && audioDuration ? formatTime(audioDuration) : podcast.duration}</span></div>
+              <div className="mt-1 flex justify-between text-xs text-muted-foreground"><span>{hasAudio ? formatTime(currentTime) : `${Math.round(progress)}%`}</span><span>{hasAudio && audioDuration ? formatTime(audioDuration) : episode.duration}</span></div>
             </div>
             <Button variant="ghost" size="icon" className="hidden rounded-full md:inline-flex" aria-label="Replay 10 seconds" onClick={() => seekTo(hasAudio ? currentTime - 10 : demoProgress - 10)}><SkipBack /></Button>
             <Button variant="ghost" size="icon" className="hidden rounded-full md:inline-flex" aria-label="Skip 10 seconds" onClick={() => seekTo(hasAudio ? currentTime + 10 : demoProgress + 10)}><SkipForward /></Button>
@@ -198,13 +198,13 @@ export function EpisodeLearning({ podcast }: { podcast: Podcast }) {
         <Tabs defaultValue="transcript" className="mt-8">
           <TabsList variant="line" className="h-auto w-full justify-start gap-7 border-b border-border p-0 sm:gap-10">
             <TabsTrigger value="transcript" className="h-auto flex-none px-0 pb-4">Transcript</TabsTrigger>
-            <TabsTrigger value="vocabulary" className="h-auto flex-none px-0 pb-4">Vocabulary <span className="rounded-full bg-secondary px-2 py-0.5 text-[10px]">{podcast.vocabulary.length}</span></TabsTrigger>
+            <TabsTrigger value="vocabulary" className="h-auto flex-none px-0 pb-4">Vocabulary <span className="rounded-full bg-secondary px-2 py-0.5 text-[10px]">{episode.vocabulary.length}</span></TabsTrigger>
             <TabsTrigger value="practice" className="h-auto flex-none px-0 pb-4">Practice</TabsTrigger>
           </TabsList>
 
           <TabsContent value="transcript" className="grid gap-8 py-8 lg:grid-cols-[minmax(0,1fr)_300px]">
             <div className="rounded-[24px] border border-border bg-card px-5 py-2 sm:px-8">
-              {podcast.transcript.map((line, index) => (
+              {episode.transcript.map((line, index) => (
                 <button key={`${line.time}-${index}`} type="button" onClick={() => seekTo(hasAudio ? (line.seconds ?? 0) : Math.min(95, 8 + index * 18))} className={`group -mx-2 grid w-[calc(100%+1rem)] grid-cols-[58px_1fr] rounded-xl border-b border-border/70 px-2 py-5 text-left transition last:border-0 sm:grid-cols-[74px_1fr] ${hasAudio && activeTranscriptIndex === index ? 'bg-secondary/75' : 'hover:bg-secondary/40'}`}>
                   <span className="pt-1 text-xs font-semibold text-primary">{line.time}</span>
                   <span className="text-base leading-7 transition group-hover:text-primary sm:text-lg sm:leading-8">{line.speaker && <strong className="mr-2 text-sm">{line.speaker}</strong>}<TranscriptLine text={line.text} highlight={line.highlight} /></span>
@@ -212,7 +212,7 @@ export function EpisodeLearning({ podcast }: { podcast: Podcast }) {
               ))}
             </div>
             <aside className="space-y-4 lg:sticky lg:top-6 lg:self-start">
-              <div className="rounded-[22px] bg-secondary/60 p-5"><p className="text-xs font-semibold uppercase tracking-[0.12em] text-primary">Learning focus</p><h3 className="mt-2 font-serif text-2xl">{podcast.learningGoal}</h3><p className="mt-3 text-sm leading-6 text-muted-foreground">Don&apos;t stop at every unfamiliar word. First listen for the speaker&apos;s main idea, then replay each section.</p></div>
+              <div className="rounded-[22px] bg-secondary/60 p-5"><p className="text-xs font-semibold uppercase tracking-[0.12em] text-primary">Learning focus</p><h3 className="mt-2 font-serif text-2xl">{episode.learningGoal}</h3><p className="mt-3 text-sm leading-6 text-muted-foreground">Don&apos;t stop at every unfamiliar word. First listen for the speaker&apos;s main idea, then replay each section.</p></div>
               <div className="rounded-[22px] border border-border bg-card p-5"><div className="flex items-center gap-2"><Volume2 className="size-4 text-primary" /><h3 className="font-semibold">Listening tip</h3></div><p className="mt-2 text-sm leading-6 text-muted-foreground">Tap any transcript line to jump to that part of the episode. The current line follows the audio.</p></div>
             </aside>
           </TabsContent>
@@ -220,7 +220,7 @@ export function EpisodeLearning({ podcast }: { podcast: Podcast }) {
           <TabsContent value="vocabulary" className="py-8">
             <div className="mb-6 flex flex-col justify-between gap-3 sm:flex-row sm:items-end"><div><p className="text-xs font-semibold uppercase tracking-[0.12em] text-primary">From this episode</p><h3 className="mt-1 font-serif text-3xl tracking-[-0.035em]">Words worth keeping</h3></div><p className="text-sm text-muted-foreground">{savedWords.length} saved to your word list</p></div>
             <div className="grid gap-4 md:grid-cols-2">
-              {podcast.vocabulary.map((word) => {
+              {episode.vocabulary.map((word) => {
                 const isSaved = savedWords.includes(word.term);
                 return <article key={word.term} className="rounded-[22px] border border-border bg-card p-5 sm:p-6"><div className="flex items-start justify-between gap-4"><div><div className="flex items-baseline gap-2"><h4 className="font-serif text-2xl">{word.term}</h4><span className="text-xs italic text-muted-foreground">{word.type}</span></div><p className="mt-3 text-sm leading-6">{word.meaning}</p></div><Button variant={isSaved ? 'secondary' : 'outline'} size="icon" className="rounded-full" aria-label={`${isSaved ? 'Remove' : 'Save'} ${word.term}`} onClick={() => setSavedWords((current) => isSaved ? current.filter((item) => item !== word.term) : [...current, word.term])}>{isSaved ? <Check /> : <Bookmark />}</Button></div><p className="mt-5 border-l-2 border-primary/40 pl-3 text-sm italic leading-6 text-muted-foreground">“{word.example}”</p></article>;
               })}
@@ -231,7 +231,7 @@ export function EpisodeLearning({ podcast }: { podcast: Podcast }) {
             <div className="mx-auto max-w-3xl">
               <div className="mb-7 rounded-[22px] bg-foreground p-6 text-background sm:p-8"><div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-background/60"><Sparkles className="size-4" />Quick check</div><h3 className="mt-3 font-serif text-3xl tracking-[-0.035em]">What did you understand?</h3><p className="mt-2 text-sm leading-6 text-background/65">Choose one answer for each question. You can retry as many times as you like.</p></div>
               <div className="space-y-5">
-                {podcast.questions.map((question, questionIndex) => (
+                {episode.questions.map((question, questionIndex) => (
                   <fieldset key={question.prompt} className="rounded-[22px] border border-border bg-card p-5 sm:p-6">
                     <legend className="px-1 font-semibold"><span className="mr-2 text-primary">{questionIndex + 1}.</span>{question.prompt}</legend>
                     <div className="mt-5 grid gap-2">
@@ -245,12 +245,12 @@ export function EpisodeLearning({ podcast }: { podcast: Podcast }) {
                   </fieldset>
                 ))}
               </div>
-              {checked ? <div className="mt-5 flex items-center justify-between rounded-[18px] bg-secondary p-4"><div className="flex items-center gap-3"><span className="grid size-9 place-items-center rounded-full bg-primary text-primary-foreground"><Lightbulb className="size-4" /></span><p className="text-sm font-semibold">You got {correctCount} of {podcast.questions.length} correct.</p></div><Button variant="ghost" className="rounded-full" onClick={() => { setAnswers({}); setChecked(false); }}><RotateCcw />Try again</Button></div> : <Button className="mt-5 h-11 rounded-full px-6" disabled={Object.keys(answers).length !== podcast.questions.length} onClick={() => setChecked(true)}>Check answers<CheckCircle2 /></Button>}
+              {checked ? <div className="mt-5 flex items-center justify-between rounded-[18px] bg-secondary p-4"><div className="flex items-center gap-3"><span className="grid size-9 place-items-center rounded-full bg-primary text-primary-foreground"><Lightbulb className="size-4" /></span><p className="text-sm font-semibold">You got {correctCount} of {episode.questions.length} correct.</p></div><Button variant="ghost" className="rounded-full" onClick={() => { setAnswers({}); setChecked(false); }}><RotateCcw />Try again</Button></div> : <Button className="mt-5 h-11 rounded-full px-6" disabled={Object.keys(answers).length !== episode.questions.length} onClick={() => setChecked(true)}>Check answers<CheckCircle2 /></Button>}
             </div>
           </TabsContent>
         </Tabs>
 
-        <section className="mt-12 flex flex-col items-start justify-between gap-5 rounded-[26px] bg-secondary/60 p-6 sm:flex-row sm:items-center sm:p-8"><div><p className="text-xs font-semibold uppercase tracking-[0.12em] text-primary">Keep learning</p><h3 className="mt-2 font-serif text-3xl">Ready for another episode?</h3></div><div className="flex gap-2"><Link className="grid size-11 place-items-center rounded-full border border-border bg-card" href={`/episode/${podcast.id === 1 ? 7 : podcast.id - 1}`} aria-label="Previous lesson"><ChevronLeft /></Link><Link className="flex h-11 items-center gap-2 rounded-full bg-foreground px-5 text-sm font-semibold text-background" href={`/episode/${podcast.id === 7 ? 1 : podcast.id + 1}`}>Next lesson<ChevronRight className="size-4" /></Link></div></section>
+        <section className="mt-12 flex flex-col items-start justify-between gap-5 rounded-[26px] bg-secondary/60 p-6 sm:flex-row sm:items-center sm:p-8"><div><p className="text-xs font-semibold uppercase tracking-[0.12em] text-primary">Keep learning</p><h3 className="mt-2 font-serif text-3xl">Ready for another episode?</h3></div><div className="flex gap-2"><Link className="grid size-11 place-items-center rounded-full border border-border bg-card" href={`/episode/${episode.previousId}`} aria-label="Previous lesson"><ChevronLeft /></Link><Link className="flex h-11 items-center gap-2 rounded-full bg-foreground px-5 text-sm font-semibold text-background" href={`/episode/${episode.nextId}`}>Next lesson<ChevronRight className="size-4" /></Link></div></section>
       </div>
     </main>
   );

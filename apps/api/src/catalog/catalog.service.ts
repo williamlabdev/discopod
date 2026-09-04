@@ -40,8 +40,13 @@ export class CatalogService {
     const episodes = await this.repository.findEpisodes();
     const level = query.level ?? 'Intermediate';
 
+    // Topics live on the show, not the episode, so this needs the join.
+    // Only pay for it when the caller actually filters by topic.
+    const showIdsForTopic = query.topic ? await this.showIdsWithTopic(query.topic) : null;
+
     const filtered = episodes.filter((episode) => {
       if (query.level && episode.profile.level !== query.level) return false;
+      if (showIdsForTopic && !showIdsForTopic.has(episode.showId)) return false;
       if (query.search && !this.matches(episode, query.search)) return false;
       return true;
     });
@@ -96,8 +101,13 @@ export class CatalogService {
   }
 
   private explain(episode: Episode, level: LearningLevel): string {
-    const minutes = Math.round(episode.durationSeconds / 60);
-    const length = minutes >= 1 ? `${minutes} minutes` : `${episode.durationSeconds} seconds`;
+    // floor, not round: a 30-second episode rounds up to "1 minutes", which is
+    // both the wrong number and the wrong plural.
+    const minutes = Math.floor(episode.durationSeconds / 60);
+    const length =
+      minutes >= 1
+        ? `${minutes} minute${minutes === 1 ? '' : 's'}`
+        : `${episode.durationSeconds} seconds`;
     const voices =
       episode.profile.speakerCount === 1
         ? 'one voice'
@@ -108,6 +118,16 @@ export class CatalogService {
         : 'faster than your usual pace';
 
     return `${length}, ${voices}, ${episode.profile.speechRate} wpm — ${pace}. ${episode.profile.reason}.`;
+  }
+
+  private async showIdsWithTopic(topic: string): Promise<Set<string>> {
+    const wanted = topic.toLowerCase();
+    const shows = await this.repository.findShows();
+    return new Set(
+      shows
+        .filter((show) => show.topics.some((entry) => entry.toLowerCase() === wanted))
+        .map((show) => show.id),
+    );
   }
 
   private matches(episode: Episode, search: string): boolean {

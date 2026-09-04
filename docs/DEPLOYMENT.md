@@ -36,8 +36,13 @@ npm run start --workspace @discopod/api   # node dist/main.js, port 3001
 Both are ordinary Node processes, so any of Vercel / Netlify / Render / Railway / Fly /
 a plain VPS will run them. The only wiring is environment variables:
 
-- web: `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_API_URL`
+- web: `NEXT_PUBLIC_SITE_URL`, and optionally `CATALOG_API_URL`
 - api: `PORT`, `WEB_ORIGIN` (CORS origin — set it to the web app's URL)
+
+`CATALOG_API_URL` is a build-time override, not a runtime setting: leave it unset and the
+web build starts its own API from the workspace to fetch the catalogue from. Set it only
+to build against an API you already have running. The browser never calls the API, so
+there is no public API URL to configure.
 
 Note the split: if the web app goes to Vercel, the NestJS service does **not** — put it
 on a host that runs a long-lived Node process. Keeping them independently deployable is
@@ -70,13 +75,16 @@ Both build from the repo root — this is an npm workspaces monorepo, so `npm ci
 the root lockfile and `rootDir` is deliberately unset. `buildFilter` is what stops a
 web-only commit from rebuilding the API.
 
-The three values Render prompts for on first creation:
+The values Render prompts for on first creation:
 
 ```
 NEXT_PUBLIC_SITE_URL   https://discopod-web.onrender.com
-NEXT_PUBLIC_API_URL    https://discopod-api.onrender.com/api
 WEB_ORIGIN             https://discopod-web.onrender.com     # the API's CORS origin
 ```
+
+The web service's `buildFilter` includes `apps/api/**` as well as `apps/web/**`, because
+the catalogue is baked in at build time — a seed or ranking change has to rebuild the
+site, or the deployed pages would keep serving the old ranking.
 
 No API key is needed for any of this — Render deploys from GitHub. A Render API key is
 only for driving Render's own API from outside, which this setup does not do.

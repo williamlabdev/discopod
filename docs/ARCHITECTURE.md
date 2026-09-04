@@ -114,13 +114,23 @@ Every ranked result carries a `reason` string generated alongside the score, so 
 adapter is bound in `CatalogModule`. Swapping in Postgres means writing a second
 adapter and changing one `useClass` line. No caller touches storage directly.
 
-## Migration state
+## How the web app gets the catalogue
 
-The web app still reads its catalogue from `apps/web/lib/podcasts.ts` — the same data
-the API now serves from `apps/api/src/catalog/data/catalog.seed.json`. This is a
-deliberate intermediate step: the API was verified end-to-end first, and the UI cutover
-to `NEXT_PUBLIC_API_URL` is the next change. Until then the two copies must not drift;
-the seed JSON is generated from the TypeScript module, not hand-edited.
+`apps/api/src/catalog/data/catalog.seed.json` is the single source. `apps/web/lib/podcasts.ts`
+is gone, and with it the duplication and the hand-written `match` percentages — cards now
+show the suitability the API computes, with the `reason` behind it.
+
+The fetch happens **at build time**, not at runtime. `apps/web/scripts/build.mjs` starts
+`apps/api/dist/main.js` on a free ephemeral port, waits for `/api/health`, runs `next build`
+against it with `CATALOG_API_URL` set, and stops it again. So the build exercises the real
+HTTP contract while needing no network, and the deployed static site has no runtime
+dependency on an API that sleeps. Full reasoning and the rejected alternatives are in
+[ADR 0002](adr/0002-fetch-the-catalogue-at-build-time.md).
+
+Inside `apps/web/lib`: `catalog-api.ts` is the HTTP client and the shape assertions,
+`presentation.ts` holds what the API correctly refuses to return (the card palette, the
+duration and speech-rate wording), and `catalogue.ts` joins episodes to shows and hands
+the pages one object per card.
 
 ## Deployment
 

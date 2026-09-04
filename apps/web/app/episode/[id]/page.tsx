@@ -1,24 +1,29 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
-import { getPodcast, podcasts } from '@/lib/podcasts';
+import { loadEpisodeDetail, loadEpisodeIds } from '@/lib/catalogue';
 import { EpisodeLearning } from './episode-learning';
 
 type EpisodePageProps = {
   params: Promise<{ id: string }>;
 };
 
-export function generateStaticParams() {
-  return podcasts.map((podcast) => ({ id: String(podcast.id) }));
+/**
+ * The route set comes from the API, so an episode added to the catalogue gets a
+ * page on the next build without anything here changing.
+ */
+export async function generateStaticParams() {
+  const ids = await loadEpisodeIds();
+  return ids.map((id) => ({ id }));
 }
 
 export async function generateMetadata({ params }: EpisodePageProps): Promise<Metadata> {
   const { id } = await params;
-  const podcast = getPodcast(id);
-  if (!podcast) return { title: 'Lesson not found — DiscoPod' };
+  const episode = await loadEpisodeDetail(id);
+  if (!episode) return { title: 'Lesson not found — DiscoPod' };
 
-  const title = `${podcast.episode} — ${podcast.level} English lesson`;
-  const description = `${podcast.title}: ${podcast.learningGoal}`;
+  const title = `${episode.episodeTitle} — ${episode.level} English lesson`;
+  const description = `${episode.showTitle}: ${episode.learningGoal}`;
   return {
     title,
     description,
@@ -29,7 +34,7 @@ export async function generateMetadata({ params }: EpisodePageProps): Promise<Me
 
 export default async function EpisodePage({ params }: EpisodePageProps) {
   const { id } = await params;
-  const podcast = getPodcast(id);
-  if (!podcast) notFound();
-  return <EpisodeLearning podcast={podcast} />;
+  const episode = await loadEpisodeDetail(id);
+  if (!episode) notFound();
+  return <EpisodeLearning episode={episode} />;
 }

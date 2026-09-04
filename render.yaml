@@ -11,8 +11,13 @@
 # Values marked `sync: false` are prompted for in the Render dashboard when the
 # Blueprint is first created. Fill them in with the URLs Render assigns:
 #   NEXT_PUBLIC_SITE_URL   https://discopod-web.onrender.com
-#   NEXT_PUBLIC_API_URL    https://discopod-api.onrender.com/api
 #   WEB_ORIGIN             https://discopod-web.onrender.com   (CORS)
+#
+# The web service does not get an API URL. It reads the catalogue from
+# @discopod/api at *build* time, from an API the build starts itself, and ships
+# the result as static HTML — so the deployed site never calls the deployed API
+# and does not wait on its cold start. See
+# docs/adr/0002-fetch-the-catalogue-at-build-time.md.
 
 # `npm ci --include=dev` is deliberate: if NODE_ENV is production, a plain
 # `npm ci` omits devDependencies, and the build then fails on missing
@@ -23,11 +28,18 @@ services:
   - type: web
     name: discopod-web
     runtime: static
-    buildCommand: npm ci --include=dev && STATIC_EXPORT=1 npm run build --workspace @discopod/web
+    # The API is built first because the web build runs it to fetch the
+    # catalogue. `apps/web/scripts/build.mjs` starts it, waits for /api/health,
+    # builds, and stops it again.
+    buildCommand: npm ci --include=dev && npm run build --workspace @discopod/api && STATIC_EXPORT=1 npm run build --workspace @discopod/web
     staticPublishPath: apps/web/out
     autoDeployTrigger: commit
     buildFilter:
       paths:
+        # apps/api is here because the catalogue is baked in at build time: a
+        # change to the seed or the ranking has to rebuild the site, or the
+        # deployed pages silently keep the old ranking.
+        - apps/api/**
         - apps/web/**
         - package.json
         - package-lock.json
@@ -36,8 +48,6 @@ services:
       - key: NODE_VERSION
         value: 22.13.0
       - key: NEXT_PUBLIC_SITE_URL
-        sync: false
-      - key: NEXT_PUBLIC_API_URL
         sync: false
 
   - type: web

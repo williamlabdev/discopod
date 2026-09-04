@@ -33,13 +33,18 @@ jobs:
       - run: npm run typecheck
       - run: npm run build
 
-      # The exact command Render runs for the static site.
+      # The static export is a second, separate build: STATIC_EXPORT=1 switches
+      # Next to `output: 'export'`. The API built above is what it fetches the
+      # catalogue from — `apps/web/scripts/build.mjs` starts it on a free port.
       - name: Verify static export
         env:
           STATIC_EXPORT: '1'
         run: |
           npm run build --workspace @discopod/web
           test -f apps/web/out/index.html
+          # The catalogue really came from the API, not from a file in apps/web.
+          test -f apps/web/out/episode/1.html
+          grep -q '% fit' apps/web/out/index.html
 
       # Boot the API and check the health endpoint Render will probe.
       - name: Smoke test the API

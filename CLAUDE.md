@@ -30,4 +30,8 @@ npm run lint && npm run typecheck && npm run build
 - Do not switch Geist back to `next/font/google`; it needs build-time network egress.
 - `apps/web/components/ui/**` is vendored shadcn output, excluded from lint. Don't hand-edit.
 - Every ranked result must carry its `reason`. Never fabricate the completion ranking signal.
+- The catalogue's single source is `apps/api/src/catalog/data/catalog.seed.json`. The web app
+  fetches it from the API during `next build` (`apps/web/scripts/build.mjs`) — don't
+  reintroduce a catalogue module in `apps/web`, and don't make the browser call the API
+  without revisiting ADR 0002.
 - Architectural changes get an ADR in `docs/adr/`.
