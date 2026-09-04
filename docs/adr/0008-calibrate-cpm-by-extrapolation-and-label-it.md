@@ -76,10 +76,40 @@ episode whose unit has no row. This ADR fills one row; it does not weaken the ru
 empty row excludes. The next spoken language added to `RATE_UNIT` arrives excluded by
 default and has to be argued in the same way.
 
+## A first measurement, of a different quantity
+
+Later the same day, one real recording was transcribed and counted — a 16m40s VOA Chinese
+interview (item `8047497`), run through `mlx-whisper` large-v3-turbo, Han characters
+counted per segment against the ASR's own timings:
+
+| Segment | Length | Characters | Rate |
+| --- | ---: | ---: | ---: |
+| The reporter's opening question — native speaker | 39.6 s | 153 | **232 cpm** |
+| The guest — fluent but not a native speaker | 951.6 s | 3,289 | **207 cpm** |
+| Whole file | 995.5 s | 3,455 | **208 cpm** |
+
+**This is not a calibration and must not be read as one.** It measures how fast someone
+*talks*; `COMFORTABLE_RATE` states how fast a learner can *follow*. Those are different
+quantities and no amount of the first produces the second. Nothing above moves the row.
+
+What it does is check the one input in decision 1 that is a factual claim rather than a
+judgement: the ~240 cpm conversational anchor. A native speaker asking an unscripted
+question came out at 232, which is close enough that the anchor survives contact with a
+recording. Had it come back at 150 or at 400, decision 1's arithmetic would have needed
+redoing before anything shipped on it.
+
+Its weaknesses, so nobody has to rediscover them: n = 1; the character counts come from ASR
+output that has not been checked against the published text; one of the two speakers is not
+a native speaker, which is why his 207 is reported separately rather than averaged in; and
+a prepared opening question is not the same register as spontaneous conversation. It is a
+sanity check that passed, recorded because a passed check is evidence and an unrecorded one
+is not.
+
 ## What this ADR does not do
 
-- **It does not measure anything.** No listener was tested. The row is as good as its two
-  anchor rates and the ratio premise, and no better.
+- **It does not measure the thing the row is about.** No listener was tested. One
+  *speaker* was, in the section above, and that checks an input rather than the output. The
+  row is as good as its two anchor rates and the ratio premise, and no better.
 - **It does not add Chinese audio, a transcript, or a second seed file.** The block is
   lifted; nothing yet walks through it. `catalog.seed.ts` is still hardcoded to
   `SEED_PAIR`, and `GET /episodes` still filters on `speaks` and not `learning` — both are

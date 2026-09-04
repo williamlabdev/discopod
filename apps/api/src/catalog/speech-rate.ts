@@ -80,6 +80,11 @@ export function rateUnitFor(language: SpokenLanguage): SpeechRateUnit {
  * pretends otherwise. Replace it with measured thresholds when there are any;
  * until then, a Mandarin episode's suitability score is as good as this
  * extrapolation and no better.
+ *
+ * The ~240 anchor has since been spot-checked against one recording — a native
+ * speaker's unscripted question measured 232 cpm — which tests the input, not
+ * these three numbers. How fast someone talks is not how fast a learner can
+ * follow. ADR 0008 records the measurement and its weaknesses.
  */
 const COMFORTABLE_RATE: Partial<Record<SpeechRateUnit, Record<LearningLevel, number>>> = {
   wpm: {

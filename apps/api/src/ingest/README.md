@@ -81,3 +81,21 @@ Measure before assuming any other tape is usable:
     ffmpeg -i TAPE.mp3 -af silencedetect=noise=-30dB:d=0.5 -f null - 2>&1 | grep silence_
 
 The audio is deliberately not committed — ~40 MB, re-fetchable from a stable mirror.
+
+## ASR: what has actually been run
+
+The fixture had no consumer when ADR 0007 named it. There is now a working recipe, proven
+on a different file (a 16m40s VOA Chinese interview, not on FSI):
+
+    python3.12 -m venv venv          # 3.14 has no mlx wheels yet
+    ./venv/bin/pip install mlx-whisper
+    ./venv/bin/mlx_whisper --model mlx-community/whisper-large-v3-turbo \
+      --language zh --task transcribe --output-format json AUDIO.mp3
+
+On Apple Silicon this transcribed 16m40s in **22.8 s**, with per-segment timings — which is
+the half of the problem a published script does not solve. A source that publishes its own
+transcript is still worth much more than one that does not, because then ASR supplies the
+timings and the publisher's text checks the words. Neither alone is enough.
+
+Not yet run against the FSI fixture. When it is, the 34 unaligned student-text PDFs are how
+the output gets checked — by hand, by eye, as ADR 0007 says.
