@@ -41,10 +41,17 @@ jobs:
           STATIC_EXPORT: '1'
         run: |
           npm run build --workspace @discopod/web
+          # `/` is the pair chooser: no catalogue on it, one link per pair.
           test -f apps/web/out/index.html
-          # The catalogue really came from the API, not from a file in apps/web.
-          test -f apps/web/out/episode/1.html
-          grep -q '% fit' apps/web/out/index.html
+          grep -q '繁體中文' apps/web/out/index.html
+          # One page per pair, and the pair really is a route segment (ADR 0003).
+          test -f apps/web/out/en/en.html
+          test -f apps/web/out/zh-Hant/en.html
+          # The catalogue really came from the API, not from a file in apps/web:
+          # episode 7 is the one verified row left in the seed (ADR 0004), and
+          # the fit percentage is computed by the API's ranker, never authored.
+          test -f apps/web/out/en/en/episode/7.html
+          grep -q '% fit' apps/web/out/en/en.html
 
       # Boot the API and check the health endpoint Render will probe.
       - name: Smoke test the API

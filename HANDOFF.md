@@ -29,7 +29,7 @@ build → static export → API boot + HTTP smoke test, all under `NODE_ENV=prod
 - `render.yaml` — Blueprint for both services. Deployed; see below.
 - `.github/workflows/ci.yml` — mirrors Render's build exactly.
 
-**Pushed, and CI is green** (2026-09-04). The repo is public at
+**Pushed** (2026-09-04). The repo is public at
 <https://github.com/williamlabdev/discopod>: a single root commit `da78d1a`, 120 files,
 `main` tracking `origin/main`. `../upload-to-github.sh` did the wipe-and-reinit, so the old
 ChatGPT sites remote and the `clean-main` / stale `main` branches are gone with the discarded
@@ -37,6 +37,19 @@ ChatGPT sites remote and the `clean-main` / stale `main` branches are gone with 
 [33861169089](https://github.com/williamlabdev/discopod/actions/runs/33861169089)
 passed in 1m13s: `npm ci --include=dev`, lint, typecheck, build, the static-export check and the
 API smoke test.
+
+**Then CI went red for five commits and stayed red without anyone noticing** — `ff9a9d2`
+through `df83ec1`, 2026-09-04 13:06 to 14:58. Not a real regression: lint, typecheck and
+both builds passed every time. The `Verify static export` step was asserting
+`out/episode/1.html` and grepping `'% fit'` out of `out/index.html`, and ADR 0003 had
+moved every catalogue page under `/[speaks]/[learning]/` while ADR 0004 had removed
+episodes 1–6. The check was testing the shape of a site that no longer existed. Fixed in
+the commit this paragraph arrives in, against a real `out/` tree.
+
+The lesson is about this file, not about the workflow: the paragraph above said "CI is
+green" and stayed there while five red runs went past, because it was written once and
+never re-checked. **A claim about CI in this file is a claim about a specific run id.**
+If you cannot name the run, write what you actually verified locally instead.
 
 **Deployed** (2026-09-04). Blueprint `discopod` (`exs-dad9mvbncjis738h68mg`) built both
 services from `b92129d`:
