@@ -101,13 +101,18 @@ node apps/api/dist/main.js &                              # → curl localhost:3
 
 ## Loose ends outside the repo
 
-In the parent `work/` folder: `_to_delete/` (the pre-restructure tree and its old
-`node_modules`), `_transfer/` (tarballs used to move code between machines), five
-`tuned-*.tar.gz` build artifacts, `social-card/` and `learning-social-card/` (the latter is
-byte-identical to `apps/web/public/og.png`), and a stray `work/package-lock.json` that belongs
-to nothing. All are safe to delete; none are referenced by the repo.
+Cleared on 2026-09-04, once the repo was pushed and CI was green. The parent `work/` folder
+held `_to_delete/` (empty by then), `_transfer/` (three tarballs used to move code between
+machines), five `tuned-*.tar.gz` build artifacts — four loose plus `artifacts/tuned-v5.tar.gz` —
+and `social-card/` and `learning-social-card/`, both byte-identical to files already committed
+(`docs/social-preview-v1.png` and `apps/web/public/og.png` respectively, verified by sha256),
+plus a stray `work/package-lock.json` that belonged to nothing. About 33 MB. All of it went to
+the macOS Trash rather than `rm`, so it is still recoverable if something turns out to have been
+needed.
 
-`upload-to-github.sh` also lives there. It has done its job and now refuses to run again: it
+Two files remain there, neither referenced by the repo. `demo.sh` builds a standalone static
+export of the web app for any dumb static host (`SITE_URL=https://… bash demo.sh`) — worth
+keeping. And `upload-to-github.sh`. It has done its job and now refuses to run again: it
 aborts if `origin` already points at the repo (`FORCE=1` overrides). Two bugs in it were fixed
 on 2026-09-04 after they bit — an unbraced `$REPO` immediately followed by a full-width paren
 was scanned as one variable name and died under `set -u`, and the script did no `nvm use`, so it
