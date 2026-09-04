@@ -126,11 +126,27 @@ Provenance for the audio lives in `apps/web/public/audio/ATTRIBUTION.md`, includ
 two source discrepancies (which revision was read, and CC BY-SA 3.0 vs 4.0) and how the
 history settles the first.
 
-Three defects surfaced by actually rendering the API's output, all fixed: `?topic=` was
-accepted by validation and then silently ignored; `Math.round(30/60)` made a 30-second
-episode read *"1 minutes"*; and the `Math.floor` that fixed **that** made the 103-second
-Mandarin episode read *"1 minute"* in its ranked reason while its own card said *"2 min"*.
-The branch now tests the duration rather than the rounded minutes, so both ends hold.
+Five defects surfaced by actually rendering the API's output, all fixed:
+
+- `?topic=` was accepted by validation and then silently ignored.
+- `Math.round(30/60)` made a 30-second episode read *"1 minutes"*.
+- The `Math.floor` that fixed **that** made the 103-second Mandarin episode read
+  *"1 minute"* in its ranked reason while its own card said *"2 min"*. The branch now tests
+  the duration rather than the rounded minutes, so both ends hold.
+- **`findOccurrence` could not find a Chinese word in a Chinese transcript.** All five of
+  episode 101's vocabulary entries rendered *"we couldn't locate this word in the
+  transcript"* against a transcript containing every one of them. The probe ladder is
+  English morphology — split on spaces, stem the inflection, anchor on `\b` — and Han
+  characters are not `\w`, so `\b佛塔` matches nothing, ever. A Han term is now matched as
+  a substring, which is what "this word appears in this line" means in a script written
+  without spaces.
+- **The episode page's headline was a hardcoded claim about the audio.** *"Learn from a
+  real conversation."* is true of the VOA lesson, where Anna and Pete talk to each other,
+  and false of one person reading an article aloud. It now branches on `speakerCount`.
+
+The last two are the same lesson twice: **both passed lint, typecheck and build, and both
+were only visible on screen.** There are no tests under `apps/`, so rendering the page is
+the verification step, not a nicety.
 
 **Not done:** the deploy of the cut-over — the commit below is pushed, but check Render
 finished both services before trusting the live site.
