@@ -1,0 +1,63 @@
+# Render Blueprint — https://render.com/docs/blueprint-spec
+#
+# One repo, two services:
+#   discopod-web  static export of apps/web, served from Render's CDN
+#   discopod-api  the NestJS service, a long-lived Node process
+#
+# Both build from the repo root because this is an npm workspaces monorepo —
+# `npm ci` needs the root lockfile, so rootDir is deliberately not set.
+# buildFilter is what keeps a web-only change from rebuilding the API.
+#
+# Values marked `sync: false` are prompted for in the Render dashboard when the
+# Blueprint is first created. Fill them in with the URLs Render assigns:
+#   NEXT_PUBLIC_SITE_URL   https://discopod-web.onrender.com
+#   NEXT_PUBLIC_API_URL    https://discopod-api.onrender.com/api
+#   WEB_ORIGIN             https://discopod-web.onrender.com   (CORS)
+
+# `npm ci --include=dev` is deliberate: if NODE_ENV is production, a plain
+# `npm ci` omits devDependencies, and the build then fails on missing
+# @tailwindcss/postcss (web) and @nestjs/cli (api). Verified by reproducing
+# the failure and the fix in a clean checkout.
+#
+services:
+  - type: web
+    name: discopod-web
+    runtime: static
+    buildCommand: npm ci --include=dev && STATIC_EXPORT=1 npm run build --workspace @discopod/web
+    staticPublishPath: apps/web/out
+    autoDeployTrigger: commit
+    buildFilter:
+      paths:
+        - apps/web/**
+        - package.json
+        - package-lock.json
+        - render.yaml
+    envVars:
+      - key: NODE_VERSION
+        value: 22.13.0
+      - key: NEXT_PUBLIC_SITE_URL
+        sync: false
+      - key: NEXT_PUBLIC_API_URL
+        sync: false
+
+  - type: web
+    name: discopod-api
+    runtime: node
+    plan: free
+    buildCommand: npm ci --include=dev && npm run build --workspace @discopod/api
+    startCommand: node apps/api/dist/main.js
+    healthCheckPath: /api/health
+    autoDeployTrigger: commit
+    buildFilter:
+      paths:
+        - apps/api/**
+        - package.json
+        - package-lock.json
+        - render.yaml
+    envVars:
+      - key: NODE_VERSION
+        value: 22.13.0
+      - key: PORT
+        value: 3001
+      - key: WEB_ORIGIN
+        sync: false

@@ -1,0 +1,22 @@
+{
+  "name": "discopod",
+  "version": "0.1.0",
+  "private": true,
+  "description": "DiscoPod — a podcast app for language learners, tuned to whether you can follow it by ear",
+  "license": "MIT",
+  "workspaces": [
+    "apps/*"
+  ],
+  "engines": {
+    "node": ">=22.13.0 <25"
+  },
+  "scripts": {
+    "dev": "npm run dev --workspaces --if-present",
+    "dev:web": "npm run dev --workspace @discopod/web",
+    "dev:api": "npm run dev --workspace @discopod/api",
+    "build": "npm run build --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present"
+  }
+}

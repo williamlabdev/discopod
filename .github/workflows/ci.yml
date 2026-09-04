@@ -1,0 +1,52 @@
+# Mirrors what Render does on a deploy, so a green CI run means the deploy builds.
+# Same Node version (.nvmrc), same NODE_ENV, same install flags.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      NODE_ENV: production
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      # --include=dev is required: with NODE_ENV=production a plain `npm ci`
+      # skips devDependencies and both builds fail on missing toolchain.
+      - run: npm ci --include=dev
+
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run build
+
+      # The exact command Render runs for the static site.
+      - name: Verify static export
+        env:
+          STATIC_EXPORT: '1'
+        run: |
+          npm run build --workspace @discopod/web
+          test -f apps/web/out/index.html
+
+      # Boot the API and check the health endpoint Render will probe.
+      - name: Smoke test the API
+        run: |
+          node apps/api/dist/main.js &
+          for i in $(seq 1 30); do
+            sleep 1
+            curl -fsS http://localhost:3001/api/health && break
+          done
+          curl -fsS "http://localhost:3001/api/episodes/start-here?level=Beginner" > /dev/null

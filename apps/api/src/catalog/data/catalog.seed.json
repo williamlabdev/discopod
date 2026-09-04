@@ -1,0 +1,683 @@
+[
+  {
+    "id": 7,
+    "title": "Let's Learn English",
+    "author": "VOA Learning English",
+    "match": 99,
+    "topic": "Conversation",
+    "duration": "30 sec",
+    "episode": "Lesson 1: Welcome!",
+    "description": "A short, real beginner conversation for practicing greetings, names, and spelling.",
+    "tone": "bg-[#f7b267]",
+    "ink": "text-[#342115]",
+    "tags": [
+      "greetings",
+      "conversation",
+      "names",
+      "spelling",
+      "beginner"
+    ],
+    "level": "Beginner",
+    "cefr": "A1",
+    "speed": "≈ 105 wpm",
+    "newWords": 4,
+    "levelReason": "Short sentences, everyday greetings, clear turn-taking, and repeated names",
+    "learningGoal": "Introduce yourself, greet someone, and spell a name in a short conversation.",
+    "audioSrc": "/audio/voa-lesson-1-welcome.mp3",
+    "sourceUrl": "https://learningenglish.voanews.com/a/lets-learn-english-lesson-one/3111026.html",
+    "sourceLabel": "VOA Learning English · Lesson 1",
+    "verifiedLesson": true,
+    "transcript": [
+      {
+        "time": "00:00",
+        "seconds": 0,
+        "speaker": "Pete",
+        "text": "Hi! Are you Anna?"
+      },
+      {
+        "time": "00:03",
+        "seconds": 3,
+        "speaker": "Anna",
+        "text": "Yes! Hi there! Are you Pete?",
+        "highlight": "Hi there"
+      },
+      {
+        "time": "00:07",
+        "seconds": 7,
+        "speaker": "Pete",
+        "text": "I am Pete."
+      },
+      {
+        "time": "00:09",
+        "seconds": 9,
+        "speaker": "Anna",
+        "text": "Nice to meet you.",
+        "highlight": "Nice to meet you"
+      },
+      {
+        "time": "00:12",
+        "seconds": 12,
+        "speaker": "Anna",
+        "text": "Let's try that again. I'm Anna. Nice to meet you."
+      },
+      {
+        "time": "00:18",
+        "seconds": 18,
+        "speaker": "Pete",
+        "text": "I'm Pete. Anna — is that A-N-A?"
+      },
+      {
+        "time": "00:23",
+        "seconds": 23,
+        "speaker": "Anna",
+        "text": "No. A-N-N-A."
+      },
+      {
+        "time": "00:26",
+        "seconds": 26,
+        "speaker": "Pete",
+        "text": "Well, Anna with two n's — welcome!",
+        "highlight": "welcome"
+      }
+    ],
+    "vocabulary": [
+      {
+        "term": "Hi there",
+        "type": "greeting",
+        "meaning": "A friendly, informal way to say hello.",
+        "example": "Hi there! Are you new here?"
+      },
+      {
+        "term": "Nice to meet you",
+        "type": "phrase",
+        "meaning": "A polite phrase used when meeting someone for the first time.",
+        "example": "I am Mia. Nice to meet you."
+      },
+      {
+        "term": "try again",
+        "type": "phrase",
+        "meaning": "Do something one more time.",
+        "example": "Let's try again more slowly."
+      },
+      {
+        "term": "welcome",
+        "type": "verb",
+        "meaning": "To greet someone kindly when they arrive.",
+        "example": "We welcome new students to the class."
+      }
+    ],
+    "questions": [
+      {
+        "prompt": "Who is new to the building?",
+        "options": [
+          "Pete",
+          "Anna",
+          "Both speakers"
+        ],
+        "answer": 1
+      },
+      {
+        "prompt": "How many letter N’s are in Anna’s name?",
+        "options": [
+          "One",
+          "Two",
+          "Three"
+        ],
+        "answer": 1
+      },
+      {
+        "prompt": "Which phrase do they use when they first meet?",
+        "options": [
+          "See you tomorrow",
+          "Nice to meet you",
+          "Please sit down"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "id": 1,
+    "title": "How I Built This",
+    "author": "NPR",
+    "match": 97,
+    "topic": "Startups",
+    "duration": "48 min",
+    "episode": "Building with purpose, not just momentum",
+    "description": "Founders unpack the decisions, doubts, and lucky breaks behind remarkable companies.",
+    "tone": "bg-[#ff895d]",
+    "ink": "text-[#2b1e1a]",
+    "tags": [
+      "business",
+      "founders",
+      "leadership",
+      "creative leadership"
+    ],
+    "level": "Intermediate",
+    "cefr": "B1–B2",
+    "speed": "145 wpm",
+    "newWords": 12,
+    "levelReason": "Clear storytelling with some business vocabulary",
+    "learningGoal": "Follow a founder’s story and notice how past events are connected.",
+    "transcript": [
+      {
+        "time": "00:00",
+        "text": "Every company begins with an idea, but ideas rarely arrive fully formed.",
+        "highlight": "fully formed"
+      },
+      {
+        "time": "00:11",
+        "text": "For today’s founder, the turning point came when customers started using the product in an unexpected way.",
+        "highlight": "turning point"
+      },
+      {
+        "time": "00:25",
+        "text": "Instead of resisting that change, the team listened carefully and adjusted its plans."
+      },
+      {
+        "time": "00:39",
+        "text": "That decision did not guarantee success, but it gave the company a clearer sense of purpose.",
+        "highlight": "sense of purpose"
+      }
+    ],
+    "vocabulary": [
+      {
+        "term": "turning point",
+        "type": "noun",
+        "meaning": "A moment when an important change happens.",
+        "example": "Customer feedback became a turning point for the company."
+      },
+      {
+        "term": "fully formed",
+        "type": "adjective",
+        "meaning": "Complete and clearly developed.",
+        "example": "The plan was not fully formed at the beginning."
+      },
+      {
+        "term": "resist",
+        "type": "verb",
+        "meaning": "To oppose or avoid accepting something.",
+        "example": "The team did not resist the new direction."
+      },
+      {
+        "term": "purpose",
+        "type": "noun",
+        "meaning": "The main reason for doing something.",
+        "example": "The founders shared a strong sense of purpose."
+      }
+    ],
+    "questions": [
+      {
+        "prompt": "What caused the company to change direction?",
+        "options": [
+          "A new investor",
+          "Unexpected customer behavior",
+          "A larger office"
+        ],
+        "answer": 1
+      },
+      {
+        "prompt": "How did the team respond?",
+        "options": [
+          "They listened and adjusted",
+          "They stopped the product",
+          "They ignored customers"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Hidden Brain",
+    "author": "Hidden Brain Media",
+    "match": 94,
+    "topic": "Wellbeing",
+    "duration": "53 min",
+    "episode": "The curious science of better conversations",
+    "description": "Stories and science reveal the unconscious patterns that drive human behavior.",
+    "tone": "bg-[#9bc7b0]",
+    "ink": "text-[#173028]",
+    "tags": [
+      "psychology",
+      "science",
+      "relationships",
+      "mind"
+    ],
+    "level": "Beginner",
+    "cefr": "A1–A2",
+    "speed": "112 wpm",
+    "newWords": 7,
+    "levelReason": "Measured pace, short sentences, familiar examples",
+    "learningGoal": "Listen for the main idea and learn phrases for thoughtful conversations.",
+    "transcript": [
+      {
+        "time": "00:00",
+        "text": "Have you ever walked away from a conversation and wondered what just happened?"
+      },
+      {
+        "time": "00:08",
+        "text": "Today, we are going to explore a simple idea: better conversations begin with curiosity.",
+        "highlight": "begin with curiosity"
+      },
+      {
+        "time": "00:19",
+        "text": "When we ask a good question, we show another person that we want to understand them."
+      },
+      {
+        "time": "00:32",
+        "text": "We also give ourselves time to listen instead of planning our next answer.",
+        "highlight": "instead of"
+      },
+      {
+        "time": "00:44",
+        "text": "This small habit can make an everyday conversation feel more open and honest."
+      }
+    ],
+    "vocabulary": [
+      {
+        "term": "curiosity",
+        "type": "noun",
+        "meaning": "A strong wish to know or learn something.",
+        "example": "She asked the question with real curiosity."
+      },
+      {
+        "term": "wonder",
+        "type": "verb",
+        "meaning": "To think about something because you want to know the answer.",
+        "example": "I wonder why he changed his mind."
+      },
+      {
+        "term": "instead of",
+        "type": "phrase",
+        "meaning": "In place of someone or something.",
+        "example": "Listen instead of planning your reply."
+      },
+      {
+        "term": "honest",
+        "type": "adjective",
+        "meaning": "Truthful and sincere.",
+        "example": "They had an honest conversation."
+      }
+    ],
+    "questions": [
+      {
+        "prompt": "What is the episode’s main idea?",
+        "options": [
+          "Speak as quickly as possible",
+          "Good conversations start with curiosity",
+          "Always prepare your answer"
+        ],
+        "answer": 1
+      },
+      {
+        "prompt": "What does a good question show?",
+        "options": [
+          "We want to understand",
+          "We want to leave",
+          "We know every answer"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "title": "99% Invisible",
+    "author": "Roman Mars",
+    "match": 91,
+    "topic": "Design",
+    "duration": "36 min",
+    "episode": "The quiet objects that shape a city",
+    "description": "A beautifully produced look at the unnoticed architecture and design around us.",
+    "tone": "bg-[#aab8e8]",
+    "ink": "text-[#1d2440]",
+    "tags": [
+      "architecture",
+      "cities",
+      "creative",
+      "culture"
+    ],
+    "level": "Intermediate",
+    "cefr": "B1–B2",
+    "speed": "138 wpm",
+    "newWords": 14,
+    "levelReason": "Natural speech with visual, concrete explanations",
+    "learningGoal": "Use descriptive language to explain how everyday objects affect people.",
+    "transcript": [
+      {
+        "time": "00:00",
+        "text": "Most of us pass hundreds of designed objects before we reach work each morning."
+      },
+      {
+        "time": "00:13",
+        "text": "A bench, a sign, or even the edge of a sidewalk quietly tells us how to move through the city.",
+        "highlight": "move through"
+      },
+      {
+        "time": "00:27",
+        "text": "Good design can feel invisible because it removes a problem before we notice it."
+      },
+      {
+        "time": "00:42",
+        "text": "But when a small object fails, the entire street can suddenly feel confusing.",
+        "highlight": "the entire street"
+      }
+    ],
+    "vocabulary": [
+      {
+        "term": "sidewalk",
+        "type": "noun",
+        "meaning": "A path beside a road for people walking.",
+        "example": "The new sidewalk is wider and safer."
+      },
+      {
+        "term": "invisible",
+        "type": "adjective",
+        "meaning": "Impossible or difficult to see.",
+        "example": "The best design can feel invisible."
+      },
+      {
+        "term": "remove",
+        "type": "verb",
+        "meaning": "To take something away.",
+        "example": "The sign removes confusion."
+      },
+      {
+        "term": "entire",
+        "type": "adjective",
+        "meaning": "Whole or complete.",
+        "example": "The entire street was redesigned."
+      }
+    ],
+    "questions": [
+      {
+        "prompt": "Why can good design feel invisible?",
+        "options": [
+          "It is always transparent",
+          "It solves problems quietly",
+          "It is very expensive"
+        ],
+        "answer": 1
+      },
+      {
+        "prompt": "Which object is mentioned?",
+        "options": [
+          "A bench",
+          "A television",
+          "A suitcase"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Search Engine",
+    "author": "PJ Vogt",
+    "match": 89,
+    "topic": "Technology",
+    "duration": "42 min",
+    "episode": "A question about the internet we forgot to ask",
+    "description": "Questions that keep you up at night, investigated with curiosity and wit.",
+    "tone": "bg-[#f2c766]",
+    "ink": "text-[#2f2918]",
+    "tags": [
+      "internet",
+      "AI",
+      "society",
+      "questions"
+    ],
+    "level": "Advanced",
+    "cefr": "C1–C2",
+    "speed": "172 wpm",
+    "newWords": 24,
+    "levelReason": "Fast dialogue, idioms, and abstract arguments",
+    "learningGoal": "Track competing arguments and recognize informal idiomatic language.",
+    "transcript": [
+      {
+        "time": "00:00",
+        "text": "The internet promised frictionless access to information, but friction may have been doing more work than we realized.",
+        "highlight": "frictionless access"
+      },
+      {
+        "time": "00:16",
+        "text": "When every answer appears instantaneously, the process of deciding which questions matter can atrophy."
+      },
+      {
+        "time": "00:31",
+        "text": "That sounds melodramatic, yet it points to a genuine tension between convenience and judgment.",
+        "highlight": "genuine tension"
+      },
+      {
+        "time": "00:48",
+        "text": "The technology is not neutral, but neither is our habit of blaming it for choices we willingly make."
+      }
+    ],
+    "vocabulary": [
+      {
+        "term": "frictionless",
+        "type": "adjective",
+        "meaning": "Easy and without obstacles or delay.",
+        "example": "The service promises a frictionless experience."
+      },
+      {
+        "term": "atrophy",
+        "type": "verb",
+        "meaning": "To become weaker from lack of use.",
+        "example": "Critical skills may atrophy without practice."
+      },
+      {
+        "term": "melodramatic",
+        "type": "adjective",
+        "meaning": "Showing emotions in an exaggerated way.",
+        "example": "The claim sounds melodramatic at first."
+      },
+      {
+        "term": "neutral",
+        "type": "adjective",
+        "meaning": "Not supporting any side or producing a particular effect.",
+        "example": "The speaker argues that technology is not neutral."
+      }
+    ],
+    "questions": [
+      {
+        "prompt": "What may weaken when answers are instant?",
+        "options": [
+          "Internet speed",
+          "Our ability to choose meaningful questions",
+          "Memory storage"
+        ],
+        "answer": 1
+      },
+      {
+        "prompt": "What tension does the speaker identify?",
+        "options": [
+          "Convenience and judgment",
+          "Color and sound",
+          "Work and sleep"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "title": "Ologies",
+    "author": "Alie Ward",
+    "match": 87,
+    "topic": "Science",
+    "duration": "61 min",
+    "episode": "Tiny worlds, huge discoveries",
+    "description": "Ask smart people delightfully curious questions about what they know best.",
+    "tone": "bg-[#d6a7cd]",
+    "ink": "text-[#3f2037]",
+    "tags": [
+      "biology",
+      "nature",
+      "experts",
+      "learning"
+    ],
+    "level": "Beginner",
+    "cefr": "A1–A2",
+    "speed": "118 wpm",
+    "newWords": 9,
+    "levelReason": "Friendly explanations and repeated key terms",
+    "learningGoal": "Understand a simple scientific explanation and identify examples.",
+    "transcript": [
+      {
+        "time": "00:00",
+        "text": "Today we are looking at a world that is too small for our eyes to see."
+      },
+      {
+        "time": "00:10",
+        "text": "Tiny living things are everywhere: in water, in soil, and even inside us.",
+        "highlight": "living things"
+      },
+      {
+        "time": "00:23",
+        "text": "Most of them do not make us sick. In fact, many help keep our bodies healthy."
+      },
+      {
+        "time": "00:36",
+        "text": "Scientists use special tools to study how these small communities live together."
+      }
+    ],
+    "vocabulary": [
+      {
+        "term": "tiny",
+        "type": "adjective",
+        "meaning": "Very small.",
+        "example": "A tiny drop of water can contain many organisms."
+      },
+      {
+        "term": "soil",
+        "type": "noun",
+        "meaning": "The earth where plants grow.",
+        "example": "Many tiny organisms live in soil."
+      },
+      {
+        "term": "in fact",
+        "type": "phrase",
+        "meaning": "Used to add true and often surprising information.",
+        "example": "Most are harmless. In fact, many are helpful."
+      },
+      {
+        "term": "community",
+        "type": "noun",
+        "meaning": "A group living together or sharing something.",
+        "example": "The organisms form a small community."
+      }
+    ],
+    "questions": [
+      {
+        "prompt": "Where can tiny living things be found?",
+        "options": [
+          "Only in oceans",
+          "In many places, including our bodies",
+          "Only in laboratories"
+        ],
+        "answer": 1
+      },
+      {
+        "prompt": "Are most tiny organisms harmful?",
+        "options": [
+          "No, many are helpful",
+          "Yes, all are dangerous",
+          "The speaker does not know"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "title": "Articles of Interest",
+    "author": "Avery Trufelman",
+    "match": 85,
+    "topic": "Culture",
+    "duration": "34 min",
+    "episode": "What our clothes say before we do",
+    "description": "A show about what we wear and the systems, history, and meaning stitched inside.",
+    "tone": "bg-[#98c9d7]",
+    "ink": "text-[#17303a]",
+    "tags": [
+      "fashion",
+      "design",
+      "history",
+      "identity"
+    ],
+    "level": "Advanced",
+    "cefr": "C1–C2",
+    "speed": "165 wpm",
+    "newWords": 21,
+    "levelReason": "Cultural nuance, complex sentences, and idioms",
+    "learningGoal": "Interpret implied meaning and discuss how clothing communicates identity.",
+    "transcript": [
+      {
+        "time": "00:00",
+        "text": "Clothing speaks on our behalf long before we have the chance to introduce ourselves.",
+        "highlight": "on our behalf"
+      },
+      {
+        "time": "00:14",
+        "text": "A uniform can signal authority, belonging, resistance, or some unstable combination of all three."
+      },
+      {
+        "time": "00:29",
+        "text": "Those meanings are not stitched permanently into the fabric; culture continually renegotiates them.",
+        "highlight": "renegotiates"
+      },
+      {
+        "time": "00:46",
+        "text": "What appears to be an individual choice is often entangled with class, labor, geography, and aspiration."
+      }
+    ],
+    "vocabulary": [
+      {
+        "term": "on behalf of",
+        "type": "phrase",
+        "meaning": "As a representative of someone or something.",
+        "example": "The uniform speaks on behalf of the organization."
+      },
+      {
+        "term": "signal",
+        "type": "verb",
+        "meaning": "To communicate information indirectly.",
+        "example": "Clothing can signal belonging."
+      },
+      {
+        "term": "renegotiate",
+        "type": "verb",
+        "meaning": "To discuss or define something again under new conditions.",
+        "example": "Culture renegotiates the meaning of fashion."
+      },
+      {
+        "term": "entangled",
+        "type": "adjective",
+        "meaning": "Closely connected in a complicated way.",
+        "example": "Style is entangled with social identity."
+      }
+    ],
+    "questions": [
+      {
+        "prompt": "What can a uniform communicate?",
+        "options": [
+          "Only authority",
+          "Several changing social meanings",
+          "Nothing about identity"
+        ],
+        "answer": 1
+      },
+      {
+        "prompt": "How does culture affect clothing meanings?",
+        "options": [
+          "It continually changes them",
+          "It makes them permanent",
+          "It removes them"
+        ],
+        "answer": 0
+      }
+    ]
+  }
+]
