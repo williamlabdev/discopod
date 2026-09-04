@@ -125,6 +125,12 @@ The lever that controls this is the audio source's licence, which is where the F
 public-domain question lives. Generation timing is not a copyright control and must not be
 chosen as if it were.
 
+That question is now answered by
+[ADR 0007](0007-fsi-is-a-pipeline-fixture-not-a-catalogue-source.md), and the answer is
+that a clean licence was necessary and not sufficient: FSI's tapes are freely
+distributable and still unfit to ship, so the first Mandarin content has to be licensed
+from a publisher rather than found in the public domain.
+
 ### 5. Telemetry is deferred together with its consumer
 
 Criteria 12 and 13 are the one part of R24 that genuinely needs a runtime: the browser

@@ -47,3 +47,32 @@ speaker labels and millisecond cues.
 
 Licensing has not been assessed. Reading a public RSS feed and redistributing a publisher's
 transcripts and audio inside an app are different things, and that question is open.
+
+## The Mandarin fixture — not a source
+
+There is no Mandarin audio in this list and there is none in the catalogue. What exists is
+a **test fixture** for the ASR and alignment pipeline, decided in
+[ADR 0007](../../../../docs/adr/0007-fsi-is-a-pipeline-fixture-not-a-catalogue-source.md):
+FSI's *Standard Chinese*, a US government work in the public domain.
+
+It is a fixture and never a catalogue source. Do not seed it into `catalog.seed.json`, and
+do not take a `cpm` measurement from it — it is 1970s language-lab audio read at teaching
+speed, so the rate is real and means the wrong thing. ADR 0004's block on `cpm` stands.
+
+Two tapes, chosen because they are continuous connected speech rather than drill:
+
+    archive.org item  FSIStandardChinese
+      FSI - Standard Chinese - Module 09 LIC - Unit 05 - Tape 1.mp3   27 min, 0 pauses >=0.5s
+      FSI - Standard Chinese - Module 09 LIC - Unit 03 - Tape 2.mp3   17 min, 1 pause
+
+    archive.org item  FSI-StandardChinese-StudentTexts
+      34 PDFs. Unaligned — no timings, no per-tape mapping. For checking ASR
+      output by hand, not for building cues from.
+
+Most of the course is not like this. The drill tapes are 40–51% silence with speech
+arriving in 1–2 second fragments, because the silence is the gap the student speaks into.
+Measure before assuming any other tape is usable:
+
+    ffmpeg -i TAPE.mp3 -af silencedetect=noise=-30dB:d=0.5 -f null - 2>&1 | grep silence_
+
+The audio is deliberately not committed — ~40 MB, re-fetchable from a stable mirror.

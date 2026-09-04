@@ -53,6 +53,9 @@ npm run lint && npm run typecheck && npm run build
   catalogue, and nothing reads it yet. It is not a second catalogue source and its
   `easy`/`intermediate`/`hard` values are not `DifficultyProfile.level`. See
   `apps/api/src/ingest/README.md` before using it.
+- FSI's *Standard Chinese* tapes are the ASR pipeline's **test fixture**, never catalogue
+  content, and never a source for `cpm` — they are 1970s language-lab audio read at
+  teaching speed. Don't seed them, don't commit the audio. See ADR 0007.
 - JSON under `apps/api/src/**/data/` reaches `dist` only via the `assets` glob in
   `nest-cli.json`. Put data files in a `data/` directory or the build drops them, and
   runtime `readFileSync` works in dev and fails in production.

@@ -84,6 +84,16 @@ text to show a reader, and what language the audio is. `Show.language` is now a
 scripts without a duplicate show row, and `rateUnitFor` stops being keyed by a writing
 system. [ADR 0006](docs/adr/0006-separate-spoken-language-from-written-form.md).
 
+**FSI is a fixture, not a source, and the Mandarin direction is blocked on permission.**
+FSI's *Standard Chinese* was the only Mandarin audio available without asking anyone —
+public domain, complete on archive.org. Six tapes were measured. The drill tapes are
+40–51% silence with speech in 1–2 second fragments, and module 09 is the opposite:
+continuous connected speech, one tape running 27 minutes without a detected pause. It is
+still not catalogue content — no aligned text, and a `cpm` measured off 1970s language-lab
+audio would be precise and false. So it becomes the ASR pipeline's test fixture, and the
+first Mandarin row has to come from a publisher who says yes.
+[ADR 0007](docs/adr/0007-fsi-is-a-pipeline-fixture-not-a-catalogue-source.md).
+
 Two defects surfaced by actually rendering the API's output, both fixed: `?topic=` was
 accepted by validation and then silently ignored, and `Math.round(30/60)` made a
 30-second episode read *"1 minutes"*.
@@ -93,10 +103,20 @@ finished both services before trusting the live site.
 
 ## Next steps, in order
 
-1. **Persistence.** Write a Postgres adapter for `CatalogRepository` and bind it in
+1. **Write to Taiwanese Mandarin podcasters for permission.** This is first because it is
+   the only item with somebody else's reply time in front of it, and the whole Mandarin
+   direction queues behind it. Every pair the app serves today has `learning: 'en'`; the
+   first row going the other way needs audio *and* a transcript we may distribute, at a
+   natural speaking rate. [ADR 0007](docs/adr/0007-fsi-is-a-pipeline-fixture-not-a-catalogue-source.md)
+   establishes that the public domain cannot supply the third of those, so this is
+   correspondence, not code. Leads: Cozy Mandarin, Convo Chinese, Learn Taiwanese Mandarin.
+   Start the letters, then do 2 while they sit in someone's inbox.
+2. **Persistence.** Write a Postgres adapter for `CatalogRepository` and bind it in
    `CatalogModule`; the in-memory one stays for tests. Saved words need the same treatment.
-2. **Then** the larger vision pieces: RSS ingestion, the ASR/translation pipeline, learner
+3. **Then** the larger vision pieces: RSS ingestion, the ASR/translation pipeline, learner
    auth (the `x-learner-id` header is a placeholder), and the completion-by-level ranking signal.
+   The ASR pipeline has a fixture waiting for it — see the Mandarin fixture section in
+   `apps/api/src/ingest/README.md`. It is a fixture, not content.
 
 ## Traps already paid for — do not re-learn these
 

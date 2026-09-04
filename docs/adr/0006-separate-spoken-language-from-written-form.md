@@ -168,6 +168,13 @@ was never translated.
   FSI's public-domain tapes cannot supply them: those recordings are 40–51% silence by
   construction, with the Mandarin arriving in 1–2 second drill fragments, so a `cpm`
   taken from them would measure a drill tape and not running speech.
+
+  > **Refined by [ADR 0007](0007-fsi-is-a-pipeline-fixture-not-a-catalogue-source.md).**
+  > The percentages above are right for FSI's drill tapes and wrong as a claim about the
+  > course: module 09 is continuous connected speech, one tape running 27 minutes without a
+  > detected pause. The conclusion survives on better grounds — teaching-speed 1970s
+  > language-lab audio, and no aligned text — and FSI is now the ASR pipeline's fixture
+  > rather than a catalogue candidate.
 - **It does not touch `proficiency`.** ADR 0003 decision 7 (`cefr` → scale-qualified
   band) is the same shape of defect as this one — a value whose scale is implied — and it
   is still outstanding, now with ADR 0004, ADR 0005 and R24 waiting on it.
