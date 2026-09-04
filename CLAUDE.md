@@ -29,6 +29,10 @@ npm run lint && npm run typecheck && npm run build
   `@openai/sites-vite-plugin` — removing the vendor coupling is the point of ADR 0001.
 - Do not switch Geist back to `next/font/google`; it needs build-time network egress.
 - `apps/web/components/ui/**` is vendored shadcn output, excluded from lint. Don't hand-edit.
+- `apps/web/AGENTS.md` and `apps/web/CLAUDE.md` are written by `next dev`, not by hand.
+  Don't edit them — they get rewritten. They are committed so that a `next` upgrade
+  changing what they instruct agents to do shows up in a diff instead of arriving
+  silently. Read that diff; don't wave it through.
 - Every ranked result must carry its `reason`. Never fabricate the completion ranking signal.
 - The catalogue's single source is `apps/api/src/catalog/data/catalog.seed.json`. The web app
   fetches it from the API during `next build` (`apps/web/scripts/build.mjs`) — don't
