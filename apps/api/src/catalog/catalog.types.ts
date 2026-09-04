@@ -48,6 +48,22 @@ export interface Show {
    */
   language: SpokenLanguage;
   topics: string[];
+  /**
+   * Scalar, unlike `Episode.description`, and the asymmetry is deliberate.
+   *
+   * The same argument applies — a show blurb is read before listening, so it
+   * belongs in the learner's language — but nothing reads this field: it is not
+   * rendered, not in `toCard`, and not in the search haystack, which spans
+   * `episode.description` only. More to the point, overlays are keyed by
+   * episode id, so a show has no path by which a second language could ever be
+   * supplied. Typing it `Localized` would produce a field with exactly one key,
+   * forever, and a `pick()` on it would exclude every non-English learner the
+   * first time somebody rendered it.
+   *
+   * So it stays scalar until a show blurb has both a reader and a way to be
+   * translated. Whoever gives it the first, give it the second in the same
+   * change.
+   */
   description: string;
   profile: DifficultyProfile;
   sourceUrl?: string;
@@ -56,10 +72,9 @@ export interface Show {
    * them rather than gesture at them.
    *
    * A link to the source credits the author; it does not state a licence, and
-   * under a share-alike licence those are two separate obligations. The first
-   * show that needs this is the spoken Wikipedia reading, which is CC BY-SA:
-   * naming the licence is a condition of using it at all, so it is data about
-   * the show and not decoration on a page.
+   * under a share-alike licence those are two separate obligations. Under
+   * CC BY-SA, naming the licence is a condition of using the audio at all — so
+   * it is data about the show, not decoration on a page.
    *
    * Optional, because "no licence named" and "public domain" are different
    * answers and neither should be invented. A show without this renders the
@@ -110,7 +125,17 @@ export interface Episode {
   id: string;
   showId: string;
   title: string;
-  description: string;
+  /**
+   * What the episode is about, in the learner's own language.
+   *
+   * ADR 0003 decision 2 originally classified this as scalar, in the *show's*
+   * language, and that was wrong in a way no `en → en` catalogue could reveal.
+   * A description is read *before* listening, by a learner who by definition
+   * cannot yet follow the audio; writing it in the language being learned hands
+   * the one sentence that decides "is this for me?" to the one person who
+   * cannot read it. See ADR 0010.
+   */
+  description: Localized;
   durationSeconds: number;
   audioUrl?: string;
   /** True when the audio and transcript come from the publisher, not from our own ASR. */

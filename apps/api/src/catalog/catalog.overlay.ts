@@ -3,8 +3,9 @@
  *
  * The seed is flat and `en → en` (see catalog.seed.ts). A learner whose own
  * language is not English needs the *explanatory* half of an episode written in
- * theirs: the level reason, the learning goal, the vocabulary glosses, the
- * comprehension prompts, and a translation under each transcript cue. The
+ * theirs: the blurb that decides whether they open it at all, the level reason,
+ * the learning goal, the vocabulary glosses, the comprehension prompts, and a
+ * translation under each transcript cue. The
  * show's own half — title, transcript text, the terms themselves, the examples
  * — is the material being learned and stays in the show's language, which is
  * why one English episode can serve every native language at once. ADR 0003.
@@ -21,6 +22,7 @@
  *   "<episode id>": {
  *     "levelReason":  "...",              // profile.reason
  *     "learningGoal": "...",
+ *     "description":  "...",              // the blurb, read before listening
  *     "transcript":   { "MM:SS": "..." }, // keyed by the seed's cue time
  *     "vocabulary":   { "<term>": "..." },// keyed by the English term
  *     "questions": [                      // positional, in seed order
@@ -64,6 +66,13 @@ interface OverlayQuestion {
 interface OverlayEpisode {
   levelReason: string;
   learningGoal: string;
+  /**
+   * The episode blurb. Required, and required for a sharper reason than the
+   * other fields: this is the sentence a learner reads to decide whether to
+   * open the episode at all, so an episode offered in a pair whose description
+   * is missing is one the learner cannot choose. See ADR 0010.
+   */
+  description: string;
   /** Keyed by the seed cue's `time` ("00:07"). Cues may be partially covered. */
   transcript?: Record<string, string>;
   /** Keyed by the seed's `term`. Every term must be present — see apply(). */
@@ -110,6 +119,7 @@ function apply(episode: Episode, layer: OverlayEpisode, language: LanguageTag): 
     reason: { ...episode.profile.reason, [language]: layer.levelReason },
   };
   episode.learningGoal = { ...episode.learningGoal, [language]: layer.learningGoal };
+  episode.description = { ...episode.description, [language]: layer.description };
 
   for (const entry of episode.vocabulary) {
     const meaning = layer.vocabulary[entry.term];

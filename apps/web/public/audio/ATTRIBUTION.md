@@ -6,88 +6,92 @@ in `docs/` so that copying the directory cannot separate the audio from its term
 
 ---
 
-## `dayanta-lead.mp3` / `dayanta-lead.vtt` — 大雁塔（条目导言）
+## `haishan-lead.mp3` / `haishan-lead.vtt` — 海山漁港（條目導言）
 
-An excerpt of a volunteer reading of the Chinese Wikipedia article **大雁塔** (Giant Wild
-Goose Pagoda), recorded for Wikipedia's spoken-articles project.
+An excerpt of a volunteer reading of the Chinese Wikipedia article **海山漁港** (Haishan
+Fishing Port, Hsinchu, Taiwan), recorded for Wikipedia's spoken-articles project.
 
 | | |
 | --- | --- |
-| **Speaker** | Yu chuan |
-| **Source recording** | [`File:Zh-tw-大雁塔.ogg`](https://commons.wikimedia.org/wiki/File:Zh-tw-%E5%A4%A7%E9%9B%81%E5%A1%94.ogg) on Wikimedia Commons, uploaded 2015-11-30 |
-| **Source text** | [zh.wikipedia.org 大雁塔, revision 36492554](https://zh.wikipedia.org/w/index.php?title=%E5%A4%A7%E9%9B%81%E5%A1%94&oldid=36492554) (2015-07-24) |
-| **Licence** | CC BY-SA — see the discrepancy below |
-| **sha256 of the source .ogg** | `72d5c2d6f829a2cfc822a66a09aa2f0432d09a5a2ab21e92fe047cb250f2a4b7` |
+| **Speaker** | Yuriy kosygin, who is also the article's author |
+| **Source recording** | [`File:Zh-海山漁港.ogg`](https://commons.wikimedia.org/wiki/File:Zh-%E6%B5%B7%E5%B1%B1%E6%BC%81%E6%B8%AF.ogg) on Wikimedia Commons, uploaded 2014-07-23 01:15:57 UTC |
+| **Source text** | [zh.wikipedia.org 海山漁港, revision 31977329](https://zh.wikipedia.org/w/index.php?title=%E6%B5%B7%E5%B1%B1%E6%BC%81%E6%B8%AF&oldid=31977329) (2014-07-22) |
+| **Licence** | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0), stated on the Commons file page as `{{self|cc-by-sa-4.0}}` and applying to the underlying article text as well |
+| **sha1 of the source .ogg** | `271b619de8e67ab5464dc195c6f98d19b0ef8d5b` (verified against the Commons API on download) |
+| **sha256 of the source .ogg** | `b083a0551cf32897d847d7ce0999efaad3784afc2ff5561bedd993d42c364386` |
+
+### Why this recording and not another spoken article
+
+Chinese Wikipedia's spoken-article corpus is not a Traditional Chinese source. A survey of it
+found the underlying wikitext is overwhelmingly **Simplified-authored**, including for files
+whose Commons name carries the `Zh-tw-` prefix — that prefix records the *narrator's accent*,
+not the script of the text. Anyone reaching for this corpus again should assume Simplified and
+check, rather than trust the filename.
+
+海山漁港 is the exception this project found, and the evidence that it is Traditional as
+authored rather than machine-converted is in the wikitext itself:
+
+- Only Traditional forms appear throughout — 中華民國, 臺灣, 漁港, 辦理, 興建, 斥資.
+- There is **no `{{NoteTA}}`** conversion configuration, i.e. nothing in the article needed
+  converting for any reader.
+- The address is written `海山-{里}-`. The `-{ }-` markup *suppresses* automatic conversion,
+  and it is there to stop 里 being turned into 裡. That is a Traditional-writing author
+  defending a specific character, which a converted article would have no reason to carry.
+- Its sources are Taiwanese government pages (行政院農業委員會漁業署, 新竹市政府).
 
 ### Which revision was read
 
-Two claims about this exist and they disagree, so both are recorded.
-
-- The Commons file page says the spoken text is **oldid 38160572**.
-- The reader says aloud, at 00:30 of the recording, *"此录音根据2015年7月24日版本录制"* —
-  recorded from the **2015-07-24** version.
-
-The revision history settles it. 38160572 is dated **2015-11-30** and its author is Yu chuan
-himself; its parent, 36492554, is dated **2015-07-24T16:29:11Z**, exactly the date spoken.
-The two revisions differ by one line — the `{{Spoken Wikipedia}}` template Yu chuan added
-after recording — and the prose is byte-identical.
-
-So the file page's link is off by one edit, that edit is the reader's own, and it changes no
-word he read. **36492554 is cited above as the text**, because it is the one the reader named
-and the one that existed when he read it. Nothing turns on the choice; it is written down so
-that nobody has to re-derive it.
-
-### The licence discrepancy
-
-The Commons file page carries `{{self|cc-by-sa-4.0}}` — **CC BY-SA 4.0**.
-
-At 15:48 the reader states a different one aloud: *"这个语音档案及所有的文字内容，都是在
-创用CC署名—相同方式共享 3.0 协定下发行的"* — **CC BY-SA 3.0**.
-
-Both are BY-SA, so the obligations that matter here (credit the author, name the licence,
-share derivatives alike) are the same either way, and 4.0 is the later and more permissive of
-the two. This project relies on the **file page's 4.0**, which is the uploader's own written
-declaration on the work itself, and notes the spoken 3.0 because a licence stated two ways is
-a fact about the source, not a detail to tidy away.
+The article carries `{{Spoken Wikipedia|Zh-海山漁港.ogg|2014年|7月23日|語音}}` and the reader
+says at 00:20 of the recording *"錄製時間為西元2014年7月23日星期三"*. The Commons upload
+timestamp is 2014-07-23 01:15:57 UTC. **31977329** is the revision current on that date — the
+last edit before the recording — and is what is cited above.
 
 ### What was changed
 
 This is a derivative work. Under BY-SA the modifications have to be stated:
 
-1. **Excerpted.** 00:42.00–02:25.20 of the source, which is the article's lead section. The
-   reader's spoken preamble (his name, the version date) and everything from the first
-   section heading onward are not included.
+1. **Excerpted.** 00:39.90–02:03.40 of the source, which is the article's lead section. The
+   reader's spoken preamble (the source, the URL, the recording date), the coordinates he
+   reads out of the infobox, and everything from the first section heading (沿革) onward are
+   not included.
 2. **Transcoded.** Ogg Vorbis 44.1 kHz mono → MP3 64 kbps 44.1 kHz mono, for browsers that
    do not play Ogg.
-3. **Loudness normalised** to −16 LUFS. The source averages −25.1 dB.
-4. **Timed transcript added** (`dayanta-lead.vtt`, and the cues in
-   `apps/api/src/catalog/data/catalog.zh-Hans.seed.json`). No timed transcript was published
-   with the recording; this one was built here — see below.
+3. **Loudness normalised** to −16 LUFS, linear, landing at −16.5 LUFS / −4.25 dBTP. Note the
+   direction: the source is **−11.79 LUFS**, louder than the target, so this turns it *down*.
+4. **Timed transcript added** (`haishan-lead.vtt`, and the cues in
+   `apps/api/src/catalog/data/catalog.en-zh-Hant.seed.json`). No timed transcript was
+   published with the recording; this one was built here — see below.
 
 ### How the transcript was made
 
 The words come from the Wikipedia revision above. The timings come from `mlx-whisper`
-(large-v3-turbo) run on the excerpt that ships. Neither alone would be enough, and each
-caught the other's errors:
+(large-v3-turbo) run on the source. This division is not a convenience: **the ASR decodes
+Mandarin into Simplified**, so using its output as text would have silently undone the one
+property this episode was chosen for. The published wikitext is the only source of characters
+here, and nothing is converted between scripts — ADR 0006.
 
-- The published text corrected the ASR's homophones: it heard 大**祠**恩寺 for 大**慈**恩寺,
-  永**辉** for 永**徽**, 市**辉** for 市**徽**, 玄**帐** for 玄**奘**.
-- The ASR caught the reader departing from the published text once. At 00:43 he says
-  **而遭多次毁损**; the article reads 而多次遭到损毁. Three independent decodes — the full
-  file, an 8-second slice, and the shipped excerpt — all return that word order, and the
-  segment's confidence is unremarkable (avg_logprob −0.125, against −0.158 across the
-  passage). The cue carries **what he said**, because it is a transcript of the audio.
+Three places where the reader and the published text disagree, and what was done about each:
 
-This is why the episode is seeded `verifiedLesson: false`: Wikipedia published the text, but
-nobody published a timed transcript of this recording, and one cue departs from the text on
-purpose.
+| Text | ASR | Shipped | Why |
+| --- | --- | --- | --- |
+| 東北至新竹市區**約**8公里 | 東北至新竹市區八公里 | without 約 | A clean 3.8 s slice decodes at avg_logprob **−0.097**, the best in the passage, and the full-file decode agrees. He omitted it. |
+| 、鯊魚類為主 | **以及**鯊魚類**等**為主 | with 以及 … 等 | Two independent decodes return it. He added it. |
+| **北距**新竹漁港11.5公里 | 北**至**新竹漁港11.5公里 | **北距**, as published | Three decodes say 北至, but the same segment also renders 漁港 as 渔感, so its confidence is not usable. A 2.3 s window meant to settle it returned a Whisper hallucination (a Chinese TV-subtitle watermark) instead. Unresolved, so the published text stands and the disagreement is recorded rather than decided. |
+
+That last row is why the episode is seeded `verifiedLesson: false`: Wikipedia published the
+text, nobody published a timed transcript of this recording, and one cue is not established.
 
 ### The speech rate
 
-`≈ 140 cpm`, and it is measured rather than estimated: 240 Han characters over 102.47 s of
-speech (42.31 → 144.78 in the source). At a −40 dB threshold the passage is 21% silence
-across 36 pauses, which is what a rate that low is made of — this is deliberate read-aloud,
-not fast speech.
+`≈ 144 cpm`, measured rather than estimated: 197 Han characters over 82.06 s of speech
+(40.38 → 122.44 in the source). Digits are not counted, so the spoken length of "11.5公里" is
+undercounted — the same convention as every other `cpm` in the catalogue, kept for
+comparability rather than for accuracy about this one line.
+
+The delivery is slower than that number suggests, because a third of it is silence: at a
+−40 dB threshold the shipped excerpt holds **35 pauses totalling 28.11 s, 34% of its 83.5 s**.
+The noise floor is genuinely low — a measured pause reads −63.3 dB mean against −11.7 dB for
+speech — so those are real gaps, not a threshold artefact.
 
 ---
 

@@ -217,7 +217,7 @@ function toCard(ranked: RankedEpisode, show: Show | undefined, pair: LanguagePai
     topic: topics[0] ?? 'Listening',
     tags: topics.slice(1),
     episodeTitle: episode.title,
-    description: episode.description,
+    description: pick(episode.description, pair.speaks, `Episode ${episode.id} description`),
     level: episode.profile.level,
     cefr: episode.profile.cefr,
     suitability: ranked.suitability,

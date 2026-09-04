@@ -48,9 +48,24 @@ interface SeedFile {
   file: string;
 }
 
+/**
+ * One entry per pair the seeds serve.
+ *
+ * Named by pair, not by language, because that is what a seed file is: a
+ * catalogue for one `speaks → learning` combination. The distinction earns its
+ * awkwardness next to `catalog.zh-Hant.json`, which sits in the same directory
+ * and is named for a single language — that one is an *overlay*, a zh-Hant
+ * explanatory layer over episodes in some other language, and it is the other
+ * axis entirely. `catalog.zh-Hant.seed.json` would have differed from it by
+ * four characters while meaning something unrelated.
+ *
+ * `catalog.seed.json` keeps its bare name: it is the base catalogue and its
+ * pair is SEED_PAIR, which is the constant the rest of this file is written
+ * against.
+ */
 const SEED_FILES: SeedFile[] = [
   { pair: SEED_PAIR, file: 'catalog.seed.json' },
-  { pair: { speaks: 'en', learning: 'zh-Hans' }, file: 'catalog.zh-Hans.seed.json' },
+  { pair: { speaks: 'en', learning: 'zh-Hant' }, file: 'catalog.en-zh-Hant.seed.json' },
 ];
 
 /**
@@ -107,11 +122,10 @@ interface SeedRow {
   duration: string;
   episode: string;
   /**
-   * ADR 0003 decision 2 classifies this as scalar, in the show's language.
-   * `catalog.zh-Hans.seed.json` writes it in English anyway, deliberately: a
-   * description is read before listening, so a Mandarin blurb on a Mandarin
-   * episode is unreadable to the learner the card is for. The field wants to be
-   * `Localized`; ADR 0009 decision 7 says why that migration is not here yet.
+   * Flat here like every other seed string, and lifted into the file's
+   * `speaks` language by `authoredIn`. It reaches `Episode.description` as
+   * `Localized` and `Show.description` as a scalar; both of those fields carry
+   * the reasoning for their side of that split.
    */
   description: string;
   tags: string[];
@@ -283,7 +297,7 @@ function loadSeedFile(
       id,
       showId,
       title: row.episode,
-      description: row.description,
+      description: authoredIn(pair, row.description),
       durationSeconds: parseDurationSeconds(row.duration),
       audioUrl: row.audioSrc,
       publisherTranscript: row.verifiedLesson === true,

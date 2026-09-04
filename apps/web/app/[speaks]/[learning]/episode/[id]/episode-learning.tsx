@@ -29,10 +29,37 @@ import type { EpisodeDetail } from '@/lib/catalogue';
 import { LANGUAGE_NAMES, pairPath, type LanguagePair } from '@/lib/language';
 import { createSavedWord, readSavedWords, type SavedWord } from '@/lib/saved-words';
 
+/** Any Han character. Mirrors `HAN` in `lib/catalogue.ts` and means the same thing. */
+const HAN = /\p{Script=Han}/u;
+
 function TranscriptLine({ text, highlight }: { text: string; highlight?: string }) {
-  if (!highlight || !text.includes(highlight)) return <>{text}</>;
-  const [before, after] = text.split(highlight);
-  return <>{before}<mark className="rounded bg-[#f5d8ad] px-1 text-inherit">{highlight}</mark>{after}</>;
+  if (!highlight) return <>{text}</>;
+  // indexOf, not split: a term that occurs twice in one cue splits into three
+  // parts, and taking [before, after] would drop everything past the second
+  // occurrence — a transcript line silently losing its tail.
+  const at = text.indexOf(highlight);
+  if (at < 0) return <>{text}</>;
+
+  /**
+   * Horizontal padding on the mark is a word-space in a script that has none.
+   *
+   * `px-1` reads as the highlight hugging an English word, because English text
+   * already has spaces around it. Chinese is written without them, so the same
+   * padding renders as 「海山 漁港 ，」 — and a space inside Chinese text is not
+   * decoration, it is a claim about where one word ends. The learner reading
+   * along is the person least able to tell the difference. Same lesson as
+   * `findOccurrence` in `lib/catalogue.ts`: English typography assumptions do
+   * not survive contact with Han text.
+   */
+  const pad = HAN.test(highlight) ? 'px-0' : 'px-1';
+
+  return (
+    <>
+      {text.slice(0, at)}
+      <mark className={`rounded bg-[#f5d8ad] ${pad} text-inherit`}>{highlight}</mark>
+      {text.slice(at + highlight.length)}
+    </>
+  );
 }
 
 export function EpisodeLearning({ episode, pair }: { episode: EpisodeDetail; pair: LanguagePair }) {

@@ -128,10 +128,17 @@ Applied to `catalog.types.ts`:
   > read *before* listening, by someone who by definition cannot yet follow the audio, so a
   > Mandarin blurb on a Mandarin episode is unreadable to the learner the card is for. This
   > row was decided while every show was English and the two answers could not differ — the
-  > same invisible default this ADR exists to remove. Episode 101 deviates deliberately and
-  > ships its description in English; see
+  > same invisible default this ADR exists to remove. Episode 101 deviated deliberately and
+  > shipped its description in English; see
   > [ADR 0009](0009-the-first-mandarin-episode-is-a-read-encyclopedia-article.md)
   > decision 7 for why the `Localized` migration was not done in that change.
+  >
+  > **Corrected, 2026-09-05.** `Episode.description` is now `Localized`, keyed by the
+  > learner's language, on the same missing-key-is-exclusion rule as `learningGoal` —
+  > [ADR 0010](0010-the-chinese-discopod-teaches-is-traditional.md) decision 2. This row
+  > now applies only to `Show.description`, which stays scalar because nothing renders it
+  > and the overlay is keyed by episode id, so there is no file shape that could translate
+  > it. When a show blurb reaches a page, it gets the same treatment for the same reason.
 
 ### 3. A missing translation is an exclusion, not a fallback
 
@@ -207,6 +214,12 @@ ADR exists to remove.
 > [ADR 0009](0009-the-first-mandarin-episode-is-a-read-encyclopedia-article.md) decision 6;
 > the field is still lying about which scale it is. This decision now has a caller with a
 > concrete defect behind it rather than a hypothetical one.
+>
+> **Still true after the episode was replaced.** Episode 101 is gone; episode 102
+> (`en → zh-Hant`, 海山漁港) carries the same `cefr: "B1"` on the same contested scale —
+> [ADR 0010](0010-the-chinese-discopod-teaches-is-traditional.md), which explicitly declined
+> to rename the field again. Two Mandarin episodes have now been shipped with a field name
+> that presumes the wrong scale, which is the evidence that this outlives any one recording.
 
 ## What this ADR does not do
 

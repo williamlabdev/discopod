@@ -1,7 +1,23 @@
 # ADR 0009 — The first Mandarin episode is a read encyclopedia article, not a podcast
 
-- **Status:** Accepted
+- **Status:** Superseded by
+  [ADR 0010](0010-the-chinese-discopod-teaches-is-traditional.md), 2026-09-05
 - **Date:** 2026-09-05
+
+> **Read this as history.** Episode 101 and the whole `en → zh-Hans` pair were removed the
+> same day, because this ADR chose a *recording* and let its script become the product's
+> answer to "which Chinese does DiscoPod teach?" by default. ADR 0010 makes that a decision
+> instead — Traditional — and replaces 101 with a Traditional-sourced episode.
+>
+> What survives is the pipeline, restated in ADR 0010 decisions 4–6: explicit `showId`
+> (decision 2), `Show.licence` as data (decision 3), published text for characters and ASR
+> for timings with `verifiedLesson: false` (decision 4), and recording source discrepancies
+> rather than smoothing them (decision 5). Decision 7's deferred migration is **done** —
+> `Episode.description` is now `Localized` (ADR 0010 decision 2). Decision 6's complaint
+> about `cefr` is unchanged and still open.
+>
+> Everything below is left exactly as written, including its confessions. It is the record
+> of how the default was acquired, which is the part worth keeping.
 - **Owner of the judgement calls:** William
 - **Builds on:** [ADR 0008](0008-calibrate-cpm-by-extrapolation-and-label-it.md), which
   made a `cpm` episode rankable at all
