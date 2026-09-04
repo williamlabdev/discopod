@@ -36,12 +36,12 @@ export class CatalogController {
   @Get('episodes/start-here')
   startHere(@Query() query: EpisodeQueryDto): Promise<RankedEpisode | null> {
     const level: LearningLevel = query.level ?? 'Intermediate';
-    return this.catalog.startHere(level, query.speaks);
+    return this.catalog.startHere(level, query);
   }
 
   @Get('episodes/:id')
   getEpisode(@Param('id') id: string, @Query() query: EpisodeQueryDto): Promise<Episode> {
-    return this.catalog.getEpisode(id, query.speaks);
+    return this.catalog.getEpisode(id, query);
   }
 
   @Get('episodes/:id/transcript')
@@ -49,7 +49,7 @@ export class CatalogController {
     @Param('id') id: string,
     @Query() query: EpisodeQueryDto,
   ): Promise<TranscriptCue[]> {
-    const episode = await this.catalog.getEpisode(id, query.speaks);
+    const episode = await this.catalog.getEpisode(id, query);
     return episode.transcript;
   }
 }

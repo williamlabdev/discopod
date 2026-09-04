@@ -161,6 +161,24 @@ was never translated.
   so an episode is still excluded per reader but never per script. Harmless while every
   episode is `en`; the first Chinese episode is what makes it matter, and it is a
   controller and DTO change, not a model one.
+
+  > **Closed on 2026-09-05,** ahead of the first Chinese episode rather than after it, and
+  > it was indeed a controller and DTO change. `EpisodeQueryDto` gained `learning`,
+  > `CatalogService` gained `isWrittenIn`, and `episodesPath` on the web side now sends
+  > both sides of the pair on every request. Two decisions were made in the doing that this
+  > ADR did not anticipate, recorded here because they constrain what comes next:
+  >
+  > **An omitted `learning` means the default pair, not "every language".** Symmetric with
+  > `speaks`, and chosen over "no filter" because a caller that forgets the parameter must
+  > not be handed a catalogue in a language it never asked to learn. The failure mode of
+  > the other choice is silent and looks like working software.
+  >
+  > **Episode ids are global across seed files.** `loadSeedCatalog` now reads a list of
+  > `{ pair, file }` descriptors instead of one path — the "own file, not a column" route
+  > `catalog.seed.ts` always named — and every file's rows number from 1, so a second seed
+  > would silently overwrite the first. It throws instead, on both episode-id and show-id
+  > collisions, for decision 6's reason: this is data disagreeing with itself, not data we
+  > honestly do not have. Give each seed file its own id range.
 - **It does not add Chinese audio, or calibrate `cpm`.** `RATE_UNIT` now says Mandarin is
   counted in `cpm` in one row instead of two, and `COMFORTABLE_RATE` still has no `cpm`
   row. A Mandarin episode remains excluded from every catalogue until someone stands

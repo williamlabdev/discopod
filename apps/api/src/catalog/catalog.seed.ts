@@ -28,14 +28,37 @@ import { rateUnitFor, type SpeechRate } from './speech-rate';
 export const SEED_PAIR = { speaks: 'en', learning: 'en' } as const satisfies LanguagePair;
 
 /**
- * What the seed's audio is spoken in, derived from the pair rather than typed
- * again. `SEED_PAIR.learning` is the written form the transcript is in; this is
- * the sound behind it, and the two must not be able to disagree. ADR 0006.
+ * Every seed file, each carrying the pair it is written in.
+ *
+ * This is the "second script arrives as its own file, not as a column" note
+ * below, built. The rows stay flat — a row still says nothing about what
+ * language it is in — but the constant that answers that question is now per
+ * file instead of per module, so a Mandarin seed is a new entry here and a new
+ * JSON file, and it changes nothing about the English one.
+ *
+ * The alternative was a `language` column on every row. That is one chance per
+ * row for the data to contradict itself, and the contradiction would be silent:
+ * a row mislabelled `en` in a Mandarin file gets English thresholds applied to a
+ * character count and produces a suitability score that is precise and false.
+ * A file cannot be in two languages, so the file is where the claim belongs.
  */
-const SEED_SPOKEN = spokenLanguageOf(SEED_PAIR.learning);
+interface SeedFile {
+  pair: LanguagePair;
+  /** Relative to `data/`, so the `assets` glob in nest-cli.json carries it. */
+  file: string;
+}
+
+const SEED_FILES: SeedFile[] = [{ pair: SEED_PAIR, file: 'catalog.seed.json' }];
 
 /**
- * Lift a flat seed string into the pair's own language.
+ * What a seed's audio is spoken in, derived from its pair rather than typed
+ * again. `pair.learning` is the written form the transcript is in; this is the
+ * sound behind it, and the two must not be able to disagree. ADR 0006.
+ */
+const spokenOf = (pair: LanguagePair) => spokenLanguageOf(pair.learning);
+
+/**
+ * Lift a flat seed string into its file's own language.
  *
  * The seed JSON stays flat and this loader does the wrapping. Nesting the JSON
  * would rewrite every row to say what one constant already says, and it would
@@ -43,8 +66,8 @@ const SEED_SPOKEN = spokenLanguageOf(SEED_PAIR.learning);
  * language arrives as its own overlay file keyed by episode id, not by editing
  * this one; see catalog.overlay.ts, which is that path built.
  */
-function authoredInSeedLanguage<T>(value: T): Localized<T> {
-  return { [SEED_PAIR.speaks]: value };
+function authoredIn<T>(pair: LanguagePair, value: T): Localized<T> {
+  return { [pair.speaks]: value };
 }
 
 /**
@@ -77,7 +100,7 @@ interface SeedRow {
   questions: { prompt: string; options: string[]; answer: number }[];
 }
 
-const SEED_PATH = join(__dirname, 'data', 'catalog.seed.json');
+const seedPath = (file: string) => join(__dirname, 'data', file);
 
 function slug(value: string): string {
   return value
@@ -92,9 +115,9 @@ function slug(value: string): string {
  * the string: the string is authored prose and can disagree with itself, while
  * the language is the fact that decides what was counted. See speech-rate.ts.
  */
-function parseSpeechRate(speed: string): SpeechRate {
+function parseSpeechRate(speed: string, pair: LanguagePair): SpeechRate {
   const match = /(\d+)/.exec(speed);
-  return { value: match ? Number(match[1]) : 0, unit: rateUnitFor(SEED_SPOKEN) };
+  return { value: match ? Number(match[1]) : 0, unit: rateUnitFor(spokenOf(pair)) };
 }
 
 function parseDurationSeconds(duration: string): number {
@@ -116,7 +139,7 @@ function timeToMs(cue: { time: string; seconds?: number }): number {
  * from what is: level and the number of distinct speakers in the transcript.
  * Real values arrive with the profiling pipeline; these are honest placeholders.
  */
-function buildProfile(row: SeedRow): DifficultyProfile {
+function buildProfile(row: SeedRow, pair: LanguagePair): DifficultyProfile {
   const speakers = new Set(row.transcript.map((cue) => cue.speaker).filter(Boolean));
   const coverageByLevel: Record<LearningLevel, number> = {
     Beginner: 0.95,
@@ -125,33 +148,77 @@ function buildProfile(row: SeedRow): DifficultyProfile {
   };
 
   return {
-    speechRate: parseSpeechRate(row.speed),
+    speechRate: parseSpeechRate(row.speed, pair),
     vocabularyCoverage: coverageByLevel[row.level],
     speakerCount: Math.max(1, speakers.size),
     slangLoad: row.level === 'Advanced' ? 0.5 : row.level === 'Intermediate' ? 0.25 : 0.1,
     accentLoad: 0.2,
     level: row.level,
     cefr: row.cefr,
-    reason: authoredInSeedLanguage(row.levelReason),
+    reason: authoredIn(pair, row.levelReason),
   };
 }
 
 export function loadSeedCatalog(): { shows: Show[]; episodes: Episode[] } {
-  const rows = JSON.parse(readFileSync(SEED_PATH, 'utf8')) as SeedRow[];
-
   const shows = new Map<string, Show>();
-  const episodes: Episode[] = [];
+  const episodes = new Map<string, Episode>();
+
+  for (const seed of SEED_FILES) {
+    loadSeedFile(seed, shows, episodes);
+  }
+
+  const all = [...episodes.values()];
+
+  // Second languages arrive here, as files keyed by episode id — never by
+  // editing the rows above. Partial by design: whatever an overlay does not
+  // cover is not in that pair's catalogue. See catalog.overlay.ts.
+  //
+  // Applied once over the merged set rather than per file, because an overlay
+  // is keyed by episode id and knows nothing about which seed the episode came
+  // from — that is the whole point of it being a separate layer.
+  applyOverlays(all);
+
+  return { shows: [...shows.values()], episodes: all };
+}
+
+/**
+ * Read one seed file into the accumulating catalogue.
+ *
+ * Collisions throw. Episode ids are `String(row.id)` and every seed file's rows
+ * number from 1, so a second file silently overwriting the first is not a
+ * hypothetical — it is what happens by default the first time somebody adds
+ * one. Two shows with the same slugged title are the same failure a level up.
+ *
+ * Loud rather than absent, and the distinction is ADR 0006 decision 6's: an
+ * exclusion is for content we honestly do not have, and this is content that
+ * disagrees with itself about which episode it is. Nobody should have to
+ * discover it by noticing an episode rendering in the wrong language.
+ */
+function loadSeedFile(
+  seed: SeedFile,
+  shows: Map<string, Show>,
+  episodes: Map<string, Episode>,
+): void {
+  const { pair, file } = seed;
+  const rows = JSON.parse(readFileSync(seedPath(file), 'utf8')) as SeedRow[];
 
   for (const row of rows) {
     const showId = slug(row.title);
-    const profile = buildProfile(row);
+    const profile = buildProfile(row, pair);
 
-    if (!shows.has(showId)) {
+    const existing = shows.get(showId);
+    if (existing && existing.language !== spokenOf(pair)) {
+      throw new Error(
+        `Seed ${file} has a show "${row.title}" whose id (${showId}) is already taken by a ` +
+          `${existing.language} show. Two different shows cannot share an id; rename one.`,
+      );
+    }
+    if (!existing) {
       shows.set(showId, {
         id: showId,
         title: row.title,
         publisher: row.author,
-        language: SEED_SPOKEN,
+        language: spokenOf(pair),
         topics: [row.topic, ...row.tags],
         description: row.description,
         profile,
@@ -166,41 +233,42 @@ export function loadSeedCatalog(): { shows: Show[]; episodes: Episode[] } {
       highlight: cue.highlight,
     }));
 
-    episodes.push({
-      id: String(row.id),
+    const id = String(row.id);
+    if (episodes.has(id)) {
+      throw new Error(
+        `Seed ${file} reuses episode id ${id}, which another seed file already claimed. ` +
+          `Episode ids are global; give each seed file its own range.`,
+      );
+    }
+
+    episodes.set(id, {
+      id,
       showId,
       title: row.episode,
       description: row.description,
       durationSeconds: parseDurationSeconds(row.duration),
       audioUrl: row.audioSrc,
       publisherTranscript: row.verifiedLesson === true,
-      learningGoal: authoredInSeedLanguage(row.learningGoal),
+      learningGoal: authoredIn(pair, row.learningGoal),
       newWordCount: row.newWords,
       profile,
       // The seed rows are flat and single-script by construction, so this comes
-      // from SEED_PAIR like every other language fact here rather than from a
-      // per-row field nobody would keep correct. A second script arrives the
-      // way a second language does — as its own file, not as a column.
-      transcriptLanguage: SEED_PAIR.learning,
+      // from the file's pair like every other language fact here rather than
+      // from a per-row field nobody would keep correct. A second script arrives
+      // the way a second language does — as its own file, not as a column.
+      transcriptLanguage: pair.learning,
       transcript,
       vocabulary: row.vocabulary.map((entry) => ({
         term: entry.term,
         partOfSpeech: entry.type,
-        meaning: authoredInSeedLanguage(entry.meaning),
+        meaning: authoredIn(pair, entry.meaning),
         example: entry.example,
       })),
       questions: row.questions.map((question) => ({
-        prompt: authoredInSeedLanguage(question.prompt),
-        options: authoredInSeedLanguage(question.options),
+        prompt: authoredIn(pair, question.prompt),
+        options: authoredIn(pair, question.options),
         answerIndex: question.answer,
       })),
     });
   }
-
-  // Second languages arrive here, as files keyed by episode id — never by
-  // editing the rows above. Partial by design: whatever an overlay does not
-  // cover is not in that pair's catalogue. See catalog.overlay.ts.
-  applyOverlays(episodes);
-
-  return { shows: [...shows.values()], episodes };
 }

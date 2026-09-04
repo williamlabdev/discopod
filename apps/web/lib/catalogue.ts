@@ -230,8 +230,8 @@ export async function loadDiscoverCatalogue(pair: LanguagePair): Promise<Discove
   const perLevel = await Promise.all(
     LEARNING_LEVELS.map(async (level) => {
       const [ranked, first] = await Promise.all([
-        fetchRankedEpisodes(pair.speaks, level),
-        fetchStartHere(pair.speaks, level),
+        fetchRankedEpisodes(pair, level),
+        fetchStartHere(pair, level),
       ]);
       return [
         level,
@@ -260,7 +260,7 @@ export async function loadDiscoverCatalogue(pair: LanguagePair): Promise<Discove
  * no layer in `speaks` has no page under that pair at all.
  */
 export async function loadEpisodeIds(pair: LanguagePair): Promise<string[]> {
-  const ranked = await fetchRankedEpisodes(pair.speaks);
+  const ranked = await fetchRankedEpisodes(pair);
   return ranked.map((item) => item.episode.id);
 }
 
@@ -268,7 +268,7 @@ export async function loadEpisodeDetail(
   pair: LanguagePair,
   id: string,
 ): Promise<EpisodeDetail | null> {
-  const episode = await fetchEpisode(pair.speaks, id);
+  const episode = await fetchEpisode(pair, id);
   if (!episode) return null;
 
   const shows = await showsById();
@@ -276,7 +276,7 @@ export async function loadEpisodeDetail(
 
   // The card fields need the ranked view, so take this episode's entry from the
   // list ranked for its own level — that is the reader looking at this page.
-  const ranked = await fetchRankedEpisodes(pair.speaks, episode.profile.level);
+  const ranked = await fetchRankedEpisodes(pair, episode.profile.level);
   const entry = ranked.find((item) => item.episode.id === id);
   if (!entry) {
     throw new Error(`Episode ${id} exists but is absent from the ${episode.profile.level} ranking`);

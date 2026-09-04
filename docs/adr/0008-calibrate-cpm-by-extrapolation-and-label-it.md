@@ -114,6 +114,18 @@ is not.
   lifted; nothing yet walks through it. `catalog.seed.ts` is still hardcoded to
   `SEED_PAIR`, and `GET /episodes` still filters on `speaks` and not `learning` — both are
   work, and both are now the *only* things between here and a Mandarin episode on screen.
+
+  > **Both were done on 2026-09-05.** `loadSeedCatalog` reads a `SEED_FILES` list of
+  > `{ pair, file }` descriptors and merges them, throwing on a colliding show or episode
+  > id; `GET /episodes`, `/episodes/start-here` and `/episodes/:id` all take `learning`,
+  > and the web app sends both sides of the pair. The build still produces exactly
+  > `/en/en` and `/zh-Hant/en` with episode 7, because no Mandarin content exists yet —
+  > which is the correct output and also the limit of what that build proves.
+  >
+  > The first sentence still stands: there is no Chinese audio and no Chinese transcript.
+  > What changed is that adding one is now a data change rather than a code change. See
+  > [ADR 0006](0006-separate-spoken-language-from-written-form.md)'s consequences for the
+  > two decisions taken while closing this.
 - **It does not revive FSI.** ADR 0007's decisions 1–3 stand entirely: FSI is the ASR
   fixture and never catalogue content, and a `cpm` measured off a teaching-speed drill tape
   would still be precise and false. Only decision 5's claim about the critical path is

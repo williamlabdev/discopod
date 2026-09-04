@@ -130,6 +130,19 @@ export interface EpisodeQuery {
    * language is not in the result at all — ADR 0003, and CatalogService.speaksTo.
    */
   speaks?: LanguageTag;
+  /**
+   * The written form the learner is here to read — the pair's `learning` side,
+   * matched against `Episode.transcriptLanguage`. Where `speaks` selects which
+   * *explanations* exist, this selects which *content* is being asked for, so
+   * the two filters are about different halves of the same episode.
+   *
+   * Omitted means `DEFAULT_PAIR.learning`, symmetrically with `speaks`. It is
+   * deliberately not "no filter": before this existed, a client that did not
+   * ask got every episode in every target language, which is how the first
+   * Mandarin episode would have appeared on the `en → en` page. ADR 0006
+   * predicted that and left it unfixed while every episode was English.
+   */
+  learning?: LanguageTag;
   level?: LearningLevel;
   topic?: string;
   search?: string;

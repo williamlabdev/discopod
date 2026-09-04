@@ -9,6 +9,15 @@ export class EpisodeQueryDto implements EpisodeQuery {
   @IsIn([...LANGUAGES])
   speaks?: LanguageTag;
 
+  /**
+   * Which language's content to answer with. Omitted means the default pair,
+   * not "everything" — a caller that forgets this parameter must not be handed
+   * a catalogue in a language it never asked to learn.
+   */
+  @IsOptional()
+  @IsIn([...LANGUAGES])
+  learning?: LanguageTag;
+
   @IsOptional()
   @IsIn(['Beginner', 'Intermediate', 'Advanced'])
   level?: LearningLevel;

@@ -155,8 +155,15 @@ async function get<T>(path: string): Promise<T> {
  * exclusion from the pair's catalogue. The API decides the exclusion
  * (CatalogService.speaksTo) and leaves such episodes out; this is the backstop
  * for anything that gets past it, which today means a drifted API.
+ *
+ * The same holds for the pair's other side, and it is checked here for the same
+ * reason: an episode in the wrong `learning` would render *perfectly*. Every
+ * field would be present, every assertion above would pass, and the page would
+ * simply be in a language the route does not claim. A silent wrong answer is
+ * the one worth an explicit check.
  */
-function assertEpisode(episode: Episode, speaks: LanguageTag, where: string): Episode {
+function assertEpisode(episode: Episode, pair: LanguagePair, where: string): Episode {
+  const { speaks } = pair;
   const problems: string[] = [];
 
   if (!episode?.id) problems.push('id');
@@ -177,7 +184,14 @@ function assertEpisode(episode: Episode, speaks: LanguageTag, where: string): Ep
   // script was inferred from the show's language. Worth catching by name: the
   // old shape would render fine and be wrong only for Chinese, which is the
   // failure that would survive longest.
-  if (!isLanguageTag(episode?.transcriptLanguage)) problems.push('transcriptLanguage');
+  if (!isLanguageTag(episode?.transcriptLanguage)) {
+    problems.push('transcriptLanguage');
+  } else if (episode.transcriptLanguage !== pair.learning) {
+    problems.push(
+      `a ${episode.transcriptLanguage} transcript on a ${pair.learning} route ` +
+        `(the API ignored ?learning=)`,
+    );
+  }
 
   if (!Array.isArray(episode?.vocabulary)) {
     problems.push('vocabulary');
@@ -208,23 +222,30 @@ function assertEpisode(episode: Episode, speaks: LanguageTag, where: string): Ep
   return episode;
 }
 
-function assertRanked(ranked: RankedEpisode, speaks: LanguageTag, where: string): RankedEpisode {
+function assertRanked(ranked: RankedEpisode, pair: LanguagePair, where: string): RankedEpisode {
   // The vision's one hard rule: nothing is ranked without saying why.
   if (!ranked?.reason) {
     throw new Error(`Ranked episode ${ranked?.episode?.id ?? '(no id)'} from ${where} has no reason`);
   }
-  assertEpisode(ranked.episode, speaks, where);
+  assertEpisode(ranked.episode, pair, where);
   return ranked;
 }
 
 /**
- * Every episode request carries the pair's `speaks`.
+ * Every episode request carries the whole pair, both sides.
  *
- * It is not a display preference to be applied after the fact — it decides
- * which catalogue is being asked for. The API answers with the episodes that
- * have an explanatory layer in that language and leaves the rest out, so this
- * parameter is what makes an untranslated episode absent rather than half
- * rendered. ADR 0003; the API side is CatalogService.speaksTo.
+ * Neither side is a display preference to be applied after the fact — together
+ * they decide which catalogue is being asked for. `speaks` selects the episodes
+ * that have an explanatory layer in the reader's language, so an untranslated
+ * episode is absent rather than half rendered; `learning` selects the episodes
+ * whose transcript is the language this route is about, so an episode in some
+ * other language does not appear on this pair's page at all. ADR 0003 and
+ * ADR 0006; the API side is CatalogService.speaksTo and isWrittenIn.
+ *
+ * Sending only `speaks` was correct exactly as long as every episode was
+ * English, and stopped being correct the moment one was not. Both sides go on
+ * every request now so that the page a learner is on and the episodes it lists
+ * cannot disagree.
  *
  * ADR 0002 rules out the *browser* calling this API, which this does not do:
  * these run during `next build`, server to server, and their answers are baked
@@ -232,10 +253,10 @@ function assertRanked(ranked: RankedEpisode, speaks: LanguageTag, where: string)
  */
 function episodesPath(
   path: string,
-  speaks: LanguageTag,
+  pair: LanguagePair,
   params: Record<string, string | undefined> = {},
 ): string {
-  const query = new URLSearchParams({ speaks });
+  const query = new URLSearchParams({ speaks: pair.speaks, learning: pair.learning });
   for (const [key, value] of Object.entries(params)) {
     if (value) query.set(key, value);
   }
@@ -267,12 +288,12 @@ export async function fetchShows(): Promise<Show[]> {
  * has to go to the server rather than being filtered off afterwards.
  */
 export async function fetchRankedEpisodes(
-  speaks: LanguageTag,
+  pair: LanguagePair,
   level?: LearningLevel,
 ): Promise<RankedEpisode[]> {
-  const where = episodesPath('/episodes', speaks, { level });
+  const where = episodesPath('/episodes', pair, { level });
   const ranked = await get<RankedEpisode[]>(where);
-  return ranked.map((item) => assertRanked(item, speaks, where));
+  return ranked.map((item) => assertRanked(item, pair, where));
 }
 
 /**
@@ -281,21 +302,21 @@ export async function fetchRankedEpisodes(
  * to the best episode overall, still scored for this learner.
  */
 export async function fetchStartHere(
-  speaks: LanguageTag,
+  pair: LanguagePair,
   level: LearningLevel,
 ): Promise<RankedEpisode | null> {
-  const where = episodesPath('/episodes/start-here', speaks, { level });
+  const where = episodesPath('/episodes/start-here', pair, { level });
   const ranked = await get<RankedEpisode | null>(where);
-  return ranked ? assertRanked(ranked, speaks, where) : null;
+  return ranked ? assertRanked(ranked, pair, where) : null;
 }
 
-export async function fetchEpisode(speaks: LanguageTag, id: string): Promise<Episode | null> {
-  const where = episodesPath(`/episodes/${encodeURIComponent(id)}`, speaks);
+export async function fetchEpisode(pair: LanguagePair, id: string): Promise<Episode | null> {
+  const where = episodesPath(`/episodes/${encodeURIComponent(id)}`, pair);
   const url = `${baseUrl()}${where}`;
   const response = await fetch(url, { cache: 'force-cache' });
   // 404 is also how the API says "not in this pair's catalogue", which is a
   // real answer rather than an error: the episode exists, not for this learner.
   if (response.status === 404) return null;
   if (!response.ok) throw new Error(`Catalogue API answered ${response.status} for ${url}`);
-  return assertEpisode((await response.json()) as Episode, speaks, where);
+  return assertEpisode((await response.json()) as Episode, pair, where);
 }

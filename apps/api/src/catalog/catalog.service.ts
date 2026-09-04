@@ -32,6 +32,22 @@ import {
  */
 const DEFAULT_SPEAKS: LanguageTag = DEFAULT_PAIR.speaks;
 
+/**
+ * The pair a caller gets when it names neither side.
+ *
+ * `learning` defaults for the same reason `speaks` does, and it deliberately
+ * does *not* mean "every language". While every episode was English the two
+ * were indistinguishable; the first Mandarin episode makes the difference the
+ * whole bug. A caller that forgets the parameter would otherwise be handed a
+ * catalogue in a language it never asked to learn, rendered under a route that
+ * claims a different one — ADR 0006 wrote that down as an open hole, and this
+ * is the line that closes it.
+ */
+const pairOrDefault = (pair?: Partial<LanguagePair>): LanguagePair => ({
+  speaks: pair?.speaks ?? DEFAULT_PAIR.speaks,
+  learning: pair?.learning ?? DEFAULT_PAIR.learning,
+});
+
 @Injectable()
 export class CatalogService {
   constructor(private readonly repository: CatalogRepository) {}
@@ -113,14 +129,17 @@ export class CatalogService {
     return show;
   }
 
-  async getEpisode(id: string, speaks: LanguageTag = DEFAULT_SPEAKS): Promise<Episode> {
+  async getEpisode(id: string, requested?: Partial<LanguagePair>): Promise<Episode> {
+    const pair = pairOrDefault(requested);
     const episode = await this.repository.findEpisode(id);
     if (!episode) throw new NotFoundException(`Episode ${id} not found`);
     // Not in this pair's catalogue is not found, for this caller. Returning it
     // anyway would hand the web app an episode it cannot render and make the
     // exclusion surface as a failed build instead of an absent episode.
-    if (!this.speaksTo(episode, speaks)) {
-      throw new NotFoundException(`Episode ${id} is not in the ${speaks} catalogue`);
+    if (!this.isWrittenIn(episode, pair.learning) || !this.speaksTo(episode, pair.speaks)) {
+      throw new NotFoundException(
+        `Episode ${id} is not in the ${pair.speaks} → ${pair.learning} catalogue`,
+      );
     }
     return episode;
   }
@@ -128,13 +147,14 @@ export class CatalogService {
   async listEpisodes(query: EpisodeQuery): Promise<RankedEpisode[]> {
     const episodes = await this.repository.findEpisodes();
     const level = query.level ?? 'Intermediate';
-    const speaks = query.speaks ?? DEFAULT_SPEAKS;
+    const { speaks, learning } = pairOrDefault(query);
 
     // Topics live on the show, not the episode, so this needs the join.
     // Only pay for it when the caller actually filters by topic.
     const showIdsForTopic = query.topic ? await this.showIdsWithTopic(query.topic) : null;
 
     const filtered = episodes.filter((episode) => {
+      if (!this.isWrittenIn(episode, learning)) return false;
       if (!this.speaksTo(episode, speaks)) return false;
       if (query.level && episode.profile.level !== query.level) return false;
       if (showIdsForTopic && !showIdsForTopic.has(episode.showId)) return false;
@@ -154,10 +174,13 @@ export class CatalogService {
    */
   async startHere(
     level: LearningLevel,
-    speaks: LanguageTag = DEFAULT_SPEAKS,
+    requested?: Partial<LanguagePair>,
   ): Promise<RankedEpisode | null> {
+    const { speaks, learning } = pairOrDefault(requested);
     const all = await this.repository.findEpisodes();
-    const episodes = all.filter((episode) => this.speaksTo(episode, speaks));
+    const episodes = all.filter(
+      (episode) => this.isWrittenIn(episode, learning) && this.speaksTo(episode, speaks),
+    );
     if (episodes.length === 0) return null;
 
     // Score for *this* learner, then prefer an episode pitched at their level.
@@ -245,6 +268,28 @@ export class CatalogService {
       canRenderReason(speaks) &&
       inLanguage(episode.profile.reason, speaks) !== undefined
     );
+  }
+
+  /**
+   * Is this episode's transcript the thing the learner came to read?
+   *
+   * Deliberately a separate predicate from `speaksTo` rather than a fourth
+   * condition inside it, because it answers a different question about a
+   * different half of the episode. `speaksTo` asks whether the *explanations*
+   * exist in the reader's language — a property of what has been authored, and
+   * something more translation can change. This asks what language the content
+   * itself is in, which no amount of work changes: an English episode is never
+   * going to be Mandarin practice. Merging them would also break `listPairs`,
+   * which derives `learning` from the episode and would then be asking whether
+   * the episode is written in the language it is written in.
+   *
+   * Equality, never a conversion. `zh-Hant` and `zh-Hans` are different answers
+   * here even though they are the same audio — ADR 0006's rule that a script is
+   * not something to guess at applies exactly as much on the way out as on the
+   * way in.
+   */
+  private isWrittenIn(episode: Episode, learning: LanguageTag): boolean {
+    return episode.transcriptLanguage === learning;
   }
 
   /**

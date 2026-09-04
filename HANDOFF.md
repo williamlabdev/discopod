@@ -115,19 +115,23 @@ finished both services before trusting the live site.
 
 ## Next steps, in order
 
-1. **Get one Mandarin episode on screen.** With `cpm` calibrated (ADR 0008) this is now
-   three pieces of ordinary work and no waiting:
-   - `catalog.seed.ts` is hardcoded to one pair — `SEED_PAIR`, `SEED_SPOKEN` and
-     `authoredInSeedLanguage()` between them fix every language fact in the file. Its own
-     comment names the extension: *"A second script arrives the way a second language does
-     — as its own file, not as a column."* So `loadSeedCatalog` takes a `{ pair, path }`
-     descriptor and runs once per seed file.
-   - `GET /episodes` filters on `speaks` and not `learning`, and `lib/catalogue.ts:233`
-     passes only `pair.speaks`. Until both take `learning`, a Mandarin episode also appears
-     on the `en → en` page. ADR 0006 predicted this exact bug; it is now reachable.
-   - The audio and the transcript themselves. There is no local ASR on this machine (only
-     `ffmpeg`), so a source that publishes a script *alongside* its audio is worth much more
-     than a better-sounding one that does not.
+1. **Get one Mandarin episode on screen.** With `cpm` calibrated (ADR 0008) this was three
+   pieces of ordinary work and no waiting. **Two are done; only the content is left.**
+   - ~~`catalog.seed.ts` is hardcoded to one pair.~~ Done 2026-09-05. `loadSeedCatalog`
+     reads a `SEED_FILES` list of `{ pair, file }` descriptors and merges them. Adding a
+     Mandarin episode is now: drop a JSON file in `catalog/data/`, add one line to
+     `SEED_FILES`. **Give it its own episode id range** — ids are global across seed files
+     and a collision throws, deliberately, rather than overwriting.
+   - ~~`GET /episodes` filters on `speaks` and not `learning`.~~ Done 2026-09-05.
+     `EpisodeQueryDto.learning`, `CatalogService.isWrittenIn`, and both sides of the pair on
+     every web request. An omitted `learning` means the *default pair*, not "no filter".
+     `assertEpisode` on the web side checks it too, because an episode in the wrong
+     `learning` is the failure that renders perfectly and is still wrong.
+   - **The audio and the transcript themselves — the only remaining piece.** There is now
+     working local ASR (`mlx-whisper`, 16m40s in 22.8 s — see
+     `apps/api/src/ingest/README.md`), so timings are no longer the constraint. A source
+     that publishes its own script is still worth more, because then ASR supplies the
+     timings and the publisher's text checks the words.
 
    Nothing here needs `reason.render.ts` touched — it already renders `cpm` in 字.
 2. **Write to Taiwanese Mandarin podcasters.** Still worth doing, for content rather than
