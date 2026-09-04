@@ -15,6 +15,7 @@ import {
   inLanguage,
   LANGUAGES,
   requireLanguage,
+  spokenLanguageOf,
   type LanguagePair,
   type LanguageTag,
 } from './language.types';
@@ -42,13 +43,23 @@ export class CatalogService {
   /**
    * The pairs this catalogue can actually serve, derived rather than declared.
    *
-   * A pair exists when some episode can be presented under it: the show is
-   * spoken in `learning`, and the episode carries an explanatory layer in
+   * A pair exists when some episode can be presented under it: the episode's
+   * transcript is written in `learning`, and it carries an explanatory layer in
    * `speaks` that this API can also phrase a reason in. Nothing here is
    * configured — translate one more episode and a pair appears, drop the last
    * one and it disappears, and the web app's route tree follows on the next
    * build. A hand-written list would be a second place to be wrong about which
    * languages the app speaks, and it would be wrong quietly.
+   *
+   * `learning` comes from the episode, not from `show.language`, and that is
+   * the whole of ADR 0006 in one line. The show's language is what is *spoken*;
+   * a pair's `learning` side is what the learner *reads*. Taking the pair from
+   * the show meant a Mandarin show had to be either traditional or simplified,
+   * so half its potential readers were excluded by a property of the audio they
+   * could not hear — and serving both would have meant a second show row with
+   * the same audio, the same id and the same profile. Per episode, one show's
+   * traditional and simplified episodes now raise both pairs, with no
+   * duplication and no conversion.
    *
    * Sorted so the build output is stable: the default pair first, because it
    * is what a caller naming no pair gets, then alphabetically.
@@ -58,12 +69,30 @@ export class CatalogService {
       this.repository.findEpisodes(),
       this.repository.findShows(),
     ]);
-    const learningOf = new Map(shows.map((show) => [show.id, show.language]));
+    const spokenOf = new Map(shows.map((show) => [show.id, show.language]));
 
     const found = new Map<string, LanguagePair>();
     for (const episode of episodes) {
-      const learning = learningOf.get(episode.showId);
-      if (!learning) continue;
+      const spoken = spokenOf.get(episode.showId);
+      // An episode whose show is not in the catalogue has no profile to stand
+      // on. Absent, not an error — the same silence as an untranslated episode.
+      if (spoken === undefined) continue;
+
+      const learning = episode.transcriptLanguage;
+      // A contradiction, not an absence, so it is loud. A transcript written in
+      // a script belonging to some *other* spoken language than the show's is a
+      // mislabelled row, and the damage it does is to raise a pair the audio
+      // cannot serve — a learner routed to a page whose text and sound are
+      // different languages. Exclusion is for content we do not have; this is
+      // content that disagrees with itself.
+      if (spokenLanguageOf(learning) !== spoken) {
+        throw new Error(
+          `Episode ${episode.id} has a ${learning} transcript, which is ` +
+            `${spokenLanguageOf(learning)}, but show ${episode.showId} is spoken in ` +
+            `${spoken}. One of the two is mislabelled.`,
+        );
+      }
+
       for (const speaks of LANGUAGES) {
         if (this.speaksTo(episode, speaks)) found.set(`${speaks}|${learning}`, { speaks, learning });
       }

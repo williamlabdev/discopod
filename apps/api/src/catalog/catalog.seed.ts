@@ -9,7 +9,7 @@ import type {
   Show,
   TranscriptCue,
 } from './catalog.types';
-import type { LanguagePair, Localized } from './language.types';
+import { spokenLanguageOf, type LanguagePair, type Localized } from './language.types';
 import { rateUnitFor, type SpeechRate } from './speech-rate';
 
 /**
@@ -26,6 +26,13 @@ import { rateUnitFor, type SpeechRate } from './speech-rate';
  * ADR 0004.
  */
 export const SEED_PAIR = { speaks: 'en', learning: 'en' } as const satisfies LanguagePair;
+
+/**
+ * What the seed's audio is spoken in, derived from the pair rather than typed
+ * again. `SEED_PAIR.learning` is the written form the transcript is in; this is
+ * the sound behind it, and the two must not be able to disagree. ADR 0006.
+ */
+const SEED_SPOKEN = spokenLanguageOf(SEED_PAIR.learning);
 
 /**
  * Lift a flat seed string into the pair's own language.
@@ -81,13 +88,13 @@ function slug(value: string): string {
 
 /**
  * The seed writes rates as display strings ("≈ 105 wpm"). The number is parsed
- * out of it, but the unit is taken from the show's language rather than from
+ * out of it, but the unit is taken from the spoken language rather than from
  * the string: the string is authored prose and can disagree with itself, while
  * the language is the fact that decides what was counted. See speech-rate.ts.
  */
 function parseSpeechRate(speed: string): SpeechRate {
   const match = /(\d+)/.exec(speed);
-  return { value: match ? Number(match[1]) : 0, unit: rateUnitFor(SEED_PAIR.learning) };
+  return { value: match ? Number(match[1]) : 0, unit: rateUnitFor(SEED_SPOKEN) };
 }
 
 function parseDurationSeconds(duration: string): number {
@@ -144,7 +151,7 @@ export function loadSeedCatalog(): { shows: Show[]; episodes: Episode[] } {
         id: showId,
         title: row.title,
         publisher: row.author,
-        language: SEED_PAIR.learning,
+        language: SEED_SPOKEN,
         topics: [row.topic, ...row.tags],
         description: row.description,
         profile,
@@ -170,6 +177,11 @@ export function loadSeedCatalog(): { shows: Show[]; episodes: Episode[] } {
       learningGoal: authoredInSeedLanguage(row.learningGoal),
       newWordCount: row.newWords,
       profile,
+      // The seed rows are flat and single-script by construction, so this comes
+      // from SEED_PAIR like every other language fact here rather than from a
+      // per-row field nobody would keep correct. A second script arrives the
+      // way a second language does — as its own file, not as a column.
+      transcriptLanguage: SEED_PAIR.learning,
       transcript,
       vocabulary: row.vocabulary.map((entry) => ({
         term: entry.term,

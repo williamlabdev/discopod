@@ -10,19 +10,93 @@
  */
 
 /**
+ * A **written form**: a language together with the script it is written in.
+ *
  * Closed on purpose. Pairs are added by us, with content behind them; an open
  * `string` would let a typo become an empty catalogue at runtime instead of a
  * type error. `zh-Hant` and `zh-Hans` are separate tags because the script
  * changes the text itself, not merely the gloss.
+ *
+ * This is the right key for *text* and only for text — `Localized`, the route
+ * segments, an overlay file's name. It is the wrong type for a fact about
+ * audio, because the two Chinese tags name one spoken language. What audio is
+ * in is `SpokenLanguage`. See ADR 0006.
  */
 export const LANGUAGES = ['en', 'zh-Hant', 'zh-Hans'] as const;
 
 export type LanguageTag = (typeof LANGUAGES)[number];
 
+/**
+ * What comes out of a speaker. `cmn` is Mandarin, ISO 639-3, and it is one
+ * language whether it is written down in traditional or simplified characters.
+ *
+ * This exists because the app kept asking two different questions with one
+ * type. "Which text do I show this reader?" is answered by a written form.
+ * "How is this audio counted, and what does the learner hear?" is answered
+ * here. Conflating them meant a Mandarin show had to pick a script in order to
+ * exist, and then only reached learners who read that script — for a property
+ * of its transcript, not of its sound.
+ */
+export const SPOKEN_LANGUAGES = ['en', 'cmn'] as const;
+
+export type SpokenLanguage = (typeof SPOKEN_LANGUAGES)[number];
+
+/** The writing system a `LanguageTag`'s text is set in. */
+export const SCRIPTS = ['Latn', 'Hant', 'Hans'] as const;
+
+export type Script = (typeof SCRIPTS)[number];
+
+/**
+ * The decomposition of every written form we serve.
+ *
+ * Written out rather than parsed off the tag string. Parsing would be shorter
+ * and would be guessing: `zh-Hant` says traditional Chinese script, and that
+ * script is also how Cantonese is written in Hong Kong. It maps to `cmn` here
+ * because *this catalogue's* Chinese is Mandarin, which is a claim about our
+ * content and belongs in a table someone has to edit. Cantonese arrives as its
+ * own tag (`yue-Hant`), and because `LANGUAGES` is a closed union that arrival
+ * is a type error listing every place that has to answer for it — rather than
+ * a Cantonese show quietly counted as Mandarin.
+ */
+const WRITTEN_FORMS = {
+  en: { spoken: 'en', script: 'Latn' },
+  'zh-Hant': { spoken: 'cmn', script: 'Hant' },
+  'zh-Hans': { spoken: 'cmn', script: 'Hans' },
+} as const satisfies Record<LanguageTag, { spoken: SpokenLanguage; script: Script }>;
+
+/** Which language this text is written in — one spoken language, many scripts. */
+export function spokenLanguageOf(tag: LanguageTag): SpokenLanguage {
+  return WRITTEN_FORMS[tag].spoken;
+}
+
+/** Which writing system this text is set in. */
+export function scriptOf(tag: LanguageTag): Script {
+  return WRITTEN_FORMS[tag].script;
+}
+
+/**
+ * Every written form of a spoken language.
+ *
+ * Note what this is *not* licence to do: having both forms in this list does
+ * not mean text in one can be produced from text in the other. Hant→Hans is
+ * many-to-one (發 and 髮 are both 发), so a conversion is a lossy guess, and a
+ * guess presented as the learner's own reading is exactly the fabrication the
+ * repo's standing rules forbid elsewhere. A transcript exists in the script it
+ * was authored in; the other script is a translation job, not a function call.
+ */
+export function writtenFormsOf(spoken: SpokenLanguage): readonly LanguageTag[] {
+  return LANGUAGES.filter((tag) => WRITTEN_FORMS[tag].spoken === spoken);
+}
+
 export interface LanguagePair {
   /** The learner's own language. Every explanation is written in this. */
   speaks: LanguageTag;
-  /** The language of the audio. Transcript, terms and examples are in this. */
+  /**
+   * The written form of what is being learned: the script the learner reads the
+   * transcript, terms and examples in. Both halves of a pair are written forms,
+   * because a pair selects *text*. What the learner hears is
+   * `spokenLanguageOf(learning)`, and one spoken language can appear here twice.
+   */
   learning: LanguageTag;
 }
 
@@ -50,6 +124,10 @@ export const DEFAULT_PAIR = { speaks: 'en', learning: 'en' } as const satisfies 
 
 export function isLanguageTag(value: unknown): value is LanguageTag {
   return typeof value === 'string' && (LANGUAGES as readonly string[]).includes(value);
+}
+
+export function isSpokenLanguage(value: unknown): value is SpokenLanguage {
+  return typeof value === 'string' && (SPOKEN_LANGUAGES as readonly string[]).includes(value);
 }
 
 /** The value for this learner's language, or undefined if it was never authored. */

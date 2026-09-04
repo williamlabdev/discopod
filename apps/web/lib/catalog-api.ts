@@ -12,7 +12,14 @@
  * CATALOG_API_URL comes from.
  */
 
-import { has, type LanguagePair, type LanguageTag, type Localized } from './language';
+import {
+  has,
+  isLanguageTag,
+  type LanguagePair,
+  type LanguageTag,
+  type Localized,
+  type SpokenLanguage,
+} from './language';
 
 export type LearningLevel = 'Beginner' | 'Intermediate' | 'Advanced';
 
@@ -45,7 +52,8 @@ export interface Show {
   id: string;
   title: string;
   publisher: string;
-  language: LanguageTag;
+  /** What is spoken in the audio. Not a script — see ADR 0006. */
+  language: SpokenLanguage;
   topics: string[];
   description: string;
   profile: DifficultyProfile;
@@ -85,6 +93,8 @@ export interface Episode {
   learningGoal: Localized;
   newWordCount: number;
   profile: DifficultyProfile;
+  /** The written form `transcript[].text` is in — the pair's `learning` side. */
+  transcriptLanguage: LanguageTag;
   transcript: TranscriptCue[];
   vocabulary: VocabularyEntry[];
   questions: ComprehensionQuestion[];
@@ -163,6 +173,11 @@ function assertEpisode(episode: Episode, speaks: LanguageTag, where: string): Ep
   if (!Array.isArray(episode?.transcript) || episode.transcript.length === 0) {
     problems.push('transcript');
   }
+  // An API that omits this is one from before ADR 0006, when the transcript's
+  // script was inferred from the show's language. Worth catching by name: the
+  // old shape would render fine and be wrong only for Chinese, which is the
+  // failure that would survive longest.
+  if (!isLanguageTag(episode?.transcriptLanguage)) problems.push('transcriptLanguage');
 
   if (!Array.isArray(episode?.vocabulary)) {
     problems.push('vocabulary');

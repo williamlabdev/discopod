@@ -89,6 +89,16 @@ by one row.
 request. A show whose `language` is not the pair's `learning` is simply not in that
 pair's catalogue.
 
+> **Corrected by [ADR 0006](0006-separate-spoken-language-from-written-form.md).** The
+> paragraph above is right that `Show.language` is a fact and `pair.learning` a request,
+> and wrong that they are the same *kind* of fact. `Show.language` is what is **spoken**
+> and is now a `SpokenLanguage` (`'en' | 'cmn'`); `pair.learning` is what is **read** and
+> stays a `LanguageTag`. Typed alike, a Mandarin show had to declare a script in order to
+> exist, and that choice then decided which learners could reach it. A pair's `learning`
+> side now comes from `Episode.transcriptLanguage`, not from the show. Everything else in
+> this decision — the closed union, the tags themselves, `Localized`, the routes — is
+> unchanged.
+
 ### 2. Learner-language text is keyed by language; show-language text stays scalar
 
 ```ts

@@ -183,8 +183,12 @@ Elaboration works differently for Chinese and the same prompt will not transfer:
 - Useful elaboration for Chinese often means giving the 白話 equivalent alongside the
   formal or literary phrasing, which is closer to register-shifting than to clause-adding.
 - Script variant must be respected. Do not return simplified characters to a learner
-  reading traditional. This repo's `LanguageTag` (`zh-Hant` / `zh-Hans`) carries the
-  script but conflates it with the language — see "Open questions" below.
+  reading traditional. `LanguageTag` (`zh-Hant` / `zh-Hans`) carries the script, and since
+  [ADR 0006](adr/0006-separate-spoken-language-from-written-form.md) it carries *only*
+  that — so the rule is expressible: the target script is `pair.learning`, and
+  `Episode.transcriptLanguage` says which script the cue being restated is written in.
+  Note that ADR 0006 also forbids the shortcut of generating in one script and converting:
+  Hant→Hans is many-to-one and converting back is a guess.
 
 Ship English first. Treat Chinese as a separate prompt and a separate validation path,
 not a parameter.
@@ -227,9 +231,12 @@ These are not objections to the requirement; they are things it makes urgent.
 - **`cefr` is a bare string.** The prompt takes a level band; [ADR 0003](adr/0003-model-the-learner-language-pair.md)
   decision 7 (`cefr` → scale-qualified `proficiency`) is outstanding, and CEFR is the
   wrong scale for a Chinese learner. This requirement is another caller that needs it.
-- **`LanguageTag` conflates language with script.** `zh-Hant` and `zh-Hans` are the same
-  audio with different transcripts. The script-variant rule above needs that distinction
-  modelled, not implied.
+- ~~**`LanguageTag` conflates language with script.**~~ **Closed** by
+  [ADR 0006](adr/0006-separate-spoken-language-from-written-form.md). `LanguageTag` is now
+  a written form and only that; `SpokenLanguage` (`'en' | 'cmn'`) is what audio is in;
+  `Episode.transcriptLanguage` says which script a transcript exists in, and is where a
+  pair's `learning` side comes from. The script-variant rule above is now modelled rather
+  than implied.
 - **Criterion 5 is already supported.** `SavedWord` carries sentence, speaker and
   timestamp. Storing the original rather than the restatement is a call site discipline,
   not a schema change.

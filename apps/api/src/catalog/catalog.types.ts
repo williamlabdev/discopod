@@ -1,4 +1,4 @@
-import type { LanguageTag, Localized } from './language.types';
+import type { LanguageTag, Localized, SpokenLanguage } from './language.types';
 import type { SpeechRate } from './speech-rate';
 
 export type LearningLevel = 'Beginner' | 'Intermediate' | 'Advanced';
@@ -36,11 +36,17 @@ export interface Show {
   title: string;
   publisher: string;
   /**
-   * BCP-47 tag of the spoken language. A fact about the show, not a request:
-   * a show whose language is not a pair's `learning` is simply not in that
-   * pair's catalogue.
+   * What is spoken in the audio. A fact about the show, not a request.
+   *
+   * Deliberately not a `LanguageTag`: a script is a property of a transcript,
+   * and this field is about sound. Typing it as one forced a Mandarin show to
+   * declare itself traditional *or* simplified in order to exist, which then
+   * decided which learners could reach it — on the basis of a writing system
+   * nobody can hear. One Mandarin show is one row here; which scripts it can
+   * actually be read in is answered per episode by `transcriptLanguage`.
+   * ADR 0006.
    */
-  language: LanguageTag;
+  language: SpokenLanguage;
   topics: string[];
   description: string;
   profile: DifficultyProfile;
@@ -98,6 +104,20 @@ export interface Episode {
   learningGoal: Localized;
   newWordCount: number;
   profile: DifficultyProfile;
+  /**
+   * The written form `transcript[].text` is actually in, and so the `learning`
+   * side of every pair this episode can be served under.
+   *
+   * Scalar, because the transcript is: one episode carries one transcript, in
+   * one script. A Mandarin episode with a traditional transcript is in
+   * `en → zh-Hant` and not in `en → zh-Hans`, and that absence is honest — the
+   * simplified transcript does not exist. It is not produced by converting the
+   * traditional one; see `writtenFormsOf` for why that conversion is a guess.
+   *
+   * Its spoken language must be the show's. Nothing here enforces that — the
+   * seed loader and `CatalogService.listPairs` do, loudly.
+   */
+  transcriptLanguage: LanguageTag;
   transcript: TranscriptCue[];
   vocabulary: VocabularyEntry[];
   questions: ComprehensionQuestion[];

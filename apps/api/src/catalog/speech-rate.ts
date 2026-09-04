@@ -17,7 +17,7 @@
  */
 
 import type { LearningLevel } from './catalog.types';
-import type { LanguageTag } from './language.types';
+import type { SpokenLanguage } from './language.types';
 
 /**
  * `wpm` counts orthographic words, `cpm` counts Han characters. They are not
@@ -34,14 +34,20 @@ export interface SpeechRate {
 /**
  * The unit each language's speech is measured in. Knowing how you would count
  * Mandarin is not the same as knowing how fast is too fast — see below.
+ *
+ * Keyed by `SpokenLanguage`, which is what the header claims and what this
+ * table now actually gets. It used to be keyed by `LanguageTag` and read
+ * `{ en: 'wpm', 'zh-Hant': 'cpm', 'zh-Hans': 'cpm' }` — two rows with identical
+ * values, because a script cannot change how fast someone talks. That
+ * duplication was the visible end of the conflation ADR 0006 removes: it was
+ * asking a question about audio in a type that names text.
  */
-const RATE_UNIT: Record<LanguageTag, SpeechRateUnit> = {
+const RATE_UNIT: Record<SpokenLanguage, SpeechRateUnit> = {
   en: 'wpm',
-  'zh-Hant': 'cpm',
-  'zh-Hans': 'cpm',
+  cmn: 'cpm',
 };
 
-export function rateUnitFor(language: LanguageTag): SpeechRateUnit {
+export function rateUnitFor(language: SpokenLanguage): SpeechRateUnit {
   return RATE_UNIT[language];
 }
 

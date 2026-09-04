@@ -61,6 +61,14 @@ That decision was re-examined against R24 and upheld — generated learner suppo
 catalogue content and is built, not served:
 [ADR 0005](docs/adr/0005-generated-learner-support-is-a-build-artifact.md).
 
+**The language model has been split before the first Mandarin episode, not under it.**
+`LanguageTag` (`en` / `zh-Hant` / `zh-Hans`) was answering two questions at once: which
+text to show a reader, and what language the audio is. `Show.language` is now a
+`SpokenLanguage` (`'en' | 'cmn'`), and a pair's `learning` side comes from the new
+`Episode.transcriptLanguage` rather than from the show — so one Mandarin show serves both
+scripts without a duplicate show row, and `rateUnitFor` stops being keyed by a writing
+system. [ADR 0006](docs/adr/0006-separate-spoken-language-from-written-form.md).
+
 Two defects surfaced by actually rendering the API's output, both fixed: `?topic=` was
 accepted by validation and then silently ignored, and `Math.round(30/60)` made a
 30-second episode read *"1 minutes"*.

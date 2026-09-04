@@ -19,14 +19,38 @@
  * See docs/adr/0003-model-the-learner-language-pair.md.
  */
 
+/**
+ * A **written form**: a language together with the script it is written in.
+ * The right key for text, and only for text. What audio is in is
+ * `SpokenLanguage`. See ADR 0006.
+ */
 export const LANGUAGES = ['en', 'zh-Hant', 'zh-Hans'] as const;
 
 export type LanguageTag = (typeof LANGUAGES)[number];
 
+/**
+ * What comes out of a speaker. `cmn` is Mandarin, one language whether it is
+ * written down in traditional or simplified characters.
+ *
+ * Mirrored because it is on the wire — `Show.language` is typed with it. The
+ * decomposition helpers (`spokenLanguageOf`, `scriptOf`, `writtenFormsOf`) are
+ * deliberately *not* mirrored: nothing on this side needs them yet, and an
+ * unused copy of a table is a second place to disagree with the API about what
+ * `zh-Hant` is.
+ */
+export const SPOKEN_LANGUAGES = ['en', 'cmn'] as const;
+
+export type SpokenLanguage = (typeof SPOKEN_LANGUAGES)[number];
+
 export interface LanguagePair {
   /** The learner's own language. Every explanation is written in this. */
   speaks: LanguageTag;
-  /** The language of the audio. Transcript, terms and examples are in this. */
+  /**
+   * The written form of what is being learned: the script the learner reads the
+   * transcript, terms and examples in. Both halves are written forms, because a
+   * pair selects text — which is also why both are safe to put in `lang=` and
+   * `srcLang=`, and why both index `LANGUAGE_NAMES`.
+   */
   learning: LanguageTag;
 }
 
