@@ -8,17 +8,27 @@ import type {
   RankedEpisode,
   Show,
 } from './catalog.types';
-import { requireLanguage, SUPPORTED_PAIRS, type LanguageTag } from './language.types';
+import { canRenderReason, renderReason } from './reason.render';
+import {
+  DEFAULT_PAIR,
+  inLanguage,
+  LANGUAGES,
+  requireLanguage,
+  type LanguagePair,
+  type LanguageTag,
+} from './language.types';
 
 /**
- * Whose language the composed reason is written in.
+ * Whose language the learner reads, when a caller does not say.
  *
- * A parameter with a default rather than a literal, so the call sites already
- * name the fact instead of assuming it. It is not yet a request parameter:
- * ADR 0002 bakes the catalogue at build time, so the pair becomes a route
- * segment, not a query string — and that route work is not this change.
+ * `speaks` *is* a request parameter, which ADR 0002 does not contradict: what
+ * that ADR rules out is the browser calling this API, and what ADR 0003 makes a
+ * route segment is the pair in the *site's* URLs. The web app reads those
+ * segments at build time and asks here for one pair's catalogue — server to
+ * server, before the export exists. The default keeps `en → en` callers, and
+ * every hand-typed curl, working unchanged.
  */
-const DEFAULT_SPEAKS: LanguageTag = SUPPORTED_PAIRS[0].speaks;
+const DEFAULT_SPEAKS: LanguageTag = DEFAULT_PAIR.speaks;
 
 /** Speech rate a learner at each level can comfortably follow, in wpm. */
 const COMFORTABLE_RATE: Record<LearningLevel, number> = {
@@ -35,34 +45,81 @@ export class CatalogService {
     return this.repository.findShows();
   }
 
+  /**
+   * The pairs this catalogue can actually serve, derived rather than declared.
+   *
+   * A pair exists when some episode can be presented under it: the show is
+   * spoken in `learning`, and the episode carries an explanatory layer in
+   * `speaks` that this API can also phrase a reason in. Nothing here is
+   * configured — translate one more episode and a pair appears, drop the last
+   * one and it disappears, and the web app's route tree follows on the next
+   * build. A hand-written list would be a second place to be wrong about which
+   * languages the app speaks, and it would be wrong quietly.
+   *
+   * Sorted so the build output is stable: the default pair first, because it
+   * is what a caller naming no pair gets, then alphabetically.
+   */
+  async listPairs(): Promise<LanguagePair[]> {
+    const [episodes, shows] = await Promise.all([
+      this.repository.findEpisodes(),
+      this.repository.findShows(),
+    ]);
+    const learningOf = new Map(shows.map((show) => [show.id, show.language]));
+
+    const found = new Map<string, LanguagePair>();
+    for (const episode of episodes) {
+      const learning = learningOf.get(episode.showId);
+      if (!learning) continue;
+      for (const speaks of LANGUAGES) {
+        if (this.speaksTo(episode, speaks)) found.set(`${speaks}|${learning}`, { speaks, learning });
+      }
+    }
+
+    const isDefault = (pair: LanguagePair) =>
+      pair.speaks === DEFAULT_PAIR.speaks && pair.learning === DEFAULT_PAIR.learning;
+
+    return [...found.values()].sort((a, b) => {
+      if (isDefault(a) !== isDefault(b)) return isDefault(a) ? -1 : 1;
+      return `${a.speaks}|${a.learning}`.localeCompare(`${b.speaks}|${b.learning}`);
+    });
+  }
+
   async getShow(id: string): Promise<Show> {
     const show = await this.repository.findShow(id);
     if (!show) throw new NotFoundException(`Show ${id} not found`);
     return show;
   }
 
-  async getEpisode(id: string): Promise<Episode> {
+  async getEpisode(id: string, speaks: LanguageTag = DEFAULT_SPEAKS): Promise<Episode> {
     const episode = await this.repository.findEpisode(id);
     if (!episode) throw new NotFoundException(`Episode ${id} not found`);
+    // Not in this pair's catalogue is not found, for this caller. Returning it
+    // anyway would hand the web app an episode it cannot render and make the
+    // exclusion surface as a failed build instead of an absent episode.
+    if (!this.speaksTo(episode, speaks)) {
+      throw new NotFoundException(`Episode ${id} is not in the ${speaks} catalogue`);
+    }
     return episode;
   }
 
   async listEpisodes(query: EpisodeQuery): Promise<RankedEpisode[]> {
     const episodes = await this.repository.findEpisodes();
     const level = query.level ?? 'Intermediate';
+    const speaks = query.speaks ?? DEFAULT_SPEAKS;
 
     // Topics live on the show, not the episode, so this needs the join.
     // Only pay for it when the caller actually filters by topic.
     const showIdsForTopic = query.topic ? await this.showIdsWithTopic(query.topic) : null;
 
     const filtered = episodes.filter((episode) => {
+      if (!this.speaksTo(episode, speaks)) return false;
       if (query.level && episode.profile.level !== query.level) return false;
       if (showIdsForTopic && !showIdsForTopic.has(episode.showId)) return false;
       if (query.search && !this.matches(episode, query.search)) return false;
       return true;
     });
 
-    const ranked = filtered.map((episode) => this.rank(episode, level));
+    const ranked = filtered.map((episode) => this.rank(episode, level, speaks));
 
     if (query.sort === 'recent') return ranked;
     return ranked.sort((a, b) => b.suitability - a.suitability);
@@ -72,8 +129,12 @@ export class CatalogService {
    * The "start here" pick: the single most followable episode for this level,
    * returned with the reasoning stated. Never recommend without a reason.
    */
-  async startHere(level: LearningLevel): Promise<RankedEpisode | null> {
-    const episodes = await this.repository.findEpisodes();
+  async startHere(
+    level: LearningLevel,
+    speaks: LanguageTag = DEFAULT_SPEAKS,
+  ): Promise<RankedEpisode | null> {
+    const all = await this.repository.findEpisodes();
+    const episodes = all.filter((episode) => this.speaksTo(episode, speaks));
     if (episodes.length === 0) return null;
 
     // Score for *this* learner, then prefer an episode pitched at their level.
@@ -83,7 +144,7 @@ export class CatalogService {
     // Beginner could be told a 130 wpm episode was "at a pace you can follow"
     // — the reason was computed for a learner who was not the one reading it.
     const ranked = episodes
-      .map((episode) => this.rank(episode, level))
+      .map((episode) => this.rank(episode, level, speaks))
       .sort((a, b) => b.suitability - a.suitability);
 
     return ranked.find((item) => item.episode.profile.level === level) ?? ranked[0];
@@ -97,7 +158,7 @@ export class CatalogService {
    * actually get before quitting) needs listening data we do not have yet, and
    * is deliberately absent rather than faked.
    */
-  private rank(episode: Episode, level: LearningLevel): RankedEpisode {
+  private rank(episode: Episode, level: LearningLevel, speaks: LanguageTag): RankedEpisode {
     const { profile } = episode;
     const comfortable = COMFORTABLE_RATE[level];
 
@@ -118,51 +179,57 @@ export class CatalogService {
     return {
       episode,
       suitability: Math.round(Math.min(100, Math.max(0, score))),
-      reason: this.explain(episode, level),
+      reason: this.explain(episode, level, speaks),
     };
   }
 
   /**
-   * The ranked reason, composed for one reader.
+   * Is this episode in `speaks`'s catalogue at all?
    *
-   * Still an English sentence: the pluralisation and the word order below are
-   * English, and Chinese has neither. Translating it is a renderer, not a
-   * string — ADR 0003 leaves it on the list rather than the bill. What changes
-   * here is that the authored half is now *fetched* in a named language, so
-   * the day the renderer arrives it has a seam to arrive at.
+   * Two conditions, and both are exclusions rather than degradations. The
+   * episode must carry an authored reason in that language — everything else a
+   * page renders travels with it, and profile.reason is the field the ranking
+   * contract makes mandatory. And the language must have a reason renderer,
+   * because a ranked episode has to say why it ranks there in the reader's own
+   * words; a language we can fill but not phrase is not supported yet.
+   *
+   * ADR 0003: a missing key is an exclusion, never a fallback to English. This
+   * method is where "excluded" is decided, and catalog-api.ts's assertEpisode
+   * on the web side is the backstop for whatever slips past it.
+   */
+  private speaksTo(episode: Episode, speaks: LanguageTag): boolean {
+    return canRenderReason(speaks) && inLanguage(episode.profile.reason, speaks) !== undefined;
+  }
+
+  /**
+   * The ranked reason, composed for one reader in their own language.
+   *
+   * The measured half is rendered per language (reason.render.ts) rather than
+   * substituted into one template: English inflects plurals and ends in ".",
+   * Chinese does neither, and a shared format string produces half a sentence
+   * in each. The authored half is fetched by key.
    *
    * `requireLanguage` throws rather than dropping the authored half. A reason
    * that silently loses the sentence explaining the level is a ranked result
-   * without its reason, which this product does not ship.
+   * without its reason, which this product does not ship. Callers reach here
+   * only through speaksTo, so in practice it fires on a bug, not on data.
    */
   private explain(
     episode: Episode,
     level: LearningLevel,
     speaks: LanguageTag = DEFAULT_SPEAKS,
   ): string {
-    // floor, not round: a 30-second episode rounds up to "1 minutes", which is
-    // both the wrong number and the wrong plural.
-    const minutes = Math.floor(episode.durationSeconds / 60);
-    const length =
-      minutes >= 1
-        ? `${minutes} minute${minutes === 1 ? '' : 's'}`
-        : `${episode.durationSeconds} seconds`;
-    const voices =
-      episode.profile.speakerCount === 1
-        ? 'one voice'
-        : `${episode.profile.speakerCount} voices`;
-    const pace =
-      episode.profile.speechRate <= COMFORTABLE_RATE[level]
-        ? 'at a pace you can follow'
-        : 'faster than your usual pace';
-
-    const authored = requireLanguage(
-      episode.profile.reason,
-      speaks,
-      `Episode ${episode.id} profile.reason`,
-    );
-
-    return `${length}, ${voices}, ${episode.profile.speechRate} wpm — ${pace}. ${authored}.`;
+    return renderReason(speaks, {
+      durationSeconds: episode.durationSeconds,
+      speakerCount: episode.profile.speakerCount,
+      speechRate: episode.profile.speechRate,
+      comfortable: episode.profile.speechRate <= COMFORTABLE_RATE[level],
+      authored: requireLanguage(
+        episode.profile.reason,
+        speaks,
+        `Episode ${episode.id} profile.reason`,
+      ),
+    });
   }
 
   private async showIdsWithTopic(topic: string): Promise<Set<string>> {

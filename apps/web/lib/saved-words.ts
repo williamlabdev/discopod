@@ -17,7 +17,7 @@
  */
 
 import type { VocabularyItem } from './catalogue';
-import { ACTIVE_PAIR, isLanguageTag, type LanguageTag } from './language';
+import { isLanguageTag, type LanguagePair, type LanguageTag } from './language';
 
 export interface SavedWord {
   /**
@@ -44,10 +44,14 @@ export interface SavedWord {
   savedAt: string;
 }
 
-export function createSavedWord(episodeId: string, item: VocabularyItem): SavedWord {
+export function createSavedWord(
+  pair: LanguagePair,
+  episodeId: string,
+  item: VocabularyItem,
+): SavedWord {
   return {
-    speaks: ACTIVE_PAIR.speaks,
-    learning: ACTIVE_PAIR.learning,
+    speaks: pair.speaks,
+    learning: pair.learning,
     term: item.term,
     meaning: item.meaning,
     // The spoken line where it exists, the authored example where it does not.
@@ -63,9 +67,10 @@ export function createSavedWord(episodeId: string, item: VocabularyItem): SavedW
  * The pair a record written before the pair existed must have been saved under.
  *
  * A fact, not a guess: only an `en → en` build ever wrote a record without one.
- * Deliberately not ACTIVE_PAIR — once a second pair ships, that would relabel
- * an old English gloss as Chinese, which is exactly the silent mislabelling
- * this model exists to prevent.
+ * Deliberately not the pair of the page doing the reading — a learner on the
+ * `zh-Hant → en` route reading a record from before the pair existed would
+ * relabel an old English gloss as Chinese, which is exactly the silent
+ * mislabelling this model exists to prevent.
  */
 const LEGACY_PAIR = { speaks: 'en', learning: 'en' } as const;
 
@@ -78,13 +83,18 @@ const LEGACY_PAIR = { speaks: 'en', learning: 'en' } as const;
  * is unknowable for those, so it becomes the time of the upgrade; that is a
  * worse answer than the truth and a better one than discarding the word.
  */
-export function readSavedWords(stored: unknown, episodeId: string, vocabulary: VocabularyItem[]): SavedWord[] {
+export function readSavedWords(
+  pair: LanguagePair,
+  stored: unknown,
+  episodeId: string,
+  vocabulary: VocabularyItem[],
+): SavedWord[] {
   if (!Array.isArray(stored)) return [];
 
   return stored.flatMap((entry): SavedWord[] => {
     if (typeof entry === 'string') {
       const item = vocabulary.find((word) => word.term === entry);
-      return item ? [createSavedWord(episodeId, item)] : [];
+      return item ? [createSavedWord(pair, episodeId, item)] : [];
     }
 
     // Anything that is not a record with a term is corrupt, not old.

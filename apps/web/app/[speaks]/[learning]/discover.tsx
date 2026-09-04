@@ -23,6 +23,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { LEARNING_LEVELS, type DiscoverCatalogue, type EpisodeCard, type LearningLevel } from '@/lib/catalogue';
+import { pairPath, type LanguagePair } from '@/lib/language';
 
 type WebMcpTool = {
   name: string;
@@ -55,7 +56,15 @@ function searchableText(card: EpisodeCard) {
     .toLowerCase();
 }
 
-export function Discover({ catalogue }: { catalogue: DiscoverCatalogue }) {
+export function Discover({
+  catalogue,
+  pair,
+}: {
+  catalogue: DiscoverCatalogue;
+  pair: LanguagePair;
+}) {
+  // Every link out of this page stays inside the pair the reader arrived under.
+  const home = pairPath(pair);
   const [query, setQuery] = useState('');
   const [activeInterest, setActiveInterest] = useState('All');
   const [activeLevel, setActiveLevel] = useState<LearningLevel>('Beginner');
@@ -238,7 +247,7 @@ export function Discover({ catalogue }: { catalogue: DiscoverCatalogue }) {
                   <span className="flex items-center gap-1.5"><Users className="size-3.5" />{startHere.voices}</span>
                   <span className="flex items-center gap-1.5"><Clock3 className="size-3.5" />{startHere.duration}</span>
                 </div>
-                <a className="mt-5 inline-flex h-10 items-center gap-2 rounded-full bg-foreground px-5 text-sm font-semibold text-background transition hover:bg-foreground/85" href={`/episode/${startHere.id}`}>Start with this one<ArrowRight className="size-4" /></a>
+                <a className="mt-5 inline-flex h-10 items-center gap-2 rounded-full bg-foreground px-5 text-sm font-semibold text-background transition hover:bg-foreground/85" href={`${home}/episode/${startHere.id}`}>Start with this one<ArrowRight className="size-4" /></a>
               </div>
             </div>
           </section>
@@ -302,7 +311,7 @@ export function Discover({ catalogue }: { catalogue: DiscoverCatalogue }) {
                           <span className="flex items-center gap-1.5"><Clock3 className="size-3.5" />{card.duration}</span>
                         </div>
                       </div>
-                      <a className="mt-3 flex h-10 items-center justify-center gap-2 rounded-full border border-border text-sm font-semibold transition hover:border-foreground/25 hover:bg-secondary" href={`/episode/${card.id}`}>Start lesson<ArrowRight className="size-4" /></a>
+                      <a className="mt-3 flex h-10 items-center justify-center gap-2 rounded-full border border-border text-sm font-semibold transition hover:border-foreground/25 hover:bg-secondary" href={`${home}/episode/${card.id}`}>Start lesson<ArrowRight className="size-4" /></a>
                     </div>
                   </article>
                 );

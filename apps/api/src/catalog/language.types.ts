@@ -35,11 +35,18 @@ export interface LanguagePair {
 export type Localized<T = string> = Partial<Record<LanguageTag, T>>;
 
 /**
- * Every pair this build serves. One today, and it is degenerate — English audio
- * with English explanations. Naming it is how it stops being invisible; see
- * ADR 0003, decision 6.
+ * The pair a caller gets when it does not name one.
+ *
+ * This used to be `SUPPORTED_PAIRS`, a hand-written list of one. Which pairs
+ * exist is not a constant: it follows from which episodes carry which language
+ * layer and which languages have a reason renderer, so it is now derived from
+ * the catalogue — `CatalogService.listPairs`, served at `GET /pairs`, and used
+ * by the web app to generate one route subtree per pair. What stays hard-coded
+ * is only this: the answer for a request that says nothing, which keeps every
+ * hand-typed curl working. `en → en` is degenerate — English audio with English
+ * explanations — and naming it is how it stops being invisible. ADR 0003.
  */
-export const SUPPORTED_PAIRS = [{ speaks: 'en', learning: 'en' }] as const satisfies readonly LanguagePair[];
+export const DEFAULT_PAIR = { speaks: 'en', learning: 'en' } as const satisfies LanguagePair;
 
 export function isLanguageTag(value: unknown): value is LanguageTag {
   return typeof value === 'string' && (LANGUAGES as readonly string[]).includes(value);

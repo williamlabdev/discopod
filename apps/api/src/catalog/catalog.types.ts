@@ -100,6 +100,12 @@ export interface Episode {
 }
 
 export interface EpisodeQuery {
+  /**
+   * The learner's own language. Not a display preference: it selects which
+   * catalogue is being asked for. An episode with no explanatory layer in this
+   * language is not in the result at all — ADR 0003, and CatalogService.speaksTo.
+   */
+  speaks?: LanguageTag;
   level?: LearningLevel;
   topic?: string;
   search?: string;

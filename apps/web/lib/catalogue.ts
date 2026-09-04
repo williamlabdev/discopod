@@ -12,6 +12,7 @@
 
 import {
   fetchEpisode,
+  fetchPairs,
   fetchRankedEpisodes,
   fetchShows,
   fetchStartHere,
@@ -20,7 +21,10 @@ import {
   type Show,
   type TranscriptCue,
 } from './catalog-api';
-import { pick } from './language';
+import { pick, pickOptional, type LanguagePair } from './language';
+
+export { fetchPairs as loadPairs };
+export type { LanguagePair };
 import { formatDuration, formatSpeechRate, formatVoices, paletteFor } from './presentation';
 
 export const LEARNING_LEVELS: LearningLevel[] = ['Beginner', 'Intermediate', 'Advanced'];
@@ -73,6 +77,13 @@ export interface TranscriptLine {
   seconds: number;
   speaker?: string;
   text: string;
+  /**
+   * The line in the learner's own language, where it has been written. Absent
+   * is a real state — an untranslated line, or an `en → en` pair where the
+   * transcript already is the learner's language — so the player renders
+   * nothing rather than falling back. See lib/language.ts, pickOptional.
+   */
+  translation?: string;
   highlight?: string;
 }
 
@@ -165,7 +176,7 @@ function formatCueTime(startMs: number): string {
   return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 }
 
-function toCard(ranked: RankedEpisode, show: Show | undefined): EpisodeCard {
+function toCard(ranked: RankedEpisode, show: Show | undefined, pair: LanguagePair): EpisodeCard {
   const { episode } = ranked;
   const { tone, ink } = paletteFor(episode.showId);
   const topics = show?.topics ?? [];
@@ -183,7 +194,7 @@ function toCard(ranked: RankedEpisode, show: Show | undefined): EpisodeCard {
     cefr: episode.profile.cefr,
     suitability: ranked.suitability,
     fitReason: ranked.reason,
-    levelReason: pick(episode.profile.reason, `Episode ${episode.id} profile.reason`),
+    levelReason: pick(episode.profile.reason, pair.speaks, `Episode ${episode.id} profile.reason`),
     speed: formatSpeechRate(episode.profile.speechRate),
     voices: formatVoices(episode.profile.speakerCount),
     duration: formatDuration(episode.durationSeconds),
@@ -214,18 +225,18 @@ export interface DiscoverCatalogue {
   topics: string[];
 }
 
-export async function loadDiscoverCatalogue(): Promise<DiscoverCatalogue> {
+export async function loadDiscoverCatalogue(pair: LanguagePair): Promise<DiscoverCatalogue> {
   const shows = await showsById();
   const perLevel = await Promise.all(
     LEARNING_LEVELS.map(async (level) => {
       const [ranked, first] = await Promise.all([
-        fetchRankedEpisodes(level),
-        fetchStartHere(level),
+        fetchRankedEpisodes(pair.speaks, level),
+        fetchStartHere(pair.speaks, level),
       ]);
       return [
         level,
-        ranked.map((item) => toCard(item, shows.get(item.episode.showId))),
-        first ? toCard(first, shows.get(first.episode.showId)) : null,
+        ranked.map((item) => toCard(item, shows.get(item.episode.showId), pair)),
+        first ? toCard(first, shows.get(first.episode.showId), pair) : null,
       ] as const;
     }),
   );
@@ -243,14 +254,21 @@ export async function loadDiscoverCatalogue(): Promise<DiscoverCatalogue> {
   return { byLevel, startHere, topics: topics.sort((a, b) => a.localeCompare(b)) };
 }
 
-/** Every episode id, in the API's default ranking order. Drives the static routes. */
-export async function loadEpisodeIds(): Promise<string[]> {
-  const ranked = await fetchRankedEpisodes();
+/**
+ * Every episode id in this pair's catalogue, in the API's default ranking
+ * order. Drives the static routes — and it is per pair, because an episode with
+ * no layer in `speaks` has no page under that pair at all.
+ */
+export async function loadEpisodeIds(pair: LanguagePair): Promise<string[]> {
+  const ranked = await fetchRankedEpisodes(pair.speaks);
   return ranked.map((item) => item.episode.id);
 }
 
-export async function loadEpisodeDetail(id: string): Promise<EpisodeDetail | null> {
-  const episode = await fetchEpisode(id);
+export async function loadEpisodeDetail(
+  pair: LanguagePair,
+  id: string,
+): Promise<EpisodeDetail | null> {
+  const episode = await fetchEpisode(pair.speaks, id);
   if (!episode) return null;
 
   const shows = await showsById();
@@ -258,7 +276,7 @@ export async function loadEpisodeDetail(id: string): Promise<EpisodeDetail | nul
 
   // The card fields need the ranked view, so take this episode's entry from the
   // list ranked for its own level — that is the reader looking at this page.
-  const ranked = await fetchRankedEpisodes(episode.profile.level);
+  const ranked = await fetchRankedEpisodes(pair.speaks, episode.profile.level);
   const entry = ranked.find((item) => item.episode.id === id);
   if (!entry) {
     throw new Error(`Episode ${id} exists but is absent from the ${episode.profile.level} ranking`);
@@ -266,14 +284,16 @@ export async function loadEpisodeDetail(id: string): Promise<EpisodeDetail | nul
 
   // Neighbours come from the full ordering, not from id arithmetic: ids are
   // opaque strings from the API and will not stay contiguous after ingestion.
-  const order = await loadEpisodeIds();
+  // Within this pair, too: a pair with one episode links back to itself rather
+  // than to a page that does not exist under it.
+  const order = await loadEpisodeIds(pair);
   const index = order.indexOf(id);
   const previousId = order[(index - 1 + order.length) % order.length];
   const nextId = order[(index + 1) % order.length];
 
   return {
-    ...toCard(entry, show),
-    learningGoal: pick(episode.learningGoal, `Episode ${id} learningGoal`),
+    ...toCard(entry, show, pair),
+    learningGoal: pick(episode.learningGoal, pair.speaks, `Episode ${id} learningGoal`),
     audioSrc: episode.audioUrl,
     sourceUrl: show?.sourceUrl,
     sourceLabel: show ? `${show.publisher} · ${episode.title}` : undefined,
@@ -282,18 +302,19 @@ export async function loadEpisodeDetail(id: string): Promise<EpisodeDetail | nul
       seconds: Math.round(cue.startMs / 1000),
       speaker: cue.speaker,
       text: cue.text,
+      translation: pickOptional(cue.translation, pair.speaks),
       highlight: cue.highlight,
     })),
     vocabulary: episode.vocabulary.map((entry_) => ({
       term: entry_.term,
       type: entry_.partOfSpeech,
-      meaning: pick(entry_.meaning, `Episode ${id} vocabulary "${entry_.term}" meaning`),
+      meaning: pick(entry_.meaning, pair.speaks, `Episode ${id} vocabulary "${entry_.term}" meaning`),
       example: entry_.example,
       occurrence: findOccurrence(entry_.term, episode.transcript),
     })),
     questions: episode.questions.map((question, index) => ({
-      prompt: pick(question.prompt, `Episode ${id} question ${index + 1} prompt`),
-      options: pick(question.options, `Episode ${id} question ${index + 1} options`),
+      prompt: pick(question.prompt, pair.speaks, `Episode ${id} question ${index + 1} prompt`),
+      options: pick(question.options, pair.speaks, `Episode ${id} question ${index + 1} options`),
       answer: question.answerIndex,
     })),
     previousId,

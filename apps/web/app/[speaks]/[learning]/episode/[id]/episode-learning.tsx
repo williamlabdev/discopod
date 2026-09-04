@@ -26,6 +26,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import type { EpisodeDetail } from '@/lib/catalogue';
+import { pairPath, type LanguagePair } from '@/lib/language';
 import { createSavedWord, readSavedWords, type SavedWord } from '@/lib/saved-words';
 
 function TranscriptLine({ text, highlight }: { text: string; highlight?: string }) {
@@ -34,7 +35,8 @@ function TranscriptLine({ text, highlight }: { text: string; highlight?: string 
   return <>{before}<mark className="rounded bg-[#f5d8ad] px-1 text-inherit">{highlight}</mark>{after}</>;
 }
 
-export function EpisodeLearning({ episode }: { episode: EpisodeDetail }) {
+export function EpisodeLearning({ episode, pair }: { episode: EpisodeDetail; pair: LanguagePair }) {
+  const home = pairPath(pair);
   const audioRef = useRef<HTMLAudioElement>(null);
   const [playing, setPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -46,8 +48,26 @@ export function EpisodeLearning({ episode }: { episode: EpisodeDetail }) {
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [checked, setChecked] = useState(false);
   const [hydrated, setHydrated] = useState(false);
+  /**
+   * Off by default. The product's thesis is that a learner follows an episode
+   * by ear; a native-language line permanently under every cue is read instead
+   * of heard. It is here for the line they could not get, not for all of them.
+   */
+  const [showTranslation, setShowTranslation] = useState(false);
 
-  const storageKey = `tuned-progress-${episode.id}`;
+  /**
+   * Progress is per pair, not per episode.
+   *
+   * The same episode under `en → en` and under `zh-Hant → en` is two different
+   * lessons: the glosses a learner saved are written in their own language, and
+   * merging the two would show a Chinese speaker English definitions they never
+   * saved. `legacyStorageKey` is the key used before pairs existed — only an
+   * `en → en` build ever wrote it, so only that pair reads it, once, to carry
+   * an existing learner's words forward instead of silently starting them over.
+   */
+  const storageKey = `discopod-progress-${pair.speaks}-${pair.learning}-${episode.id}`;
+  const legacyStorageKey =
+    pair.speaks === 'en' && pair.learning === 'en' ? `tuned-progress-${episode.id}` : null;
   const hasAudio = Boolean(episode.audioSrc);
   const progress = hasAudio && audioDuration ? (currentTime / audioDuration) * 100 : demoProgress;
   const activeTranscriptIndex = useMemo(() => {
@@ -57,6 +77,10 @@ export function EpisodeLearning({ episode }: { episode: EpisodeDetail }) {
     });
     return active;
   }, [currentTime, episode.transcript]);
+
+  // No toggle when there is nothing to toggle: an `en → en` pair has no
+  // translations at all, and a control that reveals nothing is a broken one.
+  const hasTranslations = episode.transcript.some((line) => Boolean(line.translation));
 
   const correctCount = episode.questions.filter((question, index) => answers[index] === question.answer).length;
   const formatTime = (value: number) => {
@@ -101,14 +125,16 @@ export function EpisodeLearning({ episode }: { episode: EpisodeDetail }) {
   useEffect(() => {
     queueMicrotask(() => {
       try {
-        const stored = window.localStorage.getItem(storageKey);
+        const stored =
+          window.localStorage.getItem(storageKey) ??
+          (legacyStorageKey ? window.localStorage.getItem(legacyStorageKey) : null);
         if (stored) {
           const value = JSON.parse(stored) as { currentTime?: number; complete?: boolean; savedWords?: unknown; answers?: Record<number, number>; checked?: boolean };
           setCurrentTime(value.currentTime ?? 0);
           setComplete(Boolean(value.complete));
           // Words saved before this stored bare terms; readSavedWords rebuilds
           // their sentence, speaker and timestamp rather than dropping them.
-          setSavedWords(readSavedWords(value.savedWords, episode.id, episode.vocabulary));
+          setSavedWords(readSavedWords(pair, value.savedWords, episode.id, episode.vocabulary));
           setAnswers(value.answers ?? {});
           setChecked(Boolean(value.checked));
         }
@@ -117,7 +143,7 @@ export function EpisodeLearning({ episode }: { episode: EpisodeDetail }) {
       }
       setHydrated(true);
     });
-  }, [episode.id, episode.vocabulary, storageKey]);
+  }, [episode.id, episode.vocabulary, legacyStorageKey, pair, storageKey]);
 
   useEffect(() => {
     if (!hydrated) return;
@@ -132,11 +158,11 @@ export function EpisodeLearning({ episode }: { episode: EpisodeDetail }) {
     <main className="min-h-screen bg-background text-foreground">
       <div className="mx-auto max-w-[1240px] px-5 pb-16 sm:px-8 lg:px-12">
         <header className="flex h-20 items-center justify-between border-b border-border/70">
-          <Link className="flex items-center gap-2.5 font-semibold tracking-[-0.03em]" href="/">
+          <Link className="flex items-center gap-2.5 font-semibold tracking-[-0.03em]" href={home}>
             <span className="grid size-9 place-items-center rounded-full bg-foreground text-background"><Headphones className="size-[18px]" /></span>
             <span className="text-xl">DiscoPod</span>
           </Link>
-          <Link className="flex items-center gap-2 text-sm font-medium text-muted-foreground transition hover:text-foreground" href="/"><ArrowLeft className="size-4" />Back to discover</Link>
+          <Link className="flex items-center gap-2 text-sm font-medium text-muted-foreground transition hover:text-foreground" href={home}><ArrowLeft className="size-4" />Back to discover</Link>
         </header>
 
         <section className="grid gap-8 py-10 lg:grid-cols-[360px_1fr] lg:items-center lg:py-14">
@@ -207,10 +233,17 @@ export function EpisodeLearning({ episode }: { episode: EpisodeDetail }) {
 
           <TabsContent value="transcript" className="grid gap-8 py-8 lg:grid-cols-[minmax(0,1fr)_300px]">
             <div className="rounded-[24px] border border-border bg-card px-5 py-2 sm:px-8">
+              {hasTranslations && (
+                <div className="flex items-center justify-end border-b border-border/70 py-3">
+                  <button type="button" onClick={() => setShowTranslation((value) => !value)} aria-pressed={showTranslation} className="rounded-full border border-border px-3 py-1.5 text-xs font-semibold text-muted-foreground transition hover:text-foreground">
+                    {showTranslation ? 'Hide translation' : 'Show translation'}
+                  </button>
+                </div>
+              )}
               {episode.transcript.map((line, index) => (
                 <button key={`${line.time}-${index}`} type="button" onClick={() => seekTo(hasAudio ? (line.seconds ?? 0) : Math.min(95, 8 + index * 18))} className={`group -mx-2 grid w-[calc(100%+1rem)] grid-cols-[58px_1fr] rounded-xl border-b border-border/70 px-2 py-5 text-left transition last:border-0 sm:grid-cols-[74px_1fr] ${hasAudio && activeTranscriptIndex === index ? 'bg-secondary/75' : 'hover:bg-secondary/40'}`}>
                   <span className="pt-1 text-xs font-semibold text-primary">{line.time}</span>
-                  <span className="text-base leading-7 transition group-hover:text-primary sm:text-lg sm:leading-8">{line.speaker && <strong className="mr-2 text-sm">{line.speaker}</strong>}<TranscriptLine text={line.text} highlight={line.highlight} /></span>
+                  <span className="text-base leading-7 transition group-hover:text-primary sm:text-lg sm:leading-8">{line.speaker && <strong className="mr-2 text-sm">{line.speaker}</strong>}<TranscriptLine text={line.text} highlight={line.highlight} />{showTranslation && line.translation && <span className="mt-1 block text-sm leading-6 text-muted-foreground">{line.translation}</span>}</span>
                 </button>
               ))}
             </div>
@@ -238,7 +271,7 @@ export function EpisodeLearning({ episode }: { episode: EpisodeDetail }) {
                         size="icon"
                         className="rounded-full"
                         aria-label={`${isSaved ? 'Remove' : 'Save'} ${word.term}`}
-                        onClick={() => setSavedWords((current) => (isSaved ? current.filter((item) => item.term !== word.term) : [...current, createSavedWord(episode.id, word)]))}
+                        onClick={() => setSavedWords((current) => (isSaved ? current.filter((item) => item.term !== word.term) : [...current, createSavedWord(pair, episode.id, word)]))}
                       >
                         {isSaved ? <Check /> : <Bookmark />}
                       </Button>
@@ -292,7 +325,7 @@ export function EpisodeLearning({ episode }: { episode: EpisodeDetail }) {
           </TabsContent>
         </Tabs>
 
-        <section className="mt-12 flex flex-col items-start justify-between gap-5 rounded-[26px] bg-secondary/60 p-6 sm:flex-row sm:items-center sm:p-8"><div><p className="text-xs font-semibold uppercase tracking-[0.12em] text-primary">Keep learning</p><h3 className="mt-2 font-serif text-3xl">Ready for another episode?</h3></div><div className="flex gap-2"><Link className="grid size-11 place-items-center rounded-full border border-border bg-card" href={`/episode/${episode.previousId}`} aria-label="Previous lesson"><ChevronLeft /></Link><Link className="flex h-11 items-center gap-2 rounded-full bg-foreground px-5 text-sm font-semibold text-background" href={`/episode/${episode.nextId}`}>Next lesson<ChevronRight className="size-4" /></Link></div></section>
+        <section className="mt-12 flex flex-col items-start justify-between gap-5 rounded-[26px] bg-secondary/60 p-6 sm:flex-row sm:items-center sm:p-8"><div><p className="text-xs font-semibold uppercase tracking-[0.12em] text-primary">Keep learning</p><h3 className="mt-2 font-serif text-3xl">Ready for another episode?</h3></div><div className="flex gap-2"><Link className="grid size-11 place-items-center rounded-full border border-border bg-card" href={`${home}/episode/${episode.previousId}`} aria-label="Previous lesson"><ChevronLeft /></Link><Link className="flex h-11 items-center gap-2 rounded-full bg-foreground px-5 text-sm font-semibold text-background" href={`${home}/episode/${episode.nextId}`}>Next lesson<ChevronRight className="size-4" /></Link></div></section>
       </div>
     </main>
   );

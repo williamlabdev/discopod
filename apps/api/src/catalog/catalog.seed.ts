@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
+import { applyOverlays } from './catalog.overlay';
 import type {
   DifficultyProfile,
   Episode,
@@ -27,8 +28,7 @@ export const SEED_PAIR = { speaks: 'en', learning: 'en' } as const satisfies Lan
  * would rewrite seventy-odd rows to say what one constant already says, and it
  * would say it once per row — seven chances to disagree with itself. A second
  * language arrives as its own overlay file keyed by episode id, not by editing
- * this one; that path is designed for, not built, and it will need writing
- * properly the first time it is exercised.
+ * this one; see catalog.overlay.ts, which is that path built.
  */
 function authoredInSeedLanguage<T>(value: T): Localized<T> {
   return { [SEED_PAIR.speaks]: value };
@@ -172,6 +172,11 @@ export function loadSeedCatalog(): { shows: Show[]; episodes: Episode[] } {
       })),
     });
   }
+
+  // Second languages arrive here, as files keyed by episode id — never by
+  // editing the rows above. Partial by design: whatever an overlay does not
+  // cover is not in that pair's catalogue. See catalog.overlay.ts.
+  applyOverlays(episodes);
 
   return { shows: [...shows.values()], episodes };
 }

@@ -1,0 +1,39 @@
+{
+  "7": {
+    "levelReason": "句子短、都是日常招呼語、輪流說話清楚,名字重複出現",
+    "learningGoal": "在一段簡短的對話裡自我介紹、向人打招呼,並把名字拼出來。",
+    "transcript": {
+      "00:00": "嗨!你是 Anna 嗎?",
+      "00:03": "對!你好!你是 Pete 嗎?",
+      "00:07": "我是 Pete。",
+      "00:09": "很高興認識你。",
+      "00:12": "我們再說一次。我是 Anna,很高興認識你。",
+      "00:18": "我是 Pete。Anna——是 A-N-A 嗎?",
+      "00:23": "不是,是 A-N-N-A。",
+      "00:26": "喔,是有兩個 n 的 Anna——歡迎!"
+    },
+    "vocabulary": {
+      "Hi there": "打招呼時親切、不正式的說法。",
+      "Nice to meet you": "初次見面時使用的客氣說法。",
+      "try again": "再做一次。",
+      "welcome": "在別人到來時親切地迎接對方。"
+    },
+    "questions": [
+      {
+        "sourcePrompt": "Who is new to the building?",
+        "prompt": "誰是剛來到這棟大樓的人?",
+        "options": ["Pete", "Anna", "兩個人都是"]
+      },
+      {
+        "sourcePrompt": "How many letter N’s are in Anna’s name?",
+        "prompt": "Anna 這個名字裡有幾個字母 N?",
+        "options": ["一個", "兩個", "三個"]
+      },
+      {
+        "sourcePrompt": "Which phrase do they use when they first meet?",
+        "prompt": "他們初次見面時用了哪一句話?",
+        "options": ["See you tomorrow", "Nice to meet you", "Please sit down"]
+      }
+    ]
+  }
+}

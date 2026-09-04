@@ -12,7 +12,7 @@
  * CATALOG_API_URL comes from.
  */
 
-import { ACTIVE_PAIR, has, type LanguageTag, type Localized } from './language';
+import { has, type LanguagePair, type LanguageTag, type Localized } from './language';
 
 export type LearningLevel = 'Beginner' | 'Intermediate' | 'Advanced';
 
@@ -126,21 +126,21 @@ async function get<T>(path: string): Promise<T> {
  * page renders; an episode missing any of it is a broken page, and a broken
  * build is the cheaper way to find that out.
  *
- * The `Localized` fields are checked for the *active pair's* language, not for
- * mere presence. An episode carrying a reason in some language, but not in the
- * one this build renders, has nothing to say to this learner — ADR 0003 calls
- * that exclusion from the pair's catalogue, and this is where it is enforced.
- * Right now it can only fire on a drifted API, because the pair is `en → en`
- * and the seed authors every field; it is written for the pair after that.
+ * The `Localized` fields are checked for the *requested* language, not for mere
+ * presence. An episode carrying a reason in some language, but not in the one
+ * this route renders, has nothing to say to this learner — ADR 0003 calls that
+ * exclusion from the pair's catalogue. The API decides the exclusion
+ * (CatalogService.speaksTo) and leaves such episodes out; this is the backstop
+ * for anything that gets past it, which today means a drifted API.
  */
-function assertEpisode(episode: Episode, where: string): Episode {
+function assertEpisode(episode: Episode, speaks: LanguageTag, where: string): Episode {
   const problems: string[] = [];
 
   if (!episode?.id) problems.push('id');
   if (!episode?.showId) problems.push('showId');
-  if (!has(episode?.profile?.reason)) problems.push(`profile.reason[${ACTIVE_PAIR.speaks}]`);
+  if (!has(episode?.profile?.reason, speaks)) problems.push(`profile.reason[${speaks}]`);
   if (!episode?.profile?.level) problems.push('profile.level');
-  if (!has(episode?.learningGoal)) problems.push(`learningGoal[${ACTIVE_PAIR.speaks}]`);
+  if (!has(episode?.learningGoal, speaks)) problems.push(`learningGoal[${speaks}]`);
   if (!Array.isArray(episode?.transcript) || episode.transcript.length === 0) {
     problems.push('transcript');
   }
@@ -148,10 +148,10 @@ function assertEpisode(episode: Episode, where: string): Episode {
   if (!Array.isArray(episode?.vocabulary)) {
     problems.push('vocabulary');
   } else {
-    const untranslated = episode.vocabulary.filter((entry) => !has(entry.meaning));
+    const untranslated = episode.vocabulary.filter((entry) => !has(entry.meaning, speaks));
     if (untranslated.length > 0) {
       problems.push(
-        `${untranslated.length} vocabulary meaning(s) with no ${ACTIVE_PAIR.speaks}: ` +
+        `${untranslated.length} vocabulary meaning(s) with no ${speaks}: ` +
           untranslated.map((entry) => entry.term).join(', '),
       );
     }
@@ -159,8 +159,10 @@ function assertEpisode(episode: Episode, where: string): Episode {
 
   if (!Array.isArray(episode?.questions)) {
     problems.push('questions');
-  } else if (episode.questions.some((q) => !has(q.prompt) || !has(q.options))) {
-    problems.push(`question prompt/options with no ${ACTIVE_PAIR.speaks}`);
+  } else if (
+    episode.questions.some((q) => !has(q.prompt, speaks) || !has(q.options, speaks))
+  ) {
+    problems.push(`question prompt/options with no ${speaks}`);
   }
 
   if (problems.length > 0) {
@@ -172,13 +174,53 @@ function assertEpisode(episode: Episode, where: string): Episode {
   return episode;
 }
 
-function assertRanked(ranked: RankedEpisode, where: string): RankedEpisode {
+function assertRanked(ranked: RankedEpisode, speaks: LanguageTag, where: string): RankedEpisode {
   // The vision's one hard rule: nothing is ranked without saying why.
   if (!ranked?.reason) {
     throw new Error(`Ranked episode ${ranked?.episode?.id ?? '(no id)'} from ${where} has no reason`);
   }
-  assertEpisode(ranked.episode, where);
+  assertEpisode(ranked.episode, speaks, where);
   return ranked;
+}
+
+/**
+ * Every episode request carries the pair's `speaks`.
+ *
+ * It is not a display preference to be applied after the fact — it decides
+ * which catalogue is being asked for. The API answers with the episodes that
+ * have an explanatory layer in that language and leaves the rest out, so this
+ * parameter is what makes an untranslated episode absent rather than half
+ * rendered. ADR 0003; the API side is CatalogService.speaksTo.
+ *
+ * ADR 0002 rules out the *browser* calling this API, which this does not do:
+ * these run during `next build`, server to server, and their answers are baked
+ * into the pair's static pages.
+ */
+function episodesPath(
+  path: string,
+  speaks: LanguageTag,
+  params: Record<string, string | undefined> = {},
+): string {
+  const query = new URLSearchParams({ speaks });
+  for (const [key, value] of Object.entries(params)) {
+    if (value) query.set(key, value);
+  }
+  return `${path}?${query.toString()}`;
+}
+
+/**
+ * The pairs the catalogue can serve, which become the site's route subtrees.
+ *
+ * Asked rather than declared: the API derives them from which episodes carry
+ * which language layer, so translating one more episode grows the site on the
+ * next build with nothing here changing. See CatalogService.listPairs.
+ */
+export async function fetchPairs(): Promise<LanguagePair[]> {
+  const pairs = await get<LanguagePair[]>('/pairs');
+  if (pairs.length === 0) {
+    throw new Error('The catalogue API serves no language pairs — there is no site to build.');
+  }
+  return pairs;
 }
 
 export async function fetchShows(): Promise<Show[]> {
@@ -190,10 +232,13 @@ export async function fetchShows(): Promise<Show[]> {
  * it — the same episode is a different fit for a different learner, so the level
  * has to go to the server rather than being filtered off afterwards.
  */
-export async function fetchRankedEpisodes(level?: LearningLevel): Promise<RankedEpisode[]> {
-  const where = level ? `/episodes?level=${level}` : '/episodes';
+export async function fetchRankedEpisodes(
+  speaks: LanguageTag,
+  level?: LearningLevel,
+): Promise<RankedEpisode[]> {
+  const where = episodesPath('/episodes', speaks, { level });
   const ranked = await get<RankedEpisode[]>(where);
-  return ranked.map((item) => assertRanked(item, where));
+  return ranked.map((item) => assertRanked(item, speaks, where));
 }
 
 /**
@@ -201,16 +246,22 @@ export async function fetchRankedEpisodes(level?: LearningLevel): Promise<Ranked
  * only for an empty catalogue — a level with no episodes of its own falls back
  * to the best episode overall, still scored for this learner.
  */
-export async function fetchStartHere(level: LearningLevel): Promise<RankedEpisode | null> {
-  const where = `/episodes/start-here?level=${level}`;
+export async function fetchStartHere(
+  speaks: LanguageTag,
+  level: LearningLevel,
+): Promise<RankedEpisode | null> {
+  const where = episodesPath('/episodes/start-here', speaks, { level });
   const ranked = await get<RankedEpisode | null>(where);
-  return ranked ? assertRanked(ranked, where) : null;
+  return ranked ? assertRanked(ranked, speaks, where) : null;
 }
 
-export async function fetchEpisode(id: string): Promise<Episode | null> {
-  const url = `${baseUrl()}/episodes/${encodeURIComponent(id)}`;
+export async function fetchEpisode(speaks: LanguageTag, id: string): Promise<Episode | null> {
+  const where = episodesPath(`/episodes/${encodeURIComponent(id)}`, speaks);
+  const url = `${baseUrl()}${where}`;
   const response = await fetch(url, { cache: 'force-cache' });
+  // 404 is also how the API says "not in this pair's catalogue", which is a
+  // real answer rather than an error: the episode exists, not for this learner.
   if (response.status === 404) return null;
   if (!response.ok) throw new Error(`Catalogue API answered ${response.status} for ${url}`);
-  return assertEpisode((await response.json()) as Episode, `/episodes/${id}`);
+  return assertEpisode((await response.json()) as Episode, speaks, where);
 }
