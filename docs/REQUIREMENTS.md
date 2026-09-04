@@ -14,9 +14,11 @@ cannot be built without changing that shape says so in its own "Blocked on" sect
 ## R24 — "In other words": elaborated restatement in the target language
 
 - **Priority:** P1 — the highest-value item in P1 and cheaper than anything else in it.
-- **Status:** Specified, not started.
-- **Blocked on:** [ADR 0002](adr/0002-fetch-the-catalogue-at-build-time.md). See
-  "Blocked on" below; this is not a small caveat.
+- **Status:** Unblocked, not started. Rungs 1–3 are buildable;
+  criteria 12–13 (telemetry) are deferred.
+- **Shaped by:** [ADR 0005](adr/0005-generated-learner-support-is-a-build-artifact.md) —
+  restatements are generated at build time into the catalogue, ADR 0002 stands, telemetry
+  waits for the level estimator. See "Blocked on" below for what that changes.
 
 ### What it is
 
@@ -189,23 +191,27 @@ not a parameter.
 
 ### Blocked on
 
-**ADR 0002 — the catalogue is fetched at build time and the site is a static export.**
-The browser does not call the API; there is no runtime server. Criterion 1 ("tapping a
-cue produces a restatement") and criteria 10–13 (a shared cache, telemetry) all assume
-one. This is not an implementation detail to be worked around later — it decides the
-whole shape of the feature, and there are two honest routes:
+**Resolved by [ADR 0005](adr/0005-generated-learner-support-is-a-build-artifact.md).**
 
-- **Revisit ADR 0002** and give the app a runtime API for generation, caching and
-  telemetry. This is the route the requirement as written assumes.
-- **Generate at build time**, all cues × all levels, into the catalogue. The site stays
-  static and costs nothing per learner. This contradicts the requirement's "no proactive
-  rewriting" exclusion — but note that exclusion's *stated* reason ("what makes the
-  rung-of-resolution signal meaningful") does not survive scrutiny: the signal comes from
-  which rung the learner **opened**, not from when the text was produced. The real cost of
-  proactive generation is money and build time, which is a different argument and a
-  weaker one at this catalogue size.
+The block was ADR 0002: the catalogue is fetched at build time and the site is a static
+export, so the browser does not call the API and there is no runtime server. Criterion 1
+("tapping a cue produces a restatement") and criteria 10–13 (a shared cache, telemetry)
+all read as though one existed.
 
-Either way it is an ADR, not a patch.
+ADR 0005 finds that criteria 10 and 11 decide the question in the opposite direction from
+the one this requirement assumed. Criterion 10 puts no learner in the cache key, so the
+content changes only on a commit; criterion 11 puts it in the same store as the
+transcript, and in this repo that store is `catalog.seed.json`. Restatements are
+therefore generated **at build time**, all cues × all levels, into the catalogue. ADR
+0002's stated expiry condition — the catalogue becoming per-learner or updating between
+deploys — is not met, and ADR 0002 stands unchanged.
+
+What this costs, and the reasoning, is in ADR 0005. Two things follow here:
+
+- The "no proactive rewriting" exclusion is traded away. See "Out of scope" below.
+- **Criteria 12–13 are deferred**, together with the level estimator they specify
+  behaviour for. They are the only part of this requirement that genuinely needs a
+  runtime, and their consumer does not exist. Rungs 1–3 ship without measurement.
 
 ### Open questions this requirement surfaces
 
@@ -232,6 +238,11 @@ These are not objections to the requirement; they are things it makes urgent.
 
 - Rewriting whole episodes or whole segments. One cue at a time, on demand.
 - Grammar explanation. This feature restates; it does not teach syntax.
-- Proactive rewriting — **conditionally.** See "Blocked on": if the build-time route is
-  taken, this exclusion is the thing being traded away, and that trade needs stating
-  rather than inheriting.
+- ~~Proactive rewriting.~~ **Withdrawn** by
+  [ADR 0005](adr/0005-generated-learner-support-is-a-build-artifact.md). The build-time
+  route was taken and this exclusion was the thing traded away. Its stated reason — that
+  on-demand generation is "what makes the rung-of-resolution signal meaningful" — does not
+  hold: the signal comes from which rung the learner **opened**, which is observed at the
+  tap regardless of when the text behind it was produced. What proactive generation
+  actually costs is money and build time, and ADR 0005 states the size of it rather than
+  leaving the trade inherited.

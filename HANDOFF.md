@@ -57,6 +57,9 @@ comes from `@discopod/api` over HTTP during `next build`, so the static export k
 speed and the deployed site never waits on the sleeping API. Cards show the suitability
 the API computes instead of the old hand-written `match` numbers. Reasoning and the
 rejected runtime-fetch alternative: [ADR 0002](docs/adr/0002-fetch-the-catalogue-at-build-time.md).
+That decision was re-examined against R24 and upheld — generated learner support is
+catalogue content and is built, not served:
+[ADR 0005](docs/adr/0005-generated-learner-support-is-a-build-artifact.md).
 
 Two defects surfaced by actually rendering the API's output, both fixed: `?topic=` was
 accepted by validation and then silently ignored, and `Math.round(30/60)` made a
