@@ -9,6 +9,8 @@
  * Show ids come from `slug(show.title)` in the API's seed loader.
  */
 
+import type { SpeechRate } from './catalog-api';
+
 type Palette = { tone: string; ink: string };
 
 const PALETTE: Record<string, Palette> = {
@@ -46,12 +48,18 @@ export function formatDuration(seconds: number): string {
 }
 
 /**
- * The API reports speech rate as a number. The "≈" the VOA lesson used to carry
- * was hand-written; a measured rate on a 30-second clip is an estimate for every
- * episode, so either all of them hedge or none do. None do.
+ * The unit comes from the rate, not from this function. It used to be hard-coded
+ * "wpm" here, which was correct only while every episode was English — the same
+ * assumption ADR 0004 pulls out of the API's thresholds, and this is the display
+ * end of it. On a card the unit reads the same in every learner language, so
+ * unlike the ranked reason this needs no per-language renderer.
+ *
+ * The "≈" the VOA lesson used to carry was hand-written; a measured rate on a
+ * 30-second clip is an estimate for every episode, so either all of them hedge
+ * or none do. None do.
  */
-export function formatSpeechRate(wordsPerMinute: number): string {
-  return `${wordsPerMinute} wpm`;
+export function formatSpeechRate(rate: SpeechRate): string {
+  return `${rate.value} ${rate.unit}`;
 }
 
 /**

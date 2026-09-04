@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 
 import { pairFromParams, type PairParams } from '../../pair';
 import { loadEpisodeDetail, loadEpisodeIds, loadPairs } from '@/lib/catalogue';
+import { LANGUAGE_NAMES } from '@/lib/language';
 import { EpisodeLearning } from './episode-learning';
 
 type EpisodePageProps = {
@@ -35,7 +36,11 @@ export async function generateMetadata({ params }: EpisodePageProps): Promise<Me
   const episode = await loadEpisodeDetail(pair, id);
   if (!episode) return { title: 'Lesson not found — DiscoPod' };
 
-  const title = `${episode.episodeTitle} — ${episode.level} English lesson`;
+  // The taught language is the pair's, not a constant. This said "English"
+  // unconditionally, which would have put an English label on a Mandarin lesson
+  // the moment the catalogue had one — in the page title, which is the one piece
+  // of copy that follows the link out of the app.
+  const title = `${episode.episodeTitle} — ${episode.level} ${LANGUAGE_NAMES[pair.learning]} lesson`;
   const description = `${episode.showTitle}: ${episode.learningGoal}`;
   return {
     title,

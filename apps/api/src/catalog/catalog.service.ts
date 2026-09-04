@@ -9,6 +9,7 @@ import type {
   Show,
 } from './catalog.types';
 import { canRenderReason, renderReason } from './reason.render';
+import { comfortableRate, isCalibrated } from './speech-rate';
 import {
   DEFAULT_PAIR,
   inLanguage,
@@ -29,13 +30,6 @@ import {
  * every hand-typed curl, working unchanged.
  */
 const DEFAULT_SPEAKS: LanguageTag = DEFAULT_PAIR.speaks;
-
-/** Speech rate a learner at each level can comfortably follow, in wpm. */
-const COMFORTABLE_RATE: Record<LearningLevel, number> = {
-  Beginner: 110,
-  Intermediate: 145,
-  Advanced: 180,
-};
 
 @Injectable()
 export class CatalogService {
@@ -160,10 +154,21 @@ export class CatalogService {
    */
   private rank(episode: Episode, level: LearningLevel, speaks: LanguageTag): RankedEpisode {
     const { profile } = episode;
-    const comfortable = COMFORTABLE_RATE[level];
+    // speaksTo already refused any episode whose unit has no thresholds, so
+    // this cannot be undefined for an episode that reached the ranking.
+    const comfortable = comfortableRate(profile.speechRate.unit, level);
+    if (comfortable === undefined) {
+      throw new Error(
+        `Episode ${episode.id} is measured in ${profile.speechRate.unit}, which has no ` +
+          `comfortable-rate thresholds. It should have been excluded, not ranked.`,
+      );
+    }
 
     // Each penalty is 0-1, where 0 is "no obstacle for this learner".
-    const ratePenalty = Math.min(1, Math.max(0, (profile.speechRate - comfortable) / comfortable));
+    const ratePenalty = Math.min(
+      1,
+      Math.max(0, (profile.speechRate.value - comfortable) / comfortable),
+    );
     const coveragePenalty = Math.min(1, Math.max(0, (0.95 - profile.vocabularyCoverage) / 0.3));
     const speakerPenalty = Math.min(1, Math.max(0, (profile.speakerCount - 1) / 3));
     const registerPenalty = (profile.slangLoad + profile.accentLoad) / 2;
@@ -186,19 +191,31 @@ export class CatalogService {
   /**
    * Is this episode in `speaks`'s catalogue at all?
    *
-   * Two conditions, and both are exclusions rather than degradations. The
-   * episode must carry an authored reason in that language — everything else a
-   * page renders travels with it, and profile.reason is the field the ranking
-   * contract makes mandatory. And the language must have a reason renderer,
+   * Three conditions, and all three are exclusions rather than degradations.
+   * The episode must carry an authored reason in that language — everything
+   * else a page renders travels with it, and profile.reason is the field the
+   * ranking contract makes mandatory. The language must have a reason renderer,
    * because a ranked episode has to say why it ranks there in the reader's own
    * words; a language we can fill but not phrase is not supported yet.
    *
-   * ADR 0003: a missing key is an exclusion, never a fallback to English. This
-   * method is where "excluded" is decided, and catalog-api.ts's assertEpisode
-   * on the web side is the backstop for whatever slips past it.
+   * And the episode's speech rate must be measured in a unit this app has
+   * thresholds for. That one is about the audio, not the reader, so it excludes
+   * the episode from *every* pair rather than from one: an episode we cannot
+   * honestly place on the "can you follow this by ear?" axis has no suitability
+   * score to offer anybody, and a score computed against the wrong unit would
+   * look exactly like one that means something. See speech-rate.ts.
+   *
+   * ADR 0003: a missing key is an exclusion, never a fallback to English.
+   * ADR 0004 extends the same rule to an uncalibrated unit. This method is
+   * where "excluded" is decided, and catalog-api.ts's assertEpisode on the web
+   * side is the backstop for whatever slips past it.
    */
   private speaksTo(episode: Episode, speaks: LanguageTag): boolean {
-    return canRenderReason(speaks) && inLanguage(episode.profile.reason, speaks) !== undefined;
+    return (
+      isCalibrated(episode.profile.speechRate.unit) &&
+      canRenderReason(speaks) &&
+      inLanguage(episode.profile.reason, speaks) !== undefined
+    );
   }
 
   /**
@@ -223,7 +240,9 @@ export class CatalogService {
       durationSeconds: episode.durationSeconds,
       speakerCount: episode.profile.speakerCount,
       speechRate: episode.profile.speechRate,
-      comfortable: episode.profile.speechRate <= COMFORTABLE_RATE[level],
+      comfortable:
+        episode.profile.speechRate.value <=
+        (comfortableRate(episode.profile.speechRate.unit, level) ?? Number.POSITIVE_INFINITY),
       authored: requireLanguage(
         episode.profile.reason,
         speaks,

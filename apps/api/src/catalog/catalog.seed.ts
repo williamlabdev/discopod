@@ -10,14 +10,20 @@ import type {
   TranscriptCue,
 } from './catalog.types';
 import type { LanguagePair, Localized } from './language.types';
+import { rateUnitFor, type SpeechRate } from './speech-rate';
 
 /**
  * The pair this seed is written for, declared rather than assumed.
  *
- * Seven episodes with English audio and English explanations. That is
- * `en → en`, which is degenerate — it describes a catalogue that does not yet
- * do the thing the product is for — and saying so is the point. See ADR 0003,
- * decision 6.
+ * English audio with English explanations. That is `en → en`, which is
+ * degenerate — it describes a catalogue that does not yet do the thing the
+ * product is for — and saying so is the point. See ADR 0003, decision 6.
+ *
+ * The seed is one episode, and that is the whole catalogue of verified
+ * material. It held seven until the six unverified rows were removed: they
+ * carried invented episode titles and invented transcripts under the names of
+ * real publishers, which is not demo data but fabricated attribution. See
+ * ADR 0004.
  */
 export const SEED_PAIR = { speaks: 'en', learning: 'en' } as const satisfies LanguagePair;
 
@@ -25,8 +31,8 @@ export const SEED_PAIR = { speaks: 'en', learning: 'en' } as const satisfies Lan
  * Lift a flat seed string into the pair's own language.
  *
  * The seed JSON stays flat and this loader does the wrapping. Nesting the JSON
- * would rewrite seventy-odd rows to say what one constant already says, and it
- * would say it once per row — seven chances to disagree with itself. A second
+ * would rewrite every row to say what one constant already says, and it would
+ * say it once per row — one chance per row to disagree with itself. A second
  * language arrives as its own overlay file keyed by episode id, not by editing
  * this one; see catalog.overlay.ts, which is that path built.
  */
@@ -73,9 +79,15 @@ function slug(value: string): string {
     .replace(/^-|-$/g, '');
 }
 
-function parseSpeechRate(speed: string): number {
+/**
+ * The seed writes rates as display strings ("≈ 105 wpm"). The number is parsed
+ * out of it, but the unit is taken from the show's language rather than from
+ * the string: the string is authored prose and can disagree with itself, while
+ * the language is the fact that decides what was counted. See speech-rate.ts.
+ */
+function parseSpeechRate(speed: string): SpeechRate {
   const match = /(\d+)/.exec(speed);
-  return match ? Number(match[1]) : 0;
+  return { value: match ? Number(match[1]) : 0, unit: rateUnitFor(SEED_PAIR.learning) };
 }
 
 function parseDurationSeconds(duration: string): number {

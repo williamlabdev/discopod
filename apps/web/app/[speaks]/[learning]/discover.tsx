@@ -23,7 +23,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { LEARNING_LEVELS, type DiscoverCatalogue, type EpisodeCard, type LearningLevel } from '@/lib/catalogue';
-import { pairPath, type LanguagePair } from '@/lib/language';
+import { LANGUAGE_NAMES, pairPath, type LanguagePair } from '@/lib/language';
 
 type WebMcpTool = {
   name: string;
@@ -196,7 +196,14 @@ export function Discover({
             <h1 className="max-w-3xl font-serif text-[clamp(3rem,7vw,6.8rem)] leading-[0.9] tracking-[-0.055em]">Podcasts at <em className="font-normal text-primary">your level.</em></h1>
           </div>
           <div className="pb-1">
-            <p className="mb-6 max-w-md text-base leading-7 text-muted-foreground">Choose your English level. We analyze each transcript so every episode feels challenging—not overwhelming.</p>
+            {/* The taught language comes from the pair, not from a constant: this
+                sentence said "English" back when English was the only thing the
+                catalogue taught. The name is the language's own (LANGUAGE_NAMES
+                holds endonyms), which is also what the pair chooser on `/` shows.
+                The surrounding UI copy is still English for every pair — that is
+                the separate, larger job of localizing the interface itself, and
+                writing this one word correctly does not pretend otherwise. */}
+            <p className="mb-6 max-w-md text-base leading-7 text-muted-foreground">Choose your {LANGUAGE_NAMES[pair.learning]} level. We analyze each transcript so every episode feels challenging—not overwhelming.</p>
             <form className="relative" onSubmit={(event) => { event.preventDefault(); setShowAll(true); }}>
               <Search className="pointer-events-none absolute left-4 top-1/2 z-10 size-[18px] -translate-y-1/2 text-muted-foreground" />
               <Input value={query} onChange={(event) => setQuery(event.target.value)} aria-label="Search learning podcasts by topic" className="h-14 rounded-full border-foreground/15 bg-card pl-12 pr-28 text-base shadow-sm placeholder:text-muted-foreground/75" placeholder="What do you want to learn about?" />

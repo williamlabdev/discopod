@@ -26,7 +26,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import type { EpisodeDetail } from '@/lib/catalogue';
-import { pairPath, type LanguagePair } from '@/lib/language';
+import { LANGUAGE_NAMES, pairPath, type LanguagePair } from '@/lib/language';
 import { createSavedWord, readSavedWords, type SavedWord } from '@/lib/saved-words';
 
 function TranscriptLine({ text, highlight }: { text: string; highlight?: string }) {
@@ -204,7 +204,21 @@ export function EpisodeLearning({ episode, pair }: { episode: EpisodeDetail; pai
               onPause={() => setPlaying(false)}
               onEnded={() => { setPlaying(false); setComplete(true); }}
             >
-              <track default kind="captions" src="/audio/voa-lesson-1-welcome.vtt" srcLang="en" label="English" />
+              {/* Captions are in the language being taught, so the tag and the
+                  label come from the pair. They were pinned to English, which
+                  would have labelled a Mandarin lesson's captions "English" —
+                  and srcLang is what a browser's caption menu selects on.
+                  The file is the audio's sibling .vtt, the convention the one
+                  published lesson already follows; it used to be that lesson's
+                  path spelled out, which every other episode would have
+                  inherited. A missing sibling is simply no captions. */}
+              <track
+                default
+                kind="captions"
+                src={episode.audioSrc.replace(/\.[^./]+$/, '.vtt')}
+                srcLang={pair.learning}
+                label={LANGUAGE_NAMES[pair.learning]}
+              />
             </audio>
           )}
           <div className="flex items-center gap-4 sm:gap-5">

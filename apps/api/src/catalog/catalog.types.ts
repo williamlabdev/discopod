@@ -1,4 +1,5 @@
 import type { LanguageTag, Localized } from './language.types';
+import type { SpeechRate } from './speech-rate';
 
 export type LearningLevel = 'Beginner' | 'Intermediate' | 'Advanced';
 
@@ -8,8 +9,11 @@ export type LearningLevel = 'Beginner' | 'Intermediate' | 'Advanced';
  * surfaces about a show leads with these, not with recency or chart position.
  */
 export interface DifficultyProfile {
-  /** Words per minute of running speech. */
-  speechRate: number;
+  /**
+   * How fast the running speech is, carrying the unit it is counted in. The
+   * unit belongs to the audio's language, not the learner's — see speech-rate.ts.
+   */
+  speechRate: SpeechRate;
   /** Share of the running text covered by a learner at the target level (0-1). */
   vocabularyCoverage: number;
   /** How many people talk. One narrator is a different sport from four friends. */

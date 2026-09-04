@@ -19,6 +19,7 @@
  */
 
 import type { LanguageTag } from './language.types';
+import type { SpeechRate } from './speech-rate';
 
 /**
  * What a reason is composed from. Everything measured, plus `authored` — the
@@ -27,7 +28,12 @@ import type { LanguageTag } from './language.types';
 export interface ReasonFacts {
   durationSeconds: number;
   speakerCount: number;
-  speechRate: number;
+  /**
+   * Carries its unit, and each renderer has to say which unit it is naming.
+   * The unit belongs to the audio's language and the sentence belongs to the
+   * learner's, so this is the one fact here that crosses the pair.
+   */
+  speechRate: SpeechRate;
   /** True when the episode's speech rate is inside this learner's comfort. */
   comfortable: boolean;
   /** The authored level reason, in the language being rendered. */
@@ -48,7 +54,7 @@ const RENDERERS: Partial<Record<LanguageTag, Renderer>> = {
     const voices = facts.speakerCount === 1 ? 'one voice' : `${facts.speakerCount} voices`;
     const pace = facts.comfortable ? 'at a pace you can follow' : 'faster than your usual pace';
 
-    return `${length}, ${voices}, ${facts.speechRate} wpm — ${pace}. ${facts.authored}.`;
+    return `${length}, ${voices}, ${facts.speechRate.value} ${facts.speechRate.unit} — ${pace}. ${facts.authored}.`;
   },
 
   'zh-Hant': (facts) => {
@@ -58,11 +64,15 @@ const RENDERERS: Partial<Record<LanguageTag, Renderer>> = {
     // numeral above it, the way a Chinese sentence actually reads.
     const voices = facts.speakerCount === 1 ? '一個人聲' : `${facts.speakerCount} 個人聲`;
     const pace = facts.comfortable ? '這個語速你跟得上' : '比你平常聽的速度快';
+    // 詞 for words, 字 for characters. English "105 wpm" and Mandarin "240 cpm"
+    // both become 「每分鐘 N …」 in Chinese, and only the counter distinguishes
+    // them — which is the distinction a bare number could not carry at all.
+    const counter = facts.speechRate.unit === 'wpm' ? '個詞' : '個字';
 
     // The authored half gets no punctuation appended — it is a Chinese clause
     // and ends in 。 of its own. Appending "." here is precisely the bug that
     // made a template string the wrong tool.
-    return `${length},${voices},每分鐘 ${facts.speechRate} 字——${pace}。${facts.authored}。`;
+    return `${length},${voices},每分鐘 ${facts.speechRate.value} ${counter}——${pace}。${facts.authored}。`;
   },
 };
 

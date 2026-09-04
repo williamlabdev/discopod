@@ -16,8 +16,21 @@ import { has, type LanguagePair, type LanguageTag, type Localized } from './lang
 
 export type LearningLevel = 'Beginner' | 'Intermediate' | 'Advanced';
 
+/**
+ * `wpm` counts words, `cpm` counts Han characters. Mirrors the API's
+ * `speech-rate.ts`; the two are not interchangeable numbers, which is why the
+ * unit travels with the value instead of being assumed at the render site.
+ */
+export type SpeechRateUnit = 'wpm' | 'cpm';
+
+export interface SpeechRate {
+  value: number;
+  unit: SpeechRateUnit;
+}
+
 export interface DifficultyProfile {
-  speechRate: number;
+  /** How fast the speech runs, in the unit belonging to the audio's language. */
+  speechRate: SpeechRate;
   vocabularyCoverage: number;
   speakerCount: number;
   slangLoad: number;
@@ -140,6 +153,12 @@ function assertEpisode(episode: Episode, speaks: LanguageTag, where: string): Ep
   if (!episode?.showId) problems.push('showId');
   if (!has(episode?.profile?.reason, speaks)) problems.push(`profile.reason[${speaks}]`);
   if (!episode?.profile?.level) problems.push('profile.level');
+  // A bare number here is the old shape, and it would format as "105 undefined".
+  // Worth catching by name: an API still sending it is one that never learned
+  // Chinese audio is not counted in words.
+  if (typeof episode?.profile?.speechRate?.value !== 'number' || !episode.profile.speechRate.unit) {
+    problems.push('profile.speechRate{value,unit}');
+  }
   if (!has(episode?.learningGoal, speaks)) problems.push(`learningGoal[${speaks}]`);
   if (!Array.isArray(episode?.transcript) || episode.transcript.length === 0) {
     problems.push('transcript');
