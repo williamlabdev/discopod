@@ -38,4 +38,11 @@ npm run lint && npm run typecheck && npm run build
   fetches it from the API during `next build` (`apps/web/scripts/build.mjs`) — don't
   reintroduce a catalogue module in `apps/web`, and don't make the browser call the API
   without revisiting ADR 0002.
+- `apps/api/src/ingest/data/sources.seed.json` is a list of shows to ingest *from*, not a
+  catalogue, and nothing reads it yet. It is not a second catalogue source and its
+  `easy`/`intermediate`/`hard` values are not `DifficultyProfile.level`. See
+  `apps/api/src/ingest/README.md` before using it.
+- JSON under `apps/api/src/**/data/` reaches `dist` only via the `assets` glob in
+  `nest-cli.json`. Put data files in a `data/` directory or the build drops them, and
+  runtime `readFileSync` works in dev and fails in production.
 - Architectural changes get an ADR in `docs/adr/`.

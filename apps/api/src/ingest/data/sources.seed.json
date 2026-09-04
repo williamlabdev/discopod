@@ -1,0 +1,144 @@
+{
+  "description": "Starter podcast set for language learners, grouped by listening difficulty. Every show here is restricted to those with transcripts embedded directly in the RSS feed (Podcasting 2.0 <podcast:transcript> tag), so the ingestion pipeline can pull transcripts without scraping or running speech-to-text. All are ordinary general-interest podcasts (not ESL-specific content).",
+  "difficultyLevels": {
+    "easy": "Single narrator or narrator-led scripted format, deliberate pace, standard accent, low idiom/slang density.",
+    "intermediate": "Two hosts, natural conversational pace, some idiom/slang, occasional tangents or domain-specific vocabulary.",
+    "hard": "Multiple speakers (hosts + rotating guests), fast native pace, heavy slang/pop-culture references, frequent crosstalk."
+  },
+  "transcriptSourceNote": "All shows below are produced/distributed via iHeartPodcasts and hosted on Omny Studio, which auto-generates per-episode transcripts and exposes them in the RSS feed as <podcast:transcript> entries in SubRip (.srt), WebVTT (.vtt), and plain-text-with-timestamps formats. Transcript URLs include a signed token (?t=) issued per feed fetch — pull them fresh from the current RSS rather than caching long-term.",
+  "podcasts": [
+    {
+      "id": "brainstuff",
+      "title": "BrainStuff",
+      "publisher": "iHeartPodcasts",
+      "rssFeedUrl": "https://www.omnycontent.com/d/playlist/e73c998e-6e60-432f-8610-ae210140c5b1/91c26f87-aa4e-4e61-816b-ae320005be01/5ca66d21-7139-45ee-8d4e-ae320005be14/podcast.rss",
+      "difficulty": "easy",
+      "speakerCount": 1,
+      "description": "Short (5-10 min) single-host explainer episodes answering everyday how/why questions.",
+      "difficultyNotes": "Solo scripted narration, deliberate pace, short episode length keeps cognitive load low.",
+      "transcriptSource": "rss",
+      "transcriptFormats": ["SubRip", "WebVTT", "TextWithTimestamps"]
+    },
+    {
+      "id": "techstuff",
+      "title": "TechStuff",
+      "publisher": "iHeartPodcasts",
+      "rssFeedUrl": "https://rss.introcast.io/282795787/www.omnycontent.com/d/playlist/e73c998e-6e60-432f-8610-ae210140c5b1/d02e7811-037c-4b4c-ba2d-ae2b00350ef0/659ad4ad-c26b-48a7-bb34-ae2b00350f07/podcast.rss",
+      "difficulty": "easy",
+      "speakerCount": 1,
+      "description": "Host-led explainers on how technology works and the stories behind it.",
+      "difficultyNotes": "Primarily solo narration with a scripted, explainer structure; technical terms are defined as introduced.",
+      "transcriptSource": "rss",
+      "transcriptFormats": ["SubRip", "WebVTT", "TextWithTimestamps"]
+    },
+    {
+      "id": "atlanta-monster",
+      "title": "Atlanta Monster",
+      "publisher": "iHeartPodcasts / Tenderfoot TV",
+      "rssFeedUrl": "https://www.omnycontent.com/d/playlist/e73c998e-6e60-432f-8610-ae210140c5b1/c87d032f-eef9-4503-b3fd-ae2e01547101/9dbbaaec-9950-4aa4-9958-ae2e0154710f/podcast.rss",
+      "difficulty": "easy",
+      "speakerCount": 1,
+      "description": "Documentary-style true crime narrated by a single host, woven with archival and interview audio.",
+      "difficultyNotes": "Produced, scripted narration at a deliberate documentary pace, similar in structure to This American Life but single-voice-led.",
+      "transcriptSource": "rss",
+      "transcriptFormats": ["SubRip", "WebVTT", "TextWithTimestamps"],
+      "transcriptCoverageNote": "Feed-wide transcript tag count is much lower than the other shows here, suggesting only part of the back catalog has transcripts rather than every episode — verify per-episode before ingesting."
+    },
+    {
+      "id": "stuff-you-should-know",
+      "title": "Stuff You Should Know",
+      "publisher": "iHeartPodcasts",
+      "rssFeedUrl": "https://www.omnycontent.com/d/playlist/e73c998e-6e60-432f-8610-ae210140c5b1/a91018a4-ea4f-4130-bf55-ae270180c327/44710ecc-10bb-48d1-93c7-ae270180c33e/podcast.rss",
+      "difficulty": "intermediate",
+      "speakerCount": 2,
+      "description": "Josh and Chuck riff on a wide range of topics with genuine banter and tangents.",
+      "difficultyNotes": "Faster, more idiomatic than a scripted show; frequent tangents and asides.",
+      "transcriptSource": "rss",
+      "transcriptFormats": ["SubRip", "WebVTT", "TextWithTimestamps"]
+    },
+    {
+      "id": "stuff-you-missed-in-history-class",
+      "title": "Stuff You Missed in History Class",
+      "publisher": "iHeartPodcasts",
+      "rssFeedUrl": "https://www.omnycontent.com/d/playlist/e73c998e-6e60-432f-8610-ae210140c5b1/cfb428ef-eafc-44d0-9d09-ae2701747e6f/fb626e1f-112c-4246-a40d-ae2701747e7d/podcast.rss",
+      "difficulty": "intermediate",
+      "speakerCount": 2,
+      "description": "Two hosts present scripted deep dives into historical events and figures, alternating narration.",
+      "difficultyNotes": "More scripted than most two-host shows, but still natural conversational pace and occasional tangents.",
+      "transcriptSource": "rss",
+      "transcriptFormats": ["SubRip", "WebVTT", "TextWithTimestamps"]
+    },
+    {
+      "id": "part-time-genius",
+      "title": "Part-Time Genius",
+      "publisher": "iHeartPodcasts",
+      "rssFeedUrl": "https://www.omnycontent.com/d/playlist/e73c998e-6e60-432f-8610-ae210140c5b1/3330cb46-e122-4797-bc0c-ae32006cd1f8/bcfb0fa6-e85d-4c5f-a52f-ae32006cd206/podcast.rss",
+      "difficulty": "intermediate",
+      "speakerCount": 2,
+      "description": "Two hosts explore trivia-driven topics with comedic banter.",
+      "difficultyNotes": "Conversational pace with wordplay and jokes, but topic-focused structure keeps it more predictable than a free-form chat show.",
+      "transcriptSource": "rss",
+      "transcriptFormats": ["SubRip", "WebVTT", "TextWithTimestamps"]
+    },
+    {
+      "id": "this-podcast-will-kill-you",
+      "title": "This Podcast Will Kill You",
+      "publisher": "iHeartPodcasts / Exactly Right",
+      "rssFeedUrl": "https://www.omnycontent.com/d/playlist/e73c998e-6e60-432f-8610-ae210140c5b1/e0709a39-232b-4483-8e4f-b24c0111ae2c/64b4c224-562e-4b2f-9f31-b24c0111ae53/podcast.rss",
+      "difficulty": "intermediate",
+      "speakerCount": 2,
+      "description": "Two epidemiologists discuss the history and science of diseases in a conversational format.",
+      "difficultyNotes": "Natural conversational pace with tangents; some domain-specific medical/scientific vocabulary balanced by explanation.",
+      "transcriptSource": "rss",
+      "transcriptFormats": ["SubRip", "WebVTT", "TextWithTimestamps"]
+    },
+    {
+      "id": "my-favorite-murder",
+      "title": "My Favorite Murder",
+      "publisher": "Exactly Right and iHeartPodcasts",
+      "rssFeedUrl": "https://www.omnycontent.com/d/playlist/e73c998e-6e60-432f-8610-ae210140c5b1/bdde8bb3-169d-43b1-91d3-b24c0047969c/f450d41f-16bc-4ecd-8f6c-b24c004796e2/podcast.rss",
+      "difficulty": "hard",
+      "speakerCount": 2,
+      "description": "Karen Kilgariff and Georgia Hardstark discuss true crime stories in a casual comedic format.",
+      "difficultyNotes": "Fast, overlapping speech, tangents, heavy colloquialism and slang.",
+      "transcriptSource": "rss",
+      "transcriptFormats": ["SubRip", "WebVTT", "TextWithTimestamps"]
+    },
+    {
+      "id": "the-daily-zeitgeist",
+      "title": "The Daily Zeitgeist",
+      "publisher": "iHeartPodcasts",
+      "rssFeedUrl": "https://www.omnycontent.com/d/playlist/e73c998e-6e60-432f-8610-ae210140c5b1/39e934d7-2ddc-4b3e-bc73-ae2b00156363/ab6037f4-9a9a-449b-915d-ae2b00156375/podcast.rss",
+      "difficulty": "hard",
+      "speakerCount": 3,
+      "description": "Two hosts plus a rotating guest riff on daily news and pop culture.",
+      "difficultyNotes": "Fast-paced, heavy current pop-culture references and slang, frequent crosstalk between three or more voices.",
+      "transcriptSource": "rss",
+      "transcriptFormats": ["SubRip", "WebVTT", "TextWithTimestamps"]
+    },
+    {
+      "id": "the-bechdel-cast",
+      "title": "The Bechdel Cast",
+      "publisher": "iHeartPodcasts",
+      "rssFeedUrl": "https://www.omnycontent.com/d/playlist/e73c998e-6e60-432f-8610-ae210140c5b1/a50ac151-73f4-4192-a26a-ae320005ba2d/dc746010-090c-490a-82a3-ae320005ba3b/podcast.rss",
+      "difficulty": "hard",
+      "speakerCount": 3,
+      "description": "Two hosts plus a rotating guest analyze movies through a feminist lens.",
+      "difficultyNotes": "Fast comedic banter, heavy pop-culture/internet slang, three-way crosstalk.",
+      "transcriptSource": "rss",
+      "transcriptFormats": ["SubRip", "WebVTT", "TextWithTimestamps"]
+    },
+    {
+      "id": "stuff-they-dont-want-you-to-know",
+      "title": "Stuff They Don't Want You To Know",
+      "publisher": "iHeartPodcasts",
+      "rssFeedUrl": "https://www.omnycontent.com/d/playlist/e73c998e-6e60-432f-8610-ae210140c5b1/2e824128-fbd5-4c9e-9a57-ae2f0056b0c4/66d98a23-900c-44b0-a40b-ae2f0056b0db/podcast.rss",
+      "difficulty": "hard",
+      "speakerCount": 2,
+      "description": "Hosts discuss conspiracy theories and unexplained phenomena in an unscripted, fast-moving conversational format.",
+      "difficultyNotes": "Fast, loosely structured conversation with frequent asides, sarcasm, and internet-culture references.",
+      "transcriptSource": "rss",
+      "transcriptFormats": ["SubRip", "WebVTT", "TextWithTimestamps"]
+    }
+  ]
+}

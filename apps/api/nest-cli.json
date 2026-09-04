@@ -4,6 +4,6 @@
   "sourceRoot": "src",
   "compilerOptions": {
     "deleteOutDir": true,
-    "assets": [{ "include": "catalog/data/*.json", "outDir": "dist" }]
+    "assets": [{ "include": "**/data/*.json", "outDir": "dist" }]
   }
 }
