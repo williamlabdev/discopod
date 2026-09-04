@@ -44,7 +44,9 @@ both builds passed every time. The `Verify static export` step was asserting
 `out/episode/1.html` and grepping `'% fit'` out of `out/index.html`, and ADR 0003 had
 moved every catalogue page under `/[speaks]/[learning]/` while ADR 0004 had removed
 episodes 1–6. The check was testing the shape of a site that no longer existed. Fixed in
-the commit this paragraph arrives in, against a real `out/` tree.
+`bf8ac19` against a real `out/` tree, and green again on the next run:
+[33887340846](https://github.com/williamlabdev/discopod/actions/runs/33887340846),
+1m12s, `success`.
 
 The lesson is about this file, not about the workflow: the paragraph above said "CI is
 green" and stayed there while five red runs went past, because it was written once and
