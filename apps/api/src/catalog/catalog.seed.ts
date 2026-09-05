@@ -7,9 +7,10 @@ import type {
   Episode,
   LearningLevel,
   Show,
+  TocflBand,
   TranscriptCue,
 } from './catalog.types';
-import { spokenLanguageOf, type LanguagePair, type Localized } from './language.types';
+import { spokenLanguageOf, type LanguagePair, type LanguageTag, type Localized } from './language.types';
 import { rateUnitFor, type SpeechRate } from './speech-rate';
 
 /**
@@ -69,6 +70,7 @@ interface SeedFile {
 const SEED_FILES: SeedFile[] = [
   { pair: SEED_PAIR, file: 'catalog.seed.json' },
   { pair: { speaks: 'en', learning: 'zh-Hant' }, file: 'catalog.en-zh-Hant.seed.json' },
+  { pair: { speaks: 'en', learning: 'zh-Hant' }, file: 'catalog.en-zh-Hant.podcasts.seed.json' },
 ];
 
 /**
@@ -87,8 +89,12 @@ const spokenOf = (pair: LanguagePair) => spokenLanguageOf(pair.learning);
  * language arrives as its own overlay file keyed by episode id, not by editing
  * this one; see catalog.overlay.ts, which is that path built.
  */
-function authoredIn<T>(pair: LanguagePair, value: T): Localized<T> {
-  return { [pair.speaks]: value };
+function isLocalized<T>(value: T | Localized<T>): value is Localized<T> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+function authoredIn<T>(pair: LanguagePair, value: T | Localized<T>): Localized<T> {
+  return isLocalized(value) ? value : { [pair.speaks]: value };
 }
 
 /**
@@ -130,21 +136,29 @@ interface SeedRow {
    * `Localized` and `Show.description` as a scalar; both of those fields carry
    * the reasoning for their side of that split.
    */
-  description: string;
+  description: string | Localized;
   tags: string[];
   level: LearningLevel;
-  cefr: string;
+  cefr?: string;
+  tocfl?: TocflBand;
   speed: string;
-  newWords: number;
-  levelReason: string;
-  learningGoal: string;
+  newWords?: number;
+  levelReason: string | Localized;
+  learningGoal: string | Localized;
   audioSrc?: string;
+  audioUrl?: string;
+  durationSeconds?: number;
   sourceUrl?: string;
   licence?: { name: string; url: string };
   /** Absent means the publisher's file ships unchanged. See `Episode.audioModified`. */
   audioModified?: boolean;
+  redistributable?: boolean;
+  ratedBy?: 'transcript-only';
+  overlayVerified?: boolean;
+  authoredBy?: Partial<Record<LanguageTag, 'auto-translated'>>;
+  scriptConversion?: 'manual';
   verifiedLesson?: boolean;
-  transcript: { time: string; seconds?: number; speaker?: string; text: string; highlight?: string }[];
+  transcript: { time: string; seconds?: number; endSeconds?: number; speaker?: string; text: string; translation?: string; highlight?: string }[];
   vocabulary: { term: string; type: string; meaning: string; example: string }[];
   questions: { prompt: string; options: string[]; answer: number }[];
 }
@@ -204,6 +218,7 @@ function buildProfile(row: SeedRow, pair: LanguagePair): DifficultyProfile {
     accentLoad: 0.2,
     level: row.level,
     cefr: row.cefr,
+    tocfl: row.tocfl,
     reason: authoredIn(pair, row.levelReason),
   };
 }
@@ -276,7 +291,7 @@ function loadSeedFile(
         publisher: row.author,
         language: spokenOf(pair),
         topics: [row.topic, ...row.tags],
-        description: row.description,
+        description: typeof row.description === 'string' ? row.description : row.description[pair.speaks] ?? '',
         profile,
         sourceUrl: row.sourceUrl,
         licence: row.licence,
@@ -285,8 +300,10 @@ function loadSeedFile(
 
     const transcript: TranscriptCue[] = row.transcript.map((cue) => ({
       startMs: timeToMs(cue),
+      endMs: typeof cue.endSeconds === 'number' ? cue.endSeconds * 1000 : undefined,
       speaker: cue.speaker,
       text: cue.text,
+      translation: cue.translation ? authoredIn(pair, cue.translation) : undefined,
       highlight: cue.highlight,
     }));
 
@@ -303,11 +320,12 @@ function loadSeedFile(
       showId,
       title: row.episode,
       description: authoredIn(pair, row.description),
-      durationSeconds: parseDurationSeconds(row.duration),
-      audioUrl: row.audioSrc,
+      durationSeconds: row.durationSeconds ?? parseDurationSeconds(row.duration),
+      audioUrl: row.audioSrc ?? row.audioUrl,
+      audioRemoteUrl: row.audioUrl,
       publisherTranscript: row.verifiedLesson === true,
       learningGoal: authoredIn(pair, row.learningGoal),
-      newWordCount: row.newWords,
+      newWordCount: row.newWords ?? row.vocabulary.length,
       profile,
       // The seed rows are flat and single-script by construction, so this comes
       // from the file's pair like every other language fact here rather than
@@ -320,6 +338,11 @@ function loadSeedFile(
       sourceUrl: row.sourceUrl,
       licence: row.licence,
       audioModified: row.audioModified,
+      redistributable: row.redistributable,
+      ratedBy: row.ratedBy,
+      overlayVerified: row.overlayVerified,
+      authoredBy: row.authoredBy,
+      scriptConversion: row.scriptConversion,
       transcript,
       vocabulary: row.vocabulary.map((entry) => ({
         term: entry.term,

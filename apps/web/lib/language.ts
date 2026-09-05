@@ -24,7 +24,7 @@
  * The right key for text, and only for text. What audio is in is
  * `SpokenLanguage`. See ADR 0006.
  */
-export const LANGUAGES = ['en', 'zh-Hant', 'zh-Hans'] as const;
+export const LANGUAGES = ['en', 'zh-Hant', 'zh-Hans', 'vi'] as const;
 
 export type LanguageTag = (typeof LANGUAGES)[number];
 
@@ -38,7 +38,7 @@ export type LanguageTag = (typeof LANGUAGES)[number];
  * unused copy of a table is a second place to disagree with the API about what
  * `zh-Hant` is.
  */
-export const SPOKEN_LANGUAGES = ['en', 'cmn'] as const;
+export const SPOKEN_LANGUAGES = ['en', 'cmn', 'vi'] as const;
 
 export type SpokenLanguage = (typeof SPOKEN_LANGUAGES)[number];
 
@@ -68,6 +68,7 @@ export const LANGUAGE_NAMES: Record<LanguageTag, string> = {
   en: 'English',
   'zh-Hant': '繁體中文',
   'zh-Hans': '简体中文',
+  vi: 'Tiếng Việt',
 };
 
 /** The URL prefix a pair's pages live under. The one place this is spelled. */

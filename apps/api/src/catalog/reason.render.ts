@@ -62,6 +62,15 @@ const RENDERERS: Partial<Record<LanguageTag, Renderer>> = {
     return `${length}, ${voices}, ${facts.speechRate.value} ${facts.speechRate.unit} — ${pace}. ${facts.authored}.`;
   },
 
+  vi: (facts) => {
+    const minutes = Math.round(facts.durationSeconds / 60);
+    const length = facts.durationSeconds >= 60 ? `${minutes} phút` : `${facts.durationSeconds} giây`;
+    const voices = facts.speakerCount === 1 ? 'một giọng' : `${facts.speakerCount} giọng`;
+    const pace = facts.comfortable ? 'ở tốc độ có thể theo kịp' : 'nhanh hơn tốc độ quen thuộc';
+
+    return `${length}, ${voices}, ${facts.speechRate.value} ${facts.speechRate.unit} — ${pace}. ${facts.authored}.`;
+  },
+
   'zh-Hant': (facts) => {
     // Same rule as the English renderer above, and for the same reason: the
     // branch is on the duration, the rounding happens after it.

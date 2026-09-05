@@ -64,20 +64,20 @@ interface OverlayQuestion {
 }
 
 interface OverlayEpisode {
-  levelReason: string;
-  learningGoal: string;
+  levelReason?: string;
+  learningGoal?: string;
   /**
    * The episode blurb. Required, and required for a sharper reason than the
    * other fields: this is the sentence a learner reads to decide whether to
    * open the episode at all, so an episode offered in a pair whose description
    * is missing is one the learner cannot choose. See ADR 0010.
    */
-  description: string;
+  description?: string;
   /** Keyed by the seed cue's `time` ("00:07"). Cues may be partially covered. */
   transcript?: Record<string, string>;
   /** Keyed by the seed's `term`. Every term must be present — see apply(). */
-  vocabulary: Record<string, string>;
-  questions: OverlayQuestion[];
+  vocabulary?: Record<string, string>;
+  questions?: OverlayQuestion[];
 }
 
 type OverlayFile = Record<string, OverlayEpisode>;
@@ -86,10 +86,13 @@ type OverlayFile = Record<string, OverlayEpisode>;
  * The languages with an overlay on disk. `en` is not here: it is the seed's own
  * language and is applied by the loader, not by a file.
  */
-const OVERLAY_LANGUAGES = ['zh-Hant'] as const satisfies readonly LanguageTag[];
+const OVERLAY_FILES = [
+  { language: 'zh-Hant', file: 'catalog.zh-Hant.json' },
+  { language: 'vi', file: 'catalog.vi-zh-Hant.podcasts.overlay.json' },
+] as const satisfies readonly { language: LanguageTag; file: string }[];
 
-function overlayPath(language: LanguageTag): string {
-  return join(__dirname, 'data', `catalog.${language}.json`);
+function overlayPath(file: string): string {
+  return join(__dirname, 'data', file);
 }
 
 function cueTime(startMs: number): string {
@@ -109,54 +112,64 @@ function cueTime(startMs: number): string {
  * honest way to publish nine tenths of an episode is to not publish it.
  */
 function apply(episode: Episode, layer: OverlayEpisode, language: LanguageTag): void {
-  const where = `catalog.${language}.json episode ${episode.id}`;
+  const where = `catalog overlay ${language} episode ${episode.id}`;
 
   // A new profile object, not a mutated one: the seed hands the *same* profile
   // to the episode and to its show, and a show's profile summarises the show,
   // not whichever of its episodes happened to get translated first.
-  episode.profile = {
-    ...episode.profile,
-    reason: { ...episode.profile.reason, [language]: layer.levelReason },
-  };
-  episode.learningGoal = { ...episode.learningGoal, [language]: layer.learningGoal };
-  episode.description = { ...episode.description, [language]: layer.description };
-
-  for (const entry of episode.vocabulary) {
-    const meaning = layer.vocabulary[entry.term];
-    if (meaning === undefined) {
-      throw new Error(`${where}: no ${language} meaning for vocabulary term "${entry.term}"`);
-    }
-    entry.meaning = { ...entry.meaning, [language]: meaning };
-  }
-
-  if (layer.questions.length !== episode.questions.length) {
-    throw new Error(
-      `${where}: ${layer.questions.length} questions, but the seed has ${episode.questions.length}`,
-    );
-  }
-
-  episode.questions = episode.questions.map((question, index) => {
-    const translated = layer.questions[index];
-    const source = question.prompt.en;
-    if (translated.sourcePrompt !== source) {
-      throw new Error(
-        `${where}: question ${index + 1} is attached to "${translated.sourcePrompt}", ` +
-          `but the seed's question ${index + 1} is "${source ?? '(no English prompt)'}". ` +
-          'The seed was reordered or reworded — re-anchor the overlay before trusting it.',
-      );
-    }
-    if (translated.options.length !== question.options.en?.length) {
-      throw new Error(
-        `${where}: question ${index + 1} has ${translated.options.length} options, ` +
-          `the seed has ${question.options.en?.length ?? 0}`,
-      );
-    }
-    return {
-      ...question,
-      prompt: { ...question.prompt, [language]: translated.prompt },
-      options: { ...question.options, [language]: translated.options },
+  if (layer.levelReason !== undefined) {
+    episode.profile = {
+      ...episode.profile,
+      reason: { ...episode.profile.reason, [language]: layer.levelReason },
     };
-  });
+  }
+  if (layer.learningGoal !== undefined) {
+    episode.learningGoal = { ...episode.learningGoal, [language]: layer.learningGoal };
+  }
+  if (layer.description !== undefined) {
+    episode.description = { ...episode.description, [language]: layer.description };
+  }
+
+  if (layer.vocabulary) {
+    for (const entry of episode.vocabulary) {
+      const meaning = layer.vocabulary[entry.term];
+      if (meaning === undefined) {
+        throw new Error(`${where}: no ${language} meaning for vocabulary term "${entry.term}"`);
+      }
+      entry.meaning = { ...entry.meaning, [language]: meaning };
+    }
+  }
+
+  if (layer.questions) {
+    if (layer.questions.length !== episode.questions.length) {
+      throw new Error(
+        `${where}: ${layer.questions.length} questions, but the seed has ${episode.questions.length}`,
+      );
+    }
+
+    episode.questions = episode.questions.map((question, index) => {
+      const translated = layer.questions![index];
+      const source = question.prompt.en;
+      if (translated.sourcePrompt !== source) {
+        throw new Error(
+          `${where}: question ${index + 1} is attached to "${translated.sourcePrompt}", ` +
+            `but the seed's question ${index + 1} is "${source ?? '(no English prompt)'}". ` +
+            'The seed was reordered or reworded — re-anchor the overlay before trusting it.',
+        );
+      }
+      if (translated.options.length !== question.options.en?.length) {
+        throw new Error(
+          `${where}: question ${index + 1} has ${translated.options.length} options, ` +
+            `the seed has ${question.options.en?.length ?? 0}`,
+        );
+      }
+      return {
+        ...question,
+        prompt: { ...question.prompt, [language]: translated.prompt },
+        options: { ...question.options, [language]: translated.options },
+      };
+    });
+  }
 
   // Transcript translations are optional per cue: a cue of pure names or
   // numbers has nothing to translate, and a blank line under it is honest.
@@ -182,17 +195,17 @@ function apply(episode: Episode, layer: OverlayEpisode, language: LanguageTag): 
 export function applyOverlays(episodes: Episode[]): void {
   const byId = new Map(episodes.map((episode) => [episode.id, episode]));
 
-  for (const language of OVERLAY_LANGUAGES) {
-    const file = JSON.parse(readFileSync(overlayPath(language), 'utf8')) as OverlayFile;
+  for (const overlay of OVERLAY_FILES) {
+    const file = JSON.parse(readFileSync(overlayPath(overlay.file), 'utf8')) as OverlayFile;
 
     for (const [id, layer] of Object.entries(file)) {
       const episode = byId.get(id);
       if (!episode) {
         throw new Error(
-          `catalog.${language}.json has a layer for episode ${id}, which is not in the seed`,
+          `${overlay.file} has a layer for episode ${id}, which is not in the seed`,
         );
       }
-      apply(episode, layer, language);
+      apply(episode, layer, overlay.language);
     }
   }
 }

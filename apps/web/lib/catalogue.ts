@@ -18,6 +18,7 @@ import {
   fetchStartHere,
   type LearningLevel,
   type RankedEpisode,
+  type TocflBand,
   type Show,
   type TranscriptCue,
 } from './catalog-api';
@@ -48,7 +49,8 @@ export interface EpisodeCard {
   episodeTitle: string;
   description: string;
   level: LearningLevel;
-  cefr: string;
+  cefr?: string;
+  tocfl?: TocflBand;
   /** From the API's ranking. The old hand-written "match" number is gone. */
   suitability: number;
   /** Why the API ranked it here — full sentence, shown on the episode page. */
@@ -75,6 +77,8 @@ export interface EpisodeCard {
   duration: string;
   newWords: number;
   publisherTranscript: boolean;
+  ratedBy?: 'transcript-only';
+  overlayVerified?: boolean;
   tone: string;
   ink: string;
 }
@@ -222,6 +226,7 @@ function toCard(ranked: RankedEpisode, show: Show | undefined, pair: LanguagePai
     description: pick(episode.description, pair.speaks, `Episode ${episode.id} description`),
     level: episode.profile.level,
     cefr: episode.profile.cefr,
+    tocfl: episode.profile.tocfl,
     suitability: ranked.suitability,
     fitReason: ranked.reason,
     levelReason: pick(episode.profile.reason, pair.speaks, `Episode ${episode.id} profile.reason`),
@@ -231,6 +236,8 @@ function toCard(ranked: RankedEpisode, show: Show | undefined, pair: LanguagePai
     duration: formatDuration(episode.durationSeconds),
     newWords: episode.newWordCount,
     publisherTranscript: episode.publisherTranscript,
+    ratedBy: episode.ratedBy,
+    overlayVerified: episode.overlayVerified,
     tone,
     ink,
   };

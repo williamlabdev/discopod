@@ -23,6 +23,16 @@ import {
 
 export type LearningLevel = 'Beginner' | 'Intermediate' | 'Advanced';
 
+export type TocflBand =
+  | 'Novice 1'
+  | 'Novice 2'
+  | 'Level 1'
+  | 'Level 2'
+  | 'Level 3'
+  | 'Level 4'
+  | 'Level 5'
+  | 'Advanced High';
+
 /**
  * `wpm` counts words, `cpm` counts Han characters. Mirrors the API's
  * `speech-rate.ts`; the two are not interchangeable numbers, which is why the
@@ -43,7 +53,9 @@ export interface DifficultyProfile {
   slangLoad: number;
   accentLoad: number;
   level: LearningLevel;
-  cefr: string;
+  cefr?: string;
+  /** Taiwan-normed Mandarin proficiency band. See ADR 0014. */
+  tocfl?: TocflBand;
   /** Plain-language reason, shown to the learner. Never rank without one. */
   reason: Localized;
 }
@@ -103,6 +115,12 @@ export interface Episode {
   licence?: { name: string; url: string };
   /** True when the audio was excerpted or re-encoded here, rather than shipped as published. */
   audioModified?: boolean;
+  audioRemoteUrl?: string;
+  redistributable?: boolean;
+  ratedBy?: 'transcript-only';
+  overlayVerified?: boolean;
+  authoredBy?: Partial<Record<LanguageTag, 'auto-translated'>>;
+  scriptConversion?: 'manual';
   transcript: TranscriptCue[];
   vocabulary: VocabularyEntry[];
   questions: ComprehensionQuestion[];

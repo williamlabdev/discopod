@@ -196,7 +196,7 @@ export function EpisodeLearning({ episode, pair }: { episode: EpisodeDetail; pai
           <div className={`${episode.tone} ${episode.ink} relative aspect-square overflow-hidden rounded-[28px] p-7 shadow-[0_24px_70px_rgba(48,42,35,0.12)]`}>
             <span className="text-xs font-semibold uppercase tracking-[0.14em] opacity-60">{episode.showTitle}</span>
             <h1 className="mt-12 max-w-[9ch] font-serif text-[clamp(2.5rem,5vw,4.25rem)] leading-[0.9] tracking-[-0.055em]">{episode.episodeTitle}</h1>
-            <span className="absolute bottom-6 left-6 rounded-full bg-white/55 px-3 py-1.5 text-xs font-semibold backdrop-blur-sm">{episode.level} · {episode.cefr}</span>
+            <span className="absolute bottom-6 left-6 rounded-full bg-white/55 px-3 py-1.5 text-xs font-semibold backdrop-blur-sm">{episode.level}{episode.tocfl ?? episode.cefr ? ` · ${episode.tocfl ?? episode.cefr}` : ''}</span>
             <span className="absolute -bottom-12 -right-10 size-40 rounded-full border-[24px] border-white/25" aria-hidden="true" />
           </div>
           <div>
@@ -216,7 +216,8 @@ export function EpisodeLearning({ episode, pair }: { episode: EpisodeDetail; pai
             <div className="mt-7 flex flex-wrap gap-3 text-sm">
               <span className="flex items-center gap-2 rounded-full bg-secondary px-3 py-2"><Clock3 className="size-4" />{episode.duration}</span>
               <span className="flex items-center gap-2 rounded-full bg-secondary px-3 py-2"><Gauge className="size-4" />{episode.speed}</span>
-              <span className="flex items-center gap-2 rounded-full bg-secondary px-3 py-2"><BookOpenText className="size-4" />{episode.newWords} new words</span>
+              {episode.newWords > 0 && <span className="flex items-center gap-2 rounded-full bg-secondary px-3 py-2"><BookOpenText className="size-4" />{episode.newWords} new words</span>}
+              {episode.ratedBy === 'transcript-only' && <span className="flex items-center gap-2 rounded-full bg-secondary px-3 py-2 text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">Transcript-only rating</span>}
             </div>
             {/* A link credits the author; it does not name the terms, and under
                 share-alike those are two obligations rather than one. So a show
@@ -286,17 +287,20 @@ export function EpisodeLearning({ episode, pair }: { episode: EpisodeDetail; pai
         <Tabs defaultValue="transcript" className="mt-8">
           <TabsList variant="line" className="h-auto w-full justify-start gap-7 border-b border-border p-0 sm:gap-10">
             <TabsTrigger value="transcript" className="h-auto flex-none px-0 pb-4">Transcript</TabsTrigger>
-            <TabsTrigger value="vocabulary" className="h-auto flex-none px-0 pb-4">Vocabulary <span className="rounded-full bg-secondary px-2 py-0.5 text-[10px]">{episode.vocabulary.length}</span></TabsTrigger>
-            <TabsTrigger value="practice" className="h-auto flex-none px-0 pb-4">Practice</TabsTrigger>
+            {episode.vocabulary.length > 0 && <TabsTrigger value="vocabulary" className="h-auto flex-none px-0 pb-4">Vocabulary <span className="rounded-full bg-secondary px-2 py-0.5 text-[10px]">{episode.vocabulary.length}</span></TabsTrigger>}
+            {episode.questions.length > 0 && <TabsTrigger value="practice" className="h-auto flex-none px-0 pb-4">Practice</TabsTrigger>}
           </TabsList>
 
           <TabsContent value="transcript" className="grid gap-8 py-8 lg:grid-cols-[minmax(0,1fr)_300px]">
             <div className="rounded-[24px] border border-border bg-card px-5 py-2 sm:px-8">
               {hasTranslations && (
                 <div className="flex items-center justify-end border-b border-border/70 py-3">
-                  <button type="button" onClick={() => setShowTranslation((value) => !value)} aria-pressed={showTranslation} className="rounded-full border border-border px-3 py-1.5 text-xs font-semibold text-muted-foreground transition hover:text-foreground">
-                    {showTranslation ? 'Hide translation' : 'Show translation'}
-                  </button>
+                  <div className="flex items-center gap-3">
+                    {episode.overlayVerified === false && <span className="text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">Auto-translated</span>}
+                    <button type="button" onClick={() => setShowTranslation((value) => !value)} aria-pressed={showTranslation} className="rounded-full border border-border px-3 py-1.5 text-xs font-semibold text-muted-foreground transition hover:text-foreground">
+                      {showTranslation ? 'Hide translation' : 'Show translation'}
+                    </button>
+                  </div>
                 </div>
               )}
               {episode.transcript.map((line, index) => (

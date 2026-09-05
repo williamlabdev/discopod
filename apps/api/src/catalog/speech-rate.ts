@@ -45,6 +45,7 @@ export interface SpeechRate {
 const RATE_UNIT: Record<SpokenLanguage, SpeechRateUnit> = {
   en: 'wpm',
   cmn: 'cpm',
+  vi: 'wpm',
 };
 
 export function rateUnitFor(language: SpokenLanguage): SpeechRateUnit {
