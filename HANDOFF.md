@@ -60,16 +60,22 @@ green" and stayed there while five red runs went past, because it was written on
 never re-checked. **A claim about CI in this file is a claim about a specific run id.**
 If you cannot name the run, write what you actually verified locally instead.
 
-**Current `main` is `7e13891`** (2026-09-05) — PR
+**The last commit that changed the product is `7e13891`** (2026-09-05) — PR
 [#21](https://github.com/williamlabdev/discopod/pull/21), ADR 0021. CI on it: run
 [33966428847](https://github.com/williamlabdev/discopod/actions/runs/33966428847),
-`success`.
+`success`. `main` itself is further along by however many docs-only commits have landed
+since — `71aa30a` (#22) and the one carrying this paragraph among them.
 
-And it demonstrated the paragraph above at its own expense: this line said `a4be159` for
-sixteen commits, PRs #5 through #21, including every one that changed what the site
-renders. The failure mode is not that someone forgot — it is that "current" is a fact with
-no owner, so nothing goes red when it rots. **If you land on `main`, this line is part of
-the change.**
+That wording is not a dodge, it is the fix. The line used to say "current `main` is", and
+it said `a4be159` for sixteen commits — PRs #5 through #21, including every one that
+changed what the site renders. But a commit that only edits this file cannot name itself,
+so "current `main`" restarts the rot every time someone corrects it: #22 was stale about
+`main` the instant it merged, in the very paragraph telling you to keep it current. Naming
+the last commit that *changed something* is a fact a docs edit does not invalidate.
+
+The failure mode underneath is worth keeping in view: "current" is a fact with no owner,
+so nothing goes red when it rots. **If you land a change on `main`, this line is part of
+the change** — and if you are only editing this file, it is not.
 
 The chain before it, still worth keeping for what each one records: `0a0ac7e` (#20),
 `1f866f6` (#19), `de6fb75` (#17). Then `a4be159` and `4dd83a6`, both docs-only edits to
