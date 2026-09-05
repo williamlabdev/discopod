@@ -6,9 +6,14 @@ Mainstream podcast apps rank by charts, downloads and recency — signals that a
 to a language learner, and often actively misleading. DiscoPod re-tunes every surface to
 answer one question instead: **can I follow this with my ears?**
 
-Read [docs/VISION.md](docs/VISION.md) for the product thinking, and
+It serves two directions: **English speakers learning 繁體中文**, and **繁體中文 speakers
+learning English**. Not three — a pair whose two sides are the same language teaches
+nobody anything, so it is not published ([ADR 0012](docs/adr/0012-two-directions-and-en-to-en-is-not-one.md)).
+
+Read [docs/VISION.md](docs/VISION.md) for the product thinking,
 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for how the system is shaped — including an
-honest table of what is built and what is not.
+honest table of what is built and what is not — and [HANDOFF.md](HANDOFF.md) for where the
+work actually stands today.
 
 **Live:** <https://discopod-web.onrender.com> — the discovery UI and player.
 The API is separate at <https://discopod-api.onrender.com/api/health>; it runs on a free
@@ -26,10 +31,11 @@ sleeping API can't slow down a visitor. See
 ```
 apps/web    Next.js 16 · React 19 RSC — discovery UI and the transcript-first player
 apps/api    NestJS 11 — catalogue, difficulty profiles, suitability ranking, saved words
-docs/       vision, architecture, ADRs
+docs/       vision, architecture, deployment, and the ADRs
 ```
 
-npm workspaces; Node >= 22.13.
+npm workspaces; Node 22.13.0 (`nvm use`), with `engines` capped below 25 so an unbounded
+range can't drift onto a newer major.
 
 ## Quick start
 
@@ -43,6 +49,7 @@ npm run dev          # api on :3001, then web on :3000 once the API answers
 npm run build        # builds both workspaces
 npm run typecheck
 npm run lint
+npm test             # the Postgres integration suite skips without TEST_DATABASE_URL
 ```
 
 Copy `apps/web/.env.example` and `apps/api/.env.example` to `.env` in each app before
@@ -56,20 +63,35 @@ running against anything other than localhost.
 - **A "start here" pick with its reasoning stated.** `GET /api/episodes/start-here?level=Beginner`
   returns an episode *and* a sentence explaining why it is the right one. The API cannot
   return a recommendation without a reason; it is part of the response type.
+- **Both directions, derived rather than configured.** `GET /api/pairs` returns what the
+  catalogue can actually serve, so a pair exists because there is an episode behind it.
+- **A missing translation is an exclusion, never a fallback to English.** Explanatory text
+  is keyed by the learner's language; an episode with no layer in yours is not in your
+  catalogue, rather than served half-translated
+  ([ADR 0003](docs/adr/0003-model-the-learner-language-pair.md)).
 - **Transcript-first episode pages** with synced cues, vocabulary and comprehension
   questions.
-- **One real lesson.** Lesson 1 uses the actual VOA *Let's Learn English* audio and its
-  captions, so transcript sync is demonstrable rather than mocked.
+- **Two real episodes, and nothing invented.** Both use the publisher's own audio with a
+  published text behind the transcript, so sync is demonstrable rather than mocked. See
+  Content credits below.
 - **Saved words that keep their audio context** — sentence, speaker and timestamp travel
   with the word, so review can prompt recall by ear.
+- **Optional Postgres.** With `DATABASE_URL` unset everything runs in memory, which is what
+  CI and the static build use. Set it and the schema migrates on boot, the seed catalogue is
+  published into it, and saved words become rows that survive a restart. It is never a
+  fallback: an unreachable database fails the boot instead of quietly degrading to memory,
+  and `/api/health` reports which mode is live
+  ([ADR 0011](docs/adr/0011-postgres-is-a-publication-of-the-seed.md)).
 
 ## What is deliberately not built
 
-RSS ingestion, the transcription and translation pipeline, learner auth, persistence
-(the catalogue and saved words are in memory), and the completion-by-level ranking
-signal — which needs listening data that does not exist yet, and is left absent rather
-than approximated. See the state table in
+RSS ingestion, the transcription and translation pipeline, learner auth, and the
+completion-by-level ranking signal — which needs listening data that does not exist yet,
+and is left absent rather than approximated. See the state table in
 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#the-domain-and-where-it-lives).
+
+The catalogue is small for the same reason: an episode ships only once its audio, its
+licence and its published text are all in hand.
 
 ## Deploying and demoing
 
@@ -81,14 +103,29 @@ STATIC_EXPORT=1 npm run build --workspace @discopod/web   # → apps/web/out/
 ```
 
 Both services above run on Render from `render.yaml` in the repo root, so a push to
-`main` deploys. Full options — managed hosts, Docker Compose, and what has actually been
-verified — are in [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
+`main` deploys. Full options — managed hosts, Docker Compose, Postgres, and what has
+actually been verified — are in [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
 
 ## Content credits
 
-The Lesson 1 audio and transcript come from
-[VOA Learning English — *Let's Learn English*, Lesson 1](https://learningenglish.voanews.com/a/lets-learn-english-lesson-one/3111026.html),
-a U.S. government publication. Other catalogue entries are sample data.
+The catalogue is two episodes. Both are somebody else's recording, and the terms, the
+source revision and every modification are recorded next to the files in
+[`apps/web/public/audio/ATTRIBUTION.md`](apps/web/public/audio/ATTRIBUTION.md):
+
+- **Let's Learn English, Lesson 1** —
+  [VOA Learning English](https://learningenglish.voanews.com/a/lets-learn-english-lesson-one/3111026.html),
+  a work of the U.S. federal government and in the public domain in the United States.
+- **海山漁港（條目導言）** — an excerpt of a volunteer reading of the Chinese Wikipedia
+  article [海山漁港](https://zh.wikipedia.org/wiki/%E6%B5%B7%E5%B1%B1%E6%BC%81%E6%B8%AF),
+  [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). Excerpted, transcoded and
+  loudness-normalised here, and given the timed transcript nobody published for it: the
+  characters come from the article revision that was read, the timings from ASR, never the
+  other way round ([ADR 0010](docs/adr/0010-the-chinese-discopod-teaches-is-traditional.md)).
+
+Nothing else is in it. Six further episodes were removed in
+[ADR 0004](docs/adr/0004-measure-speech-rate-in-a-declared-unit.md): they carried invented
+titles and invented transcripts under the names of real publishers, which is fabricated
+attribution rather than sample data.
 
 ## License
 
