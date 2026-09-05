@@ -13,6 +13,11 @@ async function bootstrap(): Promise<void> {
   );
   app.enableCors({ origin: process.env.WEB_ORIGIN ?? 'http://localhost:3000' });
 
+  // Without this, SIGTERM kills the process with the connection pool still
+  // open and `onApplicationShutdown` never runs. Render sends SIGTERM on every
+  // deploy, and so does `scripts/dev.mjs` on Ctrl-C.
+  app.enableShutdownHooks();
+
   const port = Number(process.env.PORT ?? 3001);
   await app.listen(port, '0.0.0.0');
 }

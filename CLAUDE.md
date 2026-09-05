@@ -21,6 +21,7 @@ npm ci --include=dev     # never a plain `npm ci` — NODE_ENV=production drops 
 npm run dev              # scripts/dev.mjs: api :3001, then web :3000 once /api/health answers
 npm run dev:api          # or run one side alone; the other is dev:web
 npm run lint && npm run typecheck && npm run build
+npm test                 # the Postgres suite skips without TEST_DATABASE_URL
 ```
 
 ## Rules
@@ -28,8 +29,10 @@ npm run lint && npm run typecheck && npm run build
 - The root `dev` script is `node scripts/dev.mjs`, not `--workspaces`. `npm run
   dev --workspaces` runs workspaces *sequentially*, so the API's watcher never exits and
   the web server never starts — silently. Keep `--workspaces` for scripts that exit.
-- Regenerate the lockfile only with `npm install --package-lock-only --include=dev`.
-  A plain `npm install` produces a lockfile that breaks `npm ci` on other platforms.
+- Regenerate the lockfile only with `npx -y npm@11 install --package-lock-only --include=dev`.
+  A plain `npm install` produces a lockfile that breaks `npm ci` on other platforms, and the
+  npm bundled with Node 22.13.0 (10.9.2) silently strips `"libc"` fields. Check the diff for
+  `libc` removals before committing.
 - Do not reintroduce `vinext`, `@cloudflare/vite-plugin`, `wrangler` or
   `@openai/sites-vite-plugin` — removing the vendor coupling is the point of ADR 0001.
 - Do not switch Geist back to `next/font/google`; it needs build-time network egress.
@@ -63,4 +66,15 @@ npm run lint && npm run typecheck && npm run build
 - JSON under `apps/api/src/**/data/` reaches `dist` only via the `assets` glob in
   `nest-cli.json`. Put data files in a `data/` directory or the build drops them, and
   runtime `readFileSync` works in dev and fails in production.
+- `DATABASE_URL` picks the storage adapters at boot. Unset is a first-class mode (in-memory;
+  it is what the web build and CI run). Set is **never a fallback** — an unreachable database
+  must fail the boot, not degrade to memory. `/api/health` reports which mode is live.
+- Postgres holds a *publication* of the catalogue, not a second source of it: the seed JSON
+  still wins, and a boot republishes whenever its digest changes. Don't add a write path to
+  the catalogue tables. Saved words are the opposite — nothing can regenerate them. ADR 0011.
+- Migration SQL lives in `src/db/migrations.ts`, not in `.sql` files: the `assets` glob only
+  copies `**/data/*.json`, so a `.sql` file works in dev and is missing in `dist`. New
+  migrations are appended to `MIGRATIONS`; existing ones are never edited.
+- Integration tests are gated on `TEST_DATABASE_URL` (never `DATABASE_URL`) and drop the
+  `public` schema. Keep the two variables apart.
 - Architectural changes get an ADR in `docs/adr/`.

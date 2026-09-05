@@ -25,7 +25,8 @@ build → static export → API boot + HTTP smoke test, all under `NODE_ENV=prod
 - `apps/web` — Next.js 16, React 19 RSC. Every route prerenders; `STATIC_EXPORT=1` yields
   a complete static `out/`.
 - `apps/api` — NestJS 11. Catalogue, difficulty profiles, suitability ranking, `start-here`
-  with stated reasons, saved words. Storage behind `CatalogRepository` with an in-memory adapter.
+  with stated reasons, saved words. Storage is behind ports with two adapters each, chosen
+  by `DATABASE_URL` — in-memory by default, Postgres when it is set.
 - `render.yaml` — Blueprint for both services. Deployed; see below.
 - `.github/workflows/ci.yml` — mirrors Render's build exactly. Runs on **every branch
   push**, and exactly once per commit: once a PR is open, a push fires both `push` and
@@ -238,8 +239,9 @@ Two more were found by reading the code rather than by looking at it, and both w
   `time` values now equal `round(seconds)`.
 
 The rendered ones are the same lesson seven times: **every one of them passed lint,
-typecheck and build, and every one was only visible on screen.** There are no tests under
-`apps/`, so rendering the page is the verification step, not a nicety.
+typecheck and build, and every one was only visible on screen.** The tests added with the
+storage work (2026-09-05) cover the repositories and nothing above them, so for anything
+that renders, opening the page is still the verification step rather than a nicety.
 
 **And the same false claim was in three places, of which the code was only one.** The
 eyebrow above, the `og:` and `twitter:` descriptions — what a shared link actually shows —
@@ -308,6 +310,37 @@ mistake — but assume the same for every asset you delete: the file keeps being
 "I removed it from the repo" is not "it is gone". Clearing it needs Render's own cache
 clear or a redeploy that replaces the publish directory wholesale; neither was done here.
 
+**Saved words survive a restart** (2026-09-05). They used to live in a `Map` inside
+`VocabularyService`, so every API restart threw away everything anyone had saved — the one
+thing in this app that cannot be regenerated from git. There is now a `pg`-backed adapter
+behind `VocabularyRepository`, and a second one behind `CatalogRepository`, both selected
+by `DATABASE_URL`. What to know before touching it, in full in
+[ADR 0011](docs/adr/0011-postgres-is-a-publication-of-the-seed.md):
+
+- **Unset `DATABASE_URL` is a supported mode, not a broken one.** It is what CI and the web
+  build run — `apps/web/scripts/build.mjs` boots the API during `next build`, and a build
+  must not require a database. Set-but-unreachable is the opposite: the boot fails on
+  purpose. An API answering `ok` while discarding saved words is worse than one that is down.
+  `/api/health` now says `storage: "postgres" | "memory"`, and CI asserts it.
+- **The seed JSON is still the single source.** Postgres holds a publication of it: each
+  boot hashes the loaded catalogue and republishes if the digest moved. Editing a catalogue
+  row in the database is not a way to change the catalogue — the next boot overwrites it.
+- **Catalogue rows are `jsonb` documents with an explicit `position` column.** `sort=recent`
+  returns repository order (the seed has no dates), so ordering is part of the API contract
+  and every read says `order by position`.
+- **Every catalogue read is still a full-table read.** The port has no query pushdown; the
+  service filters and ranks in memory exactly as before. Fine at two episodes, wrong at a
+  thousand, and deferred rather than missed.
+- **`render.yaml` is deliberately untouched.** Declaring a database in a Blueprint
+  provisions a real one on merge, which is William's call; `docs/DEPLOYMENT.md` carries the
+  exact snippet, and Render's free Postgres expires after 30 days anyway.
+
+Verified against a local `postgres:17` container: migration, publication and its no-op on
+the second boot, a saved word surviving a restart, and an unreachable `DATABASE_URL`
+exiting 1 without ever listening. `npm test` is 17 tests, 14 of which need
+`TEST_DATABASE_URL` and skip without it; CI runs a `postgres:17` service container so that
+skip cannot go unnoticed.
+
 ## Next steps, in order
 
 1. ~~**Get one Mandarin episode on screen.**~~ **Done 2026-09-05.** With `cpm` calibrated
@@ -342,10 +375,15 @@ clear or a redeploy that replaces the publish directory wholesale; neither was d
 2. **Write to Taiwanese Mandarin podcasters.** Still worth doing, for content rather than
    as a prerequisite: leads are Cozy Mandarin, Convo Chinese, Learn Taiwanese Mandarin.
    It no longer blocks anything, so it runs in parallel with everything below.
-3. **Persistence.** Write a Postgres adapter for `CatalogRepository` and bind it in
-   `CatalogModule`; the in-memory one stays for tests. Saved words need the same treatment.
+3. ~~**Persistence.**~~ **Done 2026-09-05.** Postgres adapters for both
+   `CatalogRepository` and `VocabularyRepository`, selected by `DATABASE_URL`; the
+   in-memory ones stay and are what the build runs. See the section above and ADR 0011.
+   What it leaves for whoever follows: **provision the database somewhere** (the Render
+   snippet is in `docs/DEPLOYMENT.md`, unapplied), and **push filtering into the port**
+   before the catalogue is big enough for a full-table read to matter.
 4. **Then** the larger vision pieces: RSS ingestion, the ASR/translation pipeline, learner
-   auth (the `x-learner-id` header is a placeholder), and the completion-by-level ranking signal.
+   auth (the `x-learner-id` header is a placeholder — saved words are now durable *and*
+   unauthenticated), and the completion-by-level ranking signal.
    The ASR pipeline has a fixture waiting for it — see the Mandarin fixture section in
    `apps/api/src/ingest/README.md`. It is a fixture, not content.
 
@@ -357,7 +395,12 @@ together, in one change. An image is worth having; it is not worth having stale.
 
 ## Traps already paid for — do not re-learn these
 
-- **Lockfile.** Regenerate only with `npm install --package-lock-only --include=dev`. A plain
+- **Lockfile, twice over.** Regenerate only with `--package-lock-only --include=dev`, and run
+  it through **npm 11** (`npx -y npm@11 install --package-lock-only --include=dev`). The npm
+  bundled with Node 22.13.0 (10.9.2) silently stripped 54 `"libc": ["glibc"]` entries — a
+  154/165 diff for a change that should have been 154/3. `libc` is how npm picks musl vs
+  glibc binaries, so the tool meant to prevent the platform trap below introduced it.
+  Read the diff for `libc` removals before committing. (Found 2026-09-05 adding `pg`.) A plain
   `npm install` records optional native packages for the current platform only, and `npm ci`
   then dies on another OS with *"Cannot find native binding"* ([npm/cli#4828](https://github.com/npm/cli/issues/4828)).
   This already broke a macOS run once via `@oxlint/binding-darwin-arm64`.
@@ -368,6 +411,12 @@ together, in one change. An image is worth having; it is not worth having stale.
   `render.yaml`). Render's own default is Node 24. Run `nvm use` before working locally.
 - **Google Fonts.** Geist is self-hosted via the `geist` package on purpose — `next/font/google`
   needs build-time egress to fonts.googleapis.com and fails in offline CI. Don't switch back.
+- **`create table if not exists` is not atomic against a concurrent create.** Two callers
+  reaching it together fail with `duplicate key value violates unique constraint
+  "pg_type_typname_nsp_index"`. `CatalogModule` and `VocabularyModule` both migrate and Nest
+  instantiates providers concurrently, so this killed the first Postgres boot. The fix is
+  ordering, not retries: `migrate()` takes `pg_advisory_xact_lock` **before** creating its
+  own bookkeeping table. There is a test that races two migrations on a clean schema.
 - **Don't reintroduce** `vinext`, `@cloudflare/vite-plugin`, `wrangler`, or
   `@openai/sites-vite-plugin`. Removing them is the whole point of ADR 0001.
 - **A deleted static asset keeps being served.** Render's static deploy adds the new
@@ -404,8 +453,18 @@ together, in one change. An image is worth having; it is not worth having stale.
 rm -rf node_modules apps/*/node_modules
 npm ci --include=dev
 npm run lint && npm run typecheck && npm run build
+npm test                                                  # 3 tests; 14 more skip
 STATIC_EXPORT=1 npm run build --workspace @discopod/web   # → apps/web/out/index.html
 node apps/api/dist/main.js &                              # → curl localhost:3001/api/health
+```
+
+The storage tests need a Postgres, under `TEST_DATABASE_URL` — a *different* variable from
+the app's `DATABASE_URL`, because they drop and recreate the `public` schema:
+
+```bash
+docker run -d --name discopod-pg -p 55432:5432 \
+  -e POSTGRES_USER=discopod -e POSTGRES_PASSWORD=discopod -e POSTGRES_DB=discopod postgres:17
+TEST_DATABASE_URL=postgres://discopod:discopod@127.0.0.1:55432/discopod npm test   # 17 tests
 ```
 
 ## Loose ends outside the repo
