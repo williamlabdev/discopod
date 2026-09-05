@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
-import { AudioLines, Bookmark, BookOpenText, Check, Clock3, Play, Sparkles, X } from 'lucide-react';
+import { AudioLines, BookOpenText, Check, Clock3, Play, RotateCcw, Sparkles, X } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import type { EpisodeCard } from '@/lib/catalogue';
@@ -12,6 +12,7 @@ import {
   readAllProgress,
   readList,
   writeList,
+  writeListeningPosition,
   type EpisodeProgress,
 } from '@/lib/learner-store';
 import { PairNav } from '../pair-nav';
@@ -26,6 +27,34 @@ interface Entry {
   card: EpisodeCard;
   progress: EpisodeProgress | null;
   onList: boolean;
+}
+
+/**
+ * Whether this device has a listening position for the episode.
+ *
+ * A stored record is not enough to mean "listened to": saving a word off the
+ * transcript writes one without the audio ever moving, and an episode taken off
+ * this list keeps its words and its answers. So the list is bookmarks plus what
+ * has actually been played, and this is the one place that says what that means.
+ */
+function hasPosition(progress: EpisodeProgress | null): boolean {
+  return progress !== null && (progress.currentTime > 0 || progress.complete);
+}
+
+/**
+ * What one removal undid, kept until the next one.
+ *
+ * Removing an episode discards a listening position, which nothing else can
+ * regenerate except listening again. That is small enough not to warrant a
+ * confirmation dialog and large enough to warrant being reversible.
+ */
+interface Undo {
+  id: string;
+  title: string;
+  wasOnList: boolean;
+  currentTime: number;
+  complete: boolean;
+  hadProgress: boolean;
 }
 
 /**
@@ -54,6 +83,7 @@ export function LearningList({ cards, pair }: { cards: EpisodeCard[]; pair: Lang
   // "nothing saved yet" for a frame to a learner who has twelve episodes saved.
   const [savedIds, setSavedIds] = useState<string[] | null>(null);
   const [progress, setProgress] = useState<EpisodeProgress[]>([]);
+  const [undo, setUndo] = useState<Undo | null>(null);
 
   // Deferred a tick for the same reason the episode page defers its own
   // rehydration: reading localStorage is synchronising with the outside, and
@@ -69,7 +99,9 @@ export function LearningList({ cards, pair }: { cards: EpisodeCard[]; pair: Lang
     if (savedIds === null) return [];
     const progressById = new Map(progress.map((item) => [item.episodeId, item]));
     return cards
-      .filter((card) => savedIds.includes(card.id) || progressById.has(card.id))
+      .filter(
+        (card) => savedIds.includes(card.id) || hasPosition(progressById.get(card.id) ?? null),
+      )
       .map((card) => ({
         card,
         progress: progressById.get(card.id) ?? null,
@@ -105,24 +137,71 @@ export function LearningList({ cards, pair }: { cards: EpisodeCard[]; pair: Lang
   const shown = isSample ? sample : entries;
   const sampleWords = (index: number) => SAMPLE_STATE[index]?.savedWords ?? 0;
 
-  const inProgress = shown.filter((entry) => entry.progress && !entry.progress.complete);
-  const notStarted = shown.filter((entry) => !entry.progress);
+  const inProgress = shown.filter(
+    (entry) => hasPosition(entry.progress) && !entry.progress?.complete,
+  );
+  const notStarted = shown.filter((entry) => !hasPosition(entry.progress));
   const finished = shown.filter((entry) => entry.progress?.complete);
 
-  const remove = (id: string) => {
+  /**
+   * Take the episode off this list, and mean it.
+   *
+   * Clearing the bookmark alone used to leave the row exactly where it was for
+   * anything the learner had opened, because the list is bookmarks *plus*
+   * whatever has a position — so the button read as broken. Removal now clears
+   * both, and keeps the saved words and the quiz answers, which is why the
+   * undo line says where the words went.
+   */
+  const remove = (entry: Entry) => {
+    const id = entry.card.id;
+    setUndo({
+      id,
+      title: entry.card.episodeTitle,
+      wasOnList: entry.onList,
+      currentTime: entry.progress?.currentTime ?? 0,
+      complete: entry.progress?.complete ?? false,
+      hadProgress: entry.progress !== null,
+    });
+
     setSavedIds((current) => {
       const next = (current ?? []).filter((item) => item !== id);
       writeList(pair, next);
       return next;
     });
+
+    if (entry.progress) {
+      writeListeningPosition(pair, id, { currentTime: 0, complete: false });
+      setProgress((current) =>
+        current.map((item) =>
+          item.episodeId === id ? { ...item, currentTime: 0, complete: false } : item,
+        ),
+      );
+    }
   };
 
-  const add = (id: string) => {
-    setSavedIds((current) => {
-      const next = [...(current ?? []), id];
-      writeList(pair, next);
-      return next;
-    });
+  const restore = () => {
+    if (!undo) return;
+    if (undo.wasOnList) {
+      setSavedIds((current) => {
+        const next = current?.includes(undo.id) ? current : [...(current ?? []), undo.id];
+        writeList(pair, next);
+        return next;
+      });
+    }
+    if (undo.hadProgress) {
+      writeListeningPosition(pair, undo.id, {
+        currentTime: undo.currentTime,
+        complete: undo.complete,
+      });
+      setProgress((current) =>
+        current.map((item) =>
+          item.episodeId === undo.id
+            ? { ...item, currentTime: undo.currentTime, complete: undo.complete }
+            : item,
+        ),
+      );
+    }
+    setUndo(null);
   };
 
   return (
@@ -150,6 +229,24 @@ export function LearningList({ cards, pair }: { cards: EpisodeCard[]; pair: Lang
 
         {isSample && <SampleNotice />}
 
+        {undo && (
+          <div className="mb-8 flex flex-col gap-3 rounded-[18px] border border-border bg-secondary/40 p-4 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-sm text-muted-foreground">
+              Removed <span className="font-medium text-foreground">{undo.title}</span>. Any words
+              you saved from it are still in your word list.
+            </p>
+            <Button
+              className="shrink-0 rounded-full"
+              onClick={restore}
+              size="sm"
+              variant="outline"
+            >
+              <RotateCcw className="size-4" />
+              Undo
+            </Button>
+          </div>
+        )}
+
         {savedIds === null ? (
           <p className="py-10 text-sm text-muted-foreground">Reading this device…</p>
         ) : (
@@ -157,7 +254,6 @@ export function LearningList({ cards, pair }: { cards: EpisodeCard[]; pair: Lang
             <Section
               cards={inProgress}
               home={home}
-              onAdd={add}
               onRemove={remove}
               readOnly={isSample}
               sampleWords={isSample ? sampleWords : null}
@@ -168,7 +264,6 @@ export function LearningList({ cards, pair }: { cards: EpisodeCard[]; pair: Lang
             <Section
               cards={notStarted}
               home={home}
-              onAdd={add}
               onRemove={remove}
               readOnly={isSample}
               sampleWords={isSample ? sampleWords : null}
@@ -179,7 +274,6 @@ export function LearningList({ cards, pair }: { cards: EpisodeCard[]; pair: Lang
             <Section
               cards={finished}
               home={home}
-              onAdd={add}
               onRemove={remove}
               readOnly={isSample}
               sampleWords={isSample ? sampleWords : null}
@@ -209,8 +303,9 @@ function SampleNotice() {
       <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
         You have not saved anything yet, so this is a made-up list showing what the page does. The
         episodes are real and the links work; the positions and the saved-word counts are invented,
-        and none of it has been written to this device. Save an episode on discover and it replaces
-        this immediately.
+        and none of it has been written to this device — which is also why these rows have no remove
+        button, as there is nothing here to remove. Save an episode on discover and it replaces this
+        immediately.
       </p>
     </div>
   );
@@ -219,7 +314,6 @@ function SampleNotice() {
 function Section({
   cards,
   home,
-  onAdd,
   onRemove,
   readOnly,
   sampleWords,
@@ -229,8 +323,7 @@ function Section({
 }: {
   cards: Entry[];
   home: string;
-  onAdd: (id: string) => void;
-  onRemove: (id: string) => void;
+  onRemove: (entry: Entry) => void;
   readOnly: boolean;
   sampleWords: ((index: number) => number) | null;
   shown: Entry[];
@@ -251,7 +344,6 @@ function Section({
             entry={entry}
             home={home}
             key={entry.card.id}
-            onAdd={onAdd}
             onRemove={onRemove}
             readOnly={readOnly}
             wordCount={
@@ -267,19 +359,17 @@ function Section({
 function Row({
   entry,
   home,
-  onAdd,
   onRemove,
   readOnly,
   wordCount,
 }: {
   entry: Entry;
   home: string;
-  onAdd: (id: string) => void;
-  onRemove: (id: string) => void;
+  onRemove: (entry: Entry) => void;
   readOnly: boolean;
   wordCount: number;
 }) {
-  const { card, progress, onList } = entry;
+  const { card, progress } = entry;
   return (
     <li className="flex flex-col gap-4 rounded-[22px] border border-border bg-card p-4 sm:flex-row sm:items-center">
       {/* Decoration, and only that. It held the show title's first two
@@ -348,32 +438,21 @@ function Row({
         >
           {progress && !progress.complete ? 'Continue' : 'Open'}
         </Link>
-        {!readOnly &&
-          (onList ? (
-            <Button
-              aria-label={`Remove ${card.episodeTitle} from my learning list`}
-              className="size-10 rounded-full"
-              onClick={() => onRemove(card.id)}
-              size="icon"
-              variant="outline"
-            >
-              <X className="size-4" />
-            </Button>
-          ) : (
-            /* Reachable only through progress: this episode was opened but
-               never saved. Removing it would mean deleting the listening
-               position, which is not what a bookmark button should do — so the
-               only action offered is the additive one. */
-            <Button
-              aria-label={`Add ${card.episodeTitle} to my learning list`}
-              className="size-10 rounded-full"
-              onClick={() => onAdd(card.id)}
-              size="icon"
-              variant="outline"
-            >
-              <Bookmark className="size-4" />
-            </Button>
-          ))}
+        {/* One button, one meaning. A row is here because it was saved, or
+            because it was listened to, or both — and a learner clicking X wants
+            it gone, not a report of which of those two it was. What survives is
+            stated in the undo line, not guessed at from an icon. */}
+        {!readOnly && (
+          <Button
+            aria-label={`Remove ${card.episodeTitle} from my learning list`}
+            className="size-10 rounded-full"
+            onClick={() => onRemove(entry)}
+            size="icon"
+            variant="outline"
+          >
+            <X className="size-4" />
+          </Button>
+        )}
       </div>
     </li>
   );
