@@ -340,7 +340,7 @@ the second boot, a saved word surviving a restart, and an unreachable `DATABASE_
 exiting 1 without ever listening. `npm test` is 17 tests, 14 of which need
 `TEST_DATABASE_URL` and skip without it; CI runs a `postgres:17` service container so that
 skip cannot go unnoticed — CI run
-[33936858242](https://github.com/williamlabdev/discopod/actions/runs/33936858242) is green
+[33937079531](https://github.com/williamlabdev/discopod/actions/runs/33937079531) is green
 with all 17 running there, and the second smoke test answering `"storage":"postgres"`.
 
 ## Next steps, in order
