@@ -42,15 +42,18 @@ graph LR
     api["<b>@discopod/api</b><br/>NestJS 11<br/>catalogue · ranking · saved words"]
   end
 
-  subgraph data["Data — not yet provisioned"]
-    db[("Postgres<br/><i>catalogue, transcripts,<br/>learners, progress</i>")]
-    obj[("Object storage<br/><i>cached audio, generated<br/>transcripts</i>")]
+  subgraph data["Data"]
+    db[("Postgres<br/><i>saved words,<br/>published catalogue</i>")]
+    obj[("Object storage — not provisioned<br/><i>cached audio, generated<br/>transcripts</i>")]
   end
 
   web -->|HTTP JSON| api
-  api -.->|planned| db
+  api -->|DATABASE_URL, optional| db
   api -.->|planned| obj
 ```
+
+The database is optional and the arrow means it: with no `DATABASE_URL` the API runs its
+in-memory adapters, which is what the web build does — see Persistence below.
 
 Both containers are plain Node processes. There is no edge runtime, no vendor SDK, and
 no managed-service binding anywhere in the source — replacing the host is a deployment
@@ -67,6 +70,7 @@ apps/
   api/          NestJS 11 service
     src/catalog/     shows, episodes, difficulty profiles, suitability ranking
     src/vocabulary/  saved words with their audio context
+    src/db/          pg pool, migrations, the DATABASE_URL switch
     src/health/      liveness
 docs/           vision, architecture, ADRs
 ```
@@ -110,9 +114,28 @@ Every ranked result carries a `reason` string generated alongside the score, so 
 
 ### Persistence
 
-`CatalogRepository` is an abstract class registered as a Nest provider; the in-memory
-adapter is bound in `CatalogModule`. Swapping in Postgres means writing a second
-adapter and changing one `useClass` line. No caller touches storage directly.
+`CatalogRepository` and `VocabularyRepository` are abstract classes registered as Nest
+providers. Each has two adapters, and `DATABASE_URL` picks between them at boot:
+
+| `DATABASE_URL` | Catalogue | Saved words |
+| --- | --- | --- |
+| unset | read from the seed JSON | a `Map`, lost on restart |
+| set | `jsonb` rows in Postgres, published from the seed | rows in Postgres |
+
+Unset is a first-class mode, not a degraded one: `apps/web/scripts/build.mjs` boots the
+API during `next build`, and a build must not need a database. Set is never a fallback —
+an unreachable database fails the boot rather than quietly serving from memory, and
+`/api/health` reports `storage: "postgres" | "memory"` so the mode is observable.
+
+The seed JSON stays the single source. On boot the Postgres adapter compares a digest of
+the loaded catalogue with the one it last published and republishes if they differ, so
+Postgres holds a *publication* of the catalogue and never a second copy of the truth.
+Saved words are the other way round — they are the one thing here that cannot be
+regenerated, which is the reason a database exists at all.
+
+Migrations are an ordered list in `src/db/migrations.ts`, applied in one transaction
+behind `pg_advisory_xact_lock`. Full reasoning, including why `pg` and not an ORM:
+[ADR 0011](adr/0011-postgres-is-a-publication-of-the-seed.md).
 
 ## How the web app gets the catalogue
 
@@ -140,7 +163,9 @@ the pages one object per card.
 | `@discopod/api` | `nest build` | `node dist/main.js` |
 
 Configuration is environment variables only (`.env.example` in each app). The web app's
-absolute URLs come from `NEXT_PUBLIC_SITE_URL`, so no deployment URL is compiled in.
+absolute URLs come from `NEXT_PUBLIC_SITE_URL`, so no deployment URL is compiled in. The
+API's `DATABASE_URL` is optional; nothing else has a required value beyond `PORT` and
+`WEB_ORIGIN`.
 
 ## What was removed, and why
 

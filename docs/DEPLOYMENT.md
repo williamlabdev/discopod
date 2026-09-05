@@ -37,7 +37,8 @@ Both are ordinary Node processes, so any of Vercel / Netlify / Render / Railway 
 a plain VPS will run them. The only wiring is environment variables:
 
 - web: `NEXT_PUBLIC_SITE_URL`, and optionally `CATALOG_API_URL`
-- api: `PORT`, `WEB_ORIGIN` (CORS origin — set it to the web app's URL)
+- api: `PORT`, `WEB_ORIGIN` (CORS origin — set it to the web app's URL), and optionally
+  `DATABASE_URL` — see "Postgres, and when you need it" below
 
 `CATALOG_API_URL` is a build-time override, not a runtime setting: leave it unset and the
 web build starts its own API from the workspace to fetch the catalogue from. Set it only
@@ -105,6 +106,18 @@ Turbopack and unrs-resolver all ship platform-specific binaries. `--package-lock
 resolves the whole graph instead, so one lockfile serves macOS, Linux CI and Render.
 This was reproduced both ways and verified.
 
+**Use npm 11, not the npm bundled with Node 22.13.0.** Regenerating with npm 10.9.2 —
+which is what `nvm use` gives you here — silently dropped 54 `"libc": ["glibc"]` fields
+from the lockfile (a 154/165 diff where the change itself was 154/3). Those fields are how
+npm decides whether a musl or glibc binary applies, so losing them is the same class of
+breakage this section exists to prevent, arriving from the tool meant to prevent it. Run:
+
+```bash
+npx -y npm@11 install --package-lock-only --include=dev
+```
+
+Then check the diff for `libc` removals before committing. Found and fixed 2026-09-05.
+
 ### The devDependencies trap
 
 Both build commands use `npm ci --include=dev`, not `npm ci`. If `NODE_ENV` is
@@ -123,10 +136,11 @@ Render's current default is Node 24.x. This repo pins 22.13.0 three ways —
 ### CI mirrors the deploy
 
 `.github/workflows/ci.yml` runs the same Node version, the same `NODE_ENV=production`,
-and the same install flags as Render, then lints, typechecks, builds both workspaces,
-verifies the static export produced `index.html`, and boots the API to hit
-`/api/health`. A green CI run means the Render build works; a red one tells you before
-Render does.
+and the same install flags as Render, then lints, typechecks, runs the tests, builds both
+workspaces, verifies the static export produced `index.html`, and boots the API twice to
+hit `/api/health` — once with no database and once against a `postgres:17` service
+container, asserting `"storage":"postgres"`. A green CI run means the Render build works;
+a red one tells you before Render does.
 
 ### Free-tier limits that will bite a demo
 
@@ -141,6 +155,73 @@ Render does.
 Verified against Render's blueprint spec and free-tier docs, then deployed on
 2026-09-04 — both services built clean from the Blueprint on the first attempt, and the
 docs-only commit that followed rebuilt neither, which is `buildFilter` doing its job.
+
+## Postgres, and when you need it
+
+The API runs with no database. Leave `DATABASE_URL` unset and the catalogue is read from
+the seed JSON and saved words live in memory — which is what the web build, CI and a
+laptop run do, and it is fine for a demo where nobody saves a word they expect to keep.
+
+Set `DATABASE_URL` and the API migrates its schema on boot, publishes the seed catalogue
+into it, and stores saved words as rows. It is not a fallback: if the URL is set and the
+database is unreachable, **the boot fails**, deliberately — see
+[ADR 0011](adr/0011-postgres-is-a-publication-of-the-seed.md). Check which mode you got:
+
+```bash
+curl -fsS localhost:3001/api/health     # → {"status":"ok",…,"storage":"postgres"}
+```
+
+TLS is the connection string's business: append `?sslmode=require` for a managed Postgres.
+
+Locally, `compose.yaml` has a `postgres:17` service the api service already points at, or
+run one directly:
+
+```bash
+docker run -d --name discopod-pg -p 55432:5432 \
+  -e POSTGRES_USER=discopod -e POSTGRES_PASSWORD=discopod -e POSTGRES_DB=discopod postgres:17
+DATABASE_URL=postgres://discopod:discopod@127.0.0.1:55432/discopod npm run dev
+```
+
+The integration tests need one too, under a different variable so no test can ever point
+itself at a real database by inheriting the app's:
+
+```bash
+TEST_DATABASE_URL=postgres://discopod:discopod@127.0.0.1:55432/discopod_test npm test
+```
+
+They **drop and recreate the `public` schema**. Point them at a throwaway database. With
+`TEST_DATABASE_URL` unset they skip, and `npm test` still passes.
+
+### On Render — not wired up, on purpose
+
+`render.yaml` does **not** declare a database. Adding one to a Blueprint provisions a real
+Postgres on a real account the moment it merges, and that is an owner's decision, not a
+side effect of a pull request. Free Postgres also expires 30 days after creation, so it
+cannot back a long-lived demo (see the free-tier limits above).
+
+When it is wanted, it is these two additions:
+
+```yaml
+databases:
+  - name: discopod-db
+    plan: free
+    databaseName: discopod
+    user: discopod
+
+services:
+  - type: web
+    name: discopod-api
+    # … existing config …
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: discopod-db
+          property: connectionString
+```
+
+Render's `connectionString` already carries `sslmode`, so nothing else changes. The web
+service must **not** get `DATABASE_URL`: it builds a static export by booting the API
+itself, and giving that build a database would make a deploy depend on one.
 
 ## Demo checklist
 
@@ -162,5 +243,11 @@ plus 400 on an invalid payload and 404 on a missing episode.
 Verified in production on Render: both builds, `/api/health`, `start-here` returning a
 stated reason, and the CORS header matching `WEB_ORIGIN`.
 
-Not verified: the Dockerfiles. Render's build pipeline is now exercised; no other
-provider's is.
+Verified against a local `postgres:17` container on 2026-09-05: schema migration, seed
+publication and its no-op on the second boot, a saved word surviving a restart, and a boot
+with an unreachable `DATABASE_URL` exiting 1 without ever listening. 17 tests, of which 14
+need the database.
+
+Not verified: the Dockerfiles — including the new `postgres` service in `compose.yaml`,
+which has never been `docker compose up`-ed. Render's build pipeline is exercised; no
+other provider's is, and no Postgres has ever run on Render for this app.

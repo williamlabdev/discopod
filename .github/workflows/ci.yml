@@ -33,6 +33,25 @@ jobs:
     runs-on: ubuntu-latest
     env:
       NODE_ENV: production
+
+    # A real Postgres, because the adapters under test are the SQL they run.
+    # Nothing else in this job uses it: the builds and the first smoke test
+    # deliberately have no DATABASE_URL, which is the in-memory mode Render's
+    # web build and every laptop run use. See ADR 0011.
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: discopod
+          POSTGRES_PASSWORD: discopod
+          POSTGRES_DB: discopod_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U discopod"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - uses: actions/checkout@v5
 
@@ -47,6 +66,14 @@ jobs:
 
       - run: npm run lint
       - run: npm run typecheck
+
+      # `npm test` passes with no TEST_DATABASE_URL — the Postgres suite skips
+      # itself. Setting it here is what stops that skip from being invisible.
+      - name: Test
+        env:
+          TEST_DATABASE_URL: postgres://discopod:discopod@127.0.0.1:5432/discopod_test
+        run: npm test
+
       - run: npm run build
 
       # The static export is a second, separate build: STATIC_EXPORT=1 switches
@@ -78,3 +105,22 @@ jobs:
             curl -fsS http://localhost:3001/api/health && break
           done
           curl -fsS "http://localhost:3001/api/episodes/start-here?level=Beginner" > /dev/null
+
+      # Again, with Postgres — the shape Render runs. This asserts what the
+      # first smoke test cannot: that the boot applies its migrations, publishes
+      # the seed catalogue, and serves reads from the database rather than from
+      # the JSON it was seeded with.
+      - name: Smoke test the API on Postgres
+        env:
+          PORT: '3002'
+          DATABASE_URL: postgres://discopod:discopod@127.0.0.1:5432/discopod_test
+        run: |
+          node apps/api/dist/main.js &
+          api=$!
+          for i in $(seq 1 30); do
+            sleep 1
+            curl -fsS http://localhost:3002/api/health && break
+          done
+          curl -fsS http://localhost:3002/api/health | grep -q '"storage":"postgres"'
+          curl -fsS "http://localhost:3002/api/episodes/start-here?level=Beginner" > /dev/null
+          kill $api

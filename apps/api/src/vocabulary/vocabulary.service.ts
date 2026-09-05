@@ -4,20 +4,23 @@ import { Injectable } from '@nestjs/common';
 
 import type { SaveWordDto } from './save-word.dto';
 import type { SavedWord } from './saved-word.types';
+import { VocabularyRepository } from './vocabulary.repository';
 
 /**
- * In-memory store: state is lost on restart. Swapped for a persistent
- * repository when the datastore lands — see docs/ARCHITECTURE.md.
+ * Storage is behind `VocabularyRepository`; which adapter is bound depends on
+ * `DATABASE_URL` (see vocabulary.module.ts). The id and the save time are
+ * minted here rather than by the database, so both adapters produce the same
+ * word and neither storage mode can quietly become the definition of one.
  */
 @Injectable()
 export class VocabularyService {
-  private readonly words = new Map<string, SavedWord[]>();
+  constructor(private readonly words: VocabularyRepository) {}
 
-  list(learnerId: string): SavedWord[] {
-    return this.words.get(learnerId) ?? [];
+  list(learnerId: string): Promise<SavedWord[]> {
+    return this.words.list(learnerId);
   }
 
-  save(learnerId: string, input: SaveWordDto): SavedWord {
+  save(learnerId: string, input: SaveWordDto): Promise<SavedWord> {
     const word: SavedWord = {
       id: randomUUID(),
       learnerId,
@@ -25,8 +28,6 @@ export class VocabularyService {
       ...input,
     };
 
-    const existing = this.words.get(learnerId) ?? [];
-    this.words.set(learnerId, [...existing, word]);
-    return word;
+    return this.words.save(word);
   }
 }
