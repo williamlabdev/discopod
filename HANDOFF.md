@@ -59,13 +59,21 @@ green" and stayed there while five red runs went past, because it was written on
 never re-checked. **A claim about CI in this file is a claim about a specific run id.**
 If you cannot name the run, write what you actually verified locally instead.
 
-**Current `main` is `81b22c6`** (2026-09-05), after PR
-[#3](https://github.com/williamlabdev/discopod/pull/3) (the CI trigger) and PR
-[#2](https://github.com/williamlabdev/discopod/pull/2) (ADR 0010 and everything below).
-Both branches are deleted locally and on the remote; `main` is the only branch. CI on that
-commit: run
+**Current `main` is `4dd83a6`** (2026-09-05) — this file's own last edit, and a reminder
+that the sentence you are reading goes stale the moment it lands. CI on it: run
+[33931835378](https://github.com/williamlabdev/discopod/actions/runs/33931835378),
+`success`. It arrived by fast-forward
+(`git push origin handoff-post-adr-0010:main`) rather than by a squash, so there is no
+`(#4)` merge commit even though PR
+[#4](https://github.com/williamlabdev/discopod/pull/4) shows as merged — GitHub closes a
+PR whose head lands on the base by any route.
+
+Before it, `81b22c6` — PR [#3](https://github.com/williamlabdev/discopod/pull/3) (the CI
+trigger) and PR [#2](https://github.com/williamlabdev/discopod/pull/2) (ADR 0010 and
+everything below), CI run
 [33931234382](https://github.com/williamlabdev/discopod/actions/runs/33931234382),
-`success`.
+`success`. That is the commit the deployed site was built from; `4dd83a6` is docs-only and
+`buildFilter` skipped it.
 
 **Deployed** (2026-09-04). Blueprint `discopod` (`exs-dad9mvbncjis738h68mg`) built both
 services from `b92129d`:
