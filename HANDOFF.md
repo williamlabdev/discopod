@@ -629,6 +629,17 @@ not the pipeline.
 Enforced on the published seed by `podcast-description.spec.ts`, not only at ingest, for
 ADR 0020's reason: the ingest runs against a source folder outside this repo.
 
+**It took CI's static-export step down, and that was the check doing its job.** The step
+asserted `grep -q 'tiếng' apps/web/out/vi/zh-Hant.html` — and the generated description
+was the only thing putting a lowercase `tiếng` on that page. The assertion is re-anchored
+onto `giọng nói` (`levelReason.vi`, on a discover card) and `Quan thoại`
+(`learningGoal.vi`, on `vi/zh-Hant/episode/200.html`, a surface the old single assertion
+never covered). ADR 0021 decision 5 has the reasoning; the trap for next time is that
+those assertions are **silent** — thirteen bare `test`/`grep` lines under `bash -eo
+pipefail`, so a failure is `exit code 1` and no message. To find which one, run the block
+with `bash -x`, and use **`/usr/bin/grep`**: the shell here aliases `grep` to `ugrep`,
+whose exit status differs on these queries, so the block passes locally and fails in CI.
+
 ## Next steps, in order
 
 1. ~~**Get one Mandarin episode on screen.**~~ **Done 2026-09-05.** With `cpm` calibrated

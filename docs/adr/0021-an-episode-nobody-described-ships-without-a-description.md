@@ -106,6 +106,28 @@ This is ADR 0020's arrangement and it is here for ADR 0020's reason: the ingest 
 against a source folder outside this repo, so an ingest-only check guards everything
 except the file that ships.
 
+### 5. CI's "the Vietnamese page is Vietnamese" check moves to a field that still exists
+
+The static-export step asserted `grep -q 'tiếng' apps/web/out/vi/zh-Hant.html`. That
+assertion went red on this change, and it was right to: the generated `description` was
+the only thing putting a lowercase `tiếng` on the discover page, so removing it removed
+the token. Nothing else Vietnamese went missing — `chữ/phút`, `giọng nói` and `phút` are
+all still there, 63 times each.
+
+The check is worth keeping, because what it guards is real: a missing `vi` key is an
+exclusion (ADR 0003), so a broken `Localized` write drops content off the page silently
+instead of failing the build. So it is re-anchored rather than deleted, onto two fields
+the seed writes in Vietnamese, on the two surfaces that render one:
+
+- `grep -q 'giọng nói' apps/web/out/vi/zh-Hant.html` — `levelReason.vi`, on a discover card.
+- `grep -q 'Quan thoại' apps/web/out/vi/zh-Hant/episode/200.html` — `learningGoal.vi`, on
+  an episode page, which the old single-page assertion never covered.
+
+The replacement is stronger than what it replaces, and that is not a happy accident: the
+old token came from the field this ADR deletes for being generated, so the assertion was
+resting on a value nobody had written. Anchoring a build guarantee on generated content
+is the same mistake one level up.
+
 ## What this ADR does not do
 
 **It does not touch the transcripts.** `[Nhạc mở đầu]` and the other 929 bracketed tags in
