@@ -11,7 +11,7 @@
     "node": ">=22.13.0 <25"
   },
   "scripts": {
-    "dev": "npm run dev --workspaces --if-present",
+    "dev": "node scripts/dev.mjs",
     "dev:web": "npm run dev --workspace @discopod/web",
     "dev:api": "npm run dev --workspace @discopod/api",
     "build": "npm run build --workspace @discopod/api && npm run build --workspace @discopod/web",

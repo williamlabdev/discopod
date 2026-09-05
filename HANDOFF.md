@@ -59,21 +59,24 @@ green" and stayed there while five red runs went past, because it was written on
 never re-checked. **A claim about CI in this file is a claim about a specific run id.**
 If you cannot name the run, write what you actually verified locally instead.
 
-**Current `main` is `4dd83a6`** (2026-09-05) — this file's own last edit, and a reminder
-that the sentence you are reading goes stale the moment it lands. CI on it: run
+**Current `main` is `a4be159`** (2026-09-05) — a docs-only edit to this file, and the
+second one in a row to prove the point that the sentence you are reading goes stale the
+moment it lands. CI on it: run
+[33932572583](https://github.com/williamlabdev/discopod/actions/runs/33932572583),
+`success`. Before it, `4dd83a6`, run
 [33931835378](https://github.com/williamlabdev/discopod/actions/runs/33931835378),
-`success`. It arrived by fast-forward
+`success`; that one arrived by fast-forward
 (`git push origin handoff-post-adr-0010:main`) rather than by a squash, so there is no
 `(#4)` merge commit even though PR
 [#4](https://github.com/williamlabdev/discopod/pull/4) shows as merged — GitHub closes a
 PR whose head lands on the base by any route.
 
-Before it, `81b22c6` — PR [#3](https://github.com/williamlabdev/discopod/pull/3) (the CI
+Before those, `81b22c6` — PR [#3](https://github.com/williamlabdev/discopod/pull/3) (the CI
 trigger) and PR [#2](https://github.com/williamlabdev/discopod/pull/2) (ADR 0010 and
 everything below), CI run
 [33931234382](https://github.com/williamlabdev/discopod/actions/runs/33931234382),
-`success`. That is the commit the deployed site was built from; `4dd83a6` is docs-only and
-`buildFilter` skipped it.
+`success`. That is the commit the deployed site was built from; `4dd83a6` and `a4be159` are
+docs-only and `buildFilter` skipped both.
 
 **Deployed** (2026-09-04). Blueprint `discopod` (`exs-dad9mvbncjis738h68mg`) built both
 services from `b92129d`:
@@ -250,15 +253,38 @@ image**: the twitter card drops to `summary`, the learning-list band is one colu
 `layout.tsx` says what must be true before an image comes back. A link with no card looks
 worse than one with a card; a card that contradicts the product is worse than both.
 
-**`npm run dev` does not start the web server.** The root script is
-`npm run dev --workspaces --if-present`, which runs workspaces *sequentially*; the API's
-`nest start --watch` never exits, so `@discopod/web` is never reached. `CLAUDE.md` documents
-"web :3000, api :3001", which does not happen. Start them separately —
-`npm run dev --workspace @discopod/api` and `npm run dev --workspace @discopod/web` — until
-the root script is fixed to run them concurrently. Related: `nest start --watch` does **not**
-watch the `assets` glob, so editing a seed JSON needs an API restart before the change is
-served, and `next dev` caches the API's answers under `.next/cache/fetch-cache`
-(`cache: 'force-cache'` in `catalog-api.ts`), so it needs one too.
+**`npm run dev` starts both servers again** (fixed 2026-09-05). It had been
+`npm run dev --workspaces --if-present`, which runs workspaces *sequentially*: the API's
+`nest start --watch` never exits, so `@discopod/web` was never reached and the documented
+"web :3000, api :3001" was silently "api :3001 only". The root script is now
+`node scripts/dev.mjs`, which starts the API, waits for `/api/health`, then starts
+`next dev` — the same handshake `apps/web/scripts/build.mjs` makes for the build, and for
+the same reason: the web app fetches its catalogue from the API on every dev render, so a
+page loaded before the API answers fails with `Catalogue API unreachable`. Three things
+the script does on purpose:
+
+- **Children get their own process groups.** `nest start --watch` runs the app as a
+  *grandchild*, so a kill aimed at nest alone leaves :3001 held. Ctrl-C reaches only the
+  script, which then kills both groups; either server exiting on its own takes the other
+  down rather than leaving half a stack up.
+- **An API already answering on the port is left alone** — it is someone's
+  `npm run dev:api`, or a leftover, and restarting it is not the dev script's business.
+  The line it prints says which branch it took.
+- **`API_PORT` / `WEB_PORT` move both ends of the wire**, deriving `CATALOG_API_URL` and
+  `WEB_ORIGIN`, rather than leaving `catalog-api.ts`'s hardcoded `DEV_FALLBACK` to agree
+  with a port it never hears about.
+
+Verified 2026-09-05 on Node 22.13.0, both branches: with :3001 already taken it started
+web only, and on `API_PORT=3101 WEB_PORT=3100` it started both, served
+`/en/zh-Hant` 200, and left no listener or stray `nest`/`next` process behind after
+Ctrl-C (exit 130).
+
+**What is still true**: `nest start --watch` does **not** watch the `assets` glob, so
+editing a seed JSON needs an API restart before the change is served, and `next dev`
+caches the API's answers under `.next/cache/fetch-cache` (`cache: 'force-cache'` in
+`catalog-api.ts`), so it needs one too. The dev script deliberately does not clear that
+cache — a `npm run dev` that silently discarded caches would hide the trap rather than
+fix it.
 
 **The live site is serving all of this** (checked 2026-09-05 00:00 UTC, after the `81b22c6`
 deploy). <https://discopod-web.onrender.com/en/zh-Hant> carries *"Ranked by what you can
@@ -348,8 +374,12 @@ together, in one change. An image is worth having; it is not worth having stale.
   `out/` without pruning what left it — `/og.png` was still answering 200 with the old
   image after the deploy that deleted it, past a cache-buster. Deleting a file from
   `public/` removes it from the *site*, not from the *host*.
-- **`npm run dev` does not start the web server**, and nothing tells you — see the note
-  above. The root script runs workspaces sequentially and the API's watcher never exits.
+- **`npm run dev --workspaces` runs workspaces sequentially**, so a watcher in the first
+  one starves every workspace after it — that is how `npm run dev` came to start the API
+  and never the web server, with nothing on screen to say so. Fixed by `scripts/dev.mjs`;
+  see the note above. Don't put the root `dev` script back to `--workspaces`, and treat
+  `lint` / `typecheck` / `test` — which are still `--workspaces` — as the only safe use of
+  it: they exit.
 
 ## Conventions
 
