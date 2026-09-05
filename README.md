@@ -3,6 +3,47 @@
 > **You can recognize the sentence. But can you catch it at 1× speed?**
 >
 > **DiscoPod turns podcasts into an English ↔ Chinese listening-learning experience — so learners can train with the language people actually speak.**
+> ## Try it
+
+**Live app → https://discopod-web.onrender.com/**
+
+Pick a language pair on the landing page, then open any episode to see the
+transcript-first player and the ranked "start here" list.
+
+You do not need the API to be awake to evaluate the site. The deployed pages are
+statically generated and make no calls to a backend — see
+[Architecture](#architecture) for why.
+
+
+## Architecture
+
+DiscoPod is an npm workspaces monorepo with two applications. The relationship
+between them is unusual and is the central design decision: **the web app talks
+to the API at build time, and never at runtime.**
+
+```mermaid
+flowchart LR
+    subgraph BUILD ["Build time — once, on the build machine"]
+        S["catalog.seed.json<br/>single source"] --> A["API<br/>NestJS 11"]
+        A -->|"HTTP / JSON"| NB["next build"]
+        NB --> OUT["static HTML<br/>apps/web/out"]
+    end
+
+    subgraph RUN ["Runtime — what a visitor touches"]
+        U["Learner"] --> W["Web app<br/>static files + React 19"]
+        W --> LS["localStorage<br/>saved words"]
+    end
+
+    OUT ==> W
+    A --> D["PostgreSQL<br/>optional publication"]
+```
+
+`apps/web/scripts/build.mjs` starts the API on a free port, waits for
+`/api/health`, runs `next build` against it, and terminates it. The catalogue
+crosses the wire exactly once, during that build. The deployed site holds no API
+URL, so it never waits on the API's cold start. See
+[ADR 0002](docs/adr/0002-fetch-the-catalogue-at-build-time.md).
+
 
 ## Problems & Goals
 
@@ -105,6 +146,247 @@ For a hackathon demo, our north-star moment is deliberately simple:
 
 That is the experience we want to build toward.
 
+### Frontend — `apps/web`
+
+Next.js 16 and React 19. Podcast discovery, episode pages, the transcript-first
+listening experience, vocabulary interaction, and learner-facing presentation
+logic. Every route prerenders, so the production deployment is a static export.
+
+### Backend — `apps/api`
+
+NestJS 11. Catalogue access, difficulty profiles, suitability ranking,
+`start-here` recommendations, and saved vocabulary.
+
+Storage runs in memory or on PostgreSQL depending on `DATABASE_URL`. Unset is a
+first-class mode, not a degraded one — it is what CI and the web build run. Set
+is never a fallback: an unreachable database fails the boot rather than silently
+reverting to memory. The catalogue itself always comes from
+`catalog.seed.json`; PostgreSQL holds a *publication* of it, republished
+whenever the seed's digest changes, never a second source of truth.
+See [ADR 0011](docs/adr/0011-postgres-is-a-publication-of-the-seed.md).
+
+### The language pair is the core model
+
+DiscoPod does not have "a language". It has a **pair** — what the learner speaks
+and what they are learning — and the pair is a route segment, not a preference.
+
+Three distinctions the codebase enforces:
+
+- **Learner-language text is `Localized`**, keyed by the learner's language:
+  `profile.reason`, `learningGoal`, vocabulary meanings, question prompts, cue
+  translations. Show-language text (titles, terms, examples, cue text) stays
+  scalar. A missing key is an **exclusion, never a fallback to English** — a
+  half-translated pair drops content rather than showing the learner a language
+  they did not ask for. ([ADR 0003](docs/adr/0003-model-the-learner-language-pair.md))
+- **Written form is not spoken language.** `LanguageTag` (`en` / `zh-Hant` /
+  `zh-Hans`) governs text; `SpokenLanguage` (`en` / `cmn`) governs audio and
+  speech-rate units. Traditional and Simplified are never converted between —
+  the mapping is many-to-one and a guess.
+  ([ADR 0006](docs/adr/0006-separate-spoken-language-from-written-form.md))
+- **Speech rate carries its unit.** English is measured in words per minute,
+  Mandarin in characters per minute. The unit travels with the value rather than
+  being assumed where it is rendered.
+  ([ADR 0004](docs/adr/0004-measure-speech-rate-in-a-declared-unit.md))
+
+### What the ranking will and will not claim
+
+Suitability ranking uses learnability characteristics the audio actually
+produces: speech rate over the speech span, vocabulary coverage, speaker count,
+slang load (register density) and accent load. Every ranked result carries a
+plain-language `reason` shown to the learner; the system will not rank without
+one.
+
+The planned completion/engagement signal is **deliberately absent**. There is
+not yet enough real listening data to compute it, and fabricating it is
+prohibited in the project's own contributor rules rather than left to judgment.
+
+The same principle governs generated text: machine-translated cue overlays are
+labelled per episode and per language via `authoredBy: 'auto-translated'`, so the
+interface can never present a machine translation as a verified one.
+([ADR 0017](docs/adr/0017-english-overlay-from-machine-translation.md),
+[ADR 0019](docs/adr/0019-auto-translated-is-an-episode-and-language-claim.md))
+
+### Data and AI pipeline
+
+The intended long-term pipeline:
+
+```text
+Podcast RSS / Content Source
+        ↓
+Episode Metadata
+        ↓
+Transcript / ASR
+        ↓
+Segmentation & Alignment
+        ↓
+Vocabulary / Translation / Learning Support
+        ↓
+Difficulty & Learnability Profiling
+        ↓
+Suitability Ranking
+        ↓
+Learner
+```
+
+Built today: catalogue modelling, transcript cues, vocabulary, difficulty
+profiles, learnability-based ranking, and labelled machine-translated overlays.
+Not built: automated RSS ingestion and an ASR stage. `apps/api/src/ingest/`
+holds a vetted list of shows to ingest *from*; nothing reads it yet, and it is
+explicitly not a second catalogue.
+
+
+## Technology Stack
+
+| Layer | Technology | Role |
+| --- | --- | --- |
+| Frontend | Next.js 16 | Web application and static generation |
+| UI | React 19 | Interactive learner experience |
+| UI Components | shadcn-style components + Base UI | Consistent interface components |
+| Styling | Tailwind CSS 4 | Responsive styling |
+| Backend | NestJS 11 | REST API and domain logic |
+| Runtime | Node.js 22.13+ | Application runtime |
+| Database | PostgreSQL 17 | Saved vocabulary; catalogue publication |
+| Data | JSON seed files | Single source of catalogue data |
+| Validation | class-validator / class-transformer | API request validation |
+| Testing | Jest + Supertest | API and integration testing |
+| Containerization | Docker | Local full-stack development |
+| Deployment | Render / Node-compatible hosts | Web and API hosting |
+
+The root project requires Node `>=22.13.0 <25` and uses npm workspaces to manage
+`apps/web` and `apps/api`.
+
+The system intentionally avoids vendor-specific runtime dependencies. Both
+applications run as ordinary Node processes, allowing deployment to containers,
+VPS infrastructure, or compatible cloud platforms.
+([ADR 0001](docs/adr/0001-decouple-from-cloudflare-and-add-nestjs-api.md))
+
+
+## Execution
+
+### Local development
+
+Install dependencies from the repository root:
+
+```bash
+nvm use
+npm ci --include=dev     # --include=dev matters: with NODE_ENV=production a
+                         # plain `npm ci` drops the build toolchain
+```
+
+Start both applications:
+
+```bash
+npm run dev
+```
+
+```text
+Web    → http://localhost:3000
+API    → http://localhost:3001
+```
+
+The root development script starts the API first and waits for `/api/health`
+before starting the web application — the same handshake the production build
+makes. A page loaded before the API answers fails rather than rendering an empty
+catalogue.
+
+To run the applications separately:
+
+```bash
+npm run dev:web
+npm run dev:api
+```
+
+### Verification
+
+```bash
+npm run lint
+npm run typecheck
+npm run build
+npm test
+```
+
+The API test suite uses `TEST_DATABASE_URL` for PostgreSQL integration tests —
+kept deliberately separate from `DATABASE_URL`, since the integration suite drops
+the `public` schema. Without it, the database-dependent suite skips.
+
+CI mirrors the deploy: same Node version, same install flags, lint, typecheck,
+tests against a real PostgreSQL 17, both build modes, a smoke test of the API in
+each storage mode, and assertions on the exported HTML.
+
+### Docker
+
+The full local stack:
+
+```bash
+docker compose up --build
+```
+
+```text
+Web       :3000
+API       :3001
+Postgres  :5432
+```
+
+The API starts only once PostgreSQL reports healthy — an unreachable
+`DATABASE_URL` is a boot failure by design, so waiting is correct and degrading
+to memory would not be.
+
+### Production / Deployment
+
+`render.yaml` is a Render Blueprint deploying two services from this one
+repository:
+
+- **`discopod-web`** — the static export, served from a CDN.
+- **`discopod-api`** — the NestJS process, health-checked at `/api/health`.
+
+Path filters keep a web-only change from rebuilding the API. A change under
+`apps/api` **does** rebuild the web service, because the catalogue and the
+ranking are baked into the HTML at build time and would otherwise go stale
+silently.
+
+The deployed web service is given no API URL. This is deliberate: the site
+cannot be made slow by a sleeping free-tier API instance.
+
+
+## Current Limitations
+
+DiscoPod is a functional product prototype, not a complete end-to-end AI podcast
+learning platform. What follows is what is not built — and, where it matters,
+why it was left unbuilt rather than approximated.
+
+### 1. Content ingestion is not automated
+
+RSS ingestion is not implemented. The catalogue is seeded from JSON rather than
+continuously discovering and importing feeds. `apps/api/src/ingest/` holds a
+vetted source list for that work; nothing reads it yet.
+
+### 2. ASR is not integrated
+
+Machine-translated cue overlays exist today and are labelled as such. What is
+missing is the transcription stage: generating transcripts where a publisher
+supplies none. Until that exists, the catalogue carries only episodes whose
+transcripts can be evidenced.
+
+### 3. Learner personalisation is limited by data, not by design
+
+Ranking uses learnability characteristics only. The completion/engagement signal
+is specified but not shipped, because there is no real listening data to compute
+it from — and the project's rules forbid fabricating it. A shallower ranking that
+is honest was preferred to a richer one that is invented.
+
+### 4. Authentication and persistent learner profiles are incomplete
+
+There is no learner identity or authentication; a placeholder identifier stands
+in. In the deployed site, saved words are held in the browser's `localStorage` —
+the API's saved-words endpoints exist and are backed by PostgreSQL, but the
+static front end does not yet call them. Connecting the two is what learner
+accounts unlock.
+
+### 5. Audio and generated-content storage is a future layer
+
+Object storage for cached audio and generated transcripts is planned, not
+provisioned. The current architecture suits a prototype; large-scale ingestion
+and AI-generated learning content will require it.
 
 ---
 
