@@ -18,12 +18,16 @@ paid for. Then [docs/VISION.md](docs/VISION.md) for the product,
 
 ```bash
 npm ci --include=dev     # never a plain `npm ci` — NODE_ENV=production drops dev deps
-npm run dev              # web :3000, api :3001
+npm run dev              # scripts/dev.mjs: api :3001, then web :3000 once /api/health answers
+npm run dev:api          # or run one side alone; the other is dev:web
 npm run lint && npm run typecheck && npm run build
 ```
 
 ## Rules
 
+- The root `dev` script is `node scripts/dev.mjs`, not `--workspaces`. `npm run
+  dev --workspaces` runs workspaces *sequentially*, so the API's watcher never exits and
+  the web server never starts — silently. Keep `--workspaces` for scripts that exit.
 - Regenerate the lockfile only with `npm install --package-lock-only --include=dev`.
   A plain `npm install` produces a lockfile that breaks `npm ci` on other platforms.
 - Do not reintroduce `vinext`, `@cloudflare/vite-plugin`, `wrangler` or

@@ -34,8 +34,9 @@ npm workspaces; Node >= 22.13.
 ## Quick start
 
 ```bash
-npm install
-npm run dev          # web on :3000, api on :3001
+npm ci --include=dev  # a plain `npm ci` drops dev deps under NODE_ENV=production
+npm run dev          # api on :3001, then web on :3000 once the API answers
+                     # npm run dev:api / dev:web to run one side alone
 ```
 
 ```bash
