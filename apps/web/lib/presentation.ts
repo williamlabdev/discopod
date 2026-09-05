@@ -13,6 +13,8 @@
  */
 
 import type { SpeechRate } from './catalog-api';
+import { interfaceCopy } from './interface-copy';
+import type { LanguageTag } from './language';
 
 type Palette = { tone: string; ink: string };
 
@@ -45,10 +47,11 @@ export function paletteFor(showId: string): Palette {
   return FALLBACKS[hash % FALLBACKS.length];
 }
 
-/** "48 min" / "30 sec" — the same shape the cards showed before the cut-over. */
-export function formatDuration(seconds: number): string {
-  if (seconds >= 60) return `${Math.round(seconds / 60)} min`;
-  return `${seconds} sec`;
+/** A compact duration in the learner's interface language. */
+export function formatDuration(seconds: number, language: LanguageTag): string {
+  const copy = interfaceCopy(language).common;
+  if (seconds >= 60) return copy.durationMinutes(Math.round(seconds / 60));
+  return copy.durationSeconds(seconds);
 }
 
 /**
@@ -66,12 +69,10 @@ export function formatSpeechRate(rate: SpeechRate): string {
   return `${rate.value} ${rate.unit}`;
 }
 
-/**
- * "One voice" / "3 voices". Counted from the distinct speakers in the
- * transcript, so unlike coverage or slang load this is a measurement rather
- * than a restatement of the level — which is why it is the only other profile
- * dimension the cards show. See EpisodeCard.voices.
- */
-export function formatVoices(speakerCount: number): string {
-  return speakerCount === 1 ? 'One voice' : `${speakerCount} voices`;
+/** The number of distinct speakers, in the learner's interface language. */
+export function formatVoices(
+  speakerCount: number,
+  language: LanguageTag,
+): string {
+  return interfaceCopy(language).common.voices(speakerCount);
 }
