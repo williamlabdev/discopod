@@ -60,13 +60,23 @@ green" and stayed there while five red runs went past, because it was written on
 never re-checked. **A claim about CI in this file is a claim about a specific run id.**
 If you cannot name the run, write what you actually verified locally instead.
 
-**Current `main` is `a4be159`** (2026-09-05) — a docs-only edit to this file, and the
-second one in a row to prove the point that the sentence you are reading goes stale the
-moment it lands. CI on it: run
-[33932572583](https://github.com/williamlabdev/discopod/actions/runs/33932572583),
-`success`. Before it, `4dd83a6`, run
-[33931835378](https://github.com/williamlabdev/discopod/actions/runs/33931835378),
-`success`; that one arrived by fast-forward
+**Current `main` is `7e13891`** (2026-09-05) — PR
+[#21](https://github.com/williamlabdev/discopod/pull/21), ADR 0021. CI on it: run
+[33966428847](https://github.com/williamlabdev/discopod/actions/runs/33966428847),
+`success`.
+
+And it demonstrated the paragraph above at its own expense: this line said `a4be159` for
+sixteen commits, PRs #5 through #21, including every one that changed what the site
+renders. The failure mode is not that someone forgot — it is that "current" is a fact with
+no owner, so nothing goes red when it rots. **If you land on `main`, this line is part of
+the change.**
+
+The chain before it, still worth keeping for what each one records: `0a0ac7e` (#20),
+`1f866f6` (#19), `de6fb75` (#17). Then `a4be159` and `4dd83a6`, both docs-only edits to
+this file, runs
+[33932572583](https://github.com/williamlabdev/discopod/actions/runs/33932572583) and
+[33931835378](https://github.com/williamlabdev/discopod/actions/runs/33931835378), both
+`success`; `4dd83a6` arrived by fast-forward
 (`git push origin handoff-post-adr-0010:main`) rather than by a squash, so there is no
 `(#4)` merge commit even though PR
 [#4](https://github.com/williamlabdev/discopod/pull/4) shows as merged — GitHub closes a
@@ -76,8 +86,10 @@ Before those, `81b22c6` — PR [#3](https://github.com/williamlabdev/discopod/pu
 trigger) and PR [#2](https://github.com/williamlabdev/discopod/pull/2) (ADR 0010 and
 everything below), CI run
 [33931234382](https://github.com/williamlabdev/discopod/actions/runs/33931234382),
-`success`. That is the commit the deployed site was built from; `4dd83a6` and `a4be159` are
-docs-only and `buildFilter` skipped both.
+`success`. **That was the commit the deployed site was built from, and the deploy has not
+been re-checked since** — everything from `c723c73` (#5) onward has landed on `main`
+without anyone confirming what Render is serving. The section below is a record of
+2026-09-04, not a statement about today.
 
 **Deployed** (2026-09-04). Blueprint `discopod` (`exs-dad9mvbncjis738h68mg`) built both
 services from `b92129d`:
