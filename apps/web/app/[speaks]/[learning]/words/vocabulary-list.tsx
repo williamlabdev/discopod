@@ -6,6 +6,7 @@ import { AudioLines, Quote, Search, Sparkles } from 'lucide-react';
 
 import { Input } from '@/components/ui/input';
 import type { LearningLevel, VocabularyItem } from '@/lib/catalogue';
+import { interfaceCopy } from '@/lib/interface-copy';
 import { pairPath, type LanguagePair } from '@/lib/language';
 import { formatPosition, readAllProgress, readList } from '@/lib/learner-store';
 import { createSavedWord, type SavedWord } from '@/lib/saved-words';
@@ -45,6 +46,7 @@ export function VocabularyList({
   pair: LanguagePair;
 }) {
   const home = pairPath(pair);
+  const copy = interfaceCopy(pair.speaks);
   const [query, setQuery] = useState('');
 
   // Null until the device has been read — same reason as the learning list.
@@ -60,7 +62,9 @@ export function VocabularyList({
       setRows(
         readAllProgress(pair, episodes).flatMap((item) => {
           const episode = byId.get(item.episodeId);
-          return episode ? item.savedWords.map((word) => ({ word, episode })) : [];
+          return episode
+            ? item.savedWords.map((word) => ({ word, episode }))
+            : [];
         }),
       );
       setListCount(readList(pair).length);
@@ -85,11 +89,14 @@ export function VocabularyList({
 
   const sample = useMemo((): Row[] => {
     if (rows === null || rows.length > 0) return [];
-    return episodes.slice(0, SAMPLE_PER_EPISODE.length).flatMap((episode, index) =>
-      episode.vocabulary
-        .slice(0, SAMPLE_PER_EPISODE[index])
-        .map((item) => ({ word: createSavedWord(pair, episode.id, item), episode })),
-    );
+    return episodes
+      .slice(0, SAMPLE_PER_EPISODE.length)
+      .flatMap((episode, index) =>
+        episode.vocabulary.slice(0, SAMPLE_PER_EPISODE[index]).map((item) => ({
+          word: createSavedWord(pair, episode.id, item),
+          episode,
+        })),
+      );
   }, [episodes, pair, rows]);
 
   /**
@@ -105,13 +112,21 @@ export function VocabularyList({
 
   // Memoised, not derived inline: `rows ?? []` is a fresh array on every
   // render, which would make the filter below recompute every time.
-  const all = useMemo(() => (isSample ? sample : (rows ?? [])), [isSample, rows, sample]);
+  const all = useMemo(
+    () => (isSample ? sample : (rows ?? [])),
+    [isSample, rows, sample],
+  );
 
   const filtered = useMemo(() => {
     const needle = query.trim().toLowerCase();
     if (!needle) return all;
     return all.filter((row) =>
-      [row.word.term, row.word.meaning, row.word.sentence, row.episode.episodeTitle]
+      [
+        row.word.term,
+        row.word.meaning,
+        row.word.sentence,
+        row.episode.episodeTitle,
+      ]
         .join(' ')
         .toLowerCase()
         .includes(needle),
@@ -121,9 +136,15 @@ export function VocabularyList({
   // Grouped by episode, because a word is only reviewable with the audio it
   // came from: the episode heading is the link back to that audio.
   const grouped = useMemo(() => {
-    const groups = new Map<string, { episode: EpisodeVocabulary; words: SavedWord[] }>();
+    const groups = new Map<
+      string,
+      { episode: EpisodeVocabulary; words: SavedWord[] }
+    >();
     for (const row of filtered) {
-      const group = groups.get(row.episode.id) ?? { episode: row.episode, words: [] };
+      const group = groups.get(row.episode.id) ?? {
+        episode: row.episode,
+        words: [],
+      };
       group.words.push(row.word);
       groups.set(row.episode.id, group);
     }
@@ -142,39 +163,40 @@ export function VocabularyList({
 
         <header className="pb-8 pt-12">
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-            Your vocabulary
+            {copy.words.eyebrow}
           </p>
           <h1 className="mt-3 max-w-2xl font-serif text-4xl leading-[1.05] tracking-[-0.045em] sm:text-5xl">
-            Every word, with the sentence it was said in.
+            {copy.words.heading}
           </h1>
           <p className="mt-4 max-w-xl text-sm leading-6 text-muted-foreground">
-            A word saved from an episode keeps the line it was spoken in, who said it and when — so
-            you can review by ear instead of by flashcard. Stored on this device only.
+            {copy.words.body}
           </p>
         </header>
 
-        {isSample && <SampleNotice />}
+        {isSample && <SampleNotice copy={copy} />}
 
         <div className="relative mt-8">
           <Search className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
           <Input
-            aria-label="Search saved words"
+            aria-label={copy.words.searchAria}
             className="h-12 rounded-full pl-11"
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search a word, a meaning or a line"
+            placeholder={copy.words.searchPlaceholder}
             value={query}
           />
         </div>
 
         {rows === null ? (
-          <p className="py-10 text-sm text-muted-foreground">Reading this device…</p>
+          <p className="py-10 text-sm text-muted-foreground">
+            {copy.common.readingDevice}
+          </p>
         ) : grouped.length === 0 ? (
           <p className="py-12 text-sm text-muted-foreground">
             {query.trim()
-              ? `Nothing saved matches “${query.trim()}”.`
+              ? copy.words.noMatch(query.trim())
               : pairHasVocabulary
-                ? 'No words saved under this pair yet.'
-                : 'No episode in this pair carries a word list yet, so there is nothing here to save from. This page fills up as soon as one does.'}
+                ? copy.words.noneSaved
+                : copy.words.noVocabulary}
           </p>
         ) : (
           <div className="mt-10 space-y-10">
@@ -182,21 +204,30 @@ export function VocabularyList({
               <section key={group.episode.id}>
                 <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-b border-border/70 pb-3">
                   <h2 className="font-serif text-2xl tracking-[-0.03em]">
-                    <Link className="hover:underline" href={`${home}/episode/${group.episode.id}`}>
+                    <Link
+                      className="hover:underline"
+                      href={`${home}/episode/${group.episode.id}`}
+                    >
                       {group.episode.episodeTitle}
                     </Link>
                   </h2>
                   <p className="flex flex-wrap items-baseline gap-x-2 text-xs text-muted-foreground">
                     <span>
-                      {group.episode.showTitle} · {group.episode.level} · {group.words.length}{' '}
-                      {group.words.length === 1 ? 'word' : 'words'}
+                      {group.episode.showTitle} ·{' '}
+                      {copy.common.level[group.episode.level].label} ·{' '}
+                      {copy.common.wordCount(group.words.length)}
                     </span>
-                    {group.episode.autoTranslated && <AutoTranslated />}
+                    {group.episode.autoTranslated && (
+                      <AutoTranslated language={pair.speaks} />
+                    )}
                   </p>
                 </div>
                 <ul className="mt-4 grid gap-3 md:grid-cols-2">
                   {group.words.map((word) => (
-                    <WordCard key={`${group.episode.id}-${word.term}`} word={word} />
+                    <WordCard
+                      key={`${group.episode.id}-${word.term}`}
+                      word={word}
+                    />
                   ))}
                 </ul>
               </section>
@@ -209,23 +240,21 @@ export function VocabularyList({
           href={home}
         >
           <Sparkles className="size-4" />
-          Find another episode
+          {copy.words.findEpisode}
         </Link>
       </div>
     </main>
   );
 }
 
-function SampleNotice() {
+function SampleNotice({ copy }: { copy: ReturnType<typeof interfaceCopy> }) {
   return (
     <div className="rounded-[22px] border border-dashed border-border bg-secondary/40 p-5 sm:p-6">
       <p className="text-xs font-semibold uppercase tracking-[0.12em] text-primary">
-        Sample vocabulary
+        {copy.words.sampleTitle}
       </p>
       <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
-        You have not saved a word yet, so these are real vocabulary entries from the episodes below,
-        shown as if you had. Nothing here has been written to this device. Save a word inside any
-        episode and it replaces this immediately.
+        {copy.words.sampleBody}
       </p>
     </div>
   );
@@ -239,7 +268,10 @@ function WordCard({ word }: { word: SavedWord }) {
             written in the learner's own — they are different languages in the
             same card, so each carries its own `lang`. Without it a screen
             reader reads a Mandarin term with an English voice. */}
-        <h3 className="font-serif text-2xl tracking-[-0.03em]" lang={word.learning}>
+        <h3
+          className="font-serif text-2xl tracking-[-0.03em]"
+          lang={word.learning}
+        >
           {word.term}
         </h3>
         {word.timestampMs !== undefined && (
@@ -254,12 +286,20 @@ function WordCard({ word }: { word: SavedWord }) {
           {word.meaning}
         </p>
       )}
-      <blockquote className="mt-4 border-l-2 border-border pl-3 text-sm leading-6" lang={word.learning}>
-        <Quote className="mb-1 size-3.5 text-muted-foreground" aria-hidden="true" />
+      <blockquote
+        className="mt-4 border-l-2 border-border pl-3 text-sm leading-6"
+        lang={word.learning}
+      >
+        <Quote
+          className="mb-1 size-3.5 text-muted-foreground"
+          aria-hidden="true"
+        />
         <Sentence sentence={word.sentence} term={word.term} />
       </blockquote>
       {word.speaker && (
-        <p className="mt-2 pl-3 text-xs text-muted-foreground">— {word.speaker}</p>
+        <p className="mt-2 pl-3 text-xs text-muted-foreground">
+          — {word.speaker}
+        </p>
       )}
     </li>
   );
@@ -279,7 +319,9 @@ function Sentence({ sentence, term }: { sentence: string; term: string }) {
   return (
     <>
       {sentence.slice(0, at)}
-      <mark className="rounded bg-primary/15 px-0.5 text-foreground">{term}</mark>
+      <mark className="rounded bg-primary/15 px-0.5 text-foreground">
+        {term}
+      </mark>
       {sentence.slice(at + term.length)}
     </>
   );

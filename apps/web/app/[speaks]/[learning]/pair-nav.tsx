@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Headphones } from 'lucide-react';
 
+import { interfaceCopy } from '@/lib/interface-copy';
 import { pairPath, type LanguagePair } from '@/lib/language';
 
 /**
@@ -24,29 +25,39 @@ export function PairNav({
   wordCount: number | null;
 }) {
   const home = pairPath(pair);
+  const copy = interfaceCopy(pair.speaks).common;
   const link = (target: 'list' | 'words') =>
     `transition-colors ${active === target ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'}`;
 
   return (
     <header className="flex h-20 items-center justify-between border-b border-border/70">
-      <Link className="flex items-center gap-2.5 font-semibold tracking-[-0.03em]" href={home}>
+      <Link
+        className="flex items-center gap-2.5 font-semibold tracking-[-0.03em]"
+        href={home}
+      >
         <span className="grid size-9 place-items-center rounded-full bg-foreground text-background">
           <Headphones className="size-[18px]" />
         </span>
         <span className="text-xl">DiscoPod</span>
       </Link>
-      <nav className="flex items-center gap-5 text-sm sm:gap-8" aria-label="Main navigation">
-        <Link className="text-muted-foreground transition-colors hover:text-foreground" href={home}>
-          Discover
+      <nav
+        className="flex items-center gap-5 text-sm sm:gap-8"
+        aria-label={copy.mainNavigation}
+      >
+        <Link
+          className="text-muted-foreground transition-colors hover:text-foreground"
+          href={home}
+        >
+          {copy.discover}
         </Link>
         <Link className={link('list')} href={`${home}/list`}>
-          <span className="hidden sm:inline">My learning list</span>
-          <span className="sm:hidden">List</span>
+          <span className="hidden sm:inline">{copy.myLearningList}</span>
+          <span className="sm:hidden">{copy.list}</span>
           <Count value={listCount} />
         </Link>
         <Link className={link('words')} href={`${home}/words`}>
-          <span className="hidden sm:inline">Vocabulary</span>
-          <span className="sm:hidden">Words</span>
+          <span className="hidden sm:inline">{copy.vocabulary}</span>
+          <span className="sm:hidden">{copy.words}</span>
           <Count value={wordCount} />
         </Link>
       </nav>

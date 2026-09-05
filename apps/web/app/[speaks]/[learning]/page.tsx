@@ -1,6 +1,10 @@
+import type { Metadata } from 'next';
+
 import { Discover } from './discover';
 import { pairFromParams, type PairParams } from './pair';
 import { loadDiscoverCatalogue, loadPairs } from '@/lib/catalogue';
+import { interfaceCopy } from '@/lib/interface-copy';
+import { LANGUAGE_NAMES } from '@/lib/language';
 
 /**
  * Server component. The catalogue is fetched from @discopod/api while this
@@ -15,7 +19,21 @@ import { loadDiscoverCatalogue, loadPairs } from '@/lib/catalogue';
  */
 export async function generateStaticParams() {
   const pairs = await loadPairs();
-  return pairs.map((pair) => ({ speaks: pair.speaks, learning: pair.learning }));
+  return pairs.map((pair) => ({
+    speaks: pair.speaks,
+    learning: pair.learning,
+  }));
+}
+export async function generateMetadata({
+  params,
+}: {
+  params: PairParams;
+}): Promise<Metadata> {
+  const pair = await pairFromParams(params);
+  const copy = interfaceCopy(pair.speaks).metadata;
+  const title = copy.discoverTitle(LANGUAGE_NAMES[pair.learning]);
+  const description = copy.discoverDescription;
+  return { title, description, openGraph: { title, description, images: [] } };
 }
 
 export default async function Home({ params }: { params: PairParams }) {

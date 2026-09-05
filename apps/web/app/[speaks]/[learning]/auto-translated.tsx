@@ -1,3 +1,6 @@
+import { interfaceCopy } from '@/lib/interface-copy';
+import type { LanguageTag } from '@/lib/language';
+
 /**
  * "Auto-translated", wherever machine-written learner-language text is shown.
  *
@@ -12,12 +15,18 @@
  * The claim being made is about who wrote it, which is the same claim
  * `EpisodeCard.autoTranslated` carries.
  */
-export function AutoTranslated({ className = '' }: { className?: string }) {
+export function AutoTranslated({
+  className = '',
+  language,
+}: {
+  className?: string;
+  language: LanguageTag;
+}) {
   return (
     <span
       className={`text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground ${className}`}
     >
-      Auto-translated
+      {interfaceCopy(language).common.autoTranslated}
     </span>
   );
 }
