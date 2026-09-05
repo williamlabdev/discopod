@@ -115,10 +115,11 @@ jobs:
           # never the point, a rendered `vi` key was.
           grep -q 'giọng nói' apps/web/out/vi/zh-Hant.html
           grep -q 'Quan thoại' apps/web/out/vi/zh-Hant/episode/200.html
-          # The word count is the count of entries carrying a `vi` meaning, so this
-          # line is absent for the whole pair the moment vocabulary stops being
-          # translated — which is what it looked like before ADR 0018 was finished.
-          grep -q 'new words' apps/web/out/vi/zh-Hant.html
+          # The catalogue text above can remain Vietnamese even if the interface
+          # falls back to English. Assert rendered Vietnamese controls too; the
+          # old `new words` check became invalid when that label was localized.
+          grep -q 'Khám phá' apps/web/out/vi/zh-Hant.html
+          grep -q 'Phù hợp' apps/web/out/vi/zh-Hant.html
 
       # Boot the API and check the health endpoint Render will probe.
       - name: Smoke test the API
