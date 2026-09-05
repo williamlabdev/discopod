@@ -27,7 +27,13 @@ build → static export → API boot + HTTP smoke test, all under `NODE_ENV=prod
 - `apps/api` — NestJS 11. Catalogue, difficulty profiles, suitability ranking, `start-here`
   with stated reasons, saved words. Storage behind `CatalogRepository` with an in-memory adapter.
 - `render.yaml` — Blueprint for both services. Deployed; see below.
-- `.github/workflows/ci.yml` — mirrors Render's build exactly.
+- `.github/workflows/ci.yml` — mirrors Render's build exactly. Runs on **every branch
+  push**, and exactly once per commit: once a PR is open, a push fires both `push` and
+  `pull_request`, so the job skips the `pull_request` run for branches in this repo. The
+  push run still appears in the PR's checks, because check runs attach to the SHA rather
+  than to the event. `pull_request` stays declared for forks, whose pushes never reach
+  this repo. Before 2026-09-05 this only ran on `main` and on PRs, so a feature branch got
+  no run until someone opened a PR — the first red run arriving after the work was done.
 
 **Pushed** (2026-09-04). The repo is public at
 <https://github.com/williamlabdev/discopod>: a single root commit `da78d1a`, 120 files,
@@ -52,6 +58,14 @@ The lesson is about this file, not about the workflow: the paragraph above said 
 green" and stayed there while five red runs went past, because it was written once and
 never re-checked. **A claim about CI in this file is a claim about a specific run id.**
 If you cannot name the run, write what you actually verified locally instead.
+
+**Current `main` is `81b22c6`** (2026-09-05), after PR
+[#3](https://github.com/williamlabdev/discopod/pull/3) (the CI trigger) and PR
+[#2](https://github.com/williamlabdev/discopod/pull/2) (ADR 0010 and everything below).
+Both branches are deleted locally and on the remote; `main` is the only branch. CI on that
+commit: run
+[33931234382](https://github.com/williamlabdev/discopod/actions/runs/33931234382),
+`success`.
 
 **Deployed** (2026-09-04). Blueprint `discopod` (`exs-dad9mvbncjis738h68mg`) built both
 services from `b92129d`:
@@ -155,7 +169,7 @@ where it is not, the published text stands and the disagreement is recorded (**�
 of an answer). 北距 is kept out of the vocabulary list for that reason, and the unresolved
 row is what `verifiedLesson: false` is paying for.
 
-Eight defects surfaced by actually rendering the API's output, all fixed:
+Ten defects surfaced by actually rendering the API's output, all fixed:
 
 - `?topic=` was accepted by validation and then silently ignored.
 - `Math.round(30/60)` made a 30-second episode read *"1 minutes"*.
@@ -185,10 +199,48 @@ Eight defects surfaced by actually rendering the API's output, all fixed:
   not a style preference. `catalog.zh-Hant.json` had the same halfwidth `,` `?` `!`
   throughout from an earlier session and was corrected with it — English `sourcePrompt`
   anchors and the deliberately-English question options were left alone.
+- **A highlighted term was given a word-space in a script that has none.**
+  `TranscriptLine` wrapped the match in `<mark className="… px-1 …">`, which reads as the
+  highlight hugging an English word because English text already has spaces around it. In
+  Chinese it renders as 「海山 漁港 ，」, and a space inside Chinese text is not decoration:
+  it is a claim about where one word ends, made to the reader least able to tell. The
+  padding is now `px-0` for a Han term. **Same lesson as `findOccurrence` above** — English
+  typography assumptions do not survive contact with Han text, and that is now twice.
+- **The discovery page's eyebrow was a hardcoded claim about the audio**, the third of
+  these. *"Learn through real conversations"* is false for `/en/zh-Hant`, whose only
+  episode is one person reading aloud. Unlike the episode headline it is a site-wide brand
+  line, so branching on `speakerCount` was the wrong fix: this page describes the product,
+  not a recording, and the only claim the product can always keep is about **its own
+  behaviour**. It now states the method — *"Ranked by what you can follow"*, VISION's test.
+  Deliberately not derived from the catalogue: a brand line that changes when a second
+  episode lands is not a brand line.
 
-The last five are the same lesson five times: **every one of them passed lint, typecheck
-and build, and every one was only visible on screen.** There are no tests under `apps/`, so
-rendering the page is the verification step, not a nicety.
+Two more were found by reading the code rather than by looking at it, and both were silent:
+
+- **`text.split(term)` destructured to `[before, after]`** dropped everything past a second
+  occurrence of a vocabulary term in one cue — a transcript line quietly losing its tail.
+  Now `indexOf` plus `slice`.
+- **Seed `time` strings disagreed with what `cueTime(startMs)` renders** (`00:02` against a
+  displayed `00:03`, seven cues in all). Harmless on screen, because the page renders from
+  `startMs`. Not harmless later: `cueTime` is the **key** an overlay's transcript is looked
+  up by, so a future `zh-Hant` overlay of this episode would have missed those lines. All
+  `time` values now equal `round(seconds)`.
+
+The rendered ones are the same lesson seven times: **every one of them passed lint,
+typecheck and build, and every one was only visible on screen.** There are no tests under
+`apps/`, so rendering the page is the verification step, not a nicety.
+
+**And the same false claim was in three places, of which the code was only one.** The
+eyebrow above, the `og:` and `twitter:` descriptions — what a shared link actually shows —
+and `apps/web/public/og.png`, which was **three revisions stale at once**: branded "Tuned",
+captioned *"Learn English through real conversations"*, and drawing an A1–C2 ladder, the
+CEFR scale ADR 0003 decision 7 has still not settled. Three separate text corrections
+landed in the markup and none of them reached the picture, because nobody opens a PNG to
+check whether it still agrees with the product. It was rendered on the front page too, so
+the stale artwork was not only in share cards. **There is now deliberately no share
+image**: the twitter card drops to `summary`, the learning-list band is one column, and
+`layout.tsx` says what must be true before an image comes back. A link with no card looks
+worse than one with a card; a card that contradicts the product is worse than both.
 
 **`npm run dev` does not start the web server.** The root script is
 `npm run dev --workspaces --if-present`, which runs workspaces *sequentially*; the API's
@@ -200,8 +252,27 @@ watch the `assets` glob, so editing a seed JSON needs an API restart before the 
 served, and `next dev` caches the API's answers under `.next/cache/fetch-cache`
 (`cache: 'force-cache'` in `catalog-api.ts`), so it needs one too.
 
-**Not done:** the deploy of the cut-over — the commit below is pushed, but check Render
-finished both services before trusting the live site.
+**The live site is serving all of this** (checked 2026-09-05 00:00 UTC, after the `81b22c6`
+deploy). <https://discopod-web.onrender.com/en/zh-Hant> carries *"Ranked by what you can
+follow"*, `/en/zh-Hant/episode/102` answers 200 with the fullwidth title
+海山漁港（條目導言）, `/en/zh-Hans` is 404 as intended, and no `og:image` is emitted.
+
+**But `/og.png` still answers 200 with the deleted 2 MB image**, and that is a finding
+about Render, not about this repo. Compare `last-modified`:
+
+| Path | `last-modified` |
+| --- | --- |
+| `/` | Fri, 04 Sep 2026 23:56:10 UTC |
+| `/en/zh-Hant` | Fri, 04 Sep 2026 23:56:10 UTC |
+| `/og.png` | Fri, 04 Sep 2026 **22:28:38** UTC |
+
+The pages come from the new deploy; the image is from the one before it, and a
+cache-busting query string still returns the PNG rather than a 404. **A Render static
+deploy publishes the new `out/` without removing files that are no longer in it.** Nothing
+on the site references `/og.png` any more, so this is a stale URL rather than a live
+mistake — but assume the same for every asset you delete: the file keeps being served, and
+"I removed it from the repo" is not "it is gone". Clearing it needs Render's own cache
+clear or a redeploy that replaces the publish directory wholesale; neither was done here.
 
 ## Next steps, in order
 
@@ -244,6 +315,12 @@ finished both services before trusting the live site.
    The ASR pipeline has a fixture waiting for it — see the Mandarin fixture section in
    `apps/api/src/ingest/README.md`. It is a fixture, not content.
 
+Small and unowned: **a share image**. There is deliberately none right now (see above), so a
+shared link renders as a plain `summary` card. Whoever makes the replacement reads the doc
+comment in `apps/web/app/layout.tsx` first — it lists the three things the old one got wrong
+— and re-adds `openGraph.images`, `twitter.images` and `card: 'summary_large_image'`
+together, in one change. An image is worth having; it is not worth having stale.
+
 ## Traps already paid for — do not re-learn these
 
 - **Lockfile.** Regenerate only with `npm install --package-lock-only --include=dev`. A plain
@@ -259,6 +336,12 @@ finished both services before trusting the live site.
   needs build-time egress to fonts.googleapis.com and fails in offline CI. Don't switch back.
 - **Don't reintroduce** `vinext`, `@cloudflare/vite-plugin`, `wrangler`, or
   `@openai/sites-vite-plugin`. Removing them is the whole point of ADR 0001.
+- **A deleted static asset keeps being served.** Render's static deploy adds the new
+  `out/` without pruning what left it — `/og.png` was still answering 200 with the old
+  image after the deploy that deleted it, past a cache-buster. Deleting a file from
+  `public/` removes it from the *site*, not from the *host*.
+- **`npm run dev` does not start the web server**, and nothing tells you — see the note
+  above. The root script runs workspaces sequentially and the API's watcher never exits.
 
 ## Conventions
 
@@ -293,7 +376,9 @@ Cleared on 2026-09-04, once the repo was pushed and CI was green. The parent `wo
 held `_to_delete/` (empty by then), `_transfer/` (three tarballs used to move code between
 machines), five `tuned-*.tar.gz` build artifacts — four loose plus `artifacts/tuned-v5.tar.gz` —
 and `social-card/` and `learning-social-card/`, both byte-identical to files already committed
-(`docs/social-preview-v1.png` and `apps/web/public/og.png` respectively, verified by sha256),
+(`docs/social-preview-v1.png` and `apps/web/public/og.png` respectively, verified by sha256
+— note that `og.png` has since been **deleted** from the repo, so the Trash copy and the git
+history are now the only ones; see the share-image note above for why it went),
 plus a stray `work/package-lock.json` that belonged to nothing. About 33 MB. All of it went to
 the macOS Trash rather than `rm`, so it is still recoverable if something turns out to have been
 needed.
