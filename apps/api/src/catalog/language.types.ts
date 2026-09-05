@@ -22,7 +22,7 @@
  * audio, because the two Chinese tags name one spoken language. What audio is
  * in is `SpokenLanguage`. See ADR 0006.
  */
-export const LANGUAGES = ['en', 'zh-Hant', 'zh-Hans'] as const;
+export const LANGUAGES = ['en', 'zh-Hant', 'zh-Hans', 'vi'] as const;
 
 export type LanguageTag = (typeof LANGUAGES)[number];
 
@@ -37,7 +37,7 @@ export type LanguageTag = (typeof LANGUAGES)[number];
  * exist, and then only reached learners who read that script — for a property
  * of its transcript, not of its sound.
  */
-export const SPOKEN_LANGUAGES = ['en', 'cmn'] as const;
+export const SPOKEN_LANGUAGES = ['en', 'cmn', 'vi'] as const;
 
 export type SpokenLanguage = (typeof SPOKEN_LANGUAGES)[number];
 
@@ -62,6 +62,7 @@ const WRITTEN_FORMS = {
   en: { spoken: 'en', script: 'Latn' },
   'zh-Hant': { spoken: 'cmn', script: 'Hant' },
   'zh-Hans': { spoken: 'cmn', script: 'Hans' },
+  vi: { spoken: 'vi', script: 'Latn' },
 } as const satisfies Record<LanguageTag, { spoken: SpokenLanguage; script: Script }>;
 
 /** Which language this text is written in — one spoken language, many scripts. */

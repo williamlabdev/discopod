@@ -3,6 +3,16 @@ import type { SpeechRate } from './speech-rate';
 
 export type LearningLevel = 'Beginner' | 'Intermediate' | 'Advanced';
 
+export type TocflBand =
+  | 'Novice 1'
+  | 'Novice 2'
+  | 'Level 1'
+  | 'Level 2'
+  | 'Level 3'
+  | 'Level 4'
+  | 'Level 5'
+  | 'Advanced High';
+
 /**
  * The facts that decide whether a learner can follow an episode by ear.
  * This is the ranking substrate for the whole product: everything the app
@@ -23,7 +33,9 @@ export interface DifficultyProfile {
   /** 0 = neutral/standard accent, 1 = deep regional. */
   accentLoad: number;
   level: LearningLevel;
-  cefr: string;
+  cefr?: string;
+  /** Taiwan-normed Mandarin proficiency band. See ADR 0014. */
+  tocfl?: TocflBand;
   /**
    * Plain-language reason, shown to the learner. Never rank without one.
    * Written in the learner's own language, so it is keyed by that language.
@@ -188,6 +200,18 @@ export interface Episode {
    * error as hiding one: the page has to be able to say which it is.
    */
   audioModified?: boolean;
+  /** Remote publisher-hosted audio; `audioUrl` also holds local paths after loading. */
+  audioRemoteUrl?: string;
+  /** Publisher permission is on file with the owner. See ADR 0015. */
+  redistributable?: boolean;
+  /** Rating was derived from transcript/timings only, without listening. */
+  ratedBy?: 'transcript-only';
+  /** Whether cue translations were human-verified against the audio. */
+  overlayVerified?: boolean;
+  /** Language layers generated rather than authored by a human. */
+  authoredBy?: Partial<Record<LanguageTag, 'auto-translated'>>;
+  /** Traditional text converted manually from a Simplified source. */
+  scriptConversion?: 'manual';
   transcript: TranscriptCue[];
   vocabulary: VocabularyEntry[];
   questions: ComprehensionQuestion[];

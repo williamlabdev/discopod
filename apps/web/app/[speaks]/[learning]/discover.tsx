@@ -356,7 +356,7 @@ export function Discover({
                         </button>
                       </div>
                       <p className="mt-4 max-w-[9ch] font-serif text-[clamp(1.7rem,3vw,2.5rem)] leading-[0.93] tracking-[-0.05em]">{card.showTitle}</p>
-                      <span className="absolute bottom-4 left-4 rounded-full bg-white/60 px-3 py-1.5 text-xs font-semibold backdrop-blur-sm">{card.level} · {card.cefr}</span>
+                      <span className="absolute bottom-4 left-4 rounded-full bg-white/60 px-3 py-1.5 text-xs font-semibold backdrop-blur-sm">{card.level}{card.tocfl ?? card.cefr ? ` · ${card.tocfl ?? card.cefr}` : ''}</span>
                       <Button aria-label={`${isPlaying ? 'Pause' : 'Play'} ${card.showTitle}`} onClick={() => setPlaying(isPlaying ? null : card.id)} className="absolute bottom-4 right-4 size-12 rounded-full bg-[#24211f] text-white hover:bg-[#24211f]/85" size="icon">
                         {isPlaying ? <Pause className="fill-current" /> : <Play className="ml-0.5 fill-current" />}
                       </Button>
@@ -376,7 +376,8 @@ export function Discover({
                         <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-border/70 pt-3 text-xs text-muted-foreground">
                           <span className="flex items-center gap-1.5"><Gauge className="size-3.5" />{card.speed}</span>
                           <span className="flex items-center gap-1.5"><Users className="size-3.5" />{card.voices}</span>
-                          <span className="flex items-center gap-1.5"><BookOpenText className="size-3.5" />{card.newWords} new words</span>
+                          {card.newWords > 0 && <span className="flex items-center gap-1.5"><BookOpenText className="size-3.5" />{card.newWords} new words</span>}
+                          {card.ratedBy === 'transcript-only' && <span className="rounded-full bg-background px-2 py-0.5 font-semibold text-foreground">Transcript-only rating</span>}
                           <span className="flex items-center gap-1.5"><Clock3 className="size-3.5" />{card.duration}</span>
                         </div>
                       </div>

@@ -18,10 +18,11 @@ import {
   fetchStartHere,
   type LearningLevel,
   type RankedEpisode,
+  type TocflBand,
   type Show,
   type TranscriptCue,
 } from './catalog-api';
-import { pick, pickOptional, type LanguagePair } from './language';
+import { has, pick, pickOptional, type LanguagePair } from './language';
 
 export { fetchPairs as loadPairs };
 export type { LanguagePair };
@@ -48,7 +49,8 @@ export interface EpisodeCard {
   episodeTitle: string;
   description: string;
   level: LearningLevel;
-  cefr: string;
+  cefr?: string;
+  tocfl?: TocflBand;
   /** From the API's ranking. The old hand-written "match" number is gone. */
   suitability: number;
   /** Why the API ranked it here — full sentence, shown on the episode page. */
@@ -75,6 +77,8 @@ export interface EpisodeCard {
   duration: string;
   newWords: number;
   publisherTranscript: boolean;
+  ratedBy?: 'transcript-only';
+  overlayVerified?: boolean;
   tone: string;
   ink: string;
 }
@@ -222,6 +226,7 @@ function toCard(ranked: RankedEpisode, show: Show | undefined, pair: LanguagePai
     description: pick(episode.description, pair.speaks, `Episode ${episode.id} description`),
     level: episode.profile.level,
     cefr: episode.profile.cefr,
+    tocfl: episode.profile.tocfl,
     suitability: ranked.suitability,
     fitReason: ranked.reason,
     levelReason: pick(episode.profile.reason, pair.speaks, `Episode ${episode.id} profile.reason`),
@@ -229,8 +234,10 @@ function toCard(ranked: RankedEpisode, show: Show | undefined, pair: LanguagePai
     voices: formatVoices(episode.profile.speakerCount),
     speakerCount: episode.profile.speakerCount,
     duration: formatDuration(episode.durationSeconds),
-    newWords: episode.newWordCount,
+    newWords: episode.vocabulary.filter((entry) => has(entry.meaning, pair.speaks)).length,
     publisherTranscript: episode.publisherTranscript,
+    ratedBy: episode.ratedBy,
+    overlayVerified: episode.overlayVerified,
     tone,
     ink,
   };
@@ -342,13 +349,15 @@ export async function loadEpisodeDetail(
       translation: pickOptional(cue.translation, pair.speaks),
       highlight: cue.highlight,
     })),
-    vocabulary: episode.vocabulary.map((entry_) => ({
-      term: entry_.term,
-      type: entry_.partOfSpeech,
-      meaning: pick(entry_.meaning, pair.speaks, `Episode ${id} vocabulary "${entry_.term}" meaning`),
-      example: entry_.example,
-      occurrence: findOccurrence(entry_.term, episode.transcript),
-    })),
+    vocabulary: episode.vocabulary
+      .filter((entry_) => has(entry_.meaning, pair.speaks))
+      .map((entry_) => ({
+        term: entry_.term,
+        type: entry_.partOfSpeech,
+        meaning: pick(entry_.meaning, pair.speaks, `Episode ${id} vocabulary "${entry_.term}" meaning`),
+        example: entry_.example,
+        occurrence: findOccurrence(entry_.term, episode.transcript),
+      })),
     questions: episode.questions.map((question, index) => ({
       prompt: pick(question.prompt, pair.speaks, `Episode ${id} question ${index + 1} prompt`),
       options: pick(question.options, pair.speaks, `Episode ${id} question ${index + 1} options`),
