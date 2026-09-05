@@ -2,6 +2,7 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 
 import type { LearningLevel, TocflBand } from '../catalog/catalog.types';
+import type { Localized } from '../catalog/language.types';
 
 interface Args {
   source: string;
@@ -53,6 +54,7 @@ interface VocabSeedEntry {
   term: string;
   partOfSpeech: string;
   definition: string;
+  definitionVi?: string;
   position?: { episodeDir?: string };
   example?: { text?: string };
 }
@@ -220,11 +222,18 @@ function vocabularyFor(
   vocab: Map<string, VocabSeedEntry[]>,
   showFolder: string,
   episodeFolder: string,
-): Array<{ term: string; type: string; meaning: { en: string }; example: string }> {
+): Array<{ term: string; type: string; meaning: Localized<string>; example: string }> {
   return (vocab.get(`${showFolder}/${episodeFolder}`) ?? []).map((entry) => ({
     term: entry.traditional ?? entry.term,
     type: entry.partOfSpeech,
-    meaning: { en: entry.definition },
+    // ADR 0003: a `Localized` key that is missing excludes the entry for that learner
+    // language rather than falling back to English, so an absent `definitionVi` must stay
+    // absent — writing `vi: entry.definition` would ship an English gloss to a Vietnamese
+    // reader under a Vietnamese key.
+    meaning: {
+      en: entry.definition,
+      ...(entry.definitionVi ? { vi: entry.definitionVi } : {}),
+    },
     example: entry.example?.text ?? '',
   }));
 }

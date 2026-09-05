@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { AudioLines, BookOpenText, Check, Clock3, Play, RotateCcw, Sparkles, X } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
+import { AutoTranslated } from '../auto-translated';
 import type { EpisodeCard } from '@/lib/catalogue';
 import { pairPath, type LanguagePair } from '@/lib/language';
 import {
@@ -428,6 +429,7 @@ function Row({
               {wordCount} {wordCount === 1 ? 'word' : 'words'} saved
             </span>
           )}
+          {card.autoTranslated && <AutoTranslated />}
         </div>
       </div>
 

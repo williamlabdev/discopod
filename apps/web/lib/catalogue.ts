@@ -79,6 +79,19 @@ export interface EpisodeCard {
   publisherTranscript: boolean;
   ratedBy?: 'transcript-only';
   overlayVerified?: boolean;
+  /**
+   * True when this episode's text in *this pair's* learner language was written
+   * by a machine rather than a person — `authoredBy[speaks]`, resolved here
+   * because the card is already pair-resolved and the same episode can be
+   * hand-written in one learner language and machine-written in another.
+   *
+   * `overlayVerified` is the narrower flag next to it: it is about the
+   * transcript overlay alone. This one covers the description, the level
+   * reason, the learning goal and every vocabulary meaning — which is what a
+   * reader of the Vietnamese pair is looking at from the first card onwards.
+   * See docs/adr/0017 and docs/adr/0018.
+   */
+  autoTranslated: boolean;
   tone: string;
   ink: string;
 }
@@ -238,6 +251,7 @@ function toCard(ranked: RankedEpisode, show: Show | undefined, pair: LanguagePai
     publisherTranscript: episode.publisherTranscript,
     ratedBy: episode.ratedBy,
     overlayVerified: episode.overlayVerified,
+    autoTranslated: episode.authoredBy?.[pair.speaks] === 'auto-translated',
     tone,
     ink,
   };

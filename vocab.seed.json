@@ -6,7 +6,8 @@
     "example": "example.text is the transcript cue (extended to the following cue when the first is too short to teach from); example.translation is the DeepL translation already published in bilingual-transcript.json for those same cues.",
     "scripts": "traditional/simplified were drafted with OpenCC and then reviewed character by character, because simplified to traditional is many-to-one (CLAUDE.md, ADR 0006). Every ambiguous character in this file was checked individually: 着 to 著 (硬著頭皮, 八竿子打不著), 余 to 餘 (心有餘悸), 历 to 歷 (產銷履歷), 帐 to 帳 (翻舊帳), 制 kept as 制 (制空權, 集選區制).",
     "pronunciation": "pypinyin drafts, audited by hand for polyphonic characters and neutral tones; corrections recorded in this file (切結 qiè, 一線之隔 without 一 sandhi, neutral-tone zhuyin dot moved before the symbol).",
-    "authored": "definition, partOfSpeech and level are model-written and not verified against a dictionary."
+    "authored": "definition, partOfSpeech and level are model-written and not verified against a dictionary.",
+    "translated": "definitionVi is a model-written Vietnamese translation of definition, not an independently authored gloss, and is unverified in the same way. It exists so the vi → zh-Hant pair has vocabulary at all: a Localized key that is missing is an exclusion, not a fallback to English (ADR 0003), so without it every vi meaning is dropped and the pair ships an empty Vocabulary tab. The episode carries authoredBy.vi = \"auto-translated\" and the UI labels it."
   },
   "shows": [
     {
@@ -58,6 +59,7 @@
           "partOfSpeech": "adjective",
           "level": "upper-intermediate",
           "definition": "Restless, unwilling to settle, or inclined to go beyond conventional expectations. It can be mildly critical, but in context it may also suggest boldness or unusual ambition.",
+          "definitionVi": "Không yên phận, không chịu an phận thủ thường, hoặc có xu hướng vượt ra ngoài những kỳ vọng thông thường. Từ này có thể mang ý chê nhẹ, nhưng trong ngữ cảnh cũng có thể gợi sự táo bạo hay tham vọng khác thường.",
           "position": {
             "episode": "2.3.37A 《从小镇跑向世界的大谷翔平》Story",
             "episodeDir": "2026-06-21-2.3.37A-从小镇跑向世界的大谷翔平-Story",
@@ -92,6 +94,7 @@
           "partOfSpeech": "noun",
           "level": "upper-intermediate",
           "definition": "Mental toughness and emotional steadiness, especially under the pressure of sports, exams, or competition. It is common in sports, education, and performance-related contexts.",
+          "definitionVi": "Bản lĩnh tâm lý và sự vững vàng về cảm xúc, đặc biệt là dưới áp lực của thể thao, thi cử hay thi đấu. Từ này thường gặp trong các ngữ cảnh thể thao, giáo dục và biểu diễn.",
           "position": {
             "episode": "2.3.37A 《从小镇跑向世界的大谷翔平》Story",
             "episodeDir": "2026-06-21-2.3.37A-从小镇跑向世界的大谷翔平-Story",
@@ -126,6 +129,7 @@
           "partOfSpeech": "idiom",
           "level": "upper-intermediate",
           "definition": "To act in a practical, grounded way and make steady, concrete progress rather than merely talking or dreaming. This is a strongly approving expression.",
+          "definitionVi": "Làm việc một cách thiết thực, vững chắc, tiến bộ đều đặn và cụ thể, thay vì chỉ nói suông hay mơ mộng. Đây là cách nói mang ý khen ngợi mạnh mẽ.",
           "position": {
             "episode": "2.3.37A 《从小镇跑向世界的大谷翔平》Story",
             "episodeDir": "2026-06-21-2.3.37A-从小镇跑向世界的大谷翔平-Story",
@@ -159,7 +163,8 @@
           },
           "partOfSpeech": "set phrase",
           "level": "advanced",
-          "definition": "Here, to travel through mountainous and rural areas. In historical contexts, 上山下乡 specifically refers to the Mao-era campaign that sent urban youths to live and work in the countryside.",
+          "definition": "Here, to travel through mountainous and rural areas. In historical contexts, 上山下鄉 specifically refers to the Mao-era campaign that sent urban youths to live and work in the countryside.",
+          "definitionVi": "Ở đây có nghĩa là đi qua các vùng núi non và nông thôn. Trong ngữ cảnh lịch sử, 上山下鄉 chỉ riêng phong trào thời Mao đưa thanh niên thành thị về sống và lao động ở nông thôn.",
           "position": {
             "episode": "2.3.36A《喜欢开车的杨先生》Story",
             "episodeDir": "2026-07-22-2.3.36A-喜欢开车的杨先生-Story",
@@ -194,6 +199,7 @@
           "partOfSpeech": "idiom",
           "level": "advanced",
           "definition": "To proceed with extreme caution because one is in a precarious or risky situation—literally, “as if walking on thin ice.” The expression is relatively formal and literary.",
+          "definitionVi": "Hành xử hết sức thận trọng vì đang ở trong tình thế bấp bênh hay nguy hiểm — nghĩa đen là “như đi trên băng mỏng”. Cách nói này tương đối trang trọng và mang tính văn chương.",
           "position": {
             "episode": "2.3.36A《喜欢开车的杨先生》Story",
             "episodeDir": "2026-07-22-2.3.36A-喜欢开车的杨先生-Story",
@@ -228,6 +234,7 @@
           "partOfSpeech": "idiom",
           "level": "upper-intermediate",
           "definition": "To force oneself to do something difficult, frightening, or embarrassing despite feeling reluctant or afraid. It is common in conversational Chinese.",
+          "definitionVi": "Gượng ép bản thân làm một việc khó khăn, đáng sợ hay ngượng ngùng dù trong lòng miễn cưỡng hoặc lo sợ. Cụm từ này rất thông dụng trong tiếng Trung hội thoại.",
           "position": {
             "episode": "2.3.36A《喜欢开车的杨先生》Story",
             "episodeDir": "2026-07-22-2.3.36A-喜欢开车的杨先生-Story",
@@ -262,6 +269,7 @@
           "partOfSpeech": "idiom",
           "level": "advanced",
           "definition": "To continue feeling frightened when remembering a danger or shock that has already passed. It is often used in written narratives and more polished speech.",
+          "definitionVi": "Vẫn còn thấy sợ khi nhớ lại một mối nguy hay cú sốc đã qua. Thường dùng trong văn kể chuyện và trong lời nói trau chuốt.",
           "position": {
             "episode": "2.3.36A《喜欢开车的杨先生》Story",
             "episodeDir": "2026-07-22-2.3.36A-喜欢开车的杨先生-Story",
@@ -297,6 +305,7 @@
           "partOfSpeech": "idiom",
           "level": "advanced",
           "definition": "To use both gentle persuasion and forceful pressure to make someone comply. It often implies switching between coaxing and coercive tactics.",
+          "definitionVi": "Vừa dùng lời lẽ mềm mỏng thuyết phục vừa gây sức ép cứng rắn để buộc người khác nghe theo. Thường hàm ý luân phiên giữa dỗ dành và cưỡng ép.",
           "position": {
             "episode": "2.3.36A《喜欢开车的杨先生》Story",
             "episodeDir": "2026-07-22-2.3.36A-喜欢开车的杨先生-Story",
@@ -331,6 +340,7 @@
           "partOfSpeech": "idiom",
           "level": "advanced",
           "definition": "To possess exceptional natural or circumstantial advantages that others do not have. It is an approving expression often used for places, environments, resources, or talent.",
+          "definitionVi": "Sở hữu những lợi thế đặc biệt về tự nhiên hay hoàn cảnh mà người khác không có. Đây là cách nói mang ý khen, thường dùng cho địa phương, môi trường, tài nguyên hay tài năng.",
           "position": {
             "episode": "2.3.36A《喜欢开车的杨先生》Story",
             "episodeDir": "2026-07-22-2.3.36A-喜欢开车的杨先生-Story",
@@ -365,6 +375,7 @@
           "partOfSpeech": "idiom",
           "level": "upper-intermediate",
           "definition": "Exactly right in degree, timing, or execution—neither excessive nor insufficient. It is used approvingly in both speech and writing.",
+          "definitionVi": "Vừa vặn đúng mức, đúng lúc hoặc đúng cách — không thái quá cũng không thiếu. Dùng với ý khen trong cả văn nói lẫn văn viết.",
           "position": {
             "episode": "2.3.36A《喜欢开车的杨先生》Story",
             "episodeDir": "2026-07-22-2.3.36A-喜欢开车的杨先生-Story",
@@ -398,7 +409,8 @@
           },
           "partOfSpeech": "noun",
           "level": "advanced",
-          "definition": "The common Chinese name for amyotrophic lateral sclerosis (ALS), a progressive neurological disease that weakens the muscles used for voluntary movement. This is an everyday medical term rather than the formal name 肌萎缩侧索硬化症.",
+          "definition": "The common Chinese name for amyotrophic lateral sclerosis (ALS), a progressive neurological disease that weakens the muscles used for voluntary movement. This is an everyday medical term rather than the formal name 肌萎縮側索硬化症.",
+          "definitionVi": "Tên gọi thông dụng trong tiếng Trung của bệnh xơ cứng teo cơ một bên (ALS), một bệnh thần kinh tiến triển làm suy yếu các cơ vận động chủ ý. Đây là từ y học đời thường, khác với tên gọi chính thức 肌萎縮側索硬化症.",
           "position": {
             "episode": "3.1.31A《不向命运低头的人》Story",
             "episodeDir": "2026-08-16-3.1.31A-不向命运低头的人-Story",
@@ -433,6 +445,7 @@
           "partOfSpeech": "idiom",
           "level": "upper-intermediate",
           "definition": "To stop responding to someone’s control or intentions. It is a colloquial expression often used of a body part or machine, and sometimes of an uncooperative person.",
+          "definitionVi": "Không còn tuân theo sự điều khiển hay ý muốn của ai đó. Đây là cách nói khẩu ngữ, thường dùng cho một bộ phận cơ thể hoặc máy móc, đôi khi cho một người không chịu hợp tác.",
           "position": {
             "episode": "3.1.31A《不向命运低头的人》Story",
             "episodeDir": "2026-08-16-3.1.31A-不向命运低头的人-Story",
@@ -467,6 +480,7 @@
           "partOfSpeech": "noun",
           "level": "advanced",
           "definition": "The pathology of a disease: the processes, mechanisms, and bodily changes involved in its development. This is a formal medical term.",
+          "definitionVi": "Bệnh lý của một căn bệnh: các quá trình, cơ chế và biến đổi trong cơ thể diễn ra khi bệnh phát triển. Đây là thuật ngữ y học trang trọng.",
           "position": {
             "episode": "3.1.31A《不向命运低头的人》Story",
             "episodeDir": "2026-08-16-3.1.31A-不向命运低头的人-Story",
@@ -501,6 +515,7 @@
           "partOfSpeech": "noun",
           "level": "advanced",
           "definition": "An exoskeleton; in medical and engineering contexts, often a wearable mechanical structure that supports the body or assists movement. This is a technical term.",
+          "definitionVi": "Bộ xương ngoài; trong ngữ cảnh y học và kỹ thuật, thường chỉ một kết cấu cơ khí đeo trên người để nâng đỡ cơ thể hoặc hỗ trợ vận động. Đây là thuật ngữ chuyên môn.",
           "position": {
             "episode": "3.1.31A《不向命运低头的人》Story",
             "episodeDir": "2026-08-16-3.1.31A-不向命运低头的人-Story",
@@ -535,6 +550,7 @@
           "partOfSpeech": "adjective",
           "level": "advanced",
           "definition": "Firmly certain, composed, and unwavering in one’s beliefs or attitude. It has a polished, somewhat literary tone and often conveys quiet confidence.",
+          "definitionVi": "Chắc chắn, điềm tĩnh và không lay chuyển trong niềm tin hay thái độ. Từ này có sắc thái trau chuốt, hơi thiên về văn chương, và thường truyền tải sự tự tin trầm lặng.",
           "position": {
             "episode": "3.1.31A《不向命运低头的人》Story",
             "episodeDir": "2026-08-16-3.1.31A-不向命运低头的人-Story",
@@ -609,6 +625,7 @@
           "partOfSpeech": "noun",
           "level": "upper-intermediate",
           "definition": "A dynasty: a period in which China was ruled by a particular imperial family. Mainly used in historical and cultural discussion.",
+          "definitionVi": "Triều đại: một thời kỳ Trung Quốc do một hoàng tộc cụ thể cai trị. Chủ yếu dùng khi bàn về lịch sử và văn hóa.",
           "position": {
             "episode": "第93集: 张骞和丝绸之路 Zhang Qian and the Silk Road",
             "episodeDir": "2024-11-23-EP93-张骞和丝绸之路-Zhang-Qian-and-the-Silk-Road",
@@ -643,6 +660,7 @@
           "partOfSpeech": "noun",
           "level": "advanced",
           "definition": "A member of the Xiongnu, an ancient nomadic confederation that lived north of early imperial China. This is a specialized historical term.",
+          "definitionVi": "Người Hung Nô, thành viên của một liên minh du mục cổ đại sống ở phía bắc Trung Quốc thời kỳ đầu đế chế. Đây là thuật ngữ lịch sử chuyên biệt.",
           "position": {
             "episode": "第93集: 张骞和丝绸之路 Zhang Qian and the Silk Road",
             "episodeDir": "2024-11-23-EP93-张骞和丝绸之路-Zhang-Qian-and-the-Silk-Road",
@@ -677,6 +695,7 @@
           "partOfSpeech": "noun",
           "level": "upper-intermediate",
           "definition": "A body of people or forces belonging to a leader; historically, it can suggest both troops and horses. In modern informal use, it may also mean a team or contingent.",
+          "definitionVi": "Lực lượng hay nhân sự thuộc quyền một thủ lĩnh; trong lịch sử có thể hàm ý cả quân lính lẫn ngựa. Trong cách dùng hiện đại thân mật, cũng có thể chỉ một đội hay một nhóm.",
           "position": {
             "episode": "第93集: 张骞和丝绸之路 Zhang Qian and the Silk Road",
             "episodeDir": "2024-11-23-EP93-张骞和丝绸之路-Zhang-Qian-and-the-Silk-Road",
@@ -711,6 +730,7 @@
           "partOfSpeech": "verb",
           "level": "advanced",
           "definition": "To insert a brief advertisement, announcement, or news item into a broadcast or program. This is a media and broadcasting term.",
+          "definitionVi": "Chèn một mẩu quảng cáo, thông báo hay bản tin ngắn vào giữa một chương trình phát sóng. Đây là thuật ngữ truyền thông và phát thanh truyền hình.",
           "position": {
             "episode": "第93集: 张骞和丝绸之路 Zhang Qian and the Silk Road",
             "episodeDir": "2024-11-23-EP93-张骞和丝绸之路-Zhang-Qian-and-the-Silk-Road",
@@ -746,6 +766,7 @@
           "partOfSpeech": "phrase",
           "level": "upper-intermediate",
           "definition": "Twenty-five percent of the original price—that is, 75% off. Chinese discount expressions state the percentage the customer pays rather than the percentage saved.",
+          "definitionVi": "Bằng 25% giá gốc — tức là giảm 75%. Cách nói về khuyến mãi trong tiếng Trung nêu tỷ lệ khách phải trả, chứ không phải tỷ lệ được giảm.",
           "position": {
             "episode": "第94集 : 一起读琼瑶的《陌生人》Read «The Stranger » by Chiung Yao",
             "episodeDir": "2024-12-24-EP94-一起读琼瑶的-陌生人-Read-The-Stranger-by-Chiung-Yao",
@@ -780,6 +801,7 @@
           "partOfSpeech": "set phrase",
           "level": "upper-intermediate",
           "definition": "What someone has personally seen and heard; their firsthand observations and experiences. This formal four-character expression is common in titles and written accounts.",
+          "definitionVi": "Những điều một người đã tận mắt thấy và tận tai nghe; các quan sát và trải nghiệm trực tiếp của họ. Cụm bốn chữ trang trọng này thường xuất hiện trong tiêu đề và bài viết.",
           "position": {
             "episode": "第96集: 在中国的所见所闻 What I saw in China",
             "episodeDir": "2025-10-20-EP96-在中国的所见所闻-What-I-saw-in-China",
@@ -814,6 +836,7 @@
           "partOfSpeech": "adjective",
           "level": "upper-intermediate",
           "definition": "Perfectly ordinary or completely unremarkable. This colloquial AABB reduplication gives more emphasis than 普通.",
+          "definitionVi": "Hết sức bình thường, hoàn toàn không có gì đặc biệt. Dạng lặp AABB khẩu ngữ này nhấn mạnh hơn 普通.",
           "position": {
             "episode": "第96集: 在中国的所见所闻 What I saw in China",
             "episodeDir": "2025-10-20-EP96-在中国的所见所闻-What-I-saw-in-China",
@@ -848,6 +871,7 @@
           "partOfSpeech": "noun",
           "level": "upper-intermediate",
           "definition": "An only child, especially in the context of Chinese family structure and the former one-child policy. It is a common social and demographic term.",
+          "definitionVi": "Con một, đặc biệt trong bối cảnh cấu trúc gia đình Trung Quốc và chính sách một con trước đây. Đây là thuật ngữ xã hội và nhân khẩu học thông dụng.",
           "position": {
             "episode": "第96集: 在中国的所见所闻 What I saw in China",
             "episodeDir": "2025-10-20-EP96-在中国的所见所闻-What-I-saw-in-China",
@@ -882,6 +906,7 @@
           "partOfSpeech": "adverb",
           "level": "upper-intermediate",
           "definition": "Involuntarily or unable to help doing something; it introduces a natural, spontaneous reaction. It is somewhat more literary than 忍不住.",
+          "definitionVi": "Bất giác, không kìm được mà làm gì đó; dùng để dẫn vào một phản ứng tự nhiên, tự phát. Mang sắc thái văn chương hơn 忍不住 một chút.",
           "position": {
             "episode": "第97集 : 《奥德赛》和茶歇中文的回来 The Odyssey and the Comeback of TeaTime Chinese",
             "episodeDir": "2026-09-03-EP97-奥德赛-和茶歇中文的回来-The-Odyssey-and-the-Comeback-of-TeaTime-Chinese",
@@ -916,6 +941,7 @@
           "partOfSpeech": "idiom",
           "level": "upper-intermediate",
           "definition": "To make a long story short; used to move quickly to the main point or summarize a complicated account. It is a common four-character conversational expression.",
+          "definitionVi": "Nói ngắn gọn lại; dùng để đi nhanh vào ý chính hoặc tóm tắt một câu chuyện phức tạp. Đây là cụm bốn chữ rất thông dụng trong hội thoại.",
           "position": {
             "episode": "第97集 : 《奥德赛》和茶歇中文的回来 The Odyssey and the Comeback of TeaTime Chinese",
             "episodeDir": "2026-09-03-EP97-奥德赛-和茶歇中文的回来-The-Odyssey-and-the-Comeback-of-TeaTime-Chinese",
@@ -951,6 +977,7 @@
           "partOfSpeech": "verb",
           "level": "advanced",
           "definition": "To string a bow by attaching and tightening its bowstring. It is a specialized verb-object expression; in other contexts, 上弦 can also mean winding a mechanical device.",
+          "definitionVi": "Lắp và căng dây cung. Đây là kết cấu động-tân chuyên biệt; trong ngữ cảnh khác, 上弦 còn có nghĩa lên dây cót một thiết bị cơ khí.",
           "position": {
             "episode": "第97集 : 《奥德赛》和茶歇中文的回来 The Odyssey and the Comeback of TeaTime Chinese",
             "episodeDir": "2026-09-03-EP97-奥德赛-和茶歇中文的回来-The-Odyssey-and-the-Comeback-of-TeaTime-Chinese",
@@ -984,7 +1011,8 @@
           },
           "partOfSpeech": "adjective",
           "level": "upper-intermediate",
-          "definition": "Tattered, ragged, or badly worn and damaged. This vivid, colloquial AABB adjective is more emphatic than 破烂.",
+          "definition": "Tattered, ragged, or badly worn and damaged. This vivid, colloquial AABB adjective is more emphatic than 破爛.",
+          "definitionVi": "Rách rưới, tả tơi, cũ nát hư hỏng nặng. Tính từ AABB sinh động, khẩu ngữ này nhấn mạnh hơn 破爛.",
           "position": {
             "episode": "第97集 : 《奥德赛》和茶歇中文的回来 The Odyssey and the Comeback of TeaTime Chinese",
             "episodeDir": "2026-09-03-EP97-奥德赛-和茶歇中文的回来-The-Odyssey-and-the-Comeback-of-TeaTime-Chinese",
@@ -1049,6 +1077,7 @@
           "partOfSpeech": "noun",
           "level": "upper-intermediate",
           "definition": "Emotional blackmail: the use of guilt, fear, obligation, or affection to pressure someone into complying. This is a common term in relationship and popular-psychology discussions.",
+          "definitionVi": "Tống tiền cảm xúc: dùng cảm giác tội lỗi, sợ hãi, nghĩa vụ hay tình cảm để gây sức ép buộc người khác làm theo ý mình. Đây là thuật ngữ thông dụng khi bàn về quan hệ và tâm lý học đại chúng.",
           "position": {
             "episode": "EP701 男友對我很好，經濟條件卻跟不上我的人生規劃。我該降低期待，還是重新尋找能一起走下去的人？",
             "episodeDir": "2026-08-26-EP701-男友對我很好-經濟條件卻跟不上我的人生規劃-我該降低期待-還是重新尋找能一起走下去的人",
@@ -1083,6 +1112,7 @@
           "partOfSpeech": "noun",
           "level": "advanced",
           "definition": "Taiwanese shorthand for labor insurance and National Health Insurance, especially when discussing basic employee benefits. It is Taiwan-specific institutional vocabulary.",
+          "definitionVi": "Cách nói tắt ở Đài Loan cho bảo hiểm lao động và bảo hiểm y tế toàn dân, nhất là khi bàn về phúc lợi cơ bản của người lao động. Đây là từ vựng thể chế riêng của Đài Loan.",
           "position": {
             "episode": "EP701 男友對我很好，經濟條件卻跟不上我的人生規劃。我該降低期待，還是重新尋找能一起走下去的人？",
             "episodeDir": "2026-08-26-EP701-男友對我很好-經濟條件卻跟不上我的人生規劃-我該降低期待-還是重新尋找能一起走下去的人",
@@ -1117,6 +1147,7 @@
           "partOfSpeech": "noun",
           "level": "advanced",
           "definition": "Deep, lingering resentment or bitterness toward someone after grievances have accumulated. The word has a formal or literary tone.",
+          "definitionVi": "Nỗi oán hận sâu sắc, dai dẳng đối với ai đó sau khi những bất bình đã tích tụ. Từ này mang sắc thái trang trọng hoặc văn chương.",
           "position": {
             "episode": "EP701 男友對我很好，經濟條件卻跟不上我的人生規劃。我該降低期待，還是重新尋找能一起走下去的人？",
             "episodeDir": "2026-08-26-EP701-男友對我很好-經濟條件卻跟不上我的人生規劃-我該降低期待-還是重新尋找能一起走下去的人",
@@ -1151,6 +1182,7 @@
           "partOfSpeech": "verb",
           "level": "upper-intermediate",
           "definition": "To cut one’s losses and stop further damage. Originally financial jargon for executing a stop-loss, it is widely extended in Taiwanese Mandarin to careers and relationships.",
+          "definitionVi": "Cắt lỗ và ngăn thiệt hại lan rộng thêm. Vốn là thuật ngữ tài chính chỉ lệnh dừng lỗ, từ này được mở rộng rộng rãi trong tiếng Hoa Đài Loan sang chuyện sự nghiệp và tình cảm.",
           "position": {
             "episode": "EP701 男友對我很好，經濟條件卻跟不上我的人生規劃。我該降低期待，還是重新尋找能一起走下去的人？",
             "episodeDir": "2026-08-26-EP701-男友對我很好-經濟條件卻跟不上我的人生規劃-我該降低期待-還是重新尋找能一起走下去的人",
@@ -1186,6 +1218,7 @@
           "partOfSpeech": "set phrase",
           "level": "advanced",
           "definition": "A proverb meaning that poverty makes every aspect of married life difficult or sorrowful. It is commonly quoted when discussing the strain that financial hardship places on a relationship.",
+          "definitionVi": "Một câu tục ngữ nói rằng nghèo khó khiến mọi mặt của đời sống vợ chồng đều trở nên khốn khó hay buồn tủi. Thường được dẫn ra khi bàn về áp lực mà khó khăn tài chính đặt lên một mối quan hệ.",
           "position": {
             "episode": "EP701 男友對我很好，經濟條件卻跟不上我的人生規劃。我該降低期待，還是重新尋找能一起走下去的人？",
             "episodeDir": "2026-08-26-EP701-男友對我很好-經濟條件卻跟不上我的人生規劃-我該降低期待-還是重新尋找能一起走下去的人",
@@ -1220,6 +1253,7 @@
           "partOfSpeech": "idiom",
           "level": "advanced",
           "definition": "To avoid someone or something at all costs, as though afraid one cannot get away fast enough. It is emphatic and somewhat formal.",
+          "definitionVi": "Tránh xa ai đó hay điều gì đó bằng mọi giá, như thể sợ mình chạy không kịp. Cách nói này nhấn mạnh và hơi trang trọng.",
           "position": {
             "episode": "EP702 從機長箱、Game Boy 到 Excel 表格：真正的職涯機會，或許就藏在沒人解決的小問題裡！",
             "episodeDir": "2026-08-30-EP702-從機長箱-Game-Boy-到-Excel-表格-真正的職涯機會-或許就藏在沒人解決的小問題裡",
@@ -1254,6 +1288,7 @@
           "partOfSpeech": "idiom",
           "level": "advanced",
           "definition": "To unravel a complicated matter layer by layer in order to reveal its underlying logic or truth. This vivid idiom is often used for analysis, investigations, and explanations.",
+          "definitionVi": "Gỡ dần từng lớp một vấn đề phức tạp để làm lộ ra logic hay sự thật bên dưới. Thành ngữ sinh động này thường dùng cho phân tích, điều tra và giải thích.",
           "position": {
             "episode": "EP702 從機長箱、Game Boy 到 Excel 表格：真正的職涯機會，或許就藏在沒人解決的小問題裡！",
             "episodeDir": "2026-08-30-EP702-從機長箱-Game-Boy-到-Excel-表格-真正的職涯機會-或許就藏在沒人解決的小問題裡",
@@ -1288,6 +1323,7 @@
           "partOfSpeech": "adjective",
           "level": "advanced",
           "definition": "Makeshift, homemade, or improvised with simple local methods rather than professional resources. This is informal Taiwanese slang and can imply roughness but also ingenuity.",
+          "definitionVi": "Tạm bợ, tự chế, làm bằng phương pháp thô sơ tại chỗ thay vì bằng nguồn lực chuyên nghiệp. Đây là tiếng lóng thân mật của Đài Loan, có thể hàm ý thô sơ nhưng cũng hàm ý khéo xoay xở.",
           "position": {
             "episode": "EP702 從機長箱、Game Boy 到 Excel 表格：真正的職涯機會，或許就藏在沒人解決的小問題裡！",
             "episodeDir": "2026-08-30-EP702-從機長箱-Game-Boy-到-Excel-表格-真正的職涯機會-或許就藏在沒人解決的小問題裡",
@@ -1322,6 +1358,7 @@
           "partOfSpeech": "idiom",
           "level": "advanced",
           "definition": "Literally, “cut one’s feet to fit the shoes”; figuratively, to distort oneself or reality in order to conform to rigid requirements. It is a literary idiom often used critically.",
+          "definitionVi": "Nghĩa đen là “gọt chân cho vừa giày”; nghĩa bóng là bóp méo bản thân hay thực tế để chiều theo những đòi hỏi cứng nhắc. Đây là thành ngữ văn chương, thường dùng với ý phê phán.",
           "position": {
             "episode": "EP702 從機長箱、Game Boy 到 Excel 表格：真正的職涯機會，或許就藏在沒人解決的小問題裡！",
             "episodeDir": "2026-08-30-EP702-從機長箱-Game-Boy-到-Excel-表格-真正的職涯機會-或許就藏在沒人解決的小問題裡",
@@ -1355,7 +1392,8 @@
           },
           "partOfSpeech": "idiom",
           "level": "advanced",
-          "definition": "To have absolutely no connection with someone or something. This is a highly colloquial expression, often followed by 跟……有关系 or simply used with 跟.",
+          "definition": "To have absolutely no connection with someone or something. This is a highly colloquial expression, often followed by 跟……有關係 or simply used with 跟.",
+          "definitionVi": "Hoàn toàn chẳng liên quan gì đến ai đó hay điều gì đó. Đây là cách nói rất khẩu ngữ, thường đi kèm 跟……有關係 hoặc đơn giản dùng với 跟.",
           "position": {
             "episode": "EP702 從機長箱、Game Boy 到 Excel 表格：真正的職涯機會，或許就藏在沒人解決的小問題裡！",
             "episodeDir": "2026-08-30-EP702-從機長箱-Game-Boy-到-Excel-表格-真正的職涯機會-或許就藏在沒人解決的小問題裡",
@@ -1390,6 +1428,7 @@
           "partOfSpeech": "noun",
           "level": "upper-intermediate",
           "definition": "A “pain point”: a recurring problem, frustration, or unmet need experienced by customers, users, or employees. It is common jargon in business and product development.",
+          "definitionVi": "“Điểm đau”: một vấn đề, nỗi bực bội hay nhu cầu chưa được đáp ứng lặp đi lặp lại mà khách hàng, người dùng hay nhân viên gặp phải. Đây là thuật ngữ thông dụng trong kinh doanh và phát triển sản phẩm.",
           "position": {
             "episode": "EP702 從機長箱、Game Boy 到 Excel 表格：真正的職涯機會，或許就藏在沒人解決的小問題裡！",
             "episodeDir": "2026-08-30-EP702-從機長箱-Game-Boy-到-Excel-表格-真正的職涯機會-或許就藏在沒人解決的小問題裡",
@@ -1424,6 +1463,7 @@
           "partOfSpeech": "adjective",
           "level": "advanced",
           "definition": "Basic, bare-bones, or lacking polished features and extras. This informal sense of 陽春 is especially common in Taiwanese Mandarin.",
+          "definitionVi": "Đơn giản, trần trụi, thiếu các tính năng hay phụ kiện cao cấp. Nghĩa thân mật này của 陽春 đặc biệt phổ biến trong tiếng Hoa Đài Loan.",
           "position": {
             "episode": "EP702 從機長箱、Game Boy 到 Excel 表格：真正的職涯機會，或許就藏在沒人解決的小問題裡！",
             "episodeDir": "2026-08-30-EP702-從機長箱-Game-Boy-到-Excel-表格-真正的職涯機會-或許就藏在沒人解決的小問題裡",
@@ -1458,6 +1498,7 @@
           "partOfSpeech": "verb",
           "level": "upper-intermediate",
           "definition": "To drain oneself mentally through overthinking, anxiety, self-criticism, or unresolved internal conflict. This is a contemporary buzzword in psychology, workplace, and social-media discussions.",
+          "definitionVi": "Tự bào mòn tinh thần vì suy nghĩ quá nhiều, lo âu, tự trách hay mâu thuẫn nội tâm chưa được giải quyết. Đây là từ thời thượng trong các cuộc thảo luận về tâm lý, công sở và mạng xã hội.",
           "position": {
             "episode": "EP703 你總是因為別人的一句話糾結老半天？辨識內耗的三種型態，重新拿回情緒主導權｜諮商心理師 許庭韶 專訪",
             "episodeDir": "2026-09-02-EP703-你總是因為別人的一句話糾結老半天-辨識內耗的三種型態-重新拿回情緒主導權-諮商心理師-許庭韶-專訪",
@@ -1492,6 +1533,7 @@
           "partOfSpeech": "adjective",
           "level": "upper-intermediate",
           "definition": "Emotionally fragile or easily hurt by criticism. Literally “glass-hearted,” this is informal internet slang and can be teasing or dismissive.",
+          "definitionVi": "Dễ tổn thương về mặt cảm xúc, dễ bị lời phê bình làm đau. Nghĩa đen là “trái tim thủy tinh”, đây là tiếng lóng mạng thân mật, có thể mang tính trêu chọc hoặc coi thường.",
           "position": {
             "episode": "EP703 你總是因為別人的一句話糾結老半天？辨識內耗的三種型態，重新拿回情緒主導權｜諮商心理師 許庭韶 專訪",
             "episodeDir": "2026-09-02-EP703-你總是因為別人的一句話糾結老半天-辨識內耗的三種型態-重新拿回情緒主導權-諮商心理師-許庭韶-專訪",
@@ -1526,6 +1568,7 @@
           "partOfSpeech": "noun",
           "level": "advanced",
           "definition": "A structured simulation or rehearsal of possible scenarios and responses. Originally associated with military planning, it is now common in business and figurative use.",
+          "definitionVi": "Một buổi mô phỏng hay diễn tập có cấu trúc về các kịch bản và cách ứng phó có thể xảy ra. Vốn gắn với công tác hoạch định quân sự, nay đã phổ biến trong kinh doanh và trong cách dùng ẩn dụ.",
           "position": {
             "episode": "EP703 你總是因為別人的一句話糾結老半天？辨識內耗的三種型態，重新拿回情緒主導權｜諮商心理師 許庭韶 專訪",
             "episodeDir": "2026-09-02-EP703-你總是因為別人的一句話糾結老半天-辨識內耗的三種型態-重新拿回情緒主導權-諮商心理師-許庭韶-專訪",
@@ -1590,6 +1633,7 @@
           "partOfSpeech": "noun",
           "level": "advanced",
           "definition": "A “digital product passport”: a digital record of a product’s materials, origin, repairability, and recycling information, often accessed through a QR code. This is specialized sustainability and EU regulatory terminology.",
+          "definitionVi": "“Hộ chiếu sản phẩm số”: một hồ sơ số ghi lại vật liệu, xuất xứ, khả năng sửa chữa và thông tin tái chế của sản phẩm, thường truy cập qua mã QR. Đây là thuật ngữ chuyên ngành về phát triển bền vững và quy định của EU.",
           "position": {
             "episode": "政治歸政治 #220｜你挺這鞭還是那鞭",
             "episodeDir": "2026-08-26-EP220-政治歸政治-你挺這鞭還是那鞭",
@@ -1624,6 +1668,7 @@
           "partOfSpeech": "noun",
           "level": "upper-intermediate",
           "definition": "A traceability record documenting an agricultural product’s production and distribution history. This official term is especially common in Taiwan.",
+          "definitionVi": "Hồ sơ truy xuất nguồn gốc ghi lại lịch sử sản xuất và phân phối của một nông sản. Thuật ngữ chính thức này đặc biệt phổ biến ở Đài Loan.",
           "position": {
             "episode": "政治歸政治 #220｜你挺這鞭還是那鞭",
             "episodeDir": "2026-08-26-EP220-政治歸政治-你挺這鞭還是那鞭",
@@ -1658,6 +1703,7 @@
           "partOfSpeech": "noun",
           "level": "upper-intermediate",
           "definition": "A little-known company or industry that is nevertheless a world leader in a specialized market—a “hidden champion.” The term is used in business and economics.",
+          "definitionVi": "Một doanh nghiệp hay ngành ít người biết đến nhưng lại dẫn đầu thế giới trong một thị trường ngách — “nhà vô địch ẩn danh”. Thuật ngữ này dùng trong kinh doanh và kinh tế học.",
           "position": {
             "episode": "政治歸政治 #220｜你挺這鞭還是那鞭",
             "episodeDir": "2026-08-26-EP220-政治歸政治-你挺這鞭還是那鞭",
@@ -1692,6 +1738,7 @@
           "partOfSpeech": "adjective",
           "level": "intermediate",
           "definition": "Genuine, authentic, or truly representative of a place or type. This is an informal Taiwan expression influenced by Taiwanese Hokkien.",
+          "definitionVi": "Chính hiệu, thật sự, đúng chất của một nơi chốn hay một loại nào đó. Đây là cách nói thân mật của Đài Loan, chịu ảnh hưởng của tiếng Mân Nam Đài Loan.",
           "position": {
             "episode": "政治歸政治 #220｜你挺這鞭還是那鞭",
             "episodeDir": "2026-08-26-EP220-政治歸政治-你挺這鞭還是那鞭",
@@ -1728,6 +1775,7 @@
           "partOfSpeech": "noun",
           "level": "advanced",
           "definition": "The Group Representation Constituency system, in which a party fields a team of candidates and the entire team wins or loses together. This is specialized electoral terminology used especially in discussions of Singapore.",
+          "definitionVi": "Chế độ đơn vị bầu cử theo nhóm, trong đó một đảng đưa ra một đội ứng viên và cả đội cùng thắng hoặc cùng thua. Đây là thuật ngữ bầu cử chuyên biệt, đặc biệt dùng khi bàn về Singapore.",
           "position": {
             "episode": "政治歸政治 #220｜你挺這鞭還是那鞭",
             "episodeDir": "2026-08-26-EP220-政治歸政治-你挺這鞭還是那鞭",
@@ -1762,6 +1810,7 @@
           "partOfSpeech": "noun",
           "level": "advanced",
           "definition": "Discretion: the legally permitted authority of a judge or official to choose among possible decisions. This is a formal legal and administrative term.",
+          "definitionVi": "Quyền tự quyết: thẩm quyền được pháp luật cho phép để một thẩm phán hay quan chức lựa chọn giữa các phương án quyết định. Đây là thuật ngữ pháp lý và hành chính trang trọng.",
           "position": {
             "episode": "政治歸政治 #220｜你挺這鞭還是那鞭",
             "episodeDir": "2026-08-26-EP220-政治歸政治-你挺這鞭還是那鞭",
@@ -1796,6 +1845,7 @@
           "partOfSpeech": "set phrase",
           "level": "upper-intermediate",
           "definition": "“Troubled times call for harsh punishments”: a saying used to argue that severe disorder should be met with severe laws or penalties. It commonly appears in political and criminal-justice debate.",
+          "definitionVi": "“Thời loạn phải dùng hình phạt nặng”: một câu nói dùng để lập luận rằng tình trạng hỗn loạn nghiêm trọng phải được đáp lại bằng luật lệ hay hình phạt nghiêm khắc. Thường xuất hiện trong tranh luận chính trị và tư pháp hình sự.",
           "position": {
             "episode": "政治歸政治 #220｜你挺這鞭還是那鞭",
             "episodeDir": "2026-08-26-EP220-政治歸政治-你挺這鞭還是那鞭",
@@ -1830,6 +1880,7 @@
           "partOfSpeech": "noun",
           "level": "advanced",
           "definition": "Breach of trust: the offense of harming another person’s interests while entrusted with managing their affairs. This is primarily a formal legal term.",
+          "definitionVi": "Bội tín: hành vi phạm tội gây tổn hại lợi ích của người khác trong khi được giao quản lý công việc của họ. Đây chủ yếu là thuật ngữ pháp lý trang trọng.",
           "position": {
             "episode": "政治歸政治 #220｜你挺這鞭還是那鞭",
             "episodeDir": "2026-08-26-EP220-政治歸政治-你挺這鞭還是那鞭",
@@ -1864,6 +1915,7 @@
           "partOfSpeech": "noun",
           "level": "upper-intermediate",
           "definition": "A negligent offense: a crime caused by carelessness rather than deliberate intent. This is formal criminal-law terminology.",
+          "definitionVi": "Tội phạm do vô ý: hành vi phạm tội gây ra bởi sự bất cẩn chứ không phải cố ý. Đây là thuật ngữ luật hình sự trang trọng.",
           "position": {
             "episode": "政治歸政治 #220｜你挺這鞭還是那鞭",
             "episodeDir": "2026-08-26-EP220-政治歸政治-你挺這鞭還是那鞭",
@@ -1900,6 +1952,7 @@
           "partOfSpeech": "idiom",
           "level": "upper-intermediate",
           "definition": "To do the bare minimum simply so that one can report a task as completed, without caring about its quality or substance. It has a critical, often conversational tone.",
+          "definitionVi": "Làm cho có, chỉ đủ để báo cáo là đã xong việc, không quan tâm đến chất lượng hay nội dung thực chất. Cụm từ mang sắc thái phê phán, thường dùng trong hội thoại.",
           "position": {
             "episode": "政治歸政治 #220｜你挺這鞭還是那鞭",
             "episodeDir": "2026-08-26-EP220-政治歸政治-你挺這鞭還是那鞭",
@@ -1935,6 +1988,7 @@
           "partOfSpeech": "verb",
           "level": "intermediate",
           "definition": "To donate or tip money to an online creator, streamer, or program. This is informal internet slang, especially common in Taiwan, derived from English “donate.”",
+          "definitionVi": "Ủng hộ hay donate tiền cho một nhà sáng tạo nội dung, streamer hay chương trình trên mạng. Đây là tiếng lóng mạng thân mật, đặc biệt phổ biến ở Đài Loan, phiên âm từ chữ “donate” trong tiếng Anh.",
           "position": {
             "episode": "#55 政治歸YO智｜回留言：建國派對、普發一萬、還有推特假貴智？",
             "episodeDir": "2026-09-01-EP55-政治歸YO智-回留言-建國派對-普發一萬-還有推特假貴智",
@@ -1969,6 +2023,7 @@
           "partOfSpeech": "noun",
           "level": "advanced",
           "definition": "Leading questioning: questioning that suggests or steers someone toward the desired answer, especially in an interrogation or courtroom examination. This is formal legal terminology.",
+          "definitionVi": "Hỏi cung dẫn dắt: cách đặt câu hỏi gợi ý hoặc lái người được hỏi tới câu trả lời mong muốn, nhất là khi thẩm vấn hay xét hỏi tại tòa. Đây là thuật ngữ pháp lý trang trọng.",
           "position": {
             "episode": "#55 政治歸YO智｜回留言：建國派對、普發一萬、還有推特假貴智？",
             "episodeDir": "2026-09-01-EP55-政治歸YO智-回留言-建國派對-普發一萬-還有推特假貴智",
@@ -2003,6 +2058,7 @@
           "partOfSpeech": "noun",
           "level": "advanced",
           "definition": "A rivalry complex between two similarly talented people, alluding to the rivalry between Zhou Yu and Zhuge Liang in the Three Kingdoms tradition. It is a literary-cultural expression often used somewhat humorously.",
+          "definitionVi": "Mặc cảm ganh đua giữa hai người tài năng ngang nhau, lấy điển tích từ sự kình địch giữa Chu Du và Gia Cát Lượng thời Tam Quốc. Đây là cách nói mang màu sắc văn hóa - văn chương, thường dùng có phần hài hước.",
           "position": {
             "episode": "#55 政治歸YO智｜回留言：建國派對、普發一萬、還有推特假貴智？",
             "episodeDir": "2026-09-01-EP55-政治歸YO智-回留言-建國派對-普發一萬-還有推特假貴智",
@@ -2036,7 +2092,8 @@
           },
           "partOfSpeech": "slang",
           "level": "advanced",
-          "definition": "An online insult for someone considered poorly educated or ignorant, derived from 九年义务教育漏网之鱼, “someone who slipped through the net of nine-year compulsory education.” It is mocking and derogatory, so it should be used cautiously.",
+          "definition": "An online insult for someone considered poorly educated or ignorant, derived from 九年義務教育漏網之魚, “someone who slipped through the net of nine-year compulsory education.” It is mocking and derogatory, so it should be used cautiously.",
+          "definitionVi": "Một lời chửi trên mạng nhắm vào người bị coi là ít học hay thiếu hiểu biết, rút gọn từ 九年義務教育漏網之魚, “kẻ lọt lưới chín năm giáo dục bắt buộc”. Từ này mang tính giễu cợt và miệt thị, nên dùng thận trọng.",
           "position": {
             "episode": "#55 政治歸YO智｜回留言：建國派對、普發一萬、還有推特假貴智？",
             "episodeDir": "2026-09-01-EP55-政治歸YO智-回留言-建國派對-普發一萬-還有推特假貴智",
@@ -2071,6 +2128,7 @@
           "partOfSpeech": "noun",
           "level": "advanced",
           "definition": "A signed wage declaration or undertaking recording matters such as a worker’s pay, recruitment costs, and debts. This is specialized Taiwanese labor and migrant-worker documentation terminology.",
+          "definitionVi": "Bản cam kết về tiền lương có chữ ký, ghi nhận các vấn đề như mức lương, chi phí tuyển dụng và các khoản nợ của người lao động. Đây là thuật ngữ hồ sơ lao động và lao động nhập cư đặc thù của Đài Loan.",
           "position": {
             "episode": "法客話題 ＃218 接軌國際貿易新標竿—企業防制強迫勞動良好範例 feat.國立陽明交通大學科技法律研究所教授 邱羽凡",
             "episodeDir": "2026-09-02-法客話題-218-接軌國際貿易新標竿-企業防制強迫勞動良好範例-feat.國立陽明交通大學科技法律研究所教授-邱羽凡",
@@ -2140,6 +2198,7 @@
           "partOfSpeech": "verb",
           "level": "upper-intermediate",
           "definition": "To cut oneself open figuratively by exposing one’s deepest feelings and vulnerabilities for others to examine. This is vivid, emotionally charged language rather than a neutral expression for self-disclosure.",
+          "definitionVi": "Mổ phanh chính mình theo nghĩa bóng, tức phơi bày những cảm xúc và điểm yếu sâu kín nhất cho người khác nhìn vào. Đây là lối nói sinh động, giàu cảm xúc, chứ không phải cách diễn đạt trung tính về việc bộc bạch bản thân.",
           "position": {
             "episode": "#207 Jocelyn 9.4.0 - 音樂夢到金曲新人入圍，找到自己自信跟成長的 Sweet Spot",
             "episodeDir": "2026-05-03-EP207-Jocelyn-9.4.0-音樂夢到金曲新人入圍-找到自己自信跟成長的-Sweet-Spot",
@@ -2173,6 +2232,7 @@
           "partOfSpeech": "verb",
           "level": "upper-intermediate",
           "definition": "To be shortlisted or nominated for an award or competition. It indicates reaching the final selection stage, not necessarily winning.",
+          "definitionVi": "Được vào vòng chung kết hoặc được đề cử cho một giải thưởng hay cuộc thi. Từ này chỉ việc lọt vào vòng tuyển chọn cuối, không nhất thiết là đoạt giải.",
           "position": {
             "episode": "#207 Jocelyn 9.4.0 - 音樂夢到金曲新人入圍，找到自己自信跟成長的 Sweet Spot",
             "episodeDir": "2026-05-03-EP207-Jocelyn-9.4.0-音樂夢到金曲新人入圍-找到自己自信跟成長的-Sweet-Spot",
@@ -2207,6 +2267,7 @@
           "partOfSpeech": "verb",
           "level": "upper-intermediate",
           "definition": "To make one’s professional debut, especially as a singer, actor, idol, or other entertainer. It is a standard term in the Mandarin-language entertainment industry.",
+          "definitionVi": "Ra mắt chuyên nghiệp, đặc biệt với tư cách ca sĩ, diễn viên, thần tượng hay nghệ sĩ giải trí khác. Đây là từ chuẩn trong ngành giải trí nói tiếng Hoa.",
           "position": {
             "episode": "#207 Jocelyn 9.4.0 - 音樂夢到金曲新人入圍，找到自己自信跟成長的 Sweet Spot",
             "episodeDir": "2026-05-03-EP207-Jocelyn-9.4.0-音樂夢到金曲新人入圍-找到自己自信跟成長的-Sweet-Spot",
@@ -2240,6 +2301,7 @@
           "partOfSpeech": "set phrase",
           "level": "upper-intermediate",
           "definition": "A very fine dividing line between two conditions or qualities. It is commonly used when two things may look similar but are fundamentally different.",
+          "definitionVi": "Ranh giới hết sức mong manh giữa hai trạng thái hay hai phẩm chất. Thường dùng khi hai thứ trông có vẻ giống nhau nhưng về bản chất lại khác nhau.",
           "position": {
             "episode": "#207 Jocelyn 9.4.0 - 音樂夢到金曲新人入圍，找到自己自信跟成長的 Sweet Spot",
             "episodeDir": "2026-05-03-EP207-Jocelyn-9.4.0-音樂夢到金曲新人入圍-找到自己自信跟成長的-Sweet-Spot",
@@ -2273,6 +2335,7 @@
           "partOfSpeech": "noun",
           "level": "upper-intermediate",
           "definition": "A rhyme or rhyming ending, especially the final sound or syllable of a line of poetry, lyrics, or rap. This is a technical term used in writing and music.",
+          "definitionVi": "Vần, hay âm gieo vần, đặc biệt là âm hoặc âm tiết cuối của một dòng thơ, lời bài hát hay lời rap. Đây là thuật ngữ chuyên môn dùng trong sáng tác và âm nhạc.",
           "position": {
             "episode": "#207 Jocelyn 9.4.0 - 音樂夢到金曲新人入圍，找到自己自信跟成長的 Sweet Spot",
             "episodeDir": "2026-05-03-EP207-Jocelyn-9.4.0-音樂夢到金曲新人入圍-找到自己自信跟成長的-Sweet-Spot",
@@ -2306,6 +2369,7 @@
           "partOfSpeech": "idiom",
           "level": "upper-intermediate",
           "definition": "Containing both hardship and happiness; bittersweet. This formal four-character expression is often used to summarize a life experience or period of time.",
+          "definitionVi": "Vừa có cay đắng vừa có ngọt bùi; buồn vui lẫn lộn. Cụm bốn chữ trang trọng này thường dùng để tổng kết một trải nghiệm hay một giai đoạn của đời người.",
           "position": {
             "episode": "#207 Jocelyn 9.4.0 - 音樂夢到金曲新人入圍，找到自己自信跟成長的 Sweet Spot",
             "episodeDir": "2026-05-03-EP207-Jocelyn-9.4.0-音樂夢到金曲新人入圍-找到自己自信跟成長的-Sweet-Spot",
@@ -2339,6 +2403,7 @@
           "partOfSpeech": "phrase",
           "level": "advanced",
           "definition": "To be going through a period in which one is especially fortunate in meeting 貴人—helpful or influential people who provide timely support and opportunities. The expression comes from Chinese fortune-telling language and is also used casually.",
+          "definitionVi": "Đang ở trong giai đoạn đặc biệt may mắn gặp được 貴人 — những người có lòng giúp đỡ hoặc có ảnh hưởng, mang lại hỗ trợ và cơ hội đúng lúc. Cách nói này bắt nguồn từ ngôn ngữ bói toán Trung Hoa và cũng được dùng thoải mái trong đời thường.",
           "position": {
             "episode": "#207 Jocelyn 9.4.0 - 音樂夢到金曲新人入圍，找到自己自信跟成長的 Sweet Spot",
             "episodeDir": "2026-05-03-EP207-Jocelyn-9.4.0-音樂夢到金曲新人入圍-找到自己自信跟成長的-Sweet-Spot",
@@ -2372,6 +2437,7 @@
           "partOfSpeech": "verb",
           "level": "upper-intermediate",
           "definition": "To be published, released, invented, or otherwise introduced to the world. It is more formal and literary than ordinary words such as 發行 or 出版.",
+          "definitionVi": "Được xuất bản, phát hành, phát minh hay ra mắt với thế giới. Từ này trang trọng và văn chương hơn những từ thông thường như 發行 hay 出版.",
           "position": {
             "episode": "#207 Jocelyn 9.4.0 - 音樂夢到金曲新人入圍，找到自己自信跟成長的 Sweet Spot",
             "episodeDir": "2026-05-03-EP207-Jocelyn-9.4.0-音樂夢到金曲新人入圍-找到自己自信跟成長的-Sweet-Spot",
@@ -2405,6 +2471,7 @@
           "partOfSpeech": "noun",
           "level": "advanced",
           "definition": "A particular year viewed in terms of the fortune and events it may bring, especially in astrology or Chinese fortune-telling. 看流年 means to examine someone’s prospects for a given year.",
+          "definitionVi": "Một năm cụ thể xét theo vận số và những sự việc năm đó có thể mang lại, nhất là trong chiêm tinh hay bói toán Trung Hoa. 看流年 nghĩa là xem vận hạn của một người trong một năm nhất định.",
           "position": {
             "episode": "#208 Rita/靈魂相談室 - 當下的力量，靈性裡的自律，盡人事聽天命",
             "episodeDir": "2026-05-10-EP208-Rita-靈魂相談室-當下的力量-靈性裡的自律-盡人事聽天命",
@@ -2438,6 +2505,7 @@
           "partOfSpeech": "idiom",
           "level": "upper-intermediate",
           "definition": "To bring up old mistakes, conflicts, or grievances again, usually during a current argument. It is a colloquial and disapproving expression.",
+          "definitionVi": "Lôi lại những lỗi lầm, mâu thuẫn hay bất bình cũ, thường là giữa lúc đang cãi nhau. Đây là cách nói khẩu ngữ mang ý chê trách.",
           "position": {
             "episode": "#208 Rita/靈魂相談室 - 當下的力量，靈性裡的自律，盡人事聽天命",
             "episodeDir": "2026-05-10-EP208-Rita-靈魂相談室-當下的力量-靈性裡的自律-盡人事聽天命",
@@ -2471,6 +2539,7 @@
           "partOfSpeech": "phrase",
           "level": "upper-intermediate",
           "definition": "To make a living primarily through one’s physical appearance. This colloquial expression is often used of models, actors, influencers, and other public-facing professions.",
+          "definitionVi": "Kiếm sống chủ yếu nhờ ngoại hình. Cách nói khẩu ngữ này thường dùng cho người mẫu, diễn viên, người có ảnh hưởng và các nghề phải xuất hiện trước công chúng.",
           "position": {
             "episode": "#209 林可彤 - 從名模/作家/創業/新移民生活，不同角色裡重新定義自己",
             "episodeDir": "2026-05-17-EP209-林可彤-從名模-作家-創業-新移民生活-不同角色裡重新定義自己",
@@ -2504,6 +2573,7 @@
           "partOfSpeech": "idiom",
           "level": "upper-intermediate",
           "definition": "Completely chaotic, ruined, or out of control; after a verb, it can intensify the action. In 哭得一塌糊塗, it means to cry uncontrollably or be a total mess from crying.",
+          "definitionVi": "Hỗn loạn, tan nát hay mất kiểm soát hoàn toàn; đứng sau động từ thì có thể dùng để nhấn mạnh mức độ. Trong 哭得一塌糊塗, cụm này nghĩa là khóc không kìm được, khóc đến tơi tả.",
           "position": {
             "episode": "#209 林可彤 - 從名模/作家/創業/新移民生活，不同角色裡重新定義自己",
             "episodeDir": "2026-05-17-EP209-林可彤-從名模-作家-創業-新移民生活-不同角色裡重新定義自己",
@@ -2537,6 +2607,7 @@
           "partOfSpeech": "verb",
           "level": "upper-intermediate",
           "definition": "To set or manage one’s pace, particularly while running or racing. 配速 is also used as a noun for the pace maintained over a given distance.",
+          "definitionVi": "Điều chỉnh hay giữ nhịp độ, nhất là khi chạy bộ hoặc thi đấu. 配速 cũng được dùng như danh từ chỉ tốc độ duy trì trên một cự ly nhất định.",
           "position": {
             "episode": "#210 王冠翔 Sean - 賺事/賺人/賺影響力，最速總經理從低潮跑出來的配速/能量管理學",
             "episodeDir": "2026-05-24-EP210-王冠翔-Sean-賺事-賺人-賺影響力-最速總經理從低潮跑出來的配速-能量管理學",
@@ -2570,6 +2641,7 @@
           "partOfSpeech": "idiom",
           "level": "advanced",
           "definition": "To be so overwhelmed with one’s own difficulties that one has no time or capacity to look after anyone or anything else. It is a relatively formal four-character expression.",
+          "definitionVi": "Bận rộn khốn khổ với chuyện của chính mình đến mức không còn thời gian hay sức lực để lo cho ai hay việc gì khác. Đây là cụm bốn chữ tương đối trang trọng.",
           "position": {
             "episode": "#210 王冠翔 Sean - 賺事/賺人/賺影響力，最速總經理從低潮跑出來的配速/能量管理學",
             "episodeDir": "2026-05-24-EP210-王冠翔-Sean-賺事-賺人-賺影響力-最速總經理從低潮跑出來的配速-能量管理學",
@@ -2603,6 +2675,7 @@
           "partOfSpeech": "noun",
           "level": "advanced",
           "definition": "Learned helplessness: a psychological state in which repeated failure or lack of control causes someone to stop trying, even when improvement may be possible. This is a technical psychology term.",
+          "definitionVi": "Bất lực học được: trạng thái tâm lý trong đó thất bại lặp đi lặp lại hoặc việc mất khả năng kiểm soát khiến người ta thôi cố gắng, ngay cả khi tình hình vẫn có thể cải thiện. Đây là thuật ngữ tâm lý học chuyên môn.",
           "position": {
             "episode": "#210 王冠翔 Sean - 賺事/賺人/賺影響力，最速總經理從低潮跑出來的配速/能量管理學",
             "episodeDir": "2026-05-24-EP210-王冠翔-Sean-賺事-賺人-賺影響力-最速總經理從低潮跑出來的配速-能量管理學",
@@ -2676,6 +2749,7 @@
           "partOfSpeech": "noun",
           "level": "upper-intermediate",
           "definition": "Taiwan’s “nine-in-one” local elections, in which nine categories of local public office are elected on the same day. This is Taiwan-specific political terminology.",
+          "definitionVi": "Cuộc bầu cử địa phương “chín trong một” của Đài Loan, trong đó chín loại chức vụ công ở địa phương được bầu trong cùng một ngày. Đây là thuật ngữ chính trị đặc thù của Đài Loan.",
           "position": {
             "episode": "S8EP174 新北市長候選人｜蘇巧慧：認識自己、認識世界、找到對的位子，就會發光發熱",
             "episodeDir": "2026-08-21-S8EP174-新北市長候選人-蘇巧慧-認識自己-認識世界-找到對的位子-就會發光發熱",
@@ -2711,6 +2785,7 @@
           "partOfSpeech": "verb",
           "level": "upper-intermediate",
           "definition": "In Taiwanese election campaigning, to canvass at a traditional market by walking around, greeting vendors and shoppers, and soliciting votes. This is colloquial political vocabulary.",
+          "definitionVi": "Trong vận động tranh cử ở Đài Loan, đi vận động tại chợ truyền thống bằng cách dạo quanh, chào hỏi tiểu thương và người đi chợ để xin phiếu. Đây là từ vựng chính trị khẩu ngữ.",
           "position": {
             "episode": "S8EP174 新北市長候選人｜蘇巧慧：認識自己、認識世界、找到對的位子，就會發光發熱",
             "episodeDir": "2026-08-21-S8EP174-新北市長候選人-蘇巧慧-認識自己-認識世界-找到對的位子-就會發光發熱",
@@ -2745,6 +2820,7 @@
           "partOfSpeech": "idiom",
           "level": "upper-intermediate",
           "definition": "To talk continuously and fluently, with words pouring out; often used for someone speaking enthusiastically or at great length.",
+          "definitionVi": "Nói liên tục và trôi chảy, lời cứ tuôn ra không dứt; thường dùng cho người nói say sưa hoặc nói rất dài.",
           "position": {
             "episode": "S8EP174 新北市長候選人｜蘇巧慧：認識自己、認識世界、找到對的位子，就會發光發熱",
             "episodeDir": "2026-08-21-S8EP174-新北市長候選人-蘇巧慧-認識自己-認識世界-找到對的位子-就會發光發熱",
@@ -2779,6 +2855,7 @@
           "partOfSpeech": "verb",
           "level": "upper-intermediate",
           "definition": "To consolidate, organize, and review scattered information so that it can be analyzed or acted upon. This usage is especially common in Taiwanese business and professional speech.",
+          "definitionVi": "Tập hợp, sắp xếp và rà soát lại những thông tin rời rạc để có thể phân tích hoặc hành động. Cách dùng này đặc biệt phổ biến trong lời nói của giới kinh doanh và chuyên môn ở Đài Loan.",
           "position": {
             "episode": "S8EP174 新北市長候選人｜蘇巧慧：認識自己、認識世界、找到對的位子，就會發光發熱",
             "episodeDir": "2026-08-21-S8EP174-新北市長候選人-蘇巧慧-認識自己-認識世界-找到對的位子-就會發光發熱",
@@ -2813,6 +2890,7 @@
           "partOfSpeech": "noun",
           "level": "advanced",
           "definition": "The central issue on which parties disagree, especially in legal analysis, negotiation, or litigation. It is a formal professional term.",
+          "definitionVi": "Điểm tranh chấp trung tâm mà các bên bất đồng, nhất là trong phân tích pháp lý, đàm phán hay tố tụng. Đây là thuật ngữ chuyên môn trang trọng.",
           "position": {
             "episode": "S8EP174 新北市長候選人｜蘇巧慧：認識自己、認識世界、找到對的位子，就會發光發熱",
             "episodeDir": "2026-08-21-S8EP174-新北市長候選人-蘇巧慧-認識自己-認識世界-找到對的位子-就會發光發熱",
@@ -2847,6 +2925,7 @@
           "partOfSpeech": "verb",
           "level": "advanced",
           "definition": "To conduct a joint on-site inspection involving officials or representatives from multiple agencies. This is Taiwanese administrative and public-policy terminology.",
+          "definitionVi": "Tiến hành khảo sát hiện trường chung với sự tham gia của quan chức hay đại diện từ nhiều cơ quan. Đây là thuật ngữ hành chính và chính sách công của Đài Loan.",
           "position": {
             "episode": "S8EP174 新北市長候選人｜蘇巧慧：認識自己、認識世界、找到對的位子，就會發光發熱",
             "episodeDir": "2026-08-21-S8EP174-新北市長候選人-蘇巧慧-認識自己-認識世界-找到對的位子-就會發光發熱",
@@ -2881,6 +2960,7 @@
           "partOfSpeech": "noun",
           "level": "upper-intermediate",
           "definition": "The subtle know-how, hidden details, or knack needed to handle something properly. This is colloquial Taiwanese Mandarin influenced by Southern Min.",
+          "definitionVi": "Bí quyết tinh tế, những chi tiết ẩn hay cái “nghề” cần có để xử lý một việc cho đúng. Đây là tiếng Hoa Đài Loan khẩu ngữ, chịu ảnh hưởng của tiếng Mân Nam.",
           "position": {
             "episode": "S8EP174 新北市長候選人｜蘇巧慧：認識自己、認識世界、找到對的位子，就會發光發熱",
             "episodeDir": "2026-08-21-S8EP174-新北市長候選人-蘇巧慧-認識自己-認識世界-找到對的位子-就會發光發熱",
@@ -2915,6 +2995,7 @@
           "partOfSpeech": "phrase",
           "level": "upper-intermediate",
           "definition": "To have an off-the-charts sense of responsibility. 爆表 literally means that a gauge has exceeded its maximum and is colloquial and emphatic.",
+          "definitionVi": "Có tinh thần trách nhiệm cao vượt mọi thang đo. 爆表 nghĩa đen là kim đồng hồ đo đã vượt quá vạch tối đa, và là cách nói khẩu ngữ, nhấn mạnh.",
           "position": {
             "episode": "管理通靈信箱｜EP131｜同事責任感太強，為何反而成為溝通阻礙？",
             "episodeDir": "2026-08-24-EP131-管理通靈信箱-同事責任感太強-為何反而成為溝通阻礙",
@@ -2949,6 +3030,7 @@
           "partOfSpeech": "verb",
           "level": "upper-intermediate",
           "definition": "To leave someone in an official position while stripping them of real authority, making the role merely nominal. It is commonly used in organizational and political contexts.",
+          "definitionVi": "Để ai đó ngồi nguyên ở một chức vụ nhưng tước hết quyền lực thực chất, khiến vai trò đó chỉ còn trên danh nghĩa. Thường dùng trong ngữ cảnh tổ chức và chính trị.",
           "position": {
             "episode": "管理通靈信箱｜EP131｜同事責任感太強，為何反而成為溝通阻礙？",
             "episodeDir": "2026-08-24-EP131-管理通靈信箱-同事責任感太強-為何反而成為溝通阻礙",
@@ -2983,6 +3065,7 @@
           "partOfSpeech": "idiom",
           "level": "advanced",
           "definition": "To pretend to obey openly while secretly acting in opposition. This idiom is strongly critical and often describes insincere compliance with orders or policy.",
+          "definitionVi": "Bề ngoài ra vẻ tuân theo nhưng ngấm ngầm làm ngược lại. Thành ngữ này mang tính phê phán mạnh và thường mô tả sự chấp hành giả tạo đối với mệnh lệnh hay chính sách.",
           "position": {
             "episode": "管理通靈信箱｜EP131｜同事責任感太強，為何反而成為溝通阻礙？",
             "episodeDir": "2026-08-24-EP131-管理通靈信箱-同事責任感太強-為何反而成為溝通阻礙",
@@ -3017,6 +3100,7 @@
           "partOfSpeech": "noun",
           "level": "advanced",
           "definition": "A medical subspecialty within a broader specialty, such as trauma surgery within surgery. This is specialized Taiwanese medical terminology.",
+          "definitionVi": "Chuyên khoa sâu trong một chuyên khoa lớn hơn, chẳng hạn ngoại chấn thương trong ngoại khoa. Đây là thuật ngữ y học chuyên biệt của Đài Loan.",
           "position": {
             "episode": "S8EP175 高醫外傷重症醫師｜唐貞綾：戰爭時沒有人能照顧你，你要學會照顧自己",
             "episodeDir": "2026-08-28-S8EP175-高醫外傷重症醫師-唐貞綾-戰爭時沒有人能照顧你-你要學會照顧自己",
@@ -3051,6 +3135,7 @@
           "partOfSpeech": "noun",
           "level": "advanced",
           "definition": "A “positive-list” regulatory system that explicitly states what is permitted; activities not listed are generally not authorized. This is formal legal and administrative terminology.",
+          "definitionVi": "Chế độ quản lý theo “danh mục cho phép”, nêu rõ những gì được phép; những hoạt động không có trong danh mục thì thường không được cho phép. Đây là thuật ngữ pháp lý và hành chính trang trọng.",
           "position": {
             "episode": "S8EP175 高醫外傷重症醫師｜唐貞綾：戰爭時沒有人能照顧你，你要學會照顧自己",
             "episodeDir": "2026-08-28-S8EP175-高醫外傷重症醫師-唐貞綾-戰爭時沒有人能照顧你-你要學會照顧自己",
@@ -3085,6 +3170,7 @@
           "partOfSpeech": "noun",
           "level": "advanced",
           "definition": "Control or military superiority in the airspace over a conflict zone; air superiority. This is formal military terminology.",
+          "definitionVi": "Quyền kiểm soát hay ưu thế quân sự trên vùng trời của một khu vực xung đột; ưu thế trên không. Đây là thuật ngữ quân sự trang trọng.",
           "position": {
             "episode": "S8EP175 高醫外傷重症醫師｜唐貞綾：戰爭時沒有人能照顧你，你要學會照顧自己",
             "episodeDir": "2026-08-28-S8EP175-高醫外傷重症醫師-唐貞綾-戰爭時沒有人能照顧你-你要學會照顧自己",
@@ -3119,6 +3205,7 @@
           "partOfSpeech": "noun",
           "level": "advanced",
           "definition": "The core professional knowledge and practical skills required for one’s assigned job. The expression is common in Taiwanese official, military, and workplace language.",
+          "definitionVi": "Kiến thức chuyên môn cốt lõi và kỹ năng thực hành cần có cho công việc được giao. Cách nói này phổ biến trong ngôn ngữ hành chính, quân đội và công sở ở Đài Loan.",
           "position": {
             "episode": "管理通靈信箱｜EP132｜團隊裡沒人夠格當主管，我該硬著頭皮挑一個嗎？",
             "episodeDir": "2026-08-31-EP132-管理通靈信箱-團隊裡沒人夠格當主管-我該硬著頭皮挑一個嗎",
