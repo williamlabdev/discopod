@@ -70,7 +70,7 @@ The key distinction is not **“other apps use text, DiscoPod uses audio.”** M
 
 ### DiscoPod's Goal
 
-Our goal is to make the jump from **“I am studying English/Chinese”** to **“I can actually follow English/Chinese”** feel achievable every day.
+Our goal is to make the jump from **“I am studying English/Chinese” to “I can naturally follow English/Chinese” and feel achievable EVERY DAY. The product provides a language-learning solution that is easy to use and affordable/accessible to end-users. The learner with growing listening comprehension is cultivated by the simple user interface from our designed platform. 
 
 A DiscoPod learning loop should be simple:
 
@@ -95,7 +95,7 @@ Learners should hear how English and Chinese are actually spoken: connected spee
 A learner who loves startups should be able to learn from startup podcasts. A basketball fan should learn from basketball. A pop-culture fan should learn from pop culture. The content is already compelling; DiscoPod adds the learning layer.
 
 **🧠 Comprehension before perfection.**  
-The first win is not memorizing every word. It is the moment a learner replays a sentence that sounded like noise five minutes ago — and suddenly understands it.
+The first win is not memorizing every word. It is the moment a learner replays a sentence that sounded like noise five minutes ago — and suddenly understands it. By matching learners with real podcast content at the users' exact listening level in real time, this AI companion seamlessly integrates language practice into their daily lives.
 
 ### What Success Looks Like
 
@@ -105,7 +105,6 @@ For a hackathon demo, our north-star moment is deliberately simple:
 
 That is the experience we want to build toward.
 
-**Duolingo helps build the foundation. Podcasts provide the real world. DiscoPod connects the two.**
 
 ---
 
