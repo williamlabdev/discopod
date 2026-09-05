@@ -158,6 +158,36 @@ export interface Episode {
    * seed loader and `CatalogService.listPairs` do, loudly.
    */
   transcriptLanguage: LanguageTag;
+  /**
+   * Where this episode's audio came from, and under what terms.
+   *
+   * Both of these also exist on `Show`, and for a while that was the only
+   * place they existed. That is wrong for any show with more than one episode
+   * behind it, and it failed the moment a second one arrived: a `Show` is built
+   * from whichever seed row claims its id first, so all three spoken-Wikipedia
+   * episodes credited the first one's Commons file, and five VOA lessons linked
+   * to Lesson 1's page. Not a display bug — a false attribution, printed under
+   * a CC BY-SA licence that makes crediting the right author a condition of
+   * use.
+   *
+   * So the per-episode value is the one that matters and the show's is the
+   * fallback: a show whose episodes genuinely share a source states it once,
+   * and a show like `zh-wikipedia-spoken` — one "show" that is really a corpus
+   * of unrelated readings by different volunteers — states it per episode.
+   */
+  sourceUrl?: string;
+  /** See `sourceUrl`. Optional here for the same reason it is on `Show`. */
+  licence?: { name: string; url: string };
+  /**
+   * True when the shipped audio is not the publisher's file.
+   *
+   * The credit line used to say "Excerpted and re-timed for language learning"
+   * for everything that named a licence, which was true of the one episode that
+   * existed when it was written and false of the five VOA lessons that ship
+   * byte for byte. Claiming a modification nobody made is the same class of
+   * error as hiding one: the page has to be able to say which it is.
+   */
+  audioModified?: boolean;
   transcript: TranscriptCue[];
   vocabulary: VocabularyEntry[];
   questions: ComprehensionQuestion[];

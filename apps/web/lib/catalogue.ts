@@ -118,6 +118,8 @@ export interface EpisodeDetail extends EpisodeCard {
   sourceUrl?: string;
   sourceLabel?: string;
   licence?: { name: string; url: string };
+  /** True when the audio shipped here is not the publisher's file. */
+  audioModified?: boolean;
   transcript: TranscriptLine[];
   vocabulary: VocabularyItem[];
   questions: { prompt: string; options: string[]; answer: number }[];
@@ -324,9 +326,14 @@ export async function loadEpisodeDetail(
     ...toCard(entry, show, pair),
     learningGoal: pick(episode.learningGoal, pair.speaks, `Episode ${id} learningGoal`),
     audioSrc: episode.audioUrl,
-    sourceUrl: show?.sourceUrl,
+    // Episode first, show second. A show's source is right only when every
+    // episode under it shares one; `zh-wikipedia-spoken` is three different
+    // volunteers reading three different articles, and crediting them all to
+    // the first is a false attribution under CC BY-SA, not a stale link.
+    sourceUrl: episode.sourceUrl ?? show?.sourceUrl,
     sourceLabel: show ? `${show.publisher} · ${episode.title}` : undefined,
-    licence: show?.licence,
+    licence: episode.licence ?? show?.licence,
+    audioModified: episode.audioModified ?? false,
     transcript: episode.transcript.map((cue) => ({
       time: formatCueTime(cue.startMs),
       seconds: Math.round(cue.startMs / 1000),

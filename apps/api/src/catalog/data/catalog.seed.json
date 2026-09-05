@@ -19,12 +19,16 @@
     ],
     "level": "Beginner",
     "cefr": "A1",
-    "speed": "≈ 105 wpm",
+    "speed": "≈ 83 wpm",
     "newWords": 4,
     "levelReason": "Short sentences, everyday greetings, clear turn-taking, and repeated names",
     "learningGoal": "Introduce yourself, greet someone, and spell a name in a short conversation.",
     "audioSrc": "/audio/voa-lesson-1-welcome.mp3",
     "sourceUrl": "https://learningenglish.voanews.com/a/lets-learn-english-lesson-one/3111026.html",
+    "licence": {
+      "name": "Public domain (U.S. government work)",
+      "url": "https://www.voanews.com/p/5320.html"
+    },
     "sourceLabel": "VOA Learning English · Lesson 1",
     "verifiedLesson": true,
     "transcript": [
@@ -133,6 +137,978 @@
           "Please sit down"
         ],
         "answer": 1
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "title": "Let's Learn English",
+    "author": "VOA Learning English",
+    "topic": "Conversation",
+    "duration": "48 sec",
+    "episode": "Lesson 2: Hello, I'm Anna!",
+    "description": "Anna meets a neighbour in the hallway of her new building. Names, apartment numbers and where you are from, in fifteen short turns.",
+    "tags": [
+      "greetings",
+      "neighbours",
+      "apartments",
+      "conversation",
+      "beginner"
+    ],
+    "level": "Beginner",
+    "cefr": "A1",
+    "speed": "≈ 112 wpm",
+    "newWords": 4,
+    "levelReason": "Three speakers, but they take strict turns and almost every sentence is four to eight words. The only thing to hold in your head is which apartment belongs to whom",
+    "learningGoal": "Say where you are from, give your apartment number, and greet a neighbour you have just met.",
+    "audioSrc": "/audio/voa-lesson-2-hello.mp3",
+    "sourceUrl": "https://learningenglish.voanews.com/a/lets-learn-english-lesson-2-hello/3113733.html",
+    "licence": {
+      "name": "Public domain (U.S. government work)",
+      "url": "https://www.voanews.com/p/5320.html"
+    },
+    "verifiedLesson": true,
+    "transcript": [
+      {
+        "time": "00:01",
+        "seconds": 0.96,
+        "speaker": "Jonathan",
+        "text": "Hey, Pete! Who’s your friend?",
+        "highlight": "Who’s your friend"
+      },
+      {
+        "time": "00:04",
+        "seconds": 3.9,
+        "speaker": "Pete",
+        "text": "She is Anna. She is new to D.C."
+      },
+      {
+        "time": "00:07",
+        "seconds": 6.72,
+        "speaker": "Jonathan",
+        "text": "Where are you from?",
+        "highlight": "Where are you from"
+      },
+      {
+        "time": "00:08",
+        "seconds": 7.94,
+        "speaker": "Anna",
+        "text": "I am from a small town."
+      },
+      {
+        "time": "00:11",
+        "seconds": 10.68,
+        "speaker": "Jonathan",
+        "text": "Well, welcome to D.C.",
+        "highlight": "welcome to"
+      },
+      {
+        "time": "00:12",
+        "seconds": 12.2,
+        "speaker": "Anna",
+        "text": "Thank you."
+      },
+      {
+        "time": "00:13",
+        "seconds": 13.38,
+        "speaker": "Jonathan",
+        "text": "I am Jonathan. I am in apartment B4."
+      },
+      {
+        "time": "00:16",
+        "seconds": 16.28,
+        "speaker": "Anna",
+        "text": "I am in apartment C2. Marsha is my roommate.",
+        "highlight": "roommate"
+      },
+      {
+        "time": "00:21",
+        "seconds": 21.24,
+        "speaker": "Jonathan",
+        "text": "I know Marsha. She is nice."
+      },
+      {
+        "time": "00:25",
+        "seconds": 24.66,
+        "speaker": "Pete",
+        "text": "And I am in Apartment D7. I have to go now.",
+        "highlight": "have to go"
+      },
+      {
+        "time": "00:30",
+        "seconds": 30.0,
+        "speaker": "Anna",
+        "text": "Oh!"
+      },
+      {
+        "time": "00:32",
+        "seconds": 31.6,
+        "speaker": "Pete",
+        "text": "Remember to call Marsha at work. Tell her you’re here."
+      },
+      {
+        "time": "00:35",
+        "seconds": 34.98,
+        "speaker": "Anna",
+        "text": "Right, thanks, Pete. Nice to meet you!"
+      },
+      {
+        "time": "00:38",
+        "seconds": 37.98,
+        "speaker": "Jonathan",
+        "text": "You too, Bye."
+      },
+      {
+        "time": "00:42",
+        "seconds": 42.2,
+        "speaker": "Anna",
+        "text": "Apartment C2, here I come!"
+      }
+    ],
+    "vocabulary": [
+      {
+        "term": "Where are you from?",
+        "type": "question",
+        "meaning": "Asks what place someone comes from — a town, a city or a country. The answer is usually just the place: “I am from a small town.”",
+        "example": "Where are you from? I am from a small town."
+      },
+      {
+        "term": "welcome to",
+        "type": "phrase",
+        "meaning": "Said to someone arriving somewhere for the first time, with the place after it.",
+        "example": "Well, welcome to D.C."
+      },
+      {
+        "term": "roommate",
+        "type": "noun",
+        "meaning": "A person you share an apartment with. Not a neighbour — a roommate is inside the same apartment.",
+        "example": "Marsha is my roommate."
+      },
+      {
+        "term": "have to go",
+        "type": "phrase",
+        "meaning": "Must leave now. The polite way to end a conversation before it finishes on its own.",
+        "example": "I have to go now."
+      }
+    ],
+    "questions": [
+      {
+        "prompt": "Which apartment does Anna live in?",
+        "options": [
+          "Apartment B4",
+          "Apartment C2",
+          "Apartment D7"
+        ],
+        "answer": 1
+      },
+      {
+        "prompt": "Who is Anna's roommate?",
+        "options": [
+          "Pete",
+          "Jonathan",
+          "Marsha"
+        ],
+        "answer": 2
+      },
+      {
+        "prompt": "What does Pete tell Anna to do?",
+        "options": [
+          "Call Marsha at work",
+          "Meet him downstairs",
+          "Wait for Jonathan"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "title": "Let's Learn English",
+    "author": "VOA Learning English",
+    "topic": "Objects",
+    "duration": "89 sec",
+    "episode": "Lesson 4: What Is It?",
+    "description": "Anna cannot find a pen in her bag and pulls out everything else instead. A running joke that repeats “I have a…” until the name of each object sticks.",
+    "tags": [
+      "objects",
+      "questions",
+      "conversation",
+      "humour",
+      "beginner"
+    ],
+    "level": "Beginner",
+    "cefr": "A1",
+    "speed": "≈ 110 wpm",
+    "newWords": 4,
+    "levelReason": "≈110 wpm and nearly a fifth of the running time is silence. The sentence frame never changes — “I have a…”, “It is a…” — so each new turn changes exactly one word, and that word is always a concrete object you can picture",
+    "learningGoal": "Ask whether somebody has something, say what you have, and name everyday objects with “It is a…”.",
+    "audioSrc": "/audio/voa-lesson-4-what-is-it.mp3",
+    "sourceUrl": "https://learningenglish.voanews.com/a/lets-learn-english-lesson-4/3168920.html",
+    "licence": {
+      "name": "Public domain (U.S. government work)",
+      "url": "https://www.voanews.com/p/5320.html"
+    },
+    "verifiedLesson": true,
+    "transcript": [
+      {
+        "time": "00:01",
+        "seconds": 0.92,
+        "speaker": "Anna",
+        "text": "Pete, hi! Hi, we are here!"
+      },
+      {
+        "time": "00:05",
+        "seconds": 5.04,
+        "speaker": "Pete",
+        "text": "Hi, Anna! Hi, Marsha!"
+      },
+      {
+        "time": "00:08",
+        "seconds": 7.84,
+        "speaker": "Anna",
+        "text": "Hi!"
+      },
+      {
+        "time": "00:09",
+        "seconds": 9.42,
+        "speaker": "Pete",
+        "text": "How are you two?"
+      },
+      {
+        "time": "00:11",
+        "seconds": 11.44,
+        "speaker": "Marsha",
+        "text": "I am great!"
+      },
+      {
+        "time": "00:14",
+        "seconds": 13.56,
+        "speaker": "Anna",
+        "text": "You know, Pete, I am new to D.C. The city is big."
+      },
+      {
+        "time": "00:20",
+        "seconds": 19.6,
+        "speaker": "Pete",
+        "text": "Yeah. But you learn a little more every day. How's the new apartment?"
+      },
+      {
+        "time": "00:25",
+        "seconds": 25.28,
+        "speaker": "Anna",
+        "text": "The new apartment is great! Let's get coffee!"
+      },
+      {
+        "time": "00:30",
+        "seconds": 30.5,
+        "speaker": "Marsha",
+        "text": "Anna, do you have a pen?",
+        "highlight": "Do you have"
+      },
+      {
+        "time": "00:34",
+        "seconds": 33.66,
+        "speaker": "Anna",
+        "text": "Yes. I have a pen in my bag."
+      },
+      {
+        "time": "00:37",
+        "seconds": 36.52,
+        "speaker": "Anna",
+        "text": "I have a …"
+      },
+      {
+        "time": "00:38",
+        "seconds": 38.44,
+        "speaker": "Pete",
+        "text": "It is not a pen. It is a book. It is a big book."
+      },
+      {
+        "time": "00:46",
+        "seconds": 45.86,
+        "speaker": "Anna",
+        "text": "Yes. Yes it is, Pete. I know I have a pen, though…",
+        "highlight": "though"
+      },
+      {
+        "time": "00:52",
+        "seconds": 51.52,
+        "speaker": "Anna",
+        "text": "I have a ...."
+      },
+      {
+        "time": "00:54",
+        "seconds": 54.1,
+        "speaker": "Marsha",
+        "text": "It is not a pen, Anna ... a toy?"
+      },
+      {
+        "time": "00:58",
+        "seconds": 58.1,
+        "speaker": "Anna",
+        "text": "I have a ...."
+      },
+      {
+        "time": "01:01",
+        "seconds": 61.46,
+        "speaker": "Pete",
+        "text": "And it is a pillow!"
+      },
+      {
+        "time": "01:05",
+        "seconds": 64.88,
+        "speaker": "Anna",
+        "text": "Pete, Marsha, I know I have a pen."
+      },
+      {
+        "time": "01:10",
+        "seconds": 69.62,
+        "speaker": "Marsha",
+        "text": "Anna, it is a map."
+      },
+      {
+        "time": "01:13",
+        "seconds": 72.54,
+        "speaker": "Pete",
+        "text": "Why do you have a map of the world?",
+        "highlight": "Why do you have"
+      },
+      {
+        "time": "01:16",
+        "seconds": 75.72,
+        "speaker": "Anna",
+        "text": "Pete, Marsha. Now I know I have a pen."
+      },
+      {
+        "time": "01:20",
+        "seconds": 80.32,
+        "speaker": "Pete",
+        "text": "And now you have a lamp."
+      },
+      {
+        "time": "01:23",
+        "seconds": 83.48,
+        "speaker": "Marsha",
+        "text": "Anna."
+      },
+      {
+        "time": "01:24",
+        "seconds": 84.04,
+        "speaker": "Anna",
+        "text": "I have a pen! Let’s get coffee!",
+        "highlight": "Let’s get coffee"
+      }
+    ],
+    "vocabulary": [
+      {
+        "term": "Do you have a pen?",
+        "type": "question",
+        "meaning": "The ordinary way to ask if someone is carrying something. “Do you have” + the thing, with no extra words in between.",
+        "example": "Anna, do you have a pen?"
+      },
+      {
+        "term": "though",
+        "type": "adverb",
+        "meaning": "Tacked onto the end of a sentence to push back gently on what was just said — close to “but still”. Very common in speech, almost never at the start.",
+        "example": "I know I have a pen, though…"
+      },
+      {
+        "term": "Why do you have…?",
+        "type": "question",
+        "meaning": "Asks the reason someone is carrying or keeping something. Not a complaint — usually just surprise.",
+        "example": "Why do you have a map of the world?"
+      },
+      {
+        "term": "Let's get coffee",
+        "type": "phrase",
+        "meaning": "An invitation to go out together. “Get coffee” means the outing, not the drink.",
+        "example": "I have a pen! Let’s get coffee!"
+      }
+    ],
+    "questions": [
+      {
+        "prompt": "What is Anna looking for in her bag?",
+        "options": [
+          "A pen",
+          "A map",
+          "A pillow"
+        ],
+        "answer": 0
+      },
+      {
+        "prompt": "What does she pull out first instead?",
+        "options": [
+          "A pillow",
+          "A big book",
+          "A lamp"
+        ],
+        "answer": 1
+      },
+      {
+        "prompt": "Where do the three of them want to go?",
+        "options": [
+          "To the gym",
+          "To Anna's apartment",
+          "To get coffee"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "title": "Let's Learn English",
+    "author": "VOA Learning English",
+    "topic": "Home",
+    "duration": "61 sec",
+    "episode": "Lesson 5: Where Are You?",
+    "description": "Marsha shows Anna around a house one room at a time. Each room is named, then paired with the thing you do in it.",
+    "tags": [
+      "home",
+      "rooms",
+      "daily life",
+      "conversation",
+      "beginner"
+    ],
+    "level": "Beginner",
+    "cefr": "A1",
+    "speed": "≈ 97 wpm",
+    "newWords": 4,
+    "levelReason": "≈97 wpm with 37% of the running time silent — the most room to think of anything in the catalogue. Two speakers, and every line repeats the room name the line before it introduced",
+    "learningGoal": "Name the rooms of a house and say what happens in each one: cook in the kitchen, relax in the living room, sleep in the bedroom.",
+    "audioSrc": "/audio/voa-lesson-5-where-are-you.mp3",
+    "sourceUrl": "https://learningenglish.voanews.com/a/lets-learn-english-lesson-5-where-are-you/3168971.html",
+    "licence": {
+      "name": "Public domain (U.S. government work)",
+      "url": "https://www.voanews.com/p/5320.html"
+    },
+    "verifiedLesson": true,
+    "transcript": [
+      {
+        "time": "00:01",
+        "seconds": 1.18,
+        "speaker": "Anna",
+        "text": "Hello, everyone! Today my friend Marsha is at her friend's house. She says it is beautiful. I want to see this house! Here we are!"
+      },
+      {
+        "time": "00:15",
+        "seconds": 15.26,
+        "speaker": "Anna",
+        "text": "Marsha, I am in the kitchen! It is a beautiful kitchen!"
+      },
+      {
+        "time": "00:22",
+        "seconds": 21.94,
+        "speaker": "Marsha",
+        "text": "It is beautiful. We cook in the kitchen."
+      },
+      {
+        "time": "00:27",
+        "seconds": 26.84,
+        "speaker": "Anna",
+        "text": "I eat in the kitchen."
+      },
+      {
+        "time": "00:30",
+        "seconds": 30.14,
+        "speaker": "Marsha",
+        "text": "We relax in the living room.",
+        "highlight": "living room"
+      },
+      {
+        "time": "00:34",
+        "seconds": 34.36,
+        "speaker": "Anna",
+        "text": "I relax in the living room. Marsha, let’s go upstairs!",
+        "highlight": "upstairs"
+      },
+      {
+        "time": "00:41",
+        "seconds": 41.2,
+        "speaker": "Marsha",
+        "text": "Anna? Where are you?",
+        "highlight": "Where are you"
+      },
+      {
+        "time": "00:45",
+        "seconds": 45.46,
+        "speaker": "Anna",
+        "text": "Marsha, I am in the bathroom! I wash in the bathroom."
+      },
+      {
+        "time": "00:51",
+        "seconds": 50.9,
+        "speaker": "Marsha",
+        "text": "I am in the bedroom. We sleep in the bedroom."
+      },
+      {
+        "time": "00:56",
+        "seconds": 55.72,
+        "speaker": "Anna",
+        "text": "I sleep in the bedroom!"
+      }
+    ],
+    "vocabulary": [
+      {
+        "term": "Where are you?",
+        "type": "question",
+        "meaning": "Asked when you cannot see the person you are talking to. The answer is “I am in the…” plus a room.",
+        "example": "Anna? Where are you?"
+      },
+      {
+        "term": "living room",
+        "type": "noun",
+        "meaning": "The room a household sits in together. Two words, and neither one is “sitting”.",
+        "example": "We relax in the living room."
+      },
+      {
+        "term": "relax",
+        "type": "verb",
+        "meaning": "To rest and do nothing in particular. Used of people, not of things.",
+        "example": "I relax in the living room."
+      },
+      {
+        "term": "upstairs",
+        "type": "adverb",
+        "meaning": "On or to the floor above. It is already a direction, so it takes no preposition: “go upstairs”, never “go to upstairs”.",
+        "example": "Marsha, let’s go upstairs!"
+      }
+    ],
+    "questions": [
+      {
+        "prompt": "What does Marsha say they do in the kitchen?",
+        "options": [
+          "Cook",
+          "Relax",
+          "Sleep"
+        ],
+        "answer": 0
+      },
+      {
+        "prompt": "What does Anna do in the bathroom?",
+        "options": [
+          "She sleeps",
+          "She washes",
+          "She cooks"
+        ],
+        "answer": 1
+      },
+      {
+        "prompt": "Whose house are they looking at?",
+        "options": [
+          "Anna's new apartment",
+          "A friend of Marsha's",
+          "Pete's house"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "title": "Let's Learn English",
+    "author": "VOA Learning English",
+    "topic": "Directions",
+    "duration": "108 sec",
+    "episode": "Lesson 6: Where Is the Gym?",
+    "description": "Anna wants the gym and keeps finding the mailroom. The same directions come back four times, and each time one more preposition of place has to land.",
+    "tags": [
+      "directions",
+      "prepositions",
+      "buildings",
+      "conversation",
+      "beginner"
+    ],
+    "level": "Beginner",
+    "cefr": "A2",
+    "speed": "≈ 83 wpm",
+    "newWords": 5,
+    "levelReason": "Joint slowest in the catalogue at ≈83 wpm, tied with Lesson 1 over three times the length. What lifts it above the other beginner lessons is not the speed but what has to be tracked: across from, next to and behind all point at rooms you cannot see, and the joke only works if you hear that Anna is getting them wrong",
+    "learningGoal": "Ask where a room is, and understand the answer when it is given as a relation to another room — across from, next to, behind.",
+    "audioSrc": "/audio/voa-lesson-6-where-is-the-gym.mp3",
+    "sourceUrl": "https://learningenglish.voanews.com/a/lets-learn-english-lesson-6-where-is-the-gym/3225958.html",
+    "licence": {
+      "name": "Public domain (U.S. government work)",
+      "url": "https://www.voanews.com/p/5320.html"
+    },
+    "verifiedLesson": true,
+    "transcript": [
+      {
+        "time": "00:02",
+        "seconds": 1.58,
+        "speaker": "Anna",
+        "text": "Hi there! I’m Anna and I live in Washington, D.C. Every day I learn more about this great city. People in Washington like to work out! Oh, hi, Pete. How’s it going?",
+        "highlight": "work out"
+      },
+      {
+        "time": "00:17",
+        "seconds": 17.36,
+        "speaker": "Pete",
+        "text": "Hi, Anna. It’s going great. How’s it going with you?"
+      },
+      {
+        "time": "00:23",
+        "seconds": 23.0,
+        "speaker": "Anna",
+        "text": "Things are awesome! Pete, I want to work out. Where is the gym?"
+      },
+      {
+        "time": "00:30",
+        "seconds": 30.0,
+        "speaker": "Pete",
+        "text": "The gym is across from the lounge. It’s next to the mailroom. Go that way.",
+        "highlight": "across from"
+      },
+      {
+        "time": "00:38",
+        "seconds": 38.08,
+        "speaker": "Anna",
+        "text": "Thanks, Pete!"
+      },
+      {
+        "time": "00:45",
+        "seconds": 45.02,
+        "speaker": "Anna",
+        "text": "Oh, Pete. This is not the gym."
+      },
+      {
+        "time": "00:50",
+        "seconds": 49.72,
+        "speaker": "Pete",
+        "text": "That’s right, Anna. This is the mailroom.",
+        "highlight": "mailroom"
+      },
+      {
+        "time": "00:54",
+        "seconds": 54.12,
+        "speaker": "Anna",
+        "text": "The gym is across from … what?"
+      },
+      {
+        "time": "00:58",
+        "seconds": 57.52,
+        "speaker": "Pete",
+        "text": "The gym is across from the lounge."
+      },
+      {
+        "time": "01:02",
+        "seconds": 61.72,
+        "speaker": "Anna",
+        "text": "Across from the lounge. Right. Thanks!"
+      },
+      {
+        "time": "01:06",
+        "seconds": 66.4,
+        "speaker": "Anna",
+        "text": "Pete! This is not the gym!"
+      },
+      {
+        "time": "01:10",
+        "seconds": 70.1,
+        "speaker": "Pete",
+        "text": "The gym is across from the lounge. It is behind the lobby.",
+        "highlight": "behind"
+      },
+      {
+        "time": "01:16",
+        "seconds": 76.16,
+        "speaker": "Anna",
+        "text": "Right. Right. See you."
+      },
+      {
+        "time": "01:18",
+        "seconds": 78.02,
+        "speaker": "Pete",
+        "text": "See you, Anna!"
+      },
+      {
+        "time": "01:20",
+        "seconds": 80.12,
+        "speaker": "Anna",
+        "text": "See you."
+      },
+      {
+        "time": "01:22",
+        "seconds": 81.68,
+        "speaker": "Pete",
+        "text": "See you, Anna."
+      },
+      {
+        "time": "01:39",
+        "seconds": 99.46,
+        "speaker": "Anna",
+        "text": "Pete! Pete?"
+      },
+      {
+        "time": "01:42",
+        "seconds": 102.02,
+        "speaker": "Pete",
+        "text": "I want to work out too! Join me!"
+      },
+      {
+        "time": "01:46",
+        "seconds": 105.98,
+        "speaker": "Anna",
+        "text": "I’m good."
+      }
+    ],
+    "vocabulary": [
+      {
+        "term": "work out",
+        "type": "phrasal verb",
+        "meaning": "To exercise, usually at a gym. Nothing to do with solving a problem, which is the other meaning of the same two words.",
+        "example": "Pete, I want to work out."
+      },
+      {
+        "term": "across from",
+        "type": "preposition",
+        "meaning": "On the opposite side of a corridor or street, facing it. Two words in American English; British English says “opposite”.",
+        "example": "The gym is across from the lounge."
+      },
+      {
+        "term": "next to",
+        "type": "preposition",
+        "meaning": "Immediately beside, sharing a wall. Closer than “near”.",
+        "example": "It’s next to the mailroom."
+      },
+      {
+        "term": "behind",
+        "type": "preposition",
+        "meaning": "On the far side of, hidden by. Used here of a room you reach by going past another one.",
+        "example": "It is behind the lobby."
+      },
+      {
+        "term": "How's it going?",
+        "type": "greeting",
+        "meaning": "A casual “how are you?”. The expected reply is another set phrase — “It’s going great” — not an actual report.",
+        "example": "Oh, hi, Pete. How’s it going?"
+      }
+    ],
+    "questions": [
+      {
+        "prompt": "Where is the gym?",
+        "options": [
+          "Next to the lobby",
+          "Across from the lounge",
+          "Inside the mailroom"
+        ],
+        "answer": 1
+      },
+      {
+        "prompt": "Which room does Anna walk into by mistake?",
+        "options": [
+          "The lounge",
+          "The mailroom",
+          "The gym"
+        ],
+        "answer": 1
+      },
+      {
+        "prompt": "What does Pete mean by “work out”?",
+        "options": [
+          "Exercise at the gym",
+          "Solve a problem",
+          "Leave the building"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "title": "Let's Learn English",
+    "author": "VOA Learning English",
+    "topic": "Directions",
+    "duration": "91 sec",
+    "episode": "Lesson 10: Come Over to My Place",
+    "description": "Ashley is coming over and cannot find the building. Anna gives directions from the Metro, then has to add a landmark when the first set turns out not to be enough.",
+    "tags": [
+      "directions",
+      "phone call",
+      "city",
+      "conversation",
+      "beginner"
+    ],
+    "level": "Beginner",
+    "cefr": "A2",
+    "speed": "≈ 97 wpm",
+    "newWords": 5,
+    "levelReason": "≈97 wpm, and it is a phone call — no face to read, and the directions arrive as a list: exit, turn right, turn left, straight ahead. Ashley repeats each step back, which is the lesson's own admission that four instructions at once is the hard part",
+    "learningGoal": "Give and confirm directions on the phone — exit, turn right, straight ahead — and fall back on a landmark when the address is not enough.",
+    "audioSrc": "/audio/voa-lesson-10-come-over.mp3",
+    "sourceUrl": "https://learningenglish.voanews.com/a/lets-learn-english-lesson-10/3285228.html",
+    "licence": {
+      "name": "Public domain (U.S. government work)",
+      "url": "https://www.voanews.com/p/5320.html"
+    },
+    "verifiedLesson": true,
+    "transcript": [
+      {
+        "time": "00:01",
+        "seconds": 0.9,
+        "speaker": "Anna",
+        "text": "Hi! Today, my friend Ashley, is coming over. I am showing her my new apartment! Oh! That’s Ashley calling.",
+        "highlight": "coming over"
+      },
+      {
+        "time": "00:13",
+        "seconds": 12.66,
+        "speaker": "Anna",
+        "text": "Hi Ashley!"
+      },
+      {
+        "time": "00:14",
+        "seconds": 14.04,
+        "speaker": "Ashley",
+        "text": "Hi Anna! I’m coming to your apartment. Where is your apartment?"
+      },
+      {
+        "time": "00:19",
+        "seconds": 18.84,
+        "speaker": "Anna",
+        "text": "My apartment is near the Columbia Heights Metro."
+      },
+      {
+        "time": "00:23",
+        "seconds": 22.72,
+        "speaker": "Ashley",
+        "text": "It is near the Columbia Heights Metro?"
+      },
+      {
+        "time": "00:25",
+        "seconds": 25.26,
+        "speaker": "Anna",
+        "text": "Yes. Exit the Metro and turn right. Then at the bus station turn left. Then walk straight ahead.",
+        "highlight": "turn right"
+      },
+      {
+        "time": "00:33",
+        "seconds": 33.32,
+        "speaker": "Ashley",
+        "text": "Okay. Exit Metro, turn right, turn left, then go straight ahead?",
+        "highlight": "straight ahead"
+      },
+      {
+        "time": "00:40",
+        "seconds": 39.92,
+        "speaker": "Anna",
+        "text": "Yes. My apartment is near a coffee shop."
+      },
+      {
+        "time": "00:44",
+        "seconds": 43.62,
+        "speaker": "Ashley",
+        "text": "Okay. See you soon!"
+      },
+      {
+        "time": "00:48",
+        "seconds": 48.46,
+        "speaker": "Anna",
+        "text": "Hi, Ashley."
+      },
+      {
+        "time": "00:50",
+        "seconds": 50.26,
+        "speaker": "Ashley",
+        "text": "Anna, Which coffee shop? There are three coffee shops."
+      },
+      {
+        "time": "00:54",
+        "seconds": 54.04,
+        "speaker": "Anna",
+        "text": "Okay, my apartment is across from a big department store.",
+        "highlight": "across from"
+      },
+      {
+        "time": "00:59",
+        "seconds": 59.32,
+        "speaker": "Ashley",
+        "text": "A big department store? Ah, I see it!"
+      },
+      {
+        "time": "01:03",
+        "seconds": 63.12,
+        "speaker": "Anna",
+        "text": "Okay! Bye, Ashley. See you soon!"
+      },
+      {
+        "time": "01:05",
+        "seconds": 65.48,
+        "speaker": "Ashley",
+        "text": "Okay. See you soon."
+      },
+      {
+        "time": "01:14",
+        "seconds": 73.76,
+        "speaker": "Anna",
+        "text": "Ashley! Ashley! Ashley! Over here! It’s Anna! It’s Anna! Hi!"
+      },
+      {
+        "time": "01:25",
+        "seconds": 85.44,
+        "speaker": "Anna",
+        "text": "I love having my friends over. Come on!"
+      }
+    ],
+    "vocabulary": [
+      {
+        "term": "come over",
+        "type": "phrasal verb",
+        "meaning": "To visit somebody at their home. “Over” carries the whole idea of crossing town to get there.",
+        "example": "Today, my friend Ashley is coming over."
+      },
+      {
+        "term": "exit",
+        "type": "verb",
+        "meaning": "To leave a building or a station. Used as a verb here, which is mostly an American habit; the noun is far more common.",
+        "example": "Exit the Metro and turn right."
+      },
+      {
+        "term": "turn right",
+        "type": "phrase",
+        "meaning": "Change direction to the right. No preposition: “turn right”, never “turn to right”.",
+        "example": "Exit the Metro and turn right."
+      },
+      {
+        "term": "straight ahead",
+        "type": "phrase",
+        "meaning": "Directly forward, without turning. Answers “which way”, not “how far”.",
+        "example": "Then walk straight ahead."
+      },
+      {
+        "term": "department store",
+        "type": "noun",
+        "meaning": "A large shop selling many kinds of goods on several floors. Big enough to be a landmark, which is exactly what it is used for here.",
+        "example": "My apartment is across from a big department store."
+      }
+    ],
+    "questions": [
+      {
+        "prompt": "Which Metro station is Anna's apartment near?",
+        "options": [
+          "Union Station",
+          "Columbia Heights",
+          "Dupont Circle"
+        ],
+        "answer": 1
+      },
+      {
+        "prompt": "After leaving the Metro, what does Ashley do first?",
+        "options": [
+          "Turn left",
+          "Turn right",
+          "Walk straight ahead"
+        ],
+        "answer": 1
+      },
+      {
+        "prompt": "What finally helps Ashley find the apartment?",
+        "options": [
+          "A big department store",
+          "One of the three coffee shops",
+          "The bus station"
+        ],
+        "answer": 0
       }
     ]
   }

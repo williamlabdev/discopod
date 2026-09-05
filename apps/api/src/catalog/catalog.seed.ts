@@ -141,6 +141,8 @@ interface SeedRow {
   audioSrc?: string;
   sourceUrl?: string;
   licence?: { name: string; url: string };
+  /** Absent means the publisher's file ships unchanged. See `Episode.audioModified`. */
+  audioModified?: boolean;
   verifiedLesson?: boolean;
   transcript: { time: string; seconds?: number; speaker?: string; text: string; highlight?: string }[];
   vocabulary: { term: string; type: string; meaning: string; example: string }[];
@@ -312,6 +314,12 @@ function loadSeedFile(
       // from a per-row field nobody would keep correct. A second script arrives
       // the way a second language does — as its own file, not as a column.
       transcriptLanguage: pair.learning,
+      // Per episode, not only per show. The show gets these from whichever row
+      // claimed its id first, which is a false credit for every other row under
+      // it — see the field comment on `Episode.sourceUrl`.
+      sourceUrl: row.sourceUrl,
+      licence: row.licence,
+      audioModified: row.audioModified,
       transcript,
       vocabulary: row.vocabulary.map((entry) => ({
         term: entry.term,

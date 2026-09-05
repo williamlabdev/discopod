@@ -230,8 +230,9 @@ itself, and giving that build a database would make a deploy depend on one.
 3. `curl "localhost:3001/api/episodes/start-here?level=Beginner"` → an episode with a
    stated reason. This is the vision's "state the reason" principle, observable from
    the command line.
-4. Open the web app, play Lesson 1 — it is the one episode with real publisher audio
-   and a synced transcript, so it is what to demo.
+4. Open the web app and play anything — all nine episodes have real publisher audio and a
+   synced transcript. Lesson 5 (`/zh-Hant/en/episode/10`) is the gentlest, 吳宗憲
+   (`/en/zh-Hant/episode/104`) the hardest.
 
 ## What is verified, and what is not
 

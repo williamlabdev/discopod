@@ -98,6 +98,11 @@ export interface Episode {
   profile: DifficultyProfile;
   /** The written form `transcript[].text` is in — the pair's `learning` side. */
   transcriptLanguage: LanguageTag;
+  /** This episode's own source and terms; the show's are the fallback. */
+  sourceUrl?: string;
+  licence?: { name: string; url: string };
+  /** True when the audio was excerpted or re-encoded here, rather than shipped as published. */
+  audioModified?: boolean;
   transcript: TranscriptCue[];
   vocabulary: VocabularyEntry[];
   questions: ComprehensionQuestion[];
