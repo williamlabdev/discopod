@@ -23,6 +23,7 @@ import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { AutoTranslated } from './auto-translated';
 import { LEARNING_LEVELS, type DiscoverCatalogue, type EpisodeCard, type LearningLevel } from '@/lib/catalogue';
 import { LANGUAGE_NAMES, pairPath, type LanguagePair } from '@/lib/language';
 import { readList, writeList } from '@/lib/learner-store';
@@ -315,6 +316,7 @@ export function Discover({
                   <span className="flex items-center gap-1.5"><Gauge className="size-3.5" />{startHere.speed}</span>
                   <span className="flex items-center gap-1.5"><Users className="size-3.5" />{startHere.voices}</span>
                   <span className="flex items-center gap-1.5"><Clock3 className="size-3.5" />{startHere.duration}</span>
+                  {startHere.autoTranslated && <AutoTranslated />}
                 </div>
                 <a className="mt-5 inline-flex h-10 items-center gap-2 rounded-full bg-foreground px-5 text-sm font-semibold text-background transition hover:bg-foreground/85" href={`${home}/episode/${startHere.id}`}>Start with this one<ArrowRight className="size-4" /></a>
               </div>
@@ -379,6 +381,7 @@ export function Discover({
                           {card.newWords > 0 && <span className="flex items-center gap-1.5"><BookOpenText className="size-3.5" />{card.newWords} new words</span>}
                           {card.ratedBy === 'transcript-only' && <span className="rounded-full bg-background px-2 py-0.5 font-semibold text-foreground">Transcript-only rating</span>}
                           <span className="flex items-center gap-1.5"><Clock3 className="size-3.5" />{card.duration}</span>
+                          {card.autoTranslated && <AutoTranslated />}
                         </div>
                       </div>
                       <a className="mt-3 flex h-10 items-center justify-center gap-2 rounded-full border border-border text-sm font-semibold transition hover:border-foreground/25 hover:bg-secondary" href={`${home}/episode/${card.id}`}>Start lesson<ArrowRight className="size-4" /></a>

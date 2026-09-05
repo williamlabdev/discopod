@@ -9,6 +9,7 @@ import type { LearningLevel, VocabularyItem } from '@/lib/catalogue';
 import { pairPath, type LanguagePair } from '@/lib/language';
 import { formatPosition, readAllProgress, readList } from '@/lib/learner-store';
 import { createSavedWord, type SavedWord } from '@/lib/saved-words';
+import { AutoTranslated } from '../auto-translated';
 import { PairNav } from '../pair-nav';
 
 export interface EpisodeVocabulary {
@@ -16,6 +17,8 @@ export interface EpisodeVocabulary {
   episodeTitle: string;
   showTitle: string;
   level: LearningLevel;
+  /** Whether the meanings below were machine-written for this pair's learner language. */
+  autoTranslated: boolean;
   vocabulary: VocabularyItem[];
 }
 
@@ -64,16 +67,41 @@ export function VocabularyList({
     });
   }, [episodes, pair]);
 
-  const isSample = rows !== null && rows.length === 0;
+  /**
+   * Whether this pair's episodes carry any authored word list at all.
+   *
+   * ADR 0016 made `vocabulary` a lesson artifact, so an ingested podcast
+   * episode ships an empty one — and ADR 0003 drops any entry missing the
+   * learner's language, which for a pair whose overlay translates only the
+   * transcript is every entry there is. Both are legitimate empties, and
+   * together they mean a whole pair can have nothing to save from. The page
+   * has to be able to say that, because "nothing saved yet" is a different
+   * sentence from "nothing here can be saved".
+   */
+  const pairHasVocabulary = useMemo(
+    () => episodes.some((episode) => episode.vocabulary.length > 0),
+    [episodes],
+  );
 
   const sample = useMemo((): Row[] => {
-    if (!isSample) return [];
+    if (rows === null || rows.length > 0) return [];
     return episodes.slice(0, SAMPLE_PER_EPISODE.length).flatMap((episode, index) =>
       episode.vocabulary
         .slice(0, SAMPLE_PER_EPISODE[index])
         .map((item) => ({ word: createSavedWord(pair, episode.id, item), episode })),
     );
-  }, [episodes, isSample, pair]);
+  }, [episodes, pair, rows]);
+
+  /**
+   * A sample is shown when there is one, not merely when nothing is saved.
+   *
+   * These used to be the same condition, and on a pair whose episodes carry no
+   * word list the notice rendered above an empty list — announcing entries
+   * "from the episodes below" with no episodes below it, and then contradicting
+   * itself two lines later with "no words saved yet". The notice is now tied to
+   * the rows it describes.
+   */
+  const isSample = sample.length > 0;
 
   // Memoised, not derived inline: `rows ?? []` is a fresh array on every
   // render, which would make the filter below recompute every time.
@@ -144,7 +172,9 @@ export function VocabularyList({
           <p className="py-12 text-sm text-muted-foreground">
             {query.trim()
               ? `Nothing saved matches “${query.trim()}”.`
-              : 'No words saved under this pair yet.'}
+              : pairHasVocabulary
+                ? 'No words saved under this pair yet.'
+                : 'No episode in this pair carries a word list yet, so there is nothing here to save from. This page fills up as soon as one does.'}
           </p>
         ) : (
           <div className="mt-10 space-y-10">
@@ -156,9 +186,12 @@ export function VocabularyList({
                       {group.episode.episodeTitle}
                     </Link>
                   </h2>
-                  <p className="text-xs text-muted-foreground">
-                    {group.episode.showTitle} · {group.episode.level} · {group.words.length}{' '}
-                    {group.words.length === 1 ? 'word' : 'words'}
+                  <p className="flex flex-wrap items-baseline gap-x-2 text-xs text-muted-foreground">
+                    <span>
+                      {group.episode.showTitle} · {group.episode.level} · {group.words.length}{' '}
+                      {group.words.length === 1 ? 'word' : 'words'}
+                    </span>
+                    {group.episode.autoTranslated && <AutoTranslated />}
                   </p>
                 </div>
                 <ul className="mt-4 grid gap-3 md:grid-cols-2">

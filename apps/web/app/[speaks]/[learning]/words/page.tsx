@@ -40,6 +40,7 @@ export default async function VocabularyPage({ params }: { params: PairParams })
             episodeTitle: episode.episodeTitle,
             showTitle: episode.showTitle,
             level: episode.level,
+            autoTranslated: episode.autoTranslated,
             vocabulary: episode.vocabulary,
           },
         ]

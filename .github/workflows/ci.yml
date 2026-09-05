@@ -98,6 +98,20 @@ jobs:
           # the fit percentage is computed by the API's ranker, never authored.
           test -f apps/web/out/zh-Hant/en/episode/7.html
           grep -q '% fit' apps/web/out/en/zh-Hant.html
+          # Vietnamese (ADR 0018) is a whole third pair, and the export is where a
+          # pair regression shows first (ADR 0012). Assert the subtree, the absence
+          # of a pair nothing seeds, and that the learner-language text really is
+          # Vietnamese — a missing `vi` key is an exclusion, so a broken Localized
+          # write drops content silently rather than failing the build (ADR 0003).
+          test -f apps/web/out/vi/zh-Hant.html
+          test -f apps/web/out/vi/zh-Hant/episode/200.html
+          test ! -e apps/web/out/vi/en.html
+          grep -q 'Tiếng Việt' apps/web/out/index.html
+          grep -q 'tiếng' apps/web/out/vi/zh-Hant.html
+          # The word count is the count of entries carrying a `vi` meaning, so this
+          # line is absent for the whole pair the moment vocabulary stops being
+          # translated — which is what it looked like before ADR 0018 was finished.
+          grep -q 'new words' apps/web/out/vi/zh-Hant.html
 
       # Boot the API and check the health endpoint Render will probe.
       - name: Smoke test the API

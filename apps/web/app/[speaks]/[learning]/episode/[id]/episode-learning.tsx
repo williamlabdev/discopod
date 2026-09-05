@@ -25,6 +25,7 @@ import {
 
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { AutoTranslated } from '../../auto-translated';
 import type { EpisodeDetail } from '@/lib/catalogue';
 import { LANGUAGE_NAMES, pairPath, type LanguagePair } from '@/lib/language';
 import { legacyProgressKey, progressKey } from '@/lib/learner-store';
@@ -222,6 +223,12 @@ export function EpisodeLearning({ episode, pair }: { episode: EpisodeDetail; pai
               <span className="flex items-center gap-2 rounded-full bg-secondary px-3 py-2"><Gauge className="size-4" />{episode.speed}</span>
               {episode.newWords > 0 && <span className="flex items-center gap-2 rounded-full bg-secondary px-3 py-2"><BookOpenText className="size-4" />{episode.newWords} new words</span>}
               {episode.ratedBy === 'transcript-only' && <span className="flex items-center gap-2 rounded-full bg-secondary px-3 py-2 text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">Transcript-only rating</span>}
+              {/* The transcript panel has its own badge, on `overlayVerified`,
+                  which is about the cue translations alone. This one is about
+                  the goal line above it and the meanings in the Vocabulary tab
+                  — the learner-language prose that is on screen before the
+                  transcript is. */}
+              {episode.autoTranslated && <span className="flex items-center gap-2 rounded-full bg-secondary px-3 py-2"><AutoTranslated /></span>}
             </div>
             {/* A link credits the author; it does not name the terms, and under
                 share-alike those are two obligations rather than one. So a show
@@ -300,7 +307,7 @@ export function EpisodeLearning({ episode, pair }: { episode: EpisodeDetail; pai
               {hasTranslations && (
                 <div className="flex items-center justify-end border-b border-border/70 py-3">
                   <div className="flex items-center gap-3">
-                    {episode.overlayVerified === false && <span className="text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">Auto-translated</span>}
+                    {episode.overlayVerified === false && <AutoTranslated />}
                     <button type="button" onClick={() => setShowTranslation((value) => !value)} aria-pressed={showTranslation} className="rounded-full border border-border px-3 py-1.5 text-xs font-semibold text-muted-foreground transition hover:text-foreground">
                       {showTranslation ? 'Hide translation' : 'Show translation'}
                     </button>

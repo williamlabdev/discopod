@@ -508,6 +508,69 @@ had), which is why there is no confirmation dialog. The sample list has no X at 
 nothing there was ever written to the device, so there is nothing to remove; the notice
 says that too.
 
+## The Vietnamese pair had no vocabulary at all (2026-09-05)
+
+`vi → zh-Hant` shipped in PR #17 and everything structural about it worked — the pair
+chooser offered it, all 28 routes prerendered, `<div lang="vi">` was right. What did not
+work was the half nothing checks: of the 86 `vocabulary[].meaning` values across the 25
+podcast episodes, **zero carried a `vi` key**. Under ADR 0003 a missing key excludes, so
+the Vocabulary tab correctly did not render, `/vi/zh-Hant/words` correctly showed nothing,
+and the page then contradicted itself — a sample notice promising "real vocabulary entries
+from the episodes below" stacked on top of "No words saved under this pair yet."
+
+Nothing failed. That is the whole point of the entry: **an exclusion rule turns missing
+content into a smaller page, not into an error.** Lint, typecheck, tests, the build and CI
+were all green with an entire feature dark for an entire pair.
+
+Fixed in three places at once so a re-ingest reproduces it rather than reverting it:
+`definitionVi` in `vocab.seed.json` (the input), `meaning: { en, ...(definitionVi ? { vi }
+: {}) }` in `podcasts-from-folder.ts` (the script), and `meaning.vi` in
+`catalog.en-zh-Hant.podcasts.seed.json` (the output) — the ingest's `--source` folder lives
+outside the repo, so the seed cannot simply be regenerated here. **Never write `vi:
+entry.definition`**: an English gloss under a Vietnamese key is exactly what the exclusion
+rule exists to prevent, and it would look fixed.
+
+Five embedded Chinese strings inside the definitions were simplified (`上山下乡`,
+`肌萎缩侧索硬化症`, `破烂`, `跟……有关系`, `九年义务教育漏网之鱼`) while the headword beside
+them was traditional. Converted in both `en` and `vi`, by hand, from the `traditional`
+field already in `vocab.seed.json` — not by a general Hant↔Hans pass, which stays
+forbidden (ADR 0006).
+
+The CI check that would have caught this is `grep -q 'new words' out/vi/zh-Hant.html`: the
+count comes from entries carrying a `vi` meaning, so the line disappears for the whole pair
+the moment the translation does. See ADR 0019 decision 4.
+
+**Open, and William's call:** [ADR 0016](docs/adr/0016-authored-vocabulary-is-a-lesson-artifact.md)
+decision 1 says every ingested episode ships `vocabulary: []`, because choosing five terms
+for a 22-minute conversation is a fabricated claim about which five matter. The shipped
+seed carries **86 entries across 21 of the 25 podcast episodes**, extracted by
+`vocab.seed.json` and emitted by `vocabularyFor()`. That reversal arrived without an ADR
+and is still unrecorded. The work above translates the entries that are there; it does not
+decide they belong there. Either ADR 0016 gets superseded, or the entries come out — and
+if they come out, `definitionVi` goes with them.
+
+## "Auto-translated" was two clicks from the text it described (2026-09-05)
+
+ADR 0017 gated the label on `overlayVerified === false` and put it inside the transcript
+panel, which was right when the transcript overlay was the only machine translation in the
+app. In `vi → zh-Hant` the description, the level reason, the learning goal, the fit reason
+and every vocabulary meaning are machine-written too — four sentences of it on the discover
+card, before the learner opens anything.
+
+`overlayVerified` and `authoredBy[speaks]` are **different claims about different text**,
+and the second one depends on which pair you are in: the same episode is hand-written
+English and machine-written Vietnamese at once. So the label is now driven by
+`EpisodeCard.autoTranslated` (`authoredBy?.[pair.speaks] === 'auto-translated'`, resolved
+in `lib/catalogue.ts`) and renders on the discover cards, the start-here block, the
+learning-list rows, the vocabulary page's episode headings and the episode header. The
+transcript panel keeps its own badge on `overlayVerified`, because that badge is about the
+cues. One component: `app/[speaks]/[learning]/auto-translated.tsx`. ADR 0019.
+
+The English pair shows no card-level label because `authoredBy` records only `vi`. If the
+English author copy turns out to be model-written as well, that is an `authoredBy.en` line
+in the seed and no code change.
+
+
 ## Next steps, in order
 
 1. ~~**Get one Mandarin episode on screen.**~~ **Done 2026-09-05.** With `cpm` calibrated
