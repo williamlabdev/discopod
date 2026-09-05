@@ -354,6 +354,81 @@ skip cannot go unnoticed — CI run
 [33937079531](https://github.com/williamlabdev/discopod/actions/runs/33937079531) is green
 with all 17 running there, and the second smoke test answering `"storage":"postgres"`.
 
+## The catalogue is nine episodes, not two (2026-09-05)
+
+Both pairs had exactly one episode each, which is enough to prove a pipeline and not enough
+to rank anything. Seven were added: **five English**, so a Chinese speaker learning English
+has something to move between, and **two Mandarin**, so the other direction is not a single
+fishing harbour.
+
+| Pair | Episodes | Source |
+| --- | --- | --- |
+| `zh-Hant → en` | 7, **8, 9, 10, 11, 12** | VOA *Let's Learn English*, Lessons 1, 2, 4, 5, 6, 10 |
+| `en → zh-Hant` | 102, **103, 104** | Spoken Chinese Wikipedia — 海山漁港, 鄧福如, 吳宗憲（音樂家） |
+
+Lessons 3, 7, 8 and 9 were skipped, not missed: they are grammar-drill or pronunciation
+segments rather than dialogues, so there is no conversation to rank for followability.
+
+**The two new Mandarin episodes are still encyclopedia readings**, so the strain on ADR 0007
+recorded above is unchanged and now three deep. What did improve: 吳宗憲（音樂家） is the first
+one whose Commons page **cites the article revision itself** (`oldid=48124446`), instead of
+leaving it to be reconstructed from an upload date. Prefer files with a `Speaker:` field and
+a cited `oldid` — they exist, and they remove the weakest link in the attribution chain.
+
+**The overlay is keyed by rounded seconds, not by the seed's `time` string.**
+`catalog.overlay.ts`'s `cueTime` is `MM:SS` of `Math.round(startMs / 1000)`, while the seed's
+decorative `time` field is not always the same rounding. A translation keyed off the seed
+string silently fails to attach — no error, just an untranslated cue. All 85 new cue
+translations are generated from `Math.round(seconds)`, and no lesson has two cues rounding
+to the same second (checked, because that would be a silent overwrite).
+
+**Three of the seven speech rates in the seed did not reproduce.** Lesson 2 was written as
+120 wpm and measures 112; Lesson 5 said 100 and measures 97; Lesson 6 said 84 and measures 83;
+鄧福如 said 177 cpm and measures 172; 吳宗憲 said 178 and measures 173. All are now recomputed
+under one stated convention — **words (or Han characters, digits excluded) over the speech
+span**, first onset to last offset, internal pauses in, leading and trailing silence out — and
+the prose in `levelReason` that quoted the old numbers moved with them. The convention, and
+the reasons for the two loudness decisions below, are
+[ADR 0013](docs/adr/0013-measure-the-rate-over-the-speech-span.md); the measurements
+themselves are in `ATTRIBUTION.md`, so the next number can be checked rather than trusted.
+
+**The five VOA files ship byte-for-byte unmodified**, confirmed by `content-length` on the
+source URL. That has a visible cost: their integrated loudness spans **8 dB** (−25.2 to
+−17.1 LUFS), so a learner moving from Lesson 1 to Lesson 5 reaches for the volume. Normalising
+them was rejected — public-domain status permits it, but modifying a publisher's audio to
+match two Wikipedia readings that had to be normalised for an unrelated reason is the less
+honest of the two options. The variance is written down in `ATTRIBUTION.md` instead, and it is
+reversible the day the player grows a gain control.
+
+**The two Mandarin excerpts needed *dynamic* loudness normalisation**, where 海山漁港 got
+linear. 鄧福如 measures `input_i −25.60 LUFS` against `input_tp −7.56 dBTP`: +9.6 dB of gain
+wanted, 7.6 dB of headroom available, so linear clips. 吳宗憲 is the same shape with smaller
+numbers. Dynamic normalisation changes the internal level relationships of a recording, so it
+is declared as a modification under BY-SA rather than filed under transcoding.
+
+**A second episode under a show exposed a false attribution.** `sourceUrl` and `licence`
+lived only on `Show`, and a `Show` is built from whichever seed row claims its id first — so
+all three spoken-Wikipedia episodes credited 海山漁港's Commons file, and five VOA lessons
+linked to Lesson 1's page. Under BY-SA, crediting the wrong author is a licence breach, not a
+stale link. Both fields now exist on `Episode` too, and resolution is **episode first, show as
+fallback**: a show whose episodes really do share one source states it once, and a corpus-shaped
+"show" states it per episode. Verified in the built HTML, not in the source.
+
+**The credit line no longer claims a modification nobody made.** Fixing the above gave the six
+VOA episodes a licence, and the sentence printed for anything with a licence read *"Excerpted
+and re-timed for language learning"* — false for files that ship byte for byte. `audioModified`
+is now a seed field: set on the three excerpts, absent on the six VOA lessons, which instead
+print *"The publisher's own file, unmodified; only the cue timings were added here."* Same
+class as commit "stop claiming what the audio is not" (#2), and the same rule — the page states
+what was done, and nothing more.
+
+**Still unverified by ear.** Every excerpt boundary was settled on pause structure, character
+counts and ASR text — nobody in this session could listen to the audio. Both cuts land on a
+complete published text unit (鄧福如 = the lead exactly, 吳宗憲 = the `== 生平 ==` section
+exactly) and both deliberately exclude the reader's spoken section numbers, which are not in
+the published text and so cannot be transcribed under ADR 0010. That is the same gap ADR 0010
+decision 5 recorded rather than closed.
+
 ## Next steps, in order
 
 1. ~~**Get one Mandarin episode on screen.**~~ **Done 2026-09-05.** With `cpm` calibrated

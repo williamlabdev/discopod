@@ -3,7 +3,7 @@
     "id": 102,
     "showId": "zh-wikipedia-spoken",
     "title": "中文維基百科有聲條目",
-    "author": "維基百科社群 · 朗讀 Yuriy kosygin",
+    "author": "維基百科社群",
     "topic": "Places",
     "duration": "84 sec",
     "episode": "海山漁港（條目導言）",
@@ -17,9 +17,9 @@
     ],
     "level": "Intermediate",
     "cefr": "B1",
-    "speed": "≈ 144 cpm",
+    "speed": "≈ 143 cpm",
     "newWords": 5,
-    "levelReason": "A third of the passage is silence — 35 pauses in 84 seconds — so each clause lands before the next one starts. The speed is not what makes this Intermediate; the vocabulary is: harbour and inshore-fishing terms arrive one per sentence with no repetition, and the last two lines are a list of six fish",
+    "levelReason": "A third of the passage is silence — 33 pauses totalling 27.6 s of its 83.5 s — so each clause lands before the next one starts. The speed is not what makes this Intermediate; the vocabulary is: harbour and inshore-fishing terms arrive one per sentence with no repetition, and the last two lines are a list of six fish",
     "learningGoal": "Follow a Taiwanese reference article read at teaching pace, and learn the frame Chinese uses to put a place on the map: 位於 for the address, 西臨 for what it faces, and a compass direction with a distance for everything nearby.",
     "audioSrc": "/audio/haishan-lead.mp3",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Zh-%E6%B5%B7%E5%B1%B1%E6%BC%81%E6%B8%AF.ogg",
@@ -27,6 +27,7 @@
       "name": "CC BY-SA 4.0",
       "url": "https://creativecommons.org/licenses/by-sa/4.0/"
     },
+    "audioModified": true,
     "verifiedLesson": false,
     "transcript": [
       {
@@ -180,6 +181,374 @@
           "They put out to sea to ride out the storm"
         ],
         "answer": 1
+      }
+    ]
+  },
+  {
+    "id": 103,
+    "showId": "zh-wikipedia-spoken",
+    "title": "中文維基百科有聲條目",
+    "author": "維基百科社群",
+    "topic": "Music",
+    "duration": "71 sec",
+    "episode": "鄧福如（條目導言）",
+    "description": "The opening of the Chinese Wikipedia article on 鄧福如 (A-Fu), a Taiwanese singer-songwriter, read aloud for the spoken-articles project. Seventy seconds of encyclopedic prose about a pop career: a university band, a record label, a YouTube breakout and a Golden Melody nomination.",
+    "tags": [
+      "music",
+      "taiwan",
+      "biography",
+      "pop",
+      "read aloud"
+    ],
+    "level": "Advanced",
+    "cefr": "B2",
+    "speed": "≈ 172 cpm",
+    "newWords": 5,
+    "levelReason": "Fast, and almost unbroken. 204 characters in 71.3 seconds is ≈172 cpm, a fifth quicker than the other spoken-article episode here, and the reader barely stops: at a −40 dB threshold there are 3 pauses totalling 1.15 s, 1.6% of the file, against 33% for 海山漁港. The recording carries an audible room floor near −40 dB, so the count moves with the threshold — at −30 dB it is 7 pauses and 4.69 s. Either way there is no gap to think in, and the vocabulary is the music industry's",
+    "learningGoal": "Follow a fast, unbroken encyclopedia paragraph about a pop career, and pick up the Taiwanese music-business vocabulary that carries it: 旗下 for who a singer records for, 出道 for the start of a career, 爆紅 for going viral, and 入圍 for being shortlisted rather than winning.",
+    "audioSrc": "/audio/deng-furu-lead.mp3",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Zh-tw-%E9%84%A7%E7%A6%8F%E5%A6%82.ogg",
+    "licence": {
+      "name": "CC BY-SA 4.0",
+      "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+    },
+    "audioModified": true,
+    "verifiedLesson": false,
+    "transcript": [
+      {
+        "time": "00:01",
+        "seconds": 0.92,
+        "text": "鄧福如，出生於1987年6月20日，"
+      },
+      {
+        "time": "00:05",
+        "seconds": 5.38,
+        "text": "台灣新竹市人、"
+      },
+      {
+        "time": "00:08",
+        "seconds": 7.5,
+        "text": "華語流行音樂女歌手、"
+      },
+      {
+        "time": "00:10",
+        "seconds": 10.22,
+        "text": "已解散樂團LazyBomb主唱，"
+      },
+      {
+        "time": "00:14",
+        "seconds": 13.9,
+        "text": "現為豐華唱片旗下歌手，",
+        "highlight": "旗下"
+      },
+      {
+        "time": "00:18",
+        "seconds": 17.62,
+        "text": "經紀公司為新視麗娛樂創作。"
+      },
+      {
+        "time": "00:22",
+        "seconds": 22.08,
+        "text": "鄧福如個人發行了三張錄音室專輯"
+      },
+      {
+        "time": "00:26",
+        "seconds": 26.4,
+        "text": "及一張迷你專輯（EP），"
+      },
+      {
+        "time": "00:28",
+        "seconds": 28.14,
+        "text": "也曾在台灣和香港舉辦個人售票演唱會。"
+      },
+      {
+        "time": "00:33",
+        "seconds": 32.94,
+        "text": "擁有清亮嗓音的鄧福如，"
+      },
+      {
+        "time": "00:36",
+        "seconds": 35.82,
+        "text": "演唱的歌曲多為節奏藍調及輕電子音樂，",
+        "highlight": "節奏藍調"
+      },
+      {
+        "time": "00:42",
+        "seconds": 41.56,
+        "text": "又有多首搖滾抒情和民俗小調的中國風作品。"
+      },
+      {
+        "time": "00:48",
+        "seconds": 47.78,
+        "text": "鄧福如出道前，曾上載多支翻唱及創作作品至YouTube，",
+        "highlight": "出道"
+      },
+      {
+        "time": "00:54",
+        "seconds": 53.82,
+        "text": "吸引逾百萬的點擊率而網路爆紅。",
+        "highlight": "爆紅"
+      },
+      {
+        "time": "00:59",
+        "seconds": 58.84,
+        "text": "成為正式歌手後，"
+      },
+      {
+        "time": "01:01",
+        "seconds": 61.26,
+        "text": "憑在2011年首張推出的專輯"
+      },
+      {
+        "time": "01:05",
+        "seconds": 65.34,
+        "text": "《原來如此!!》入圍第23屆金曲獎最佳新人獎。",
+        "highlight": "入圍"
+      }
+    ],
+    "vocabulary": [
+      {
+        "term": "出道",
+        "type": "verb",
+        "meaning": "To debut — to begin a professional career in entertainment. Chinese pop writing organises a whole career around the word: 出道前 is everything that came before, 出道後 everything after.",
+        "example": "鄧福如出道前，曾上載多支翻唱及創作作品至YouTube，"
+      },
+      {
+        "term": "旗下",
+        "type": "noun",
+        "meaning": "Under the banner of — the phrase for who an artist is signed to. 豐華唱片旗下歌手 is a singer on the Forward Music label. It works for companies and teams as readily as for record labels.",
+        "example": "現為豐華唱片旗下歌手，"
+      },
+      {
+        "term": "節奏藍調",
+        "type": "noun",
+        "meaning": "R&B. This is the Taiwanese term; mainland writing says 節奏布魯斯 for the same music, and the article carries a conversion rule holding both, because it has to serve readers of each.",
+        "example": "演唱的歌曲多為節奏藍調及輕電子音樂，"
+      },
+      {
+        "term": "爆紅",
+        "type": "verb",
+        "meaning": "To blow up — to become suddenly and hugely popular. 爆 is to explode, 紅 is to be famous, and the compound is almost always about the internet.",
+        "example": "吸引逾百萬的點擊率而網路爆紅。"
+      },
+      {
+        "term": "入圍",
+        "type": "verb",
+        "meaning": "To be shortlisted or nominated. Not to win: 得獎 is winning, and Chinese entertainment writing keeps the two strictly apart.",
+        "example": "《原來如此!!》入圍第23屆金曲獎最佳新人獎。"
+      }
+    ],
+    "questions": [
+      {
+        "prompt": "What did Deng Fu-ru do before she was signed?",
+        "options": [
+          "Posted covers and her own songs on YouTube",
+          "Won a televised singing contest",
+          "Studied music in Japan"
+        ],
+        "answer": 0
+      },
+      {
+        "prompt": "What is 《原來如此!!》?",
+        "options": [
+          "The band she sang in at university",
+          "Her first album, and a Best New Artist nomination",
+          "A concert she held in Hong Kong"
+        ],
+        "answer": 1
+      },
+      {
+        "prompt": "What kind of music does the passage say she mostly sings?",
+        "options": [
+          "Traditional folk opera",
+          "Rock ballads and nothing else",
+          "R&B and light electronic"
+        ],
+        "answer": 2
+      }
+    ]
+  },
+  {
+    "id": 104,
+    "showId": "zh-wikipedia-spoken",
+    "title": "中文維基百科有聲條目",
+    "author": "維基百科社群",
+    "topic": "Music",
+    "duration": "75 sec",
+    "episode": "吳宗憲（音樂家）－生平",
+    "description": "The 生平 section of the Chinese Wikipedia article on 吳宗憲 — the dizi and xiao player who co-founded the Chinese chamber ensemble 采風樂坊, not the television host of the same name. A whole career in one section: school, a competition in South Africa, an ensemble, a state arts grant and a prize.",
+    "tags": [
+      "music",
+      "taiwan",
+      "biography",
+      "traditional music",
+      "read aloud"
+    ],
+    "level": "Advanced",
+    "cefr": "B2",
+    "speed": "≈ 173 cpm",
+    "newWords": 5,
+    "levelReason": "215 characters in 74.6 seconds is ≈173 cpm, as fast as the other Mandarin episode here, but this reader leaves room: 14 pauses totalling 8.75 s at −40 dB, 12% of the file, and they fall on the semicolons. What makes it Advanced is the proper nouns — 文建會, 介壽館, 資深青商總會, 十大傑出青年薪傳獎 arrive with no explanation, and they are Taiwanese institutions there is no way to infer",
+    "learningGoal": "Follow a Taiwanese biography read at news pace, and learn the frame a Chinese CV is built on: 就學 for where you were at school, 畢業於 for where you graduated, 獲 for what you were awarded — and 國樂, the Taiwanese name for the tradition the whole passage is about.",
+    "audioSrc": "/audio/wu-zongxian-life.mp3",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Zh-%E5%90%B3%E5%AE%97%E6%86%B2_(%E9%9F%B3%E6%A8%82%E5%AE%B6)-article.ogg",
+    "licence": {
+      "name": "CC BY-SA 4.0",
+      "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+    },
+    "audioModified": true,
+    "verifiedLesson": false,
+    "transcript": [
+      {
+        "time": "00:01",
+        "seconds": 0.68,
+        "text": "吳宗憲是臺灣省花蓮縣人，"
+      },
+      {
+        "time": "00:03",
+        "seconds": 3.36,
+        "text": "1961年出生，"
+      },
+      {
+        "time": "00:05",
+        "seconds": 5.22,
+        "text": "小學四年級時開始學鋼琴、參加合唱團；"
+      },
+      {
+        "time": "00:11",
+        "seconds": 10.64,
+        "text": "在板橋高中就學時加入國樂社，",
+        "highlight": "就學"
+      },
+      {
+        "time": "00:14",
+        "seconds": 13.84,
+        "text": "開始學習中國笛；"
+      },
+      {
+        "time": "00:16",
+        "seconds": 16.28,
+        "text": "大學畢業於中國文化大學音樂系國樂組。",
+        "highlight": "畢業於"
+      },
+      {
+        "time": "00:21",
+        "seconds": 20.86,
+        "text": "1983年，吳宗憲到南非參加第二屆世界青年才藝大賽，"
+      },
+      {
+        "time": "00:27",
+        "seconds": 26.92,
+        "text": "獲器樂獨奏項目比賽第三獎。",
+        "highlight": "獲"
+      },
+      {
+        "time": "00:32",
+        "seconds": 31.56,
+        "text": "1991年與二胡演奏家黃正銘"
+      },
+      {
+        "time": "00:35",
+        "seconds": 35.3,
+        "text": "共創「采風樂坊」室內絲竹樂團。"
+      },
+      {
+        "time": "00:40",
+        "seconds": 40.42,
+        "text": "「采風樂坊」自1995年起成為文建會"
+      },
+      {
+        "time": "00:45",
+        "seconds": 45.06,
+        "text": "（文化部之前身）國家級扶植團隊，",
+        "highlight": "扶植"
+      },
+      {
+        "time": "00:49",
+        "seconds": 49.24,
+        "text": "並為首度進入介壽館"
+      },
+      {
+        "time": "00:52",
+        "seconds": 51.92,
+        "text": "（中華民國總統府2006年前現址館舍正式名稱）"
+      },
+      {
+        "time": "00:58",
+        "seconds": 57.62,
+        "text": "與德國柏林愛樂室內樂廳的國樂團體。",
+        "highlight": "國樂"
+      },
+      {
+        "time": "01:03",
+        "seconds": 63.26,
+        "text": "1994年獲中華民國資深青商總會"
+      },
+      {
+        "time": "01:09",
+        "seconds": 69.06,
+        "text": "主辦的「十大傑出青年薪傳獎」（第二屆）。"
+      }
+    ],
+    "vocabulary": [
+      {
+        "term": "就學",
+        "type": "verb",
+        "meaning": "To attend school. 在板橋高中就學時 is “while he was at Banqiao Senior High” — the standard way to date an event to somebody's school years.",
+        "example": "在板橋高中就學時加入國樂社，"
+      },
+      {
+        "term": "畢業於",
+        "type": "phrase",
+        "meaning": "Graduated from. 於 introduces the institution and cannot be dropped: 畢業 alone says that you graduated, never from where.",
+        "example": "大學畢業於中國文化大學音樂系國樂組。"
+      },
+      {
+        "term": "國樂",
+        "type": "noun",
+        "meaning": "Chinese traditional orchestral music — the Taiwanese term for it. Mainland writing says 民樂 and Singapore says 華樂 for the same repertoire, so the word alone tells you where a text is from.",
+        "example": "與德國柏林愛樂室內樂廳的國樂團體。"
+      },
+      {
+        "term": "獲",
+        "type": "verb",
+        "meaning": "To receive, of an award or a title. Formal and compressed — 獲…獎 does in one character what 得到 needs two for, which is why biographies are full of it.",
+        "example": "獲器樂獨奏項目比賽第三獎。"
+      },
+      {
+        "term": "扶植",
+        "type": "verb",
+        "meaning": "To nurture or back, of a government supporting an organisation. 國家級扶植團隊 is a specific Taiwanese arts-funding status, not a general compliment.",
+        "example": "（文化部之前身）國家級扶植團隊，"
+      }
+    ],
+    "questions": [
+      {
+        "prompt": "Which instrument does the passage say he took up at high school?",
+        "options": [
+          "The piano",
+          "The Chinese flute",
+          "The erhu"
+        ],
+        "answer": 1
+      },
+      {
+        "prompt": "What is 采風樂坊?",
+        "options": [
+          "A chamber ensemble of Chinese instruments he co-founded in 1991",
+          "The university department he now chairs",
+          "An award he received in 1994"
+        ],
+        "answer": 0
+      },
+      {
+        "prompt": "How did he place at the 1983 competition in South Africa?",
+        "options": [
+          "First prize",
+          "Second prize",
+          "Third prize, in instrumental solo"
+        ],
+        "answer": 2
       }
     ]
   }

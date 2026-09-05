@@ -71,9 +71,9 @@ running against anything other than localhost.
   ([ADR 0003](docs/adr/0003-model-the-learner-language-pair.md)).
 - **Transcript-first episode pages** with synced cues, vocabulary and comprehension
   questions.
-- **Two real episodes, and nothing invented.** Both use the publisher's own audio with a
-  published text behind the transcript, so sync is demonstrable rather than mocked. See
-  Content credits below.
+- **Nine real episodes, and nothing invented.** Six English, three Mandarin, every one of
+  them somebody else's audio with a published text behind the transcript, so sync is
+  demonstrable rather than mocked. See Content credits below.
 - **Saved words that keep their audio context** — sentence, speaker and timestamp travel
   with the word, so review can prompt recall by ear.
 - **Optional Postgres.** With `DATABASE_URL` unset everything runs in memory, which is what
@@ -91,7 +91,10 @@ and is left absent rather than approximated. See the state table in
 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#the-domain-and-where-it-lives).
 
 The catalogue is small for the same reason: an episode ships only once its audio, its
-licence and its published text are all in hand.
+licence and its published text are all in hand. Freely-licensed Mandarin *programmes* are
+the scarce thing — not freely-licensed Mandarin audio — so all three Mandarin episodes are
+volunteer readings of Wikipedia articles, which is a compromise the ADRs record rather than
+hide.
 
 ## Deploying and demoing
 
@@ -108,17 +111,18 @@ actually been verified — are in [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
 
 ## Content credits
 
-The catalogue is two episodes. Both are somebody else's recording, and the terms, the
+The catalogue is nine episodes. Every one is somebody else's recording, and the terms, the
 source revision and every modification are recorded next to the files in
 [`apps/web/public/audio/ATTRIBUTION.md`](apps/web/public/audio/ATTRIBUTION.md):
 
-- **Let's Learn English, Lesson 1** —
-  [VOA Learning English](https://learningenglish.voanews.com/a/lets-learn-english-lesson-one/3111026.html),
-  a work of the U.S. federal government and in the public domain in the United States.
-- **海山漁港（條目導言）** — an excerpt of a volunteer reading of the Chinese Wikipedia
-  article [海山漁港](https://zh.wikipedia.org/wiki/%E6%B5%B7%E5%B1%B1%E6%BC%81%E6%B8%AF),
-  [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). Excerpted, transcoded and
-  loudness-normalised here, and given the timed transcript nobody published for it: the
+- **Let's Learn English, Lessons 1, 2, 4, 5, 6 and 10** —
+  [VOA Learning English](https://learningenglish.voanews.com/z/3608), a work of the U.S.
+  federal government and in the public domain in the United States. Shipped byte-for-byte
+  unmodified; only the timed transcripts were added here, from VOA's own published dialogue.
+- **海山漁港（條目導言）**, **鄧福如（條目導言）** and **吳宗憲（音樂家）－生平** — excerpts of
+  volunteer readings of Chinese Wikipedia articles, [CC BY-SA
+  4.0](https://creativecommons.org/licenses/by-sa/4.0/). Excerpted, transcoded and
+  loudness-normalised here, and given the timed transcript nobody published for them: the
   characters come from the article revision that was read, the timings from ASR, never the
   other way round ([ADR 0010](docs/adr/0010-the-chinese-discopod-teaches-is-traditional.md)).
 

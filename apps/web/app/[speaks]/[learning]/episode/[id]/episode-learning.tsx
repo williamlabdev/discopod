@@ -223,8 +223,13 @@ export function EpisodeLearning({ episode, pair }: { episode: EpisodeDetail; pai
                 that states a licence gets it printed here, next to the credit,
                 where someone reading the page can see it. A show without one
                 keeps the wording this line has always had — absent is "nobody
-                established the terms", which is not a claim we may round up. */}
-            {episode.sourceUrl && <p className="mt-5 text-xs leading-5 text-muted-foreground">Audio and transcript: <a className="font-semibold text-foreground underline decoration-border underline-offset-4" href={episode.sourceUrl} rel="noreferrer" target="_blank">{episode.sourceLabel}</a>. {episode.licence ? <>Excerpted and re-timed for language learning, under <a className="font-semibold text-foreground underline decoration-border underline-offset-4" href={episode.licence.url} rel="license noreferrer" target="_blank">{episode.licence.name}</a>.</> : <>Used with credit for language learning.</>}</p>}
+                established the terms", which is not a claim we may round up.
+
+                "Excerpted and re-timed" was true of every episode that had a
+                licence when this line was written, and false of the VOA lessons
+                that ship byte for byte. Overclaiming a modification is the same
+                failure as concealing one, so the sentence follows the flag. */}
+            {episode.sourceUrl && <p className="mt-5 text-xs leading-5 text-muted-foreground">Audio and transcript: <a className="font-semibold text-foreground underline decoration-border underline-offset-4" href={episode.sourceUrl} rel="noreferrer" target="_blank">{episode.sourceLabel}</a>. {episode.licence ? <>{episode.audioModified ? 'Excerpted and re-timed for language learning, under ' : "The publisher's own file, unmodified; only the cue timings were added here. Under "}<a className="font-semibold text-foreground underline decoration-border underline-offset-4" href={episode.licence.url} rel="license noreferrer" target="_blank">{episode.licence.name}</a>.</> : <>Used with credit for language learning.</>}</p>}
           </div>
         </section>
 

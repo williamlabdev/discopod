@@ -23,17 +23,326 @@
       {
         "sourcePrompt": "Who is new to the building?",
         "prompt": "誰是剛來到這棟大樓的人？",
-        "options": ["Pete", "Anna", "兩個人都是"]
+        "options": [
+          "Pete",
+          "Anna",
+          "兩個人都是"
+        ]
       },
       {
         "sourcePrompt": "How many letter N’s are in Anna’s name?",
         "prompt": "Anna 這個名字裡有幾個字母 N？",
-        "options": ["一個", "兩個", "三個"]
+        "options": [
+          "一個",
+          "兩個",
+          "三個"
+        ]
       },
       {
         "sourcePrompt": "Which phrase do they use when they first meet?",
         "prompt": "他們初次見面時用了哪一句話？",
-        "options": ["See you tomorrow", "Nice to meet you", "Please sit down"]
+        "options": [
+          "See you tomorrow",
+          "Nice to meet you",
+          "Please sit down"
+        ]
+      }
+    ]
+  },
+  "8": {
+    "levelReason": "三個人講話，但輪流得很清楚，句子幾乎都只有四到八個字。唯一要記住的是誰住哪一間公寓",
+    "learningGoal": "說出自己是哪裡人、報出自己的公寓門牌，並向剛認識的鄰居打招呼。",
+    "description": "Anna 在新家的走廊上遇到鄰居。十五個來回的短對話，把名字、公寓門牌和「你是哪裡人」講完。",
+    "transcript": {
+      "00:01": "嘿，Pete！你朋友是哪位？",
+      "00:04": "她是 Anna，她剛搬來華盛頓特區。",
+      "00:07": "你是哪裡人？",
+      "00:08": "我來自一個小鎮。",
+      "00:11": "那麼，歡迎來到華盛頓特區。",
+      "00:12": "謝謝。",
+      "00:13": "我是 Jonathan，我住 B4 號公寓。",
+      "00:16": "我住 C2 號公寓，Marsha 是我的室友。",
+      "00:21": "我認識 Marsha，她人很好。",
+      "00:25": "我住 D7 號公寓。我得走了。",
+      "00:30": "喔！",
+      "00:32": "記得打電話到公司找 Marsha，跟她說你到了。",
+      "00:35": "好，謝啦 Pete。很高興認識你！",
+      "00:38": "我也是，再見。",
+      "00:42": "C2 號公寓，我來了！"
+    },
+    "vocabulary": {
+      "Where are you from?": "問對方來自哪裡——城鎮、城市或國家都可以。回答通常就是地名：「I am from a small town.」",
+      "welcome to": "對第一次來到某地的人說的話，後面直接接地名。",
+      "roommate": "同住一間公寓的人。和鄰居不同——室友是住在同一戶裡面。",
+      "have to go": "現在必須離開了。用來在對話自然結束前禮貌地收尾。"
+    },
+    "questions": [
+      {
+        "sourcePrompt": "Which apartment does Anna live in?",
+        "prompt": "Anna 住哪一間公寓？",
+        "options": [
+          "B4 號公寓",
+          "C2 號公寓",
+          "D7 號公寓"
+        ]
+      },
+      {
+        "sourcePrompt": "Who is Anna's roommate?",
+        "prompt": "Anna 的室友是誰？",
+        "options": [
+          "Pete",
+          "Jonathan",
+          "Marsha"
+        ]
+      },
+      {
+        "sourcePrompt": "What does Pete tell Anna to do?",
+        "prompt": "Pete 要 Anna 做什麼？",
+        "options": [
+          "打電話到公司找 Marsha",
+          "在樓下等他",
+          "等 Jonathan"
+        ]
+      }
+    ]
+  },
+  "9": {
+    "levelReason": "約每分鐘 110 個字，將近五分之一的時間是靜音。句型從頭到尾沒變——「I have a…」「It is a…」——每一輪只換一個字，而且換的都是看得見的東西",
+    "learningGoal": "問別人有沒有某樣東西、說出自己有什麼，並用「It is a…」講出日常物品的名稱。",
+    "description": "Anna 在包包裡找不到筆，結果把其他東西全掏了出來。一個不斷重複「I have a…」的笑話，把每樣東西的說法練到記住。",
+    "transcript": {
+      "00:01": "Pete，嗨！嗨，我們到了！",
+      "00:05": "嗨，Anna！嗨，Marsha！",
+      "00:08": "嗨！",
+      "00:09": "你們兩個好嗎？",
+      "00:11": "我很好！",
+      "00:14": "你知道嗎 Pete，我剛搬來華盛頓特區。這個城市好大。",
+      "00:20": "對啊。不過你每天都會多懂一點。新公寓怎麼樣？",
+      "00:25": "新公寓很棒！我們去喝咖啡吧！",
+      "00:30": "Anna，你有筆嗎？",
+      "00:34": "有，我包包裡有一支筆。",
+      "00:37": "我有一個……",
+      "00:38": "那不是筆，那是一本書，一本很厚的書。",
+      "00:46": "對，是啊 Pete。不過我知道我有一支筆……",
+      "00:52": "我有一個……",
+      "00:54": "那不是筆，Anna……是玩具嗎？",
+      "00:58": "我有一個……",
+      "01:01": "那是一個枕頭！",
+      "01:05": "Pete、Marsha，我知道我有一支筆。",
+      "01:10": "Anna，那是一張地圖。",
+      "01:13": "你為什麼會有一張世界地圖？",
+      "01:16": "Pete、Marsha，我現在知道我有一支筆了。",
+      "01:20": "而你現在拿出一盞燈。",
+      "01:23": "Anna。",
+      "01:24": "我有筆了！我們去喝咖啡吧！"
+    },
+    "vocabulary": {
+      "Do you have a pen?": "問對方身上有沒有某樣東西最普通的說法。「Do you have」後面直接接東西，中間不加別的字。",
+      "though": "放在句尾，用來輕輕反駁剛剛說過的話，接近中文的「不過」。口語裡很常見，幾乎不會放句首。",
+      "Why do you have…?": "問對方為什麼會帶著或留著某樣東西。通常不是責怪，只是覺得意外。",
+      "Let's get coffee": "邀對方一起出去。「get coffee」指的是這趟出門，而不只是那杯飲料。"
+    },
+    "questions": [
+      {
+        "sourcePrompt": "What is Anna looking for in her bag?",
+        "prompt": "Anna 在包包裡找什麼？",
+        "options": [
+          "一支筆",
+          "一張地圖",
+          "一個枕頭"
+        ]
+      },
+      {
+        "sourcePrompt": "What does she pull out first instead?",
+        "prompt": "她第一個掏出來的是什麼？",
+        "options": [
+          "一個枕頭",
+          "一本厚書",
+          "一盞燈"
+        ]
+      },
+      {
+        "sourcePrompt": "Where do the three of them want to go?",
+        "prompt": "他們三個想去哪裡？",
+        "options": [
+          "健身房",
+          "Anna 的公寓",
+          "去喝咖啡"
+        ]
+      }
+    ]
+  },
+  "10": {
+    "levelReason": "約每分鐘 97 個字，而且整段有 37% 是靜音——是目前目錄裡留給你思考的空檔最多的一集。只有兩個人講話，而且每一句都會把前一句剛出現的房間名再說一次",
+    "learningGoal": "說出家裡各個房間的名稱，以及在每個房間做的事：在廚房煮飯、在客廳休息、在臥室睡覺。",
+    "description": "Marsha 帶 Anna 一間一間看房子。每個房間先講名字，再配上在那裡做的事。",
+    "transcript": {
+      "00:01": "大家好！今天我朋友 Marsha 在她朋友家。她說那間房子很漂亮。我想看看這間房子！我們到了！",
+      "00:15": "Marsha，我在廚房！這廚房好漂亮！",
+      "00:22": "是很漂亮。我們在廚房煮飯。",
+      "00:27": "我在廚房吃飯。",
+      "00:30": "我們在客廳休息。",
+      "00:34": "我在客廳休息。Marsha，我們上樓吧！",
+      "00:41": "Anna？你在哪裡？",
+      "00:45": "Marsha，我在浴室！我在浴室洗澡。",
+      "00:51": "我在臥室。我們在臥室睡覺。",
+      "00:56": "我在臥室睡覺！"
+    },
+    "vocabulary": {
+      "Where are you?": "看不到對方時問的話。回答是「I am in the…」加上房間名。",
+      "living room": "客廳。英式英語也說 sitting room，美式一律用 living room。",
+      "relax": "休息、放鬆，不特別做什麼。用在人身上，不用在東西上。",
+      "upstairs": "在樓上、往樓上。本身已經含方向，前面不加介系詞：說 go upstairs，不說 go to upstairs。"
+    },
+    "questions": [
+      {
+        "sourcePrompt": "What does Marsha say they do in the kitchen?",
+        "prompt": "Marsha 說他們在廚房做什麼？",
+        "options": [
+          "煮飯",
+          "休息",
+          "睡覺"
+        ]
+      },
+      {
+        "sourcePrompt": "What does Anna do in the bathroom?",
+        "prompt": "Anna 在浴室做什麼？",
+        "options": [
+          "睡覺",
+          "洗澡",
+          "煮飯"
+        ]
+      },
+      {
+        "sourcePrompt": "Whose house are they looking at?",
+        "prompt": "他們在看誰的房子？",
+        "options": [
+          "Anna 的新公寓",
+          "Marsha 一位朋友的家",
+          "Pete 的家"
+        ]
+      }
+    ]
+  },
+  "11": {
+    "levelReason": "目錄裡最慢的一集，約每分鐘 83 個字，和第 1 課並列——但長度是它的三倍。它比其他初級課難的不是速度，而是要記住的東西：across from、next to、behind 指的都是看不見的房間，而且這個笑話要聽出 Anna 每次都聽錯才成立",
+    "learningGoal": "問某個房間在哪裡，並在對方用「和另一個房間的相對位置」回答時聽懂——across from、next to、behind。",
+    "description": "Anna 想去健身房，卻一直走進收發室。同一段路線講了四次，每次都多用上一個表示位置的介系詞。",
+    "transcript": {
+      "00:02": "嗨！我是 Anna，我住在華盛頓特區。我每天都更認識這座很棒的城市。華盛頓的人很愛運動！喔，嗨 Pete，最近好嗎？",
+      "00:17": "嗨，Anna，好得很。你呢？",
+      "00:23": "好得不得了！Pete，我想去運動。健身房在哪裡？",
+      "00:30": "健身房在交誼廳對面，就在收發室旁邊。往那邊走。",
+      "00:38": "謝啦，Pete！",
+      "00:45": "喔，Pete，這裡不是健身房。",
+      "00:50": "沒錯，Anna，這裡是收發室。",
+      "00:54": "健身房在……什麼的對面？",
+      "00:58": "健身房在交誼廳對面。",
+      "01:02": "交誼廳對面。好，謝謝！",
+      "01:06": "Pete！這裡不是健身房！",
+      "01:10": "健身房在交誼廳對面，在大廳後面。",
+      "01:16": "好、好。再見。",
+      "01:18": "再見，Anna！",
+      "01:20": "再見。",
+      "01:22": "再見，Anna。",
+      "01:39": "Pete！Pete？",
+      "01:42": "我也想運動！一起來吧！",
+      "01:46": "不用了，謝謝。"
+    },
+    "vocabulary": {
+      "work out": "運動、健身，通常指在健身房。和「解決問題」那個 work out 是同樣兩個字、不同意思。",
+      "across from": "在走廊或街道的正對面。美式英語用這兩個字，英式英語說 opposite。",
+      "next to": "就在旁邊、緊鄰，中間沒有別的。比 near 更近。",
+      "behind": "在……的後面、被擋住。這裡指要先經過另一個房間才會到。",
+      "How's it going?": "輕鬆版的「你好嗎」。對方通常也用固定說法回答——「It's going great」——而不是真的報告近況。"
+    },
+    "questions": [
+      {
+        "sourcePrompt": "Where is the gym?",
+        "prompt": "健身房在哪裡？",
+        "options": [
+          "大廳旁邊",
+          "交誼廳對面",
+          "收發室裡面"
+        ]
+      },
+      {
+        "sourcePrompt": "Which room does Anna walk into by mistake?",
+        "prompt": "Anna 走錯進了哪個房間？",
+        "options": [
+          "交誼廳",
+          "收發室",
+          "健身房"
+        ]
+      },
+      {
+        "sourcePrompt": "What does Pete mean by “work out”?",
+        "prompt": "Pete 說的 work out 是什麼意思？",
+        "options": [
+          "去健身房運動",
+          "解決問題",
+          "離開這棟樓"
+        ]
+      }
+    ]
+  },
+  "12": {
+    "levelReason": "約每分鐘 97 個字，而且是講電話——看不到表情，路線是一串清單：出站、右轉、左轉、直走。Ashley 每一步都覆誦一次，那就是這一課自己承認的難處：要一次記住四個指令",
+    "learningGoal": "在電話裡報路和確認路線——出站、右轉、直走——並在地址不夠用時改用地標。",
+    "description": "Ashley 要來作客，卻找不到大樓。Anna 從地鐵站開始報路，第一次報完不夠，只好再給一個地標。",
+    "transcript": {
+      "00:01": "嗨！今天我朋友 Ashley 要來我家。我要帶她看我的新公寓！喔！Ashley 打來了。",
+      "00:13": "嗨，Ashley！",
+      "00:14": "嗨，Anna！我正要去你家。你家在哪裡？",
+      "00:19": "我家在 Columbia Heights 地鐵站附近。",
+      "00:23": "在 Columbia Heights 地鐵站附近嗎？",
+      "00:25": "對。出地鐵站後右轉，然後在公車站左轉，接著直走。",
+      "00:33": "好。出地鐵站、右轉、左轉，然後直走？",
+      "00:40": "對。我家在一間咖啡店附近。",
+      "00:44": "好，待會見！",
+      "00:48": "嗨，Ashley。",
+      "00:50": "Anna，是哪一間咖啡店？這裡有三間咖啡店。",
+      "00:54": "好，我家在一間大百貨公司對面。",
+      "00:59": "一間大百貨公司？啊，我看到了！",
+      "01:03": "好！掰掰 Ashley，待會見！",
+      "01:05": "好，待會見。",
+      "01:14": "Ashley！Ashley！Ashley！這裡！是 Anna！是 Anna！嗨！",
+      "01:25": "我很喜歡朋友來我家。進來吧！"
+    },
+    "vocabulary": {
+      "come over": "到別人家裡拜訪。over 帶的就是「穿過城市過去」那層意思。",
+      "exit": "離開建築物或車站。這裡當動詞用，是美式習慣；當名詞用常見得多。",
+      "turn right": "向右轉。中間不加介系詞：說 turn right，不說 turn to right。",
+      "straight ahead": "一直往前，不轉彎。回答的是「往哪走」，不是「走多遠」。",
+      "department store": "百貨公司：分好幾層、賣各種東西的大型商店。大到可以當地標，這裡就是這樣用的。"
+    },
+    "questions": [
+      {
+        "sourcePrompt": "Which Metro station is Anna's apartment near?",
+        "prompt": "Anna 的公寓靠近哪一站地鐵？",
+        "options": [
+          "Union Station",
+          "Columbia Heights",
+          "Dupont Circle"
+        ]
+      },
+      {
+        "sourcePrompt": "After leaving the Metro, what does Ashley do first?",
+        "prompt": "出了地鐵站以後，Ashley 第一步要做什麼？",
+        "options": [
+          "左轉",
+          "右轉",
+          "直走"
+        ]
+      },
+      {
+        "sourcePrompt": "What finally helps Ashley find the apartment?",
+        "prompt": "最後是什麼讓 Ashley 找到公寓的？",
+        "options": [
+          "一間大百貨公司",
+          "三間咖啡店的其中一間",
+          "公車站"
+        ]
       }
     ]
   }
