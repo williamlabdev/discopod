@@ -33,55 +33,61 @@
     "verifiedLesson": true,
     "transcript": [
       {
-        "time": "00:00",
-        "seconds": 0,
+        "time": "00:01",
+        "seconds": 0.66,
         "speaker": "Pete",
         "text": "Hi! Are you Anna?"
       },
       {
         "time": "00:03",
-        "seconds": 3,
+        "seconds": 2.58,
         "speaker": "Anna",
         "text": "Yes! Hi there! Are you Pete?",
         "highlight": "Hi there"
       },
       {
-        "time": "00:07",
-        "seconds": 7,
+        "time": "00:04",
+        "seconds": 4.44,
         "speaker": "Pete",
         "text": "I am Pete."
       },
       {
-        "time": "00:09",
-        "seconds": 9,
+        "time": "00:06",
+        "seconds": 5.62,
         "speaker": "Anna",
         "text": "Nice to meet you.",
         "highlight": "Nice to meet you"
       },
       {
-        "time": "00:12",
-        "seconds": 12,
+        "time": "00:08",
+        "seconds": 8.48,
         "speaker": "Anna",
         "text": "Let's try that again. I'm Anna. Nice to meet you."
       },
       {
-        "time": "00:18",
-        "seconds": 18,
+        "time": "00:13",
+        "seconds": 12.96,
         "speaker": "Pete",
         "text": "I'm Pete. Anna — is that A-N-A?"
       },
       {
-        "time": "00:23",
-        "seconds": 23,
+        "time": "00:17",
+        "seconds": 17.14,
         "speaker": "Anna",
         "text": "No. A-N-N-A."
       },
       {
-        "time": "00:26",
-        "seconds": 26,
+        "time": "00:20",
+        "seconds": 20.02,
         "speaker": "Pete",
-        "text": "Well, Anna with two n's — welcome!",
+        "text": "Well, Anna with two n's — welcome to 1400 Irving Street!",
         "highlight": "welcome"
+      },
+      {
+        "time": "00:27",
+        "seconds": 26.66,
+        "speaker": "Anna",
+        "text": "My new apartment! Yes!"
       }
     ],
     "vocabulary": [
@@ -766,6 +772,12 @@
         "text": "Thanks, Pete!"
       },
       {
+        "time": "00:40",
+        "seconds": 39.74,
+        "speaker": "Pete",
+        "text": "No, Anna! Not that way! Go that way!"
+      },
+      {
         "time": "00:45",
         "seconds": 45.02,
         "speaker": "Anna",
@@ -832,6 +844,24 @@
         "seconds": 81.68,
         "speaker": "Pete",
         "text": "See you, Anna."
+      },
+      {
+        "time": "01:24",
+        "seconds": 83.98,
+        "speaker": "Anna",
+        "text": "This is not the gym. This is a parking garage."
+      },
+      {
+        "time": "01:30",
+        "seconds": 90.33,
+        "speaker": "Anna",
+        "text": "Hello? Pete?"
+      },
+      {
+        "time": "01:34",
+        "seconds": 93.78,
+        "speaker": "Anna",
+        "text": "This is not a gym. This is a rooftop."
       },
       {
         "time": "01:39",

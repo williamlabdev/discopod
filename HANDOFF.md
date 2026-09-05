@@ -429,6 +429,57 @@ exactly) and both deliberately exclude the reader's spoken section numbers, whic
 the published text and so cannot be transcribed under ADR 0010. That is the same gap ADR 0010
 decision 5 recorded rather than closed.
 
+## The transcripts were checked against the audio, not against each other (2026-09-05)
+
+Reported as *"transcript 跟播放檔對不起來，中間有時間差"*. The player was ruled out first:
+`episode-learning.tsx` highlights and seeks on the fractional `seconds`, and only the printed
+`time` label is rounded — a cosmetic sub-second difference that cannot produce a drift. So the
+fault was in the data, and the only way to find it was to measure.
+
+**Method.** `mlx-whisper` large-v3-turbo with **word-level** timestamps over all nine audio
+files, then a monotonic LCS alignment of the ASR word stream against the seed cue text. The
+first pass was done at *segment* level and produced two confident falsehoods — a −21.6 s
+offset on id=9 and +35.8 s on id=12 — because segment similarity happily matches a repeated
+teaching phrase to the wrong repeat. **Segment-level alignment is not evidence; word-level
+is.** Artefacts (per-file word JSON, the alignment output, `align_words.py`) are outside the
+repo, in this session's scratchpad.
+
+| id | audio | median offset | max | verdict |
+| --- | --- | --- | --- | --- |
+| 7 | `voa-lesson-1-welcome.mp3` | +3.45 s | +5.98 s | real drift, from cue 2 onward |
+| 11 | `voa-lesson-6-where-is-the-gym.mp3` | 0.00 s | 0.00 s | timings exact, **two dialogue blocks missing** |
+| 8, 9, 10, 12, 102, 103, 104 | — | 0.00 s | ≤0.74 s | aligned |
+
+**id=7's cues were hand-estimated, and it shows in the data itself.** Its eight `seconds`
+values were whole integers — 0, 3, 7, 9, 12, 18, 23, 26 — where every other episode carries
+two-decimal measured values. Rounded guesses accumulate: cue 0 is 0.7 s early, cue 7 is 6.0 s
+late, which is exactly the "中間有時間差" that was reported. All eight are now the measured
+word onsets. **A whole-integer `seconds` column is the signature of a guessed timeline.**
+
+**Both gaps were filled from the publisher's page, not from the ASR.** ADR 0010 decision 5
+says the characters come from the published text; the ASR only says *when*. So the missing
+lines were taken from the VOA lesson pages that `sourceUrl` already points at, and the ASR
+supplied their start times:
+
+- **id=7** — the last cue was truncated. Published: *"Well, Anna with two n's … Welcome to
+  1400 Irving Street!"*, followed by Anna's *"My new apartment! Yes!"*. Four seconds of audio
+  had no cue at all.
+- **id=11** — Pete's *"No, Anna! Not that way! Go that way!"* (39.74 s), and the three lines
+  of Anna's garage/rooftop detour (83.98 s, 90.33 s, 93.78 s), 14 s of audio with a blank
+  transcript under it.
+
+**The other three unmatched ASR spans are hallucination, not missing content.** id=9 ends with
+*"let's get coffee"* repeated seven times, and 102/103/104 end in short garbage strings — all
+of them over outro music, all the classic Whisper loop. Nothing was added for them. Still
+unconfirmed by ear, like everything else in this catalogue.
+
+**Changing a cue's `seconds` moves its overlay key.** The zh-Hant translations are keyed by
+`MM:SS` of `Math.round(seconds)` (see the overlay note above), so re-timing id=7 orphaned all
+eight of its translations. `catalog.zh-Hant.json` was re-keyed in cue order and the five new
+cues translated. Verified through the running API, not by reading the JSON:
+`/api/episodes/7/transcript?speaks=zh-Hant&learning=en` and the same for id=11 both return
+every cue with a `zh-Hant` translation attached.
+
 ## Next steps, in order
 
 1. ~~**Get one Mandarin episode on screen.**~~ **Done 2026-09-05.** With `cpm` calibrated
@@ -492,6 +543,26 @@ behaviour R24's risk section turns on. The show and episode are invented, which 
 place in this repo that happens; the page says so, the fixture header says why it is allowed
 here and ADR 0004 says what would make it not. **Nothing is generated** — the generator R24
 needs is a build-time artifact per ADR 0005 and does not exist.
+
+**The learning list and the vocabulary list exist now** — `/[speaks]/[learning]/list` and
+`/[speaks]/[learning]/words`, both prerendered per pair. Two things they changed underneath:
+discover's bookmark was `useState` and nothing else, so it never survived a reload, and the
+storage schema was built and parsed inline in the episode page by its only reader. Both now
+go through `apps/web/lib/learner-store.ts`, which owns the key format, the parser and the
+list. The episode page imports it rather than keeping a second copy.
+
+What the pages deliberately do not do: **no progress bar.** The catalogue's `duration` is the
+publisher's stated length, not measured from the file we ship, so a percentage would be drawn
+against a denominator nobody has checked — the list prints the position (`00:18`) instead.
+And **no `t=` jump**: a saved word shows its timestamp because that is the fact stored with
+it, but the link to the episode is a plain link, because nothing on the episode page reads a
+start time out of the URL yet.
+
+Both pages fall back to a **labelled sample** when the device has nothing stored. The episodes
+and the vocabulary in it are real — straight from the pair's own catalogue, so every title,
+level, gloss and link is true — and the learner state around them (positions, counts, "you
+saved this") is invented, said so in a panel above it, and never written to storage. Same rule
+as the R24 demo: a mock-up may borrow real content, and must not claim to be real state.
 
 ## Traps already paid for — do not re-learn these
 

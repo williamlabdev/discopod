@@ -27,6 +27,7 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import type { EpisodeDetail } from '@/lib/catalogue';
 import { LANGUAGE_NAMES, pairPath, type LanguagePair } from '@/lib/language';
+import { legacyProgressKey, progressKey } from '@/lib/learner-store';
 import { createSavedWord, readSavedWords, type SavedWord } from '@/lib/saved-words';
 
 /** Any Han character. Mirrors `HAN` in `lib/catalogue.ts` and means the same thing. */
@@ -91,10 +92,13 @@ export function EpisodeLearning({ episode, pair }: { episode: EpisodeDetail; pai
    * saved. `legacyStorageKey` is the key used before pairs existed — only an
    * `en → en` build ever wrote it, so only that pair reads it, once, to carry
    * an existing learner's words forward instead of silently starting them over.
+   *
+   * Both keys are built in `@/lib/learner-store`, which is also what the
+   * learning list and the vocabulary list read them back with. A second copy of
+   * the format here would diverge from those the first time either changed.
    */
-  const storageKey = `discopod-progress-${pair.speaks}-${pair.learning}-${episode.id}`;
-  const legacyStorageKey =
-    pair.speaks === 'en' && pair.learning === 'en' ? `tuned-progress-${episode.id}` : null;
+  const storageKey = progressKey(pair, episode.id);
+  const legacyStorageKey = legacyProgressKey(pair, episode.id);
   const hasAudio = Boolean(episode.audioSrc);
   const progress = hasAudio && audioDuration ? (currentTime / audioDuration) * 100 : demoProgress;
   const activeTranscriptIndex = useMemo(() => {
