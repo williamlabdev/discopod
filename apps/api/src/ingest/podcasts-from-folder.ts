@@ -182,8 +182,21 @@ function rateEpisode(cpm: number, pauseMs: number, speakers: number, showId: str
   return { level: 'Advanced', tocfl: 'Level 4' };
 }
 
-function firstSentence(text: string): string {
-  return text.split(/[。！？.!?]/)[0]?.trim() || text.slice(0, 80).trim();
+/**
+ * What a learner is trying to do with this episode, in facts about the episode.
+ *
+ * Deliberately says nothing about what the episode is *about*. The topic is
+ * unknown to this script — it has the audio, a transcript and a title, and the
+ * title is the publisher's claim, not ours. The previous template interpolated
+ * a generated description here and produced "Follow a full Mandarin podcast
+ * episode about 2." for five episodes. Only the length varies because only the
+ * length is measured. See ADR 0021.
+ */
+export function learningGoalFor(minutes: number): Localized<string> {
+  return {
+    en: `Follow a full ${minutes}-minute Mandarin episode by ear, without leaning on the translation.`,
+    vi: `Nghe hiểu trọn một tập podcast tiếng Quan thoại dài ${minutes} phút mà không dựa vào bản dịch.`,
+  };
 }
 
 function viLevel(level: LearningLevel, cpm: number, speakers: number): string {
@@ -315,8 +328,10 @@ function main(): void {
       const speakers = speakerCount(segments);
       const rating = rateEpisode(cpm, pauses, speakers, show.showId);
       const title = metadata.title ?? transcript.source?.title ?? episodeFolder;
-      const description = firstSentence(metadata.title ?? title);
-      const viDescription = viCues[0]?.lines.slice(1).join(' ').trim() || description;
+      const durationSeconds = Math.round(
+        metadata.audio_duration_seconds ?? transcript.audio_duration_seconds ?? 0,
+      );
+      const minutes = Math.round(durationSeconds / 60);
 
       const rowTranscript = segments.map((segment) => {
         const key = cueKey(segment.start * 1000);
@@ -345,10 +360,9 @@ function main(): void {
         title: show.title,
         author: show.publisher,
         topic: show.showId,
-        duration: `${Math.round((metadata.audio_duration_seconds ?? transcript.audio_duration_seconds ?? 0) / 60)} min`,
-        durationSeconds: Math.round(metadata.audio_duration_seconds ?? transcript.audio_duration_seconds ?? 0),
+        duration: `${minutes} min`,
+        durationSeconds,
         episode: title,
-        description: { en: description, vi: viDescription },
         tags: [show.showId, 'podcast'],
         level: rating.level,
         tocfl: rating.tocfl,
@@ -357,10 +371,7 @@ function main(): void {
           en: `Transcript-only rating: about ${cpm} characters per minute, ${speakers} voice${speakers === 1 ? '' : 's'}, and median recoverable pauses of ${Math.round(pauses / 100) / 10} seconds.`,
           vi: viLevel(rating.level, cpm, speakers),
         },
-        learningGoal: {
-          en: `Follow a full Mandarin podcast episode about ${description}.`,
-          vi: `Theo dõi một tập podcast tiếng Quan thoại đầy đủ về ${viDescription}.`,
-        },
+        learningGoal: learningGoalFor(minutes),
         audioUrl: metadata.audio_url,
         sourceUrl: metadata.page_url ?? metadata.source_url,
         redistributable: true,

@@ -139,6 +139,12 @@ Applied to `catalog.types.ts`:
   > now applies only to `Show.description`, which stays scalar because nothing renders it
   > and the overlay is keyed by episode id, so there is no file shape that could translate
   > it. When a show blurb reaches a page, it gets the same treatment for the same reason.
+  >
+  > **Both are optional as of
+  > [ADR 0021](0021-an-episode-nobody-described-ships-without-a-description.md),
+  > 2026-09-05.** The exclusion rule above is unchanged for a description that exists. What
+  > changed is that an episode may have none, because requiring one is what made the ingest
+  > invent 25 of them.
 
 ### 3. A missing translation is an exclusion, not a fallback
 

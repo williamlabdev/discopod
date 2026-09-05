@@ -126,8 +126,10 @@ function apply(episode: Episode, layer: OverlayEpisode, language: LanguageTag): 
   if (layer.learningGoal !== undefined) {
     episode.learningGoal = { ...episode.learningGoal, [language]: layer.learningGoal };
   }
+  // An overlay may give a description to an episode that has none at all: the
+  // seed's silence (ADR 0021) says nobody wrote one, not that nobody may.
   if (layer.description !== undefined) {
-    episode.description = { ...episode.description, [language]: layer.description };
+    episode.description = { ...(episode.description ?? {}), [language]: layer.description };
   }
 
   if (layer.vocabulary) {

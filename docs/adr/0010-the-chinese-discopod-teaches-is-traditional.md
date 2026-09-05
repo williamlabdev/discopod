@@ -73,6 +73,14 @@ every other `Localized` field (ADR 0003).
 API still sending a bare string is: one from before this ADR, when the blurb was written in
 the one language its reader is known not to have.
 
+> **Amended by [ADR 0021](0021-an-episode-nobody-described-ships-without-a-description.md),
+> 2026-09-05.** The field is no longer *required*. Everything above still holds for a
+> description that exists — `Localized`, learner-keyed, missing key is an exclusion — but
+> an episode nobody wrote one for now ships without the field, and `assertEpisode` checks
+> the key only when the field is present. Making it required is what caused the ingest to
+> generate one, and the generated one was the first sentence of the title on the English
+> side and a translated jingle on the Vietnamese side.
+
 **`Show.description` is deliberately left scalar.** Nothing renders it today, and the
 overlay mechanism is keyed by episode id, so there is no file shape that could translate it
 even if something did. Migrating it now would add a `Localized` field with no writer and no

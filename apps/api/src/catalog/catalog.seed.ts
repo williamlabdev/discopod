@@ -135,8 +135,12 @@ interface SeedRow {
    * `speaks` language by `authoredIn`. It reaches `Episode.description` as
    * `Localized` and `Show.description` as a scalar; both of those fields carry
    * the reasoning for their side of that split.
+   *
+   * Optional since ADR 0021: an ingested row omits it, and omitting it is the
+   * honest shape. Do not add a generated one back — a row with no description
+   * is a row nobody wrote a description for, which is the fact.
    */
-  description: string | Localized;
+  description?: string | Localized;
   tags: string[];
   level: LearningLevel;
   cefr?: string;
@@ -291,7 +295,12 @@ function loadSeedFile(
         publisher: row.author,
         language: spokenOf(pair),
         topics: [row.topic, ...row.tags],
-        description: typeof row.description === 'string' ? row.description : row.description[pair.speaks] ?? '',
+        description:
+          row.description === undefined
+            ? undefined
+            : typeof row.description === 'string'
+              ? row.description
+              : row.description[pair.speaks],
         profile,
         sourceUrl: row.sourceUrl,
         licence: row.licence,
@@ -319,7 +328,7 @@ function loadSeedFile(
       id,
       showId,
       title: row.episode,
-      description: authoredIn(pair, row.description),
+      description: row.description === undefined ? undefined : authoredIn(pair, row.description),
       durationSeconds: row.durationSeconds ?? parseDurationSeconds(row.duration),
       audioUrl: row.audioSrc ?? row.audioUrl,
       audioRemoteUrl: row.audioUrl,

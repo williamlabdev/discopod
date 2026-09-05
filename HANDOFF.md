@@ -594,6 +594,40 @@ The English pair shows no card-level label because `authoredBy` records only `vi
 English author copy turns out to be model-written as well, that is an `authoredBy.en` line
 in the seed and no code change.
 
+(The description named in that list is gone as of ADR 0021, below. Three machine-written
+sentences on the card, not four.)
+
+## Every ingested episode had a description nobody had written (2026-09-05)
+
+Reported as a leaked subtitle tag: a Vietnamese blurb reading `[Nhạc mở đầu] Nghe chuyện,
+nói tiếng Trung.` The tag is on **4 of 25** episodes. The field was wrong on all 25, and
+the two languages of it were not the same sentence:
+
+- `description.en` was `firstSentence(metadata.title)` — the first sentence *of the title*.
+  Episodes 200–204 are titled `2.3.37A …`, so the shipped value was the literal string
+  `"2"`. Five of 25 were ≤3 characters; **12 of 25 were the whole title**, which is what
+  made a card render its title twice.
+- `description.vi` was the Vietnamese translation of the **first transcript cue** — the
+  jingle on 200/202/203, `[Nhạc mở đầu vui tươi]` on 204, a **Mint Mobile advert read** on
+  201, a sponsor line on 212.
+
+Both were interpolated into `learningGoal`, producing `Follow a full Mandarin podcast
+episode about 2.`
+
+Filtering bracketed cues would have fixed 4 of 25 and left the advert in place while making
+the field look repaired — the reason it was not done. ADR 0021: `description` is optional,
+ingested episodes carry none, and the card shows the title alone. `learningGoal` is now
+derived from the episode's length and says nothing about its topic.
+
+**The shape of the bug is the one worth carrying forward.** Nothing was careless: the field
+was *required*, the ingest had no description to put in it, and a required field with no
+source gets a generated one. The check that existed asked whether the field was present in
+the learner's language — which the generation guaranteed. Same failure as ADR 0020 one
+field over. When a pipeline has to fill a field it has no source for, the field is wrong,
+not the pipeline.
+
+Enforced on the published seed by `podcast-description.spec.ts`, not only at ingest, for
+ADR 0020's reason: the ingest runs against a source folder outside this repo.
 
 ## Next steps, in order
 
