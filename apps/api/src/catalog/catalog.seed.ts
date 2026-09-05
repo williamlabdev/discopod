@@ -15,9 +15,12 @@ import { rateUnitFor, type SpeechRate } from './speech-rate';
 /**
  * The pair this seed is written for, declared rather than assumed.
  *
- * English audio with English explanations. That is `en → en`, which is
- * degenerate — it describes a catalogue that does not yet do the thing the
- * product is for — and saying so is the point. See ADR 0003, decision 6.
+ * English audio with English explanations. That is `en → en`, and it is a
+ * statement about *authorship* — what language the strings in this file are
+ * written in — not a pair the site serves. It stopped being one in ADR 0012:
+ * `listPairs` excludes any pair whose two sides match. These rows still matter,
+ * because they are what `catalog.zh-Hant.json` was translated from, and that
+ * overlay is what raises the pair a Chinese speaker learning English reads.
  *
  * The seed is one episode, and that is the whole catalogue of verified
  * material. It held seven until the six unverified rows were removed: they

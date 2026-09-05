@@ -27,8 +27,10 @@ import {
  * that ADR rules out is the browser calling this API, and what ADR 0003 makes a
  * route segment is the pair in the *site's* URLs. The web app reads those
  * segments at build time and asks here for one pair's catalogue — server to
- * server, before the export exists. The default keeps `en → en` callers, and
- * every hand-typed curl, working unchanged.
+ * server, before the export exists. The default is what a hand-typed curl with
+ * no parameters gets; it moved to `en → zh-Hant` when `en → en` stopped being
+ * a pair this catalogue serves, so a bare `/episodes` now answers with Chinese
+ * content rather than with nothing. ADR 0012.
  */
 const DEFAULT_SPEAKS: LanguageTag = DEFAULT_PAIR.speaks;
 
@@ -110,6 +112,13 @@ export class CatalogService {
       }
 
       for (const speaks of LANGUAGES) {
+        // A pair whose two sides are the same language is not a pair this
+        // product serves: English audio explained in English teaches nobody
+        // English. The data is not wrong — episode 7's English explanations are
+        // what the Chinese overlay was translated *from*, and dropping them
+        // would take the source of every other pair on that episode with it.
+        // What is wrong is publishing it as a way in. ADR 0012.
+        if (speaks === learning) continue;
         if (this.speaksTo(episode, speaks)) found.set(`${speaks}|${learning}`, { speaks, learning });
       }
     }

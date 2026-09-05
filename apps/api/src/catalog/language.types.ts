@@ -116,11 +116,20 @@ export type Localized<T = string> = Partial<Record<LanguageTag, T>>;
  * layer and which languages have a reason renderer, so it is now derived from
  * the catalogue — `CatalogService.listPairs`, served at `GET /pairs`, and used
  * by the web app to generate one route subtree per pair. What stays hard-coded
- * is only this: the answer for a request that says nothing, which keeps every
- * hand-typed curl working. `en → en` is degenerate — English audio with English
- * explanations — and naming it is how it stops being invisible. ADR 0003.
+ * is only this: the answer for a request that says nothing.
+ *
+ * It was `en → en` until 2026-09-05, which was a default pointing at a pair
+ * the product does not serve — English audio explained in English is nobody's
+ * language learning. DiscoPod runs in two directions, an English speaker
+ * learning Chinese and a Chinese speaker learning English, and this names the
+ * first of them. It is a default, not a ranking: the other direction is served
+ * as fully, and the onboarding question in VISION.md is what actually chooses.
+ * ADR 0012.
  */
-export const DEFAULT_PAIR = { speaks: 'en', learning: 'en' } as const satisfies LanguagePair;
+export const DEFAULT_PAIR = {
+  speaks: 'en',
+  learning: 'zh-Hant',
+} as const satisfies LanguagePair;
 
 export function isLanguageTag(value: unknown): value is LanguageTag {
   return typeof value === 'string' && (LANGUAGES as readonly string[]).includes(value);
