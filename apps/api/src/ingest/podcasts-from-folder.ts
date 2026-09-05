@@ -218,24 +218,54 @@ function vocabByEpisode(path: string | undefined): Map<string, VocabSeedEntry[]>
   return byEpisode;
 }
 
+/**
+ * The episode's vocabulary, and the assertion that keeps it honest.
+ *
+ * These entries are extracted, not authored: the term occurs in this episode and
+ * the example is the line it occurs in. That is the whole basis on which ADR 0020
+ * lets an ingested episode ship a word list at all, so it is checked rather than
+ * trusted — `example` must be a verbatim run of this episode's own cues.
+ *
+ * It is not a style rule. The examples were first written from the pre-conversion
+ * Simplified transcript, so 69 of 86 shipped a Traditional headword above a
+ * Simplified sentence on a catalogue ADR 0010 declares Traditional — while the
+ * transcript check above passed, because the transcript itself was clean. Anchoring
+ * to the shipped cue is also what avoids ever converting between the scripts:
+ * the Traditional line already exists, so it is copied, never guessed (ADR 0006).
+ */
 function vocabularyFor(
   vocab: Map<string, VocabSeedEntry[]>,
   showFolder: string,
   episodeFolder: string,
+  cues: string[],
 ): Array<{ term: string; type: string; meaning: Localized<string>; example: string }> {
-  return (vocab.get(`${showFolder}/${episodeFolder}`) ?? []).map((entry) => ({
-    term: entry.traditional ?? entry.term,
-    type: entry.partOfSpeech,
-    // ADR 0003: a `Localized` key that is missing excludes the entry for that learner
-    // language rather than falling back to English, so an absent `definitionVi` must stay
-    // absent — writing `vi: entry.definition` would ship an English gloss to a Vietnamese
-    // reader under a Vietnamese key.
-    meaning: {
-      en: entry.definition,
-      ...(entry.definitionVi ? { vi: entry.definitionVi } : {}),
-    },
-    example: entry.example?.text ?? '',
-  }));
+  // Joined bare, not on a separator: an example may span two or three consecutive
+  // cues, which is what a sentence broken across subtitle lines looks like.
+  const spoken = cues.join('');
+  return (vocab.get(`${showFolder}/${episodeFolder}`) ?? []).map((entry) => {
+    const term = entry.traditional ?? entry.term;
+    const example = entry.example?.text ?? '';
+    if (example && !spoken.includes(example)) {
+      throw new Error(
+        `${showFolder}/${episodeFolder}: the vocabulary example for ${term} is not a line of ` +
+          `this episode's transcript. An example is quoted from the episode, never written ` +
+          `about it — see ADR 0020.`,
+      );
+    }
+    return {
+      term,
+      type: entry.partOfSpeech,
+      // ADR 0003: a `Localized` key that is missing excludes the entry for that learner
+      // language rather than falling back to English, so an absent `definitionVi` must stay
+      // absent — writing `vi: entry.definition` would ship an English gloss to a Vietnamese
+      // reader under a Vietnamese key.
+      meaning: {
+        en: entry.definition,
+        ...(entry.definitionVi ? { vi: entry.definitionVi } : {}),
+      },
+      example,
+    };
+  });
 }
 
 function ensureParent(path: string): void {
@@ -302,7 +332,12 @@ function main(): void {
 
       viOverlay[id] = { transcript: Object.fromEntries([...viByKey.entries()].filter(([, value]) => value)) };
 
-      const vocabulary = vocabularyFor(vocab, showFolder, episodeFolder);
+      const vocabulary = vocabularyFor(
+        vocab,
+        showFolder,
+        episodeFolder,
+        segments.map((segment) => segment.text),
+      );
 
       seed.push({
         id: Number(id),

@@ -540,14 +540,38 @@ The CI check that would have caught this is `grep -q 'new words' out/vi/zh-Hant.
 count comes from entries carrying a `vi` meaning, so the line disappears for the whole pair
 the moment the translation does. See ADR 0019 decision 4.
 
-**Open, and William's call:** [ADR 0016](docs/adr/0016-authored-vocabulary-is-a-lesson-artifact.md)
-decision 1 says every ingested episode ships `vocabulary: []`, because choosing five terms
+**Settled by [ADR 0020](docs/adr/0020-extracted-vocabulary-is-quoted-from-the-episode.md)**
+(2026-09-05). [ADR 0016](docs/adr/0016-authored-vocabulary-is-a-lesson-artifact.md)
+decision 1 said every ingested episode ships `vocabulary: []`, because choosing five terms
 for a 22-minute conversation is a fabricated claim about which five matter. The shipped
-seed carries **86 entries across 21 of the 25 podcast episodes**, extracted by
-`vocab.seed.json` and emitted by `vocabularyFor()`. That reversal arrived without an ADR
-and is still unrecorded. The work above translates the entries that are there; it does not
-decide they belong there. Either ADR 0016 gets superseded, or the entries come out — and
-if they come out, `definitionVi` goes with them.
+seed carries **86 entries across 21 of the 25 podcast episodes**. The entries stay:
+ADR 0016 had two shapes where there are three, and these are *extracted* — the term occurs
+in the episode, the example is the line it occurs in — which claims neither importance nor
+completeness. Decision 1 is superseded for `vocabulary` only; `questions: []` stands and
+all 25 episodes still ship it.
+
+## The vocabulary examples were quoting a transcript that no longer ships (2026-09-05)
+
+Found while writing ADR 0020, by checking the claim the ADR was about to make. `provenance`
+in `vocab.seed.json` says `example.text` is the transcript cue. **71 of the 86 were not.**
+They had been written against the ASR output *before* its conversion to Traditional, so
+66 of them carried outright Simplified-only characters and every vocabulary card showed a
+Traditional headword above a Simplified sentence — on a catalogue ADR 0010 declares
+Traditional.
+
+The ingest already refuses a transcript containing a Simplified-only character, and that
+check passed the whole time, because **the transcript was clean.** Nothing compared the
+vocabulary to it. A guard on one artifact says nothing about the artifact pasted next to it.
+
+Nothing was converted to fix it, and nothing should be. The Traditional line already
+existed as a cue, so each example was matched back to the run of one to three consecutive
+cues it came from and *copied* — which is why `台南` became `臺南` and not the reverse: the
+transcript had already made that call, and Hant↔Hans stays a guess (ADR 0006). All 86 now
+match a cue run verbatim, and `vocabularyFor()` throws on any that does not.
+
+Worth keeping: the re-derivation only worked because every example was still recognisable
+as a same-length near-match of its own cue. Had the examples been paraphrases, there would
+have been no way back and the only honest option would have been deleting them.
 
 ## "Auto-translated" was two clicks from the text it described (2026-09-05)
 

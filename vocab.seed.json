@@ -3,7 +3,7 @@
   "provenance": {
     "terms": "Candidates proposed from transcript excerpts, then kept only if they occur verbatim in the show's own transcript. Terms occurring only inside an [audio event] tag, and terms carrying mixed-script ASR corruption, were rejected.",
     "timing": "position.timeSeconds is the term's own start time from transcript.json words[] when that episode has word timings; otherwise it falls back to the containing cue's start, flagged by position.timingSource. position.segment keeps the cue's own start/end as context.",
-    "example": "example.text is the transcript cue (extended to the following cue when the first is too short to teach from); example.translation is the DeepL translation already published in bilingual-transcript.json for those same cues.",
+    "example": "example.text is the published transcript cue, verbatim (extended to the following cue, or the two following, when the first is too short to teach from); example.translation is the DeepL translation already published in bilingual-transcript.json for those same cues. It was first written from the pre-conversion Simplified transcript, which put a Simplified sentence under a Traditional headword on 69 of the 86 entries; the examples were re-derived from the shipped Traditional cues, which is a copy rather than a conversion (ADR 0006), and the ingest now refuses any example that is not a verbatim run of its episode's cues (ADR 0020).",
     "scripts": "traditional/simplified were drafted with OpenCC and then reviewed character by character, because simplified to traditional is many-to-one (CLAUDE.md, ADR 0006). Every ambiguous character in this file was checked individually: 着 to 著 (硬著頭皮, 八竿子打不著), 余 to 餘 (心有餘悸), 历 to 歷 (產銷履歷), 帐 to 帳 (翻舊帳), 制 kept as 制 (制空權, 集選區制).",
     "pronunciation": "pypinyin drafts, audited by hand for polyphonic characters and neutral tones; corrections recorded in this file (切結 qiè, 一線之隔 without 一 sandhi, neutral-tone zhuyin dot moved before the symbol).",
     "authored": "definition, partOfSpeech and level are model-written and not verified against a dictionary.",
@@ -73,7 +73,7 @@
             }
           },
           "example": {
-            "text": "很多同学写的是当老师、当司机、当公司职员，而大谷写下的是一个看起来有些不安分的梦想。",
+            "text": "很多同學寫的是當老師、當司機、當公司職員，而大谷寫下的是一個看起來有些不安分的夢想。",
             "translation": "Many students wrote about becoming teachers, drivers, or office workers, but Da Gu wrote down a dream that seemed a bit unconventional.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -108,7 +108,7 @@
             }
           },
           "example": {
-            "text": "必须练好力量、速度、自律、心理素质。",
+            "text": "必須練好力量、速度、自律、心理素質。",
             "translation": "You must master strength, speed, self-discipline, and mental toughness.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -143,7 +143,7 @@
             }
           },
           "example": {
-            "text": "他不是嘴上说我要成为明星球员而是脚踏实地一点一点朝那里走。",
+            "text": "他不是嘴上說我要成為明星球員而是腳踏實地一點一點朝那裡走。",
             "translation": "He didn’t just say he wanted to become a star player—he took steady, step-by-step action to get there.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -178,7 +178,7 @@
             }
           },
           "example": {
-            "text": "我刚拿到驾照，杨先生就要我开车上山下乡。",
+            "text": "我剛拿到駕照，楊先生就要我開車上山下鄉。",
             "translation": "I had just gotten my driver’s license when Mr. Yang asked me to drive him up the mountains and out to the countryside.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -213,7 +213,7 @@
             }
           },
           "example": {
-            "text": "这段路程对新手来说会感觉如履薄冰，可是已经走到一半无法回头，只能硬着头皮往山上走。",
+            "text": "這段路程對新手來說會感覺如履薄冰，可是已經走到一半無法回頭，只能硬著頭皮往山上走。",
             "translation": "This stretch of road might feel like walking on thin ice for a novice driver, but having already come halfway, there’s no turning back—you just have to grit your teeth and keep driving up the mountain.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -248,7 +248,7 @@
             }
           },
           "example": {
-            "text": "这段路程对新手来说会感觉如履薄冰，可是已经走到一半无法回头，只能硬着头皮往山上走。",
+            "text": "這段路程對新手來說會感覺如履薄冰，可是已經走到一半無法回頭，只能硬著頭皮往山上走。",
             "translation": "This stretch of road might feel like walking on thin ice for a novice driver, but having already come halfway, there’s no turning back—you just have to grit your teeth and keep driving up the mountain.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -283,7 +283,7 @@
             }
           },
           "example": {
-            "text": "只是过后每每想起都心有余悸。杨先生却不当一回事。",
+            "text": "只是過後每每想起都心有餘悸。楊先生卻不當一回事。",
             "translation": "But whenever I think back on it now, I still feel a chill run down my spine. But Mr. Yang didn’t think much of it.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -319,7 +319,7 @@
             }
           },
           "example": {
-            "text": "不管他怎么软硬兼施我再也没有上大帽山。",
+            "text": "不管他怎麼軟硬兼施我再也沒有上大帽山。",
             "translation": "No matter how much he tried to coax or pressure me, I never went back to Tai Mo Shan.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -354,7 +354,7 @@
             }
           },
           "example": {
-            "text": "的确香港的自然环境得天独厚就连沿途的自然风光也百看不厌。",
+            "text": "的確香港的自然環境得天獨厚就連沿途的自然風光也百看不厭。",
             "translation": "Indeed, Hong Kong’s natural environment is truly unique, and even the scenery along the way never gets old.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -389,7 +389,7 @@
             }
           },
           "example": {
-            "text": "郊外的路径和设施通常非常便利又丝毫没有破坏大自然的美感一切人工干预恰到好处不多不少。",
+            "text": "郊外的路徑和設施通常非常便利又絲毫沒有破壞大自然的美感一切人工干預恰到好處不多不少。",
             "translation": "The trails and facilities in the countryside are usually very convenient, yet they do not detract from the beauty of nature in the slightest; all human intervention is just right—neither too much nor too little.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -424,7 +424,7 @@
             }
           },
           "example": {
-            "text": "确诊渐冻症那一天，蔡磊坐在医生办公室里，窗外阳光很亮，医生的声音却仿佛隔着一堵厚厚的墙传过来。",
+            "text": "確診漸凍症那一天，蔡磊坐在醫生辦公室裡，窗外陽光很亮，醫生的聲音卻彷彿隔著一堵厚厚的牆傳過來。",
             "translation": "On the day he was diagnosed with ALS, Cai Lei sat in the doctor’s office. The sunlight streaming through the window was bright, yet the doctor’s voice seemed to come through as if from behind a thick wall.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -459,7 +459,7 @@
             }
           },
           "example": {
-            "text": "夜深人静时，她一个人坐在黑暗里，手指已经开始不听使唤。",
+            "text": "夜深人靜時，她一個人坐在黑暗裡，手指已經開始不聽使喚。",
             "translation": "Late at night, when all was quiet, she sat alone in the darkness, her fingers already beginning to tremble uncontrollably.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -494,7 +494,7 @@
             }
           },
           "example": {
-            "text": "他开始阅读大量医学资料，请医生讲解病理，联系科研团队，像做一场巨大的项目管理一样，去参与推动渐冻症研究。",
+            "text": "他開始閱讀大量醫學資料，請醫生講解病理，聯絡科研團隊，像做一場巨大的專案管理一樣，去參與推動漸凍症研究。",
             "translation": "He began reading vast amounts of medical literature, asking doctors to explain the pathology, and reaching out to research teams—approaching the task like a massive project management endeavor—to actively contribute to and advance ALS research.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -529,7 +529,7 @@
             }
           },
           "example": {
-            "text": "他常常去实验室看科研团队工作，穿着稍微笨重的外骨骼辅助设备。",
+            "text": "他常常去實驗室看科研團隊工作，穿著稍微笨重的外骨骼輔助裝置。",
             "translation": "He often visited the lab to watch the research team at work, wearing a slightly bulky exoskeleton assistive device.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -564,7 +564,7 @@
             }
           },
           "example": {
-            "text": "在对外发声时，她没有把自己放成可怜的病人，而是一个清醒、笃定、有责任的人",
+            "text": "在對外發聲時，她沒有把自己放成可憐的病人，而是一個清醒、篤定、有責任的人",
             "translation": "When speaking publicly, she didn’t portray herself as a pitiful patient, but rather as a clear-headed, determined, and responsible person.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -639,7 +639,7 @@
             }
           },
           "example": {
-            "text": "他生活在两千多年前的中国，那时的朝代叫做汉朝。",
+            "text": "他生活在兩千多年前的中國，那時的朝代叫做漢朝。",
             "translation": "He lived in China more than 2,000 years ago, during a dynasty known as the Han Dynasty.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -674,7 +674,7 @@
             }
           },
           "example": {
-            "text": "在北方生活着一群人，他們不是中国人，不是汉人，而是匈奴人。",
+            "text": "在北方生活著一群人，他們不是中國人，不是漢人，而是匈奴人。",
             "translation": "A group of people lived in the north; they were not Chinese, nor were they Han Chinese—they were the Xiongnu.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -709,7 +709,7 @@
             }
           },
           "example": {
-            "text": "一天晚上，张骞带着他的人马偷偷地离开了匈奴的地方。",
+            "text": "一天晚上，張騫帶著他的人馬偷偷地離開了匈奴的地方。",
             "translation": "One night, Zhang Qian and his men secretly left the Xiongnu territory.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -744,7 +744,7 @@
             }
           },
           "example": {
-            "text": "在节目的最后我想插播一条小广告。有的听众朋友可能已经知道，我们从十一月开始推出了一个新的播客节目叫茶歇新闻。",
+            "text": "在節目的最後我想插播一條小廣告。有的聽眾朋友可能已經知道，我們從十一月開始推出了一個新的播客節目叫茶歇新聞。",
             "translation": "At the end of the show, I’d like to air a short commercial. As some of our listeners may already know, we launched a new podcast called “Tea Break News” in November.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -780,7 +780,7 @@
             }
           },
           "example": {
-            "text": "你也可以用我们的 promocode teatime，然后你就会有二五折的优惠。",
+            "text": "你也可以用我們的 promocode teatime，然後你就會有二五折的優惠。",
             "translation": "You can also use our promo code “teatime” to get a 25% discount.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -815,7 +815,7 @@
             }
           },
           "example": {
-            "text": "茶歇中文第96集，在中国的所见所闻。",
+            "text": "茶歇中文第96集，在中國的所見所聞。",
             "translation": "Tea Break Chinese Episode 96: What I Saw and Experienced in China.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -850,7 +850,7 @@
             }
           },
           "example": {
-            "text": "比如说在法国，如果你去饭店吃饭一顿普普通通的饭最少也要十欧元。",
+            "text": "比如說在法國，如果你去飯店吃飯一頓普普通通的飯最少也要十歐元。",
             "translation": "For example, in France, if you go to a restaurant for a simple meal, it’ll cost at least ten euros.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -885,7 +885,7 @@
             }
           },
           "example": {
-            "text": "很多年轻人跟我一样，是家里唯一的孩子，也就是独生子女。",
+            "text": "很多年輕人跟我一樣，是家裡唯一的孩子，也就是獨生子女。",
             "translation": "Many young people, like me, are the only child in their family—that is, only children.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -920,7 +920,7 @@
             }
           },
           "example": {
-            "text": "看了电影，我不由得想到我自己的生活，想到茶歇中文。“不由得”是什么意思？",
+            "text": "看了電影，我不由得想到我自己的生活，想到茶歇中文。“不由得”是什麼意思？",
             "translation": "After watching the movie, I couldn’t help but think about my own life and the Chinese I learned during the tea break. What does “couldn’t help but” mean?",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -955,7 +955,7 @@
             }
           },
           "example": {
-            "text": "我们长话短说，现在来听故事。你准备好了吗？",
+            "text": "我們長話短說，現在來聽故事。你準備好了嗎？",
             "translation": "To make a long story short, let’s hear the story now. Are you ready?",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -991,7 +991,7 @@
             }
           },
           "example": {
-            "text": "谁能给这个弓上弦？Who can string this bow？",
+            "text": "誰能給這個弓上弦？Who can string this bow？",
             "translation": "Who can string this bow?",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -1026,7 +1026,7 @@
             }
           },
           "example": {
-            "text": "他出来一看，看见了那个衣服破破烂烂的老人。",
+            "text": "他出來一看，看見了那個衣服破破爛爛的老人。",
             "translation": "He went out and saw the old man in tattered clothes.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -1091,7 +1091,7 @@
             }
           },
           "example": {
-            "text": "那我们之间相处得还不错，那坊间呢两性专家常提到的反面教材，像是受委屈啊，情绪勒索啊，争吵啊，磨合不顺等等等等，这些呀在我们身上几乎都没有发生。",
+            "text": "那我們之間相處得還不錯，那坊間呢兩性專家常提到的反面教材，像是受委屈啊，情緒勒索啊，爭吵啊，磨合不順等等等等，這些呀在我們身上幾乎都沒有發生。",
             "translation": "We get along pretty well. None of the negative examples often cited by relationship experts—like feeling wronged, emotional blackmail, arguments, or difficulties adjusting to each other—have really happened between us.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -1126,7 +1126,7 @@
             }
           },
           "example": {
-            "text": "此外啊，工程行款项入帐的时间不固定，薪水由父母发放，不仅啊发薪不准时，还常常被克扣，甚至连基本的劳健保都没有。",
+            "text": "此外啊，工程行款項入帳的時間不固定，薪水由父母發放，不僅啊發薪不準時，還常常被剋扣，甚至連基本的勞健保都沒有。",
             "translation": "On top of that, payments from the engineering firm come in at irregular intervals, and my salary is paid by my parents—not only are the payments often late, but they’re frequently docked, and I don’t even have basic labor and health insurance.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -1161,7 +1161,7 @@
             }
           },
           "example": {
-            "text": "他却没办法陪我实践，没办法携手前进，我觉得我心里会有怨怼，也会有遗憾。",
+            "text": "他卻沒辦法陪我實踐，沒辦法攜手前進，我覺得我心裡會有怨懟，也會有遺憾。",
             "translation": "But he can’t help me make this dream a reality—he can’t walk this path with me—and I feel that resentment and regret will build up inside me.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -1196,7 +1196,7 @@
             }
           },
           "example": {
-            "text": "那方案B呢，是停损跟重寻。我是不是应该果断放弃这段舒适的关系，重新出发去寻找另外一个可以让我产生灵魂共鸣又有能力陪我一起实践这个梦想的人。",
+            "text": "那方案B呢，是停損跟重尋。我是不是應該果斷放棄這段舒適的關係，重新出發去尋找另外一個可以讓我產生靈魂共鳴又有能力陪我一起實踐這個夢想的人。",
             "translation": "So what about Plan B? It’s about cutting my losses and starting over. Should I decisively let go of this comfortable relationship and start over, searching for someone else with whom I can connect on a soulful level—someone capable of joining me in making this dream a reality?",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -1232,7 +1232,7 @@
             }
           },
           "example": {
-            "text": "那我觉得这个我可以理解，毕竟贫贱夫妻百事哀，财务的安全感确实是很多人生活稳定的这个基础啊基石。",
+            "text": "那我覺得這個我可以理解，畢竟貧賤夫妻百事哀，財務的安全感確實是很多人生活穩定的這個基礎啊基石。",
             "translation": "I can understand that, after all, “poverty brings sorrow to a couple,” and financial security is indeed the foundation—the cornerstone—of a stable life for many people.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -1267,7 +1267,7 @@
             }
           },
           "example": {
-            "text": "这些潜规则呢，很多上班族啊觉得是黑暗的职场政治，避之唯恐不及。",
+            "text": "這些潛規則呢，很多上班族啊覺得是黑暗的職場政治，避之唯恐不及。",
             "translation": "As for these unwritten rules, many office workers see them as the dark side of workplace politics and try to avoid them at all costs.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -1302,7 +1302,7 @@
             }
           },
           "example": {
-            "text": "但是啊，我们会带大家抽丝剥茧，了解其中的逻辑，并且呢教大家如何回应。",
+            "text": "但是啊，我們會帶大家抽絲剝繭，瞭解其中的邏輯，並且呢教大家如何回應。",
             "translation": "But we’ll take you through it step by step, unravel the logic behind it, and teach you how to respond.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -1337,7 +1337,7 @@
             }
           },
           "example": {
-            "text": "好就土炮，就弄成一个他心中好用的箱子。",
+            "text": "好就土炮，就弄成一個他心中好用的箱子。",
             "translation": "Just make a simple, practical box that works well for him.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -1372,7 +1372,7 @@
             }
           },
           "example": {
-            "text": "然后我们这些人呢，就想办法叫削足适履啊，我們把自己削成這個标准的职涯、职业、职位该有的样子，而不去问你自己的天赋跟热情。",
+            "text": "然後我們這些人呢，就想辦法叫削足適履啊，我們把自己削成這個標準的職涯、職業、職位該有的樣子，而不去問你自己的天賦跟熱情。",
             "translation": "And then the rest of us try to force a square peg into a round hole—we mold ourselves into the standard image of what a career, profession, or position should look like, without asking about our own talents and passions.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -1407,7 +1407,7 @@
             }
           },
           "example": {
-            "text": "所以跟这个游戏啊八竿子打不着关系，他是修机器的。",
+            "text": "所以跟這個遊戲啊八竿子打不著關係，他是修機器的。",
             "translation": "So it has absolutely nothing to do with this game—he was a machine repairman.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -1442,7 +1442,7 @@
             }
           },
           "example": {
-            "text": "因为你解决的问题是公司大家的痛点，我相信一定有资源的人愿意资-直属你，而且你又没有要求我要加薪，对不对？",
+            "text": "因為你解決的問題是公司大家的痛點，我相信一定有資源的人願意資-直屬你，而且你又沒有要求我要加薪，對不對？",
             "translation": "Since the problems you’ve solved are pain points for everyone at the company, I’m sure there will be someone with the resources who’s willing to sponsor you—and you didn’t even ask me for a raise, right?",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -1477,7 +1477,7 @@
             }
           },
           "example": {
-            "text": "第一个觀察身边有哪些问题沒有被解决；第二个創作，好，试着用quick and dirty 陽春的方式看能不能解决这个问题；再来做出成品之后無偿分享给大家，看看，不是我们要耍大方，而是要看看大家用的结果如何。",
+            "text": "第一個觀察身邊有哪些問題沒有被解決；第二個創作，好，試著用quick and dirty 陽春的方式看能不能解決這個問題；再來做出成品之後無償分享給大家，看看，不是我們要耍大方，而是要看看大家用的結果如何。",
             "translation": "First, observe what problems around you haven’t been solved; second, create—okay, try using a quick-and-dirty, basic approach to see if you can solve the problem; then, after you’ve created the final product, share it with everyone for free. It’s not that we’re trying to be generous, but rather to see how it works for everyone.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -1512,7 +1512,7 @@
             }
           },
           "example": {
-            "text": "那，那如果你有在 follow 我们的听众，你或许知道，就是呢庭韶老师在大人学这边今年开了一堂新的课程，那代号呢是 V041，名称叫做“不内耗心理养成课”。",
+            "text": "那，那如果你有在 follow 我們的聽眾，你或許知道，就是呢庭韶老師在大人學這邊今年開了一堂新的課程，那代號呢是 V041，名稱叫做“不內耗心理養成課”。",
             "translation": "So, if you’re one of our regular listeners, you might know that Teacher Ting-Shao launched a new course this year on “Adult Learning.” The code is V041, and it’s called “A Course on Cultivating a Mindset Free from Self-Sabotage.”",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -1547,7 +1547,7 @@
             }
           },
           "example": {
-            "text": "然后或者有些人就觉得我就是比较容易玻璃心，我就比较在意-",
+            "text": "然後或者有些人就覺得我就是比較容易玻璃心，我就比較在意-",
             "translation": "Or maybe some people just think I’m a bit thin-skinned, so I tend to take things to heart—",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -1582,7 +1582,7 @@
             }
           },
           "example": {
-            "text": "可是有可能他给我一个暗示，所以我就在内心做了各种沙盘推演。",
+            "text": "可是有可能他給我一個暗示，所以我就在內心做了各種沙盤推演。",
             "translation": "But maybe they gave me a hint, so I run all kinds of scenarios through my head.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -1647,7 +1647,7 @@
             }
           },
           "example": {
-            "text": "因為欧盟最近就有在推数位产品护照啊。",
+            "text": "因為歐盟最近就有在推數位產品護照啊。",
             "translation": "Because the EU has recently been promoting the Digital Product Passport.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -1682,7 +1682,7 @@
             }
           },
           "example": {
-            "text": "所以这个就跟那个农产品的产销履历一样很像嘛。",
+            "text": "所以這個就跟那個農產品的產銷履歷一樣很像嘛。",
             "translation": "So this is just like the production and sales history for agricultural products.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -1717,7 +1717,7 @@
             }
           },
           "example": {
-            "text": "那我跟大家说这件事情跟台湾很有关系啊，因为我们是做这个机能布跟这个棉纺外交的隐形冠军，我们是隐形冠军哦。",
+            "text": "那我跟大家說這件事情跟臺灣很有關係啊，因為我們是做這個機能布跟這個棉紡外交的隱形冠軍，我們是隱形冠軍哦。",
             "translation": "So let me tell everyone that this has a lot to do with Taiwan, because we’re the “hidden champions” in functional fabrics and cotton textile diplomacy—we’re hidden champions, you know.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -1752,7 +1752,7 @@
             }
           },
           "example": {
-            "text": "正港的台南人啊。你的学长。我的学长啊，也是你的学长啊，江浩佑。",
+            "text": "正港的臺南人啊。你的學長。我的學長啊，也是你的學長啊，江浩佑。",
             "translation": "A true Tainan native. Your senior. My senior—who’s also your senior—Jiang Haoyou.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -1789,7 +1789,7 @@
             }
           },
           "example": {
-            "text": "这聊，就聊到新加坡的选举哦，他说這我人生第一次听到集选区制这个，这个概念。",
+            "text": "這聊，就聊到新加坡的選舉哦，他說這我人生第一次聽到集選區制這個，這個概念。",
             "translation": "So, we were talking about elections in Singapore, and he said this was the first time in his life he’d heard of the “group representation constituency” system—that concept.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -1824,7 +1824,7 @@
             }
           },
           "example": {
-            "text": "反正呢最后的研究就是会发现，就是呃，因为鞭刑是由法官的裁量去施加的，所以在比较受鞭者跟未受鞭者，然后比較的状况底下，会发现其实是比较没有办法去证明鞭刑是有格外的嚇阻力的。",
+            "text": "反正呢最後的研究就是會發現，就是呃，因為鞭刑是由法官的裁量去施加的，所以在比較受鞭者跟未受鞭者，然後比較的狀況底下，會發現其實是比較沒有辦法去證明鞭刑是有格外的嚇阻力的。",
             "translation": "Anyway, the final conclusion of the study is that, well, since caning is imposed at the judge’s discretion, when comparing those who have been caned with those who haven’t, it’s actually quite difficult to prove that caning has any additional deterrent effect.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -1859,7 +1859,7 @@
             }
           },
           "example": {
-            "text": "所以就变成是，对专家来说会觉得说我们一直是觉得说要重刑化、乱世用重典，先不管是不是乱世——",
+            "text": "所以就變成是，對專家來說會覺得說我們一直是覺得說要重刑化、亂世用重典，先不管是不是亂世——",
             "translation": "So it comes down to this: experts tend to think that we’ve always believed in imposing harsher punishments—that “in times of chaos, harsh laws are necessary”—regardless of whether we’re actually in a time of chaos or not—",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -1894,7 +1894,7 @@
             }
           },
           "example": {
-            "text": "是啊，陈青青不是违反特别背信罪起-- 被起诉吗？",
+            "text": "是啊，陳青青不是違反特別背信罪起-- 被起訴嗎？",
             "translation": "Yeah, wasn’t Chen Qingqing indicted for violating the special breach of trust law—?",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -1929,7 +1929,7 @@
             }
           },
           "example": {
-            "text": "你就不要过失犯罪。对啊。你就不要不小心推到别人，別人跌到。",
+            "text": "你就不要過失犯罪。對啊。你就不要不小心推到別人，別人跌到。",
             "translation": "You just don’t want to commit a crime of negligence. Exactly. You just have to be careful not to accidentally bump into someone and cause them to fall.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -1966,7 +1966,7 @@
             }
           },
           "example": {
-            "text": "他其实可能就是要交差了事。哦，也有可能。",
+            "text": "他其實可能就是要交差了事。哦，也有可能。",
             "translation": "He’s probably just going through the motions. Oh, that’s possible, too.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -2002,7 +2002,7 @@
             }
           },
           "example": {
-            "text": "然后这次工程师前阵子也有另外一则抖内留言，他说：\"好久不见，近期股票赚了一些钱来抖内消业障。",
+            "text": "然後這次工程師前陣子也有另外一則抖內留言，他說：\"好久不見，近期股票賺了一些錢來抖內消業障。",
             "translation": "Also, the engineer left another donation message a while back, saying, “Long time no see. I made some money from the stock market recently, so I’m making this donation to atone for my karma.”",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -2037,7 +2037,7 @@
             }
           },
           "example": {
-            "text": "这就是为什么，这就是为什么詰問真人不可以用诱导讯问。",
+            "text": "這就是為什麼，這就是為什麼詰問真人不可以用誘導訊問。",
             "translation": "That’s why—that’s why you can’t use leading questions when cross-examining a real person.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -2072,7 +2072,7 @@
             }
           },
           "example": {
-            "text": "我觉得接下来讲得可好，我觉得大聲跟GD应该是好的，但是大聲跟太陽我不知道会不会有点瑜亮情结，我不知道。",
+            "text": "我覺得接下來講得可好，我覺得大聲跟GD應該是好的，但是大聲跟太陽我不知道會不會有點瑜亮情結，我不知道。",
             "translation": "I think what’s coming next is great. I think Da Sheng and GD should be a good pairing, but I’m not sure if there might be a bit of a “Yu-Liang complex” between Da Sheng and Tai Yang—I just don’t know.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -2107,7 +2107,7 @@
             }
           },
           "example": {
-            "text": "好几次都很想吐槽，这样一来就似乎变成对岸説的九漏鱼了，拜托再加油，就连文字都不知不觉被渗透如此之深。\"",
+            "text": "好幾次都很想吐槽，這樣一來就似乎變成對岸説的九漏魚了，拜託再加油，就連文字都不知不覺被滲透如此之深。\"",
             "translation": "Several times I really wanted to call them out on this—it makes it seem like what they call “the fish with nine holes” over there. Come on, try harder—even the written language has been so deeply infiltrated without us even realizing it.\"",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -2142,7 +2142,7 @@
             }
           },
           "example": {
-            "text": "所以呢有个东西我想请各位如果是企——经营企业或仲介可能会很了解，一个叫做工资切结书。",
+            "text": "所以呢有個東西我想請各位如果是企——經營企業或仲介可能會很瞭解，一個叫做工資切結書。",
             "translation": "So there’s something I’d like to ask everyone about—if you’re running a business or working as a broker, you’re probably quite familiar with it: it’s called a wage declaration form.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -2763,7 +2763,7 @@
             }
           },
           "example": {
-            "text": "我们九合一选举系列又来啦！这一集我们踏出台北市，邀请了新北市市长候选人，也就是现任立委苏巧慧。",
+            "text": "我們九合一選舉系列又來啦！這一集我們踏出臺北市，邀請了新北市市長候選人，也就是現任立委蘇巧慧。",
             "translation": "Our \"Nine-in-One Elections\" series is back! In this episode, we’re venturing outside Taipei City to interview New Taipei City mayoral candidate Su Chiao-hui, who is currently a legislator.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -2799,7 +2799,7 @@
             }
           },
           "example": {
-            "text": "我们今天聊了当初她为什么想要参选公职，她也跟我分享了第一次踏入市场，要扫市场拜票时候的心得感想。",
+            "text": "我們今天聊了當初她為什麼想要參選公職，她也跟我分享了第一次踏入市場，要掃市場拜票時候的心得感想。",
             "translation": "Today we talked about why she decided to run for public office, and she also shared her thoughts and feelings with me about her first time going out into the community to canvass for votes.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -2834,7 +2834,7 @@
             }
           },
           "example": {
-            "text": "我问她为什么想要参选新北市市长，以及对于新北市的想法跟愿景，她立刻滔滔不绝地跟我分享她的想法，这次参选的口号，还有主要政见。",
+            "text": "我問她為什麼想要參選新北市市長，以及對於新北市的想法跟願景，她立刻滔滔不絕地跟我分享她的想法，這次參選的口號，還有主要政見。",
             "translation": "I asked her why she wanted to run for mayor of New Taipei City, as well as her thoughts and vision for the city, and she immediately began sharing her ideas with me at great length—including her campaign slogan and key policy platforms.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -2869,7 +2869,7 @@
             }
           },
           "example": {
-            "text": "去解决解决解决這件事情，呃，搜集资讯，分析盘整，找出爭點，然后去做决定做判断，其实对我来讲是一个很像在解谜。",
+            "text": "去解決解決解決這件事情，呃，蒐集資訊，分析盤整，找出爭點，然後去做決定做判斷，其實對我來講是一個很像在解謎。",
             "translation": "Solving, solving, solving this issue—uh, gathering information, analyzing and assessing, identifying the points of contention, and then making decisions and judgments—actually feels a lot like solving a puzzle to me.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -2904,7 +2904,7 @@
             }
           },
           "example": {
-            "text": "去解决解决解决這件事情，呃，搜集资讯，分析盘整，找出爭點，然后去做决定做判断，其实对我来讲是一个很像在解谜。",
+            "text": "去解決解決解決這件事情，呃，蒐集資訊，分析盤整，找出爭點，然後去做決定做判斷，其實對我來講是一個很像在解謎。",
             "translation": "Solving, solving, solving this issue—uh, gathering information, analyzing and assessing, identifying the points of contention, and then making decisions and judgments—actually feels a lot like solving a puzzle to me.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -2939,7 +2939,7 @@
             }
           },
           "example": {
-            "text": "所以我现在短短的幾句话，其實当时是第1要會勘，而且會勘了 N 次，然后要找到有人願意捐地，然后再來你要能够说服中央的主管部會，負擔的-- 負責的機關，要能夠知道有這個計劃，",
+            "text": "所以我現在短短的幾句話，其實當時是第1要會勘，而且會勘了 N 次，然後要找到有人願意捐地，然後再來你要能夠說服中央的主管部會，負擔的-- 負責的機關，要能夠知道有這個計劃，",
             "translation": "so in these few brief sentences, what I’m actually referring to is that, first, we had to conduct site surveys—and we did them countless times—then find someone willing to donate the land, and then you have to be able to persuade the relevant central government agencies—the responsible authorities—to take on the burden and ensure they’re aware of this plan,",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -2974,7 +2974,7 @@
             }
           },
           "example": {
-            "text": "所以对我来讲，你说我什么时候开始了解这个工作，掌握到它的眉角，是真的就是说我在地方这样走，然后跟部会这样沟通，我也知道什么时候他交的作业是比教系只是文书资料[笑]。",
+            "text": "所以對我來講，你說我什麼時候開始瞭解這個工作，掌握到它的眉角，是真的就是說我在地方這樣走，然後跟部會這樣溝通，我也知道什麼時候他交的作業是比教系只是文書資料[笑]。",
             "translation": "So for me, when you ask when I started to understand this job and get a handle on its intricacies, it really came from being out in the community, communicating with government agencies, and realizing when the work they assigned went beyond just paperwork [laughs].",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -3009,7 +3009,7 @@
             }
           },
           "example": {
-            "text": "我的问题是如何让这几位责任感爆表、自我要求高的主管们可以放下焦虑进行有效沟通？",
+            "text": "我的問題是如何讓這幾位責任感爆表、自我要求高的主管們可以放下焦慮進行有效溝通？",
             "translation": "My question is: How can I help these managers—who are incredibly responsible and hold themselves to high standards—let go of their anxiety and communicate effectively?",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -3044,7 +3044,7 @@
             }
           },
           "example": {
-            "text": "那你——我这样做完之后，我的经验告诉我一件事，就是说这样会的确会把那个总经理给架空。",
+            "text": "那你——我這樣做完之後，我的經驗告訴我一件事，就是說這樣會的確會把那個總經理給架空。",
             "translation": "So, you—after I did that, my experience taught me one thing: that this approach would indeed sideline the general manager.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -3079,7 +3079,7 @@
             }
           },
           "example": {
-            "text": "你说会不会就阳奉阴违，就是讲难听一点，会不会有这种心态？",
+            "text": "你說會不會就陽奉陰違，就是講難聽一點，會不會有這種心態？",
             "translation": "Do you think there might be a case of paying lip service while acting otherwise? To put it bluntly, could there be that kind of mindset?",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -3114,7 +3114,7 @@
             }
           },
           "example": {
-            "text": "所以因为你在描述的時候也说，就是這-这些次专科好像都不太赚钱，就我覺得大家可能，可能比較不太理解为什么这些次专科好像不太賺錢，就包含心-心脏外科跟這個外傷外科这样子。",
+            "text": "所以因為你在描述的時候也說，就是這-這些次專科好像都不太賺錢，就我覺得大家可能，可能比較不太理解為什麼這些次專科好像不太賺錢，就包含心-心臟外科跟這個外傷外科這樣子。",
             "translation": "So, as you mentioned in your description, these subspecialties don’t seem to be very profitable. I think people might not quite understand why these subspecialties—including cardiac surgery and trauma surgery—don’t seem to be very profitable.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -3149,7 +3149,7 @@
             }
           },
           "example": {
-            "text": "对，因为呃，我们的救護法规也很有趣，它是正面表列。",
+            "text": "對，因為呃，我們的救護法規也很有趣，它是正面表列。",
             "translation": "Right, because, um, our emergency medical regulations are quite interesting—they use a positive list approach.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -3184,7 +3184,7 @@
             }
           },
           "example": {
-            "text": "但他们很不幸是因为乌克兰没有制空权。",
+            "text": "但他們很不幸是因為烏克蘭沒有制空權。",
             "translation": "But unfortunately, Ukraine doesn’t have air superiority.",
             "translationSource": "deepl",
             "segmentIndexes": [
@@ -3219,7 +3219,7 @@
             }
           },
           "example": {
-            "text": "作业反应不够灵敏，行政杂务积极，但是本职学能上不能完全上轨道。",
+            "text": "作業反應不夠靈敏，行政雜務積極，但是本職學能上不能完全上軌道。",
             "translation": "They aren’t responsive enough when it comes to tasks, are proactive with administrative duties, but haven’t fully gotten their core job responsibilities on track.",
             "translationSource": "deepl",
             "segmentIndexes": [

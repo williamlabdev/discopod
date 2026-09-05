@@ -87,9 +87,13 @@ English in every pair. "Auto-translated" is one of them.
 **It does not settle whether ingested episodes should carry authored vocabulary at
 all.** [ADR 0016](0016-authored-vocabulary-is-a-lesson-artifact.md) decision 1 says
 every ingested episode ships `vocabulary: []`; the shipped seed carries 86 entries
-across 21 of the 25 podcast episodes, sourced from `vocab.seed.json`. That reversal
-arrived without an ADR and is still unrecorded. This ADR translates the entries that are
-there — it does not decide that they belong there. See HANDOFF.md.
+across 21 of the 25 podcast episodes, sourced from `vocab.seed.json`. This ADR translates
+the entries that are there — it does not decide that they belong there.
+
+> **Settled by [ADR 0020](0020-extracted-vocabulary-is-quoted-from-the-episode.md),
+> 2026-09-05.** The entries stay, and ADR 0016 decision 1 is superseded for `vocabulary`:
+> they are *extracted* rather than authored, which is a weaker claim than the one ADR 0016
+> rejected, and the two anchors that make it weaker are now checked at ingest.
 
 ## Consequences we accept
 
