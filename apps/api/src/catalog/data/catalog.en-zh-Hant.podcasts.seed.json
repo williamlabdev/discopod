@@ -439,7 +439,32 @@
         "translation": "[Upbeat closing music]"
       }
     ],
-    "vocabulary": [],
+    "vocabulary": [
+      {
+        "term": "不安分",
+        "type": "adjective",
+        "meaning": {
+          "en": "Restless, unwilling to settle, or inclined to go beyond conventional expectations. It can be mildly critical, but in context it may also suggest boldness or unusual ambition."
+        },
+        "example": "很多同学写的是当老师、当司机、当公司职员，而大谷写下的是一个看起来有些不安分的梦想。"
+      },
+      {
+        "term": "心理素質",
+        "type": "noun",
+        "meaning": {
+          "en": "Mental toughness and emotional steadiness, especially under the pressure of sports, exams, or competition. It is common in sports, education, and performance-related contexts."
+        },
+        "example": "必须练好力量、速度、自律、心理素质。"
+      },
+      {
+        "term": "腳踏實地",
+        "type": "idiom",
+        "meaning": {
+          "en": "To act in a practical, grounded way and make steady, concrete progress rather than merely talking or dreaming. This is a strongly approving expression."
+        },
+        "example": "他不是嘴上说我要成为明星球员而是脚踏实地一点一点朝那里走。"
+      }
+    ],
     "questions": []
   },
   {
@@ -9669,7 +9694,64 @@
         "translation": "[Closing music]"
       }
     ],
-    "vocabulary": [],
+    "vocabulary": [
+      {
+        "term": "上山下鄉",
+        "type": "set phrase",
+        "meaning": {
+          "en": "Here, to travel through mountainous and rural areas. In historical contexts, 上山下乡 specifically refers to the Mao-era campaign that sent urban youths to live and work in the countryside."
+        },
+        "example": "我刚拿到驾照，杨先生就要我开车上山下乡。"
+      },
+      {
+        "term": "如履薄冰",
+        "type": "idiom",
+        "meaning": {
+          "en": "To proceed with extreme caution because one is in a precarious or risky situation—literally, “as if walking on thin ice.” The expression is relatively formal and literary."
+        },
+        "example": "这段路程对新手来说会感觉如履薄冰，可是已经走到一半无法回头，只能硬着头皮往山上走。"
+      },
+      {
+        "term": "硬著頭皮",
+        "type": "idiom",
+        "meaning": {
+          "en": "To force oneself to do something difficult, frightening, or embarrassing despite feeling reluctant or afraid. It is common in conversational Chinese."
+        },
+        "example": "这段路程对新手来说会感觉如履薄冰，可是已经走到一半无法回头，只能硬着头皮往山上走。"
+      },
+      {
+        "term": "心有餘悸",
+        "type": "idiom",
+        "meaning": {
+          "en": "To continue feeling frightened when remembering a danger or shock that has already passed. It is often used in written narratives and more polished speech."
+        },
+        "example": "只是过后每每想起都心有余悸。杨先生却不当一回事。"
+      },
+      {
+        "term": "軟硬兼施",
+        "type": "idiom",
+        "meaning": {
+          "en": "To use both gentle persuasion and forceful pressure to make someone comply. It often implies switching between coaxing and coercive tactics."
+        },
+        "example": "不管他怎么软硬兼施我再也没有上大帽山。"
+      },
+      {
+        "term": "得天獨厚",
+        "type": "idiom",
+        "meaning": {
+          "en": "To possess exceptional natural or circumstantial advantages that others do not have. It is an approving expression often used for places, environments, resources, or talent."
+        },
+        "example": "的确香港的自然环境得天独厚就连沿途的自然风光也百看不厌。"
+      },
+      {
+        "term": "恰到好處",
+        "type": "idiom",
+        "meaning": {
+          "en": "Exactly right in degree, timing, or execution—neither excessive nor insufficient. It is used approvingly in both speech and writing."
+        },
+        "example": "郊外的路径和设施通常非常便利又丝毫没有破坏大自然的美感一切人工干预恰到好处不多不少。"
+      }
+    ],
     "questions": []
   },
   {
@@ -21275,7 +21357,48 @@
         "translation": "[Closing music]"
       }
     ],
-    "vocabulary": [],
+    "vocabulary": [
+      {
+        "term": "漸凍症",
+        "type": "noun",
+        "meaning": {
+          "en": "The common Chinese name for amyotrophic lateral sclerosis (ALS), a progressive neurological disease that weakens the muscles used for voluntary movement. This is an everyday medical term rather than the formal name 肌萎缩侧索硬化症."
+        },
+        "example": "确诊渐冻症那一天，蔡磊坐在医生办公室里，窗外阳光很亮，医生的声音却仿佛隔着一堵厚厚的墙传过来。"
+      },
+      {
+        "term": "不聽使喚",
+        "type": "idiom",
+        "meaning": {
+          "en": "To stop responding to someone’s control or intentions. It is a colloquial expression often used of a body part or machine, and sometimes of an uncooperative person."
+        },
+        "example": "夜深人静时，她一个人坐在黑暗里，手指已经开始不听使唤。"
+      },
+      {
+        "term": "病理",
+        "type": "noun",
+        "meaning": {
+          "en": "The pathology of a disease: the processes, mechanisms, and bodily changes involved in its development. This is a formal medical term."
+        },
+        "example": "他开始阅读大量医学资料，请医生讲解病理，联系科研团队，像做一场巨大的项目管理一样，去参与推动渐冻症研究。"
+      },
+      {
+        "term": "外骨骼",
+        "type": "noun",
+        "meaning": {
+          "en": "An exoskeleton; in medical and engineering contexts, often a wearable mechanical structure that supports the body or assists movement. This is a technical term."
+        },
+        "example": "他常常去实验室看科研团队工作，穿着稍微笨重的外骨骼辅助设备。"
+      },
+      {
+        "term": "篤定",
+        "type": "adjective",
+        "meaning": {
+          "en": "Firmly certain, composed, and unwavering in one’s beliefs or attitude. It has a polished, somewhat literary tone and often conveys quiet confidence."
+        },
+        "example": "在对外发声时，她没有把自己放成可怜的病人，而是一个清醒、笃定、有责任的人"
+      }
+    ],
     "questions": []
   },
   {
@@ -22686,7 +22809,40 @@
         "translation": "[Soothing closing music]"
       }
     ],
-    "vocabulary": [],
+    "vocabulary": [
+      {
+        "term": "朝代",
+        "type": "noun",
+        "meaning": {
+          "en": "A dynasty: a period in which China was ruled by a particular imperial family. Mainly used in historical and cultural discussion."
+        },
+        "example": "他生活在两千多年前的中国，那时的朝代叫做汉朝。"
+      },
+      {
+        "term": "匈奴人",
+        "type": "noun",
+        "meaning": {
+          "en": "A member of the Xiongnu, an ancient nomadic confederation that lived north of early imperial China. This is a specialized historical term."
+        },
+        "example": "在北方生活着一群人，他們不是中国人，不是汉人，而是匈奴人。"
+      },
+      {
+        "term": "人馬",
+        "type": "noun",
+        "meaning": {
+          "en": "A body of people or forces belonging to a leader; historically, it can suggest both troops and horses. In modern informal use, it may also mean a team or contingent."
+        },
+        "example": "一天晚上，张骞带着他的人马偷偷地离开了匈奴的地方。"
+      },
+      {
+        "term": "插播",
+        "type": "verb",
+        "meaning": {
+          "en": "To insert a brief advertisement, announcement, or news item into a broadcast or program. This is a media and broadcasting term."
+        },
+        "example": "在节目的最后我想插播一条小广告。有的听众朋友可能已经知道，我们从十一月开始推出了一个新的播客节目叫茶歇新闻。"
+      }
+    ],
     "questions": []
   },
   {
@@ -24833,7 +24989,16 @@
         "translation": "Thank you, everyone."
       }
     ],
-    "vocabulary": [],
+    "vocabulary": [
+      {
+        "term": "二五折",
+        "type": "phrase",
+        "meaning": {
+          "en": "Twenty-five percent of the original price—that is, 75% off. Chinese discount expressions state the percentage the customer pays rather than the percentage saved."
+        },
+        "example": "你也可以用我们的 promocode teatime，然后你就会有二五折的优惠。"
+      }
+    ],
     "questions": []
   },
   {
@@ -27055,7 +27220,32 @@
         "translation": "[Closing music]"
       }
     ],
-    "vocabulary": [],
+    "vocabulary": [
+      {
+        "term": "所見所聞",
+        "type": "set phrase",
+        "meaning": {
+          "en": "What someone has personally seen and heard; their firsthand observations and experiences. This formal four-character expression is common in titles and written accounts."
+        },
+        "example": "茶歇中文第96集，在中国的所见所闻。"
+      },
+      {
+        "term": "普普通通",
+        "type": "adjective",
+        "meaning": {
+          "en": "Perfectly ordinary or completely unremarkable. This colloquial AABB reduplication gives more emphasis than 普通."
+        },
+        "example": "比如说在法国，如果你去饭店吃饭一顿普普通通的饭最少也要十欧元。"
+      },
+      {
+        "term": "獨生子女",
+        "type": "noun",
+        "meaning": {
+          "en": "An only child, especially in the context of Chinese family structure and the former one-child policy. It is a common social and demographic term."
+        },
+        "example": "很多年轻人跟我一样，是家里唯一的孩子，也就是独生子女。"
+      }
+    ],
     "questions": []
   },
   {
@@ -28730,7 +28920,40 @@
         "translation": "[Soothing closing music][Sound effects]"
       }
     ],
-    "vocabulary": [],
+    "vocabulary": [
+      {
+        "term": "不由得",
+        "type": "adverb",
+        "meaning": {
+          "en": "Involuntarily or unable to help doing something; it introduces a natural, spontaneous reaction. It is somewhat more literary than 忍不住."
+        },
+        "example": "看了电影，我不由得想到我自己的生活，想到茶歇中文。“不由得”是什么意思？"
+      },
+      {
+        "term": "長話短說",
+        "type": "idiom",
+        "meaning": {
+          "en": "To make a long story short; used to move quickly to the main point or summarize a complicated account. It is a common four-character conversational expression."
+        },
+        "example": "我们长话短说，现在来听故事。你准备好了吗？"
+      },
+      {
+        "term": "上弦",
+        "type": "verb",
+        "meaning": {
+          "en": "To string a bow by attaching and tightening its bowstring. It is a specialized verb-object expression; in other contexts, 上弦 can also mean winding a mechanical device."
+        },
+        "example": "谁能给这个弓上弦？Who can string this bow？"
+      },
+      {
+        "term": "破破爛爛",
+        "type": "adjective",
+        "meaning": {
+          "en": "Tattered, ragged, or badly worn and damaged. This vivid, colloquial AABB adjective is more emphatic than 破烂."
+        },
+        "example": "他出来一看，看见了那个衣服破破烂烂的老人。"
+      }
+    ],
     "questions": []
   },
   {
@@ -30020,7 +30243,48 @@
         "translation": "Bye.\n[Closing Music]"
       }
     ],
-    "vocabulary": [],
+    "vocabulary": [
+      {
+        "term": "情緒勒索",
+        "type": "noun",
+        "meaning": {
+          "en": "Emotional blackmail: the use of guilt, fear, obligation, or affection to pressure someone into complying. This is a common term in relationship and popular-psychology discussions."
+        },
+        "example": "那我们之间相处得还不错，那坊间呢两性专家常提到的反面教材，像是受委屈啊，情绪勒索啊，争吵啊，磨合不顺等等等等，这些呀在我们身上几乎都没有发生。"
+      },
+      {
+        "term": "勞健保",
+        "type": "noun",
+        "meaning": {
+          "en": "Taiwanese shorthand for labor insurance and National Health Insurance, especially when discussing basic employee benefits. It is Taiwan-specific institutional vocabulary."
+        },
+        "example": "此外啊，工程行款项入帐的时间不固定，薪水由父母发放，不仅啊发薪不准时，还常常被克扣，甚至连基本的劳健保都没有。"
+      },
+      {
+        "term": "怨懟",
+        "type": "noun",
+        "meaning": {
+          "en": "Deep, lingering resentment or bitterness toward someone after grievances have accumulated. The word has a formal or literary tone."
+        },
+        "example": "他却没办法陪我实践，没办法携手前进，我觉得我心里会有怨怼，也会有遗憾。"
+      },
+      {
+        "term": "停損",
+        "type": "verb",
+        "meaning": {
+          "en": "To cut one’s losses and stop further damage. Originally financial jargon for executing a stop-loss, it is widely extended in Taiwanese Mandarin to careers and relationships."
+        },
+        "example": "那方案B呢，是停损跟重寻。我是不是应该果断放弃这段舒适的关系，重新出发去寻找另外一个可以让我产生灵魂共鸣又有能力陪我一起实践这个梦想的人。"
+      },
+      {
+        "term": "貧賤夫妻百事哀",
+        "type": "set phrase",
+        "meaning": {
+          "en": "A proverb meaning that poverty makes every aspect of married life difficult or sorrowful. It is commonly quoted when discussing the strain that financial hardship places on a relationship."
+        },
+        "example": "那我觉得这个我可以理解，毕竟贫贱夫妻百事哀，财务的安全感确实是很多人生活稳定的这个基础啊基石。"
+      }
+    ],
     "questions": []
   },
   {
@@ -33222,7 +33486,64 @@
         "translation": "Bye-bye [Joyful closing music]"
       }
     ],
-    "vocabulary": [],
+    "vocabulary": [
+      {
+        "term": "避之唯恐不及",
+        "type": "idiom",
+        "meaning": {
+          "en": "To avoid someone or something at all costs, as though afraid one cannot get away fast enough. It is emphatic and somewhat formal."
+        },
+        "example": "这些潜规则呢，很多上班族啊觉得是黑暗的职场政治，避之唯恐不及。"
+      },
+      {
+        "term": "抽絲剝繭",
+        "type": "idiom",
+        "meaning": {
+          "en": "To unravel a complicated matter layer by layer in order to reveal its underlying logic or truth. This vivid idiom is often used for analysis, investigations, and explanations."
+        },
+        "example": "但是啊，我们会带大家抽丝剥茧，了解其中的逻辑，并且呢教大家如何回应。"
+      },
+      {
+        "term": "土炮",
+        "type": "adjective",
+        "meaning": {
+          "en": "Makeshift, homemade, or improvised with simple local methods rather than professional resources. This is informal Taiwanese slang and can imply roughness but also ingenuity."
+        },
+        "example": "好就土炮，就弄成一个他心中好用的箱子。"
+      },
+      {
+        "term": "削足適履",
+        "type": "idiom",
+        "meaning": {
+          "en": "Literally, “cut one’s feet to fit the shoes”; figuratively, to distort oneself or reality in order to conform to rigid requirements. It is a literary idiom often used critically."
+        },
+        "example": "然后我们这些人呢，就想办法叫削足适履啊，我們把自己削成這個标准的职涯、职业、职位该有的样子，而不去问你自己的天赋跟热情。"
+      },
+      {
+        "term": "八竿子打不著",
+        "type": "idiom",
+        "meaning": {
+          "en": "To have absolutely no connection with someone or something. This is a highly colloquial expression, often followed by 跟……有关系 or simply used with 跟."
+        },
+        "example": "所以跟这个游戏啊八竿子打不着关系，他是修机器的。"
+      },
+      {
+        "term": "痛點",
+        "type": "noun",
+        "meaning": {
+          "en": "A “pain point”: a recurring problem, frustration, or unmet need experienced by customers, users, or employees. It is common jargon in business and product development."
+        },
+        "example": "因为你解决的问题是公司大家的痛点，我相信一定有资源的人愿意资-直属你，而且你又没有要求我要加薪，对不对？"
+      },
+      {
+        "term": "陽春",
+        "type": "adjective",
+        "meaning": {
+          "en": "Basic, bare-bones, or lacking polished features and extras. This informal sense of 陽春 is especially common in Taiwanese Mandarin."
+        },
+        "example": "第一个觀察身边有哪些问题沒有被解决；第二个創作，好，试着用quick and dirty 陽春的方式看能不能解决这个问题；再来做出成品之后無偿分享给大家，看看，不是我们要耍大方，而是要看看大家用的结果如何。"
+      }
+    ],
     "questions": []
   },
   {
@@ -40600,7 +40921,32 @@
         "translation": "Bye!\n[Closing Music]"
       }
     ],
-    "vocabulary": [],
+    "vocabulary": [
+      {
+        "term": "內耗",
+        "type": "verb",
+        "meaning": {
+          "en": "To drain oneself mentally through overthinking, anxiety, self-criticism, or unresolved internal conflict. This is a contemporary buzzword in psychology, workplace, and social-media discussions."
+        },
+        "example": "那，那如果你有在 follow 我们的听众，你或许知道，就是呢庭韶老师在大人学这边今年开了一堂新的课程，那代号呢是 V041，名称叫做“不内耗心理养成课”。"
+      },
+      {
+        "term": "玻璃心",
+        "type": "adjective",
+        "meaning": {
+          "en": "Emotionally fragile or easily hurt by criticism. Literally “glass-hearted,” this is informal internet slang and can be teasing or dismissive."
+        },
+        "example": "然后或者有些人就觉得我就是比较容易玻璃心，我就比较在意-"
+      },
+      {
+        "term": "沙盤推演",
+        "type": "noun",
+        "meaning": {
+          "en": "A structured simulation or rehearsal of possible scenarios and responses. Originally associated with military planning, it is now common in business and figurative use."
+        },
+        "example": "可是有可能他给我一个暗示，所以我就在内心做了各种沙盘推演。"
+      }
+    ],
     "questions": []
   },
   {
@@ -57322,7 +57668,88 @@
         "translation": "Bye."
       }
     ],
-    "vocabulary": [],
+    "vocabulary": [
+      {
+        "term": "數位產品護照",
+        "type": "noun",
+        "meaning": {
+          "en": "A “digital product passport”: a digital record of a product’s materials, origin, repairability, and recycling information, often accessed through a QR code. This is specialized sustainability and EU regulatory terminology."
+        },
+        "example": "因為欧盟最近就有在推数位产品护照啊。"
+      },
+      {
+        "term": "產銷履歷",
+        "type": "noun",
+        "meaning": {
+          "en": "A traceability record documenting an agricultural product’s production and distribution history. This official term is especially common in Taiwan."
+        },
+        "example": "所以这个就跟那个农产品的产销履历一样很像嘛。"
+      },
+      {
+        "term": "隱形冠軍",
+        "type": "noun",
+        "meaning": {
+          "en": "A little-known company or industry that is nevertheless a world leader in a specialized market—a “hidden champion.” The term is used in business and economics."
+        },
+        "example": "那我跟大家说这件事情跟台湾很有关系啊，因为我们是做这个机能布跟这个棉纺外交的隐形冠军，我们是隐形冠军哦。"
+      },
+      {
+        "term": "正港",
+        "type": "adjective",
+        "meaning": {
+          "en": "Genuine, authentic, or truly representative of a place or type. This is an informal Taiwan expression influenced by Taiwanese Hokkien."
+        },
+        "example": "正港的台南人啊。你的学长。我的学长啊，也是你的学长啊，江浩佑。"
+      },
+      {
+        "term": "集選區制",
+        "type": "noun",
+        "meaning": {
+          "en": "The Group Representation Constituency system, in which a party fields a team of candidates and the entire team wins or loses together. This is specialized electoral terminology used especially in discussions of Singapore."
+        },
+        "example": "这聊，就聊到新加坡的选举哦，他说這我人生第一次听到集选区制这个，这个概念。"
+      },
+      {
+        "term": "裁量",
+        "type": "noun",
+        "meaning": {
+          "en": "Discretion: the legally permitted authority of a judge or official to choose among possible decisions. This is a formal legal and administrative term."
+        },
+        "example": "反正呢最后的研究就是会发现，就是呃，因为鞭刑是由法官的裁量去施加的，所以在比较受鞭者跟未受鞭者，然后比較的状况底下，会发现其实是比较没有办法去证明鞭刑是有格外的嚇阻力的。"
+      },
+      {
+        "term": "亂世用重典",
+        "type": "set phrase",
+        "meaning": {
+          "en": "“Troubled times call for harsh punishments”: a saying used to argue that severe disorder should be met with severe laws or penalties. It commonly appears in political and criminal-justice debate."
+        },
+        "example": "所以就变成是，对专家来说会觉得说我们一直是觉得说要重刑化、乱世用重典，先不管是不是乱世——"
+      },
+      {
+        "term": "背信",
+        "type": "noun",
+        "meaning": {
+          "en": "Breach of trust: the offense of harming another person’s interests while entrusted with managing their affairs. This is primarily a formal legal term."
+        },
+        "example": "是啊，陈青青不是违反特别背信罪起-- 被起诉吗？"
+      },
+      {
+        "term": "過失犯罪",
+        "type": "noun",
+        "meaning": {
+          "en": "A negligent offense: a crime caused by carelessness rather than deliberate intent. This is formal criminal-law terminology."
+        },
+        "example": "你就不要过失犯罪。对啊。你就不要不小心推到别人，別人跌到。"
+      },
+      {
+        "term": "交差了事",
+        "type": "idiom",
+        "meaning": {
+          "en": "To do the bare minimum simply so that one can report a task as completed, without caring about its quality or substance. It has a critical, often conversational tone."
+        },
+        "example": "他其实可能就是要交差了事。哦，也有可能。"
+      }
+    ],
     "questions": []
   },
   {
@@ -73924,7 +74351,40 @@
         "translation": "Bye."
       }
     ],
-    "vocabulary": [],
+    "vocabulary": [
+      {
+        "term": "抖內",
+        "type": "verb",
+        "meaning": {
+          "en": "To donate or tip money to an online creator, streamer, or program. This is informal internet slang, especially common in Taiwan, derived from English “donate.”"
+        },
+        "example": "然后这次工程师前阵子也有另外一则抖内留言，他说：\"好久不见，近期股票赚了一些钱来抖内消业障。"
+      },
+      {
+        "term": "誘導訊問",
+        "type": "noun",
+        "meaning": {
+          "en": "Leading questioning: questioning that suggests or steers someone toward the desired answer, especially in an interrogation or courtroom examination. This is formal legal terminology."
+        },
+        "example": "这就是为什么，这就是为什么詰問真人不可以用诱导讯问。"
+      },
+      {
+        "term": "瑜亮情結",
+        "type": "noun",
+        "meaning": {
+          "en": "A rivalry complex between two similarly talented people, alluding to the rivalry between Zhou Yu and Zhuge Liang in the Three Kingdoms tradition. It is a literary-cultural expression often used somewhat humorously."
+        },
+        "example": "我觉得接下来讲得可好，我觉得大聲跟GD应该是好的，但是大聲跟太陽我不知道会不会有点瑜亮情结，我不知道。"
+      },
+      {
+        "term": "九漏魚",
+        "type": "slang",
+        "meaning": {
+          "en": "An online insult for someone considered poorly educated or ignorant, derived from 九年义务教育漏网之鱼, “someone who slipped through the net of nine-year compulsory education.” It is mocking and derogatory, so it should be used cautiously."
+        },
+        "example": "好几次都很想吐槽，这样一来就似乎变成对岸説的九漏鱼了，拜托再加油，就连文字都不知不觉被渗透如此之深。\""
+      }
+    ],
     "questions": []
   },
   {
@@ -81838,7 +82298,16 @@
         "translation": "Opening Music】"
       }
     ],
-    "vocabulary": [],
+    "vocabulary": [
+      {
+        "term": "工資切結書",
+        "type": "noun",
+        "meaning": {
+          "en": "A signed wage declaration or undertaking recording matters such as a worker’s pay, recruitment costs, and debts. This is specialized Taiwanese labor and migrant-worker documentation terminology."
+        },
+        "example": "所以呢有个东西我想请各位如果是企——经营企业或仲介可能会很了解，一个叫做工资切结书。"
+      }
+    ],
     "questions": []
   },
   {
@@ -85002,7 +85471,72 @@
         "translation": "prove yourself to anyone. Hmm."
       }
     ],
-    "vocabulary": [],
+    "vocabulary": [
+      {
+        "term": "剖開來",
+        "type": "verb",
+        "meaning": {
+          "en": "To cut oneself open figuratively by exposing one’s deepest feelings and vulnerabilities for others to examine. This is vivid, emotionally charged language rather than a neutral expression for self-disclosure."
+        },
+        "example": "嗯，畢竟做音樂這條路特別吧，你是不斷的要把自己剖開來給別人看的，所以"
+      },
+      {
+        "term": "入圍",
+        "type": "verb",
+        "meaning": {
+          "en": "To be shortlisted or nominated for an award or competition. It indicates reaching the final selection stage, not necessarily winning."
+        },
+        "example": "它是一個金曲新人入圍的。創作歌手。非常的年輕上進也剛出了他的第一章創作專輯。"
+      },
+      {
+        "term": "出道",
+        "type": "verb",
+        "meaning": {
+          "en": "To make one’s professional debut, especially as a singer, actor, idol, or other entertainer. It is a standard term in the Mandarin-language entertainment industry."
+        },
+        "example": "出道哦，我覺得很多人看不到後面那些可能經歷過的一些就是很很困難的事"
+      },
+      {
+        "term": "一線之隔",
+        "type": "set phrase",
+        "meaning": {
+          "en": "A very fine dividing line between two conditions or qualities. It is commonly used when two things may look similar but are fundamentally different."
+        },
+        "example": "最重然。後，這就是自信跟自大的一線之隔。"
+      },
+      {
+        "term": "韻腳",
+        "type": "noun",
+        "meaning": {
+          "en": "A rhyme or rhyming ending, especially the final sound or syllable of a line of poetry, lyrics, or rap. This is a technical term used in writing and music."
+        },
+        "example": "然後一些韻腳，我覺得很厲害，所以我會喜歡把這些東西寫進歌裡面，我希望"
+      },
+      {
+        "term": "苦樂參半",
+        "type": "idiom",
+        "meaning": {
+          "en": "Containing both hardship and happiness; bittersweet. This formal four-character expression is often used to summarize a life experience or period of time."
+        },
+        "example": "苦樂參半的人生現實狀態，這樣就是。你無法避免有很掙扎很艱難很痛苦的，"
+      },
+      {
+        "term": "走貴人運",
+        "type": "phrase",
+        "meaning": {
+          "en": "To be going through a period in which one is especially fortunate in meeting 貴人—helpful or influential people who provide timely support and opportunities. The expression comes from Chinese fortune-telling language and is also used casually."
+        },
+        "example": "貴人很多啦，我覺得我我比較是屬於走貴人運，那那個路我覺得有些人真的是"
+      },
+      {
+        "term": "問世",
+        "type": "verb",
+        "meaning": {
+          "en": "To be published, released, invented, or otherwise introduced to the world. It is more formal and literary than ordinary words such as 發行 or 出版."
+        },
+        "example": "我終於有一個實體專輯要問世了。好，我通常最後的都會想問這個問題，"
+      }
+    ],
     "questions": []
   },
   {
@@ -91645,7 +92179,24 @@
         "translation": "Okay, thank you all. Thank you, and goodbye."
       }
     ],
-    "vocabulary": [],
+    "vocabulary": [
+      {
+        "term": "流年",
+        "type": "noun",
+        "meaning": {
+          "en": "A particular year viewed in terms of the fortune and events it may bring, especially in astrology or Chinese fortune-telling. 看流年 means to examine someone’s prospects for a given year."
+        },
+        "example": "星盤的解讀，比如說在大部分的占星的應用裡面，大家可能會用占星去看流年"
+      },
+      {
+        "term": "翻舊帳",
+        "type": "idiom",
+        "meaning": {
+          "en": "To bring up old mistakes, conflicts, or grievances again, usually during a current argument. It is a colloquial and disapproving expression."
+        },
+        "example": "何事情跟決策都沒有原則，跟他很愛翻舊帳。"
+      }
+    ],
     "questions": []
   },
   {
@@ -99989,7 +100540,24 @@
         "translation": "Different brands. Okay, thank you all, and that’s it for today—bye, bye, bye, bye."
       }
     ],
-    "vocabulary": [],
+    "vocabulary": [
+      {
+        "term": "靠臉吃飯",
+        "type": "phrase",
+        "meaning": {
+          "en": "To make a living primarily through one’s physical appearance. This colloquial expression is often used of models, actors, influencers, and other public-facing professions."
+        },
+        "example": "就一道疤，我是模特兒，我是靠臉吃飯的，我不可以臉上一道疤。"
+      },
+      {
+        "term": "一塌糊塗",
+        "type": "idiom",
+        "meaning": {
+          "en": "Completely chaotic, ruined, or out of control; after a verb, it can intensify the action. In 哭得一塌糊塗, it means to cry uncontrollably or be a total mess from crying."
+        },
+        "example": "們早就知道，然後就就我媽就哭的一塌糊塗，對啊，然後 2 個弟弟也很可愛，要"
+      }
+    ],
     "questions": []
   },
   {
@@ -109173,7 +109741,32 @@
         "translation": "Thank you, thank you, bye-bye, bye-bye."
       }
     ],
-    "vocabulary": [],
+    "vocabulary": [
+      {
+        "term": "配速",
+        "type": "verb",
+        "meaning": {
+          "en": "To set or manage one’s pace, particularly while running or racing. 配速 is also used as a noun for the pace maintained over a given distance."
+        },
+        "example": "發揮你的這個極限，所以怎麼樣配速穩定這件事很重要。"
+      },
+      {
+        "term": "自顧不暇",
+        "type": "idiom",
+        "meaning": {
+          "en": "To be so overwhelmed with one’s own difficulties that one has no time or capacity to look after anyone or anything else. It is a relatively formal four-character expression."
+        },
+        "example": "他們，因為我覺得我那時候自顧不暇，我，我會這麼說啦，我覺得我那時候就"
+      },
+      {
+        "term": "習得性無助",
+        "type": "noun",
+        "meaning": {
+          "en": "Learned helplessness: a psychological state in which repeated failure or lack of control causes someone to stop trying, even when improvement may be possible. This is a technical psychology term."
+        },
+        "example": "習得性無助，他發現打不過他發現可能很容易失敗的時候呢，他可能會反而退"
+      }
+    ],
     "questions": []
   },
   {
@@ -121487,7 +122080,64 @@
         "translation": "[Closing music]"
       }
     ],
-    "vocabulary": [],
+    "vocabulary": [
+      {
+        "term": "九合一選舉",
+        "type": "noun",
+        "meaning": {
+          "en": "Taiwan’s “nine-in-one” local elections, in which nine categories of local public office are elected on the same day. This is Taiwan-specific political terminology."
+        },
+        "example": "我们九合一选举系列又来啦！这一集我们踏出台北市，邀请了新北市市长候选人，也就是现任立委苏巧慧。"
+      },
+      {
+        "term": "掃市場",
+        "type": "verb",
+        "meaning": {
+          "en": "In Taiwanese election campaigning, to canvass at a traditional market by walking around, greeting vendors and shoppers, and soliciting votes. This is colloquial political vocabulary."
+        },
+        "example": "我们今天聊了当初她为什么想要参选公职，她也跟我分享了第一次踏入市场，要扫市场拜票时候的心得感想。"
+      },
+      {
+        "term": "滔滔不絕",
+        "type": "idiom",
+        "meaning": {
+          "en": "To talk continuously and fluently, with words pouring out; often used for someone speaking enthusiastically or at great length."
+        },
+        "example": "我问她为什么想要参选新北市市长，以及对于新北市的想法跟愿景，她立刻滔滔不绝地跟我分享她的想法，这次参选的口号，还有主要政见。"
+      },
+      {
+        "term": "盤整",
+        "type": "verb",
+        "meaning": {
+          "en": "To consolidate, organize, and review scattered information so that it can be analyzed or acted upon. This usage is especially common in Taiwanese business and professional speech."
+        },
+        "example": "去解决解决解决這件事情，呃，搜集资讯，分析盘整，找出爭點，然后去做决定做判断，其实对我来讲是一个很像在解谜。"
+      },
+      {
+        "term": "爭點",
+        "type": "noun",
+        "meaning": {
+          "en": "The central issue on which parties disagree, especially in legal analysis, negotiation, or litigation. It is a formal professional term."
+        },
+        "example": "去解决解决解决這件事情，呃，搜集资讯，分析盘整，找出爭點，然后去做决定做判断，其实对我来讲是一个很像在解谜。"
+      },
+      {
+        "term": "會勘",
+        "type": "verb",
+        "meaning": {
+          "en": "To conduct a joint on-site inspection involving officials or representatives from multiple agencies. This is Taiwanese administrative and public-policy terminology."
+        },
+        "example": "所以我现在短短的幾句话，其實当时是第1要會勘，而且會勘了 N 次，然后要找到有人願意捐地，然后再來你要能够说服中央的主管部會，負擔的-- 負責的機關，要能夠知道有這個計劃，"
+      },
+      {
+        "term": "眉角",
+        "type": "noun",
+        "meaning": {
+          "en": "The subtle know-how, hidden details, or knack needed to handle something properly. This is colloquial Taiwanese Mandarin influenced by Southern Min."
+        },
+        "example": "所以对我来讲，你说我什么时候开始了解这个工作，掌握到它的眉角，是真的就是说我在地方这样走，然后跟部会这样沟通，我也知道什么时候他交的作业是比教系只是文书资料[笑]。"
+      }
+    ],
     "questions": []
   },
   {
@@ -124257,7 +124907,32 @@
         "translation": "[Closing music]"
       }
     ],
-    "vocabulary": [],
+    "vocabulary": [
+      {
+        "term": "責任感爆表",
+        "type": "phrase",
+        "meaning": {
+          "en": "To have an off-the-charts sense of responsibility. 爆表 literally means that a gauge has exceeded its maximum and is colloquial and emphatic."
+        },
+        "example": "我的问题是如何让这几位责任感爆表、自我要求高的主管们可以放下焦虑进行有效沟通？"
+      },
+      {
+        "term": "架空",
+        "type": "verb",
+        "meaning": {
+          "en": "To leave someone in an official position while stripping them of real authority, making the role merely nominal. It is commonly used in organizational and political contexts."
+        },
+        "example": "那你——我这样做完之后，我的经验告诉我一件事，就是说这样会的确会把那个总经理给架空。"
+      },
+      {
+        "term": "陽奉陰違",
+        "type": "idiom",
+        "meaning": {
+          "en": "To pretend to obey openly while secretly acting in opposition. This idiom is strongly critical and often describes insincere compliance with orders or policy."
+        },
+        "example": "你说会不会就阳奉阴违，就是讲难听一点，会不会有这种心态？"
+      }
+    ],
     "questions": []
   },
   {
@@ -137771,7 +138446,32 @@
         "translation": "Thank you.\n[Ending music]"
       }
     ],
-    "vocabulary": [],
+    "vocabulary": [
+      {
+        "term": "次專科",
+        "type": "noun",
+        "meaning": {
+          "en": "A medical subspecialty within a broader specialty, such as trauma surgery within surgery. This is specialized Taiwanese medical terminology."
+        },
+        "example": "所以因为你在描述的時候也说，就是這-这些次专科好像都不太赚钱，就我覺得大家可能，可能比較不太理解为什么这些次专科好像不太賺錢，就包含心-心脏外科跟這個外傷外科这样子。"
+      },
+      {
+        "term": "正面表列",
+        "type": "noun",
+        "meaning": {
+          "en": "A “positive-list” regulatory system that explicitly states what is permitted; activities not listed are generally not authorized. This is formal legal and administrative terminology."
+        },
+        "example": "对，因为呃，我们的救護法规也很有趣，它是正面表列。"
+      },
+      {
+        "term": "制空權",
+        "type": "noun",
+        "meaning": {
+          "en": "Control or military superiority in the airspace over a conflict zone; air superiority. This is formal military terminology."
+        },
+        "example": "但他们很不幸是因为乌克兰没有制空权。"
+      }
+    ],
     "questions": []
   },
   {
@@ -140445,7 +141145,16 @@
         "translation": "[Closing music]"
       }
     ],
-    "vocabulary": [],
+    "vocabulary": [
+      {
+        "term": "本職學能",
+        "type": "noun",
+        "meaning": {
+          "en": "The core professional knowledge and practical skills required for one’s assigned job. The expression is common in Taiwanese official, military, and workplace language."
+        },
+        "example": "作业反应不够灵敏，行政杂务积极，但是本职学能上不能完全上轨道。"
+      }
+    ],
     "questions": []
   },
   {

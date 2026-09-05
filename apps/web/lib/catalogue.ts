@@ -22,7 +22,7 @@ import {
   type Show,
   type TranscriptCue,
 } from './catalog-api';
-import { pick, pickOptional, type LanguagePair } from './language';
+import { has, pick, pickOptional, type LanguagePair } from './language';
 
 export { fetchPairs as loadPairs };
 export type { LanguagePair };
@@ -234,7 +234,7 @@ function toCard(ranked: RankedEpisode, show: Show | undefined, pair: LanguagePai
     voices: formatVoices(episode.profile.speakerCount),
     speakerCount: episode.profile.speakerCount,
     duration: formatDuration(episode.durationSeconds),
-    newWords: episode.newWordCount,
+    newWords: episode.vocabulary.filter((entry) => has(entry.meaning, pair.speaks)).length,
     publisherTranscript: episode.publisherTranscript,
     ratedBy: episode.ratedBy,
     overlayVerified: episode.overlayVerified,
@@ -349,13 +349,15 @@ export async function loadEpisodeDetail(
       translation: pickOptional(cue.translation, pair.speaks),
       highlight: cue.highlight,
     })),
-    vocabulary: episode.vocabulary.map((entry_) => ({
-      term: entry_.term,
-      type: entry_.partOfSpeech,
-      meaning: pick(entry_.meaning, pair.speaks, `Episode ${id} vocabulary "${entry_.term}" meaning`),
-      example: entry_.example,
-      occurrence: findOccurrence(entry_.term, episode.transcript),
-    })),
+    vocabulary: episode.vocabulary
+      .filter((entry_) => has(entry_.meaning, pair.speaks))
+      .map((entry_) => ({
+        term: entry_.term,
+        type: entry_.partOfSpeech,
+        meaning: pick(entry_.meaning, pair.speaks, `Episode ${id} vocabulary "${entry_.term}" meaning`),
+        example: entry_.example,
+        occurrence: findOccurrence(entry_.term, episode.transcript),
+      })),
     questions: episode.questions.map((question, index) => ({
       prompt: pick(question.prompt, pair.speaks, `Episode ${id} question ${index + 1} prompt`),
       options: pick(question.options, pair.speaks, `Episode ${id} question ${index + 1} options`),

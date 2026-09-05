@@ -1,0 +1,3148 @@
+{
+  "generatedAt": "2026-09-05",
+  "provenance": {
+    "terms": "Candidates proposed from transcript excerpts, then kept only if they occur verbatim in the show's own transcript. Terms occurring only inside an [audio event] tag, and terms carrying mixed-script ASR corruption, were rejected.",
+    "timing": "position.timeSeconds is the term's own start time from transcript.json words[] when that episode has word timings; otherwise it falls back to the containing cue's start, flagged by position.timingSource. position.segment keeps the cue's own start/end as context.",
+    "example": "example.text is the transcript cue (extended to the following cue when the first is too short to teach from); example.translation is the DeepL translation already published in bilingual-transcript.json for those same cues.",
+    "scripts": "traditional/simplified were drafted with OpenCC and then reviewed character by character, because simplified to traditional is many-to-one (CLAUDE.md, ADR 0006). Every ambiguous character in this file was checked individually: 着 to 著 (硬著頭皮, 八竿子打不著), 余 to 餘 (心有餘悸), 历 to 歷 (產銷履歷), 帐 to 帳 (翻舊帳), 制 kept as 制 (制空權, 集選區制).",
+    "pronunciation": "pypinyin drafts, audited by hand for polyphonic characters and neutral tones; corrections recorded in this file (切結 qiè, 一線之隔 without 一 sandhi, neutral-tone zhuyin dot moved before the symbol).",
+    "authored": "definition, partOfSpeech and level are model-written and not verified against a dictionary."
+  },
+  "shows": [
+    {
+      "showId": "Learning-Chinese-through-Stories",
+      "title": "Learning Chinese through Stories",
+      "episodesUsed": [
+        {
+          "dir": "2026-06-21-2.3.37A-从小镇跑向世界的大谷翔平-Story",
+          "title": "2.3.37A 《从小镇跑向世界的大谷翔平》Story",
+          "durationSeconds": 585.6
+        },
+        {
+          "dir": "2026-07-03-2.3.37-B-从小镇跑向世界的大谷翔平-Story-Walkthrough",
+          "title": "2.3.37 B《从小镇跑向世界的大谷翔平》 Story Walkthrough",
+          "durationSeconds": 2848.8
+        },
+        {
+          "dir": "2026-07-22-2.3.36A-喜欢开车的杨先生-Story",
+          "title": "2.3.36A《喜欢开车的杨先生》Story",
+          "durationSeconds": 594.5
+        },
+        {
+          "dir": "2026-07-29-2.3.36A-喜欢开车的杨先生-Story-Walkthrough",
+          "title": "2.3.36A《喜欢开车的杨先生》Story Walkthrough",
+          "durationSeconds": 3369.0
+        },
+        {
+          "dir": "2026-08-16-3.1.31A-不向命运低头的人-Story",
+          "title": "3.1.31A《不向命运低头的人》Story",
+          "durationSeconds": 596.0
+        }
+      ],
+      "transcriptScript": {
+        "dominant": "simplified",
+        "traditionalOnlyChars": 259,
+        "simplifiedOnlyChars": 7194,
+        "note": "Character counts over the show's whole transcript. The ASR output is not script-pure, so `term` is the surface form as transcribed; `traditional` and `simplified` are the normalised pair."
+      },
+      "vocabularyCount": 15,
+      "vocabulary": [
+        {
+          "term": "不安分",
+          "traditional": "不安分",
+          "simplified": "不安分",
+          "pronunciation": {
+            "pinyin": "bù ān fèn",
+            "zhuyin": "ㄅㄨˋ ㄢ ㄈㄣˋ"
+          },
+          "partOfSpeech": "adjective",
+          "level": "upper-intermediate",
+          "definition": "Restless, unwilling to settle, or inclined to go beyond conventional expectations. It can be mildly critical, but in context it may also suggest boldness or unusual ambition.",
+          "position": {
+            "episode": "2.3.37A 《从小镇跑向世界的大谷翔平》Story",
+            "episodeDir": "2026-06-21-2.3.37A-从小镇跑向世界的大谷翔平-Story",
+            "timeSeconds": 295.5,
+            "timestamp": "04:56",
+            "timingSource": "word",
+            "segment": {
+              "index": 26,
+              "startSeconds": 281.5,
+              "endSeconds": 296.98
+            }
+          },
+          "example": {
+            "text": "很多同学写的是当老师、当司机、当公司职员，而大谷写下的是一个看起来有些不安分的梦想。",
+            "translation": "Many students wrote about becoming teachers, drivers, or office workers, but Da Gu wrote down a dream that seemed a bit unconventional.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              26
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 7
+        },
+        {
+          "term": "心理素质",
+          "traditional": "心理素質",
+          "simplified": "心理素质",
+          "pronunciation": {
+            "pinyin": "xīn lǐ sù zhì",
+            "zhuyin": "ㄒㄧㄣ ㄌㄧˇ ㄙㄨˋ ㄓˋ"
+          },
+          "partOfSpeech": "noun",
+          "level": "upper-intermediate",
+          "definition": "Mental toughness and emotional steadiness, especially under the pressure of sports, exams, or competition. It is common in sports, education, and performance-related contexts.",
+          "position": {
+            "episode": "2.3.37A 《从小镇跑向世界的大谷翔平》Story",
+            "episodeDir": "2026-06-21-2.3.37A-从小镇跑向世界的大谷翔平-Story",
+            "timeSeconds": 343.0,
+            "timestamp": "05:43",
+            "timingSource": "word",
+            "segment": {
+              "index": 30,
+              "startSeconds": 336.76,
+              "endSeconds": 344.04
+            }
+          },
+          "example": {
+            "text": "必须练好力量、速度、自律、心理素质。",
+            "translation": "You must master strength, speed, self-discipline, and mental toughness.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              30
+            ],
+            "speaker": "speaker_1"
+          },
+          "occurrencesInShow": 4
+        },
+        {
+          "term": "脚踏实地",
+          "traditional": "腳踏實地",
+          "simplified": "脚踏实地",
+          "pronunciation": {
+            "pinyin": "jiǎo tà shí dì",
+            "zhuyin": "ㄐㄧㄠˇ ㄊㄚˋ ㄕˊ ㄉㄧˋ"
+          },
+          "partOfSpeech": "idiom",
+          "level": "upper-intermediate",
+          "definition": "To act in a practical, grounded way and make steady, concrete progress rather than merely talking or dreaming. This is a strongly approving expression.",
+          "position": {
+            "episode": "2.3.37A 《从小镇跑向世界的大谷翔平》Story",
+            "episodeDir": "2026-06-21-2.3.37A-从小镇跑向世界的大谷翔平-Story",
+            "timeSeconds": 378.54,
+            "timestamp": "06:19",
+            "timingSource": "word",
+            "segment": {
+              "index": 34,
+              "startSeconds": 371.98,
+              "endSeconds": 383.06
+            }
+          },
+          "example": {
+            "text": "他不是嘴上说我要成为明星球员而是脚踏实地一点一点朝那里走。",
+            "translation": "He didn’t just say he wanted to become a star player—he took steady, step-by-step action to get there.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              34
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 13
+        },
+        {
+          "term": "上山下乡",
+          "traditional": "上山下鄉",
+          "simplified": "上山下乡",
+          "pronunciation": {
+            "pinyin": "shàng shān xià xiāng",
+            "zhuyin": "ㄕㄤˋ ㄕㄢ ㄒㄧㄚˋ ㄒㄧㄤ"
+          },
+          "partOfSpeech": "set phrase",
+          "level": "advanced",
+          "definition": "Here, to travel through mountainous and rural areas. In historical contexts, 上山下乡 specifically refers to the Mao-era campaign that sent urban youths to live and work in the countryside.",
+          "position": {
+            "episode": "2.3.36A《喜欢开车的杨先生》Story",
+            "episodeDir": "2026-07-22-2.3.36A-喜欢开车的杨先生-Story",
+            "timeSeconds": 245.06,
+            "timestamp": "04:05",
+            "timingSource": "word",
+            "segment": {
+              "index": 25,
+              "startSeconds": 239.0,
+              "endSeconds": 248.32
+            }
+          },
+          "example": {
+            "text": "我刚拿到驾照，杨先生就要我开车上山下乡。",
+            "translation": "I had just gotten my driver’s license when Mr. Yang asked me to drive him up the mountains and out to the countryside.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              25
+            ],
+            "speaker": "speaker_1"
+          },
+          "occurrencesInShow": 4
+        },
+        {
+          "term": "如履薄冰",
+          "traditional": "如履薄冰",
+          "simplified": "如履薄冰",
+          "pronunciation": {
+            "pinyin": "rú lǚ bó bīng",
+            "zhuyin": "ㄖㄨˊ ㄌㄩˇ ㄅㄛˊ ㄅㄧㄥ"
+          },
+          "partOfSpeech": "idiom",
+          "level": "advanced",
+          "definition": "To proceed with extreme caution because one is in a precarious or risky situation—literally, “as if walking on thin ice.” The expression is relatively formal and literary.",
+          "position": {
+            "episode": "2.3.36A《喜欢开车的杨先生》Story",
+            "episodeDir": "2026-07-22-2.3.36A-喜欢开车的杨先生-Story",
+            "timeSeconds": 305.42,
+            "timestamp": "05:05",
+            "timingSource": "word",
+            "segment": {
+              "index": 31,
+              "startSeconds": 301.14,
+              "endSeconds": 315.62
+            }
+          },
+          "example": {
+            "text": "这段路程对新手来说会感觉如履薄冰，可是已经走到一半无法回头，只能硬着头皮往山上走。",
+            "translation": "This stretch of road might feel like walking on thin ice for a novice driver, but having already come halfway, there’s no turning back—you just have to grit your teeth and keep driving up the mountain.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              31
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 6
+        },
+        {
+          "term": "硬着头皮",
+          "traditional": "硬著頭皮",
+          "simplified": "硬着头皮",
+          "pronunciation": {
+            "pinyin": "yìng zhe tóu pí",
+            "zhuyin": "ㄧㄥˋ ˙ㄓㄜ ㄊㄡˊ ㄆㄧˊ"
+          },
+          "partOfSpeech": "idiom",
+          "level": "upper-intermediate",
+          "definition": "To force oneself to do something difficult, frightening, or embarrassing despite feeling reluctant or afraid. It is common in conversational Chinese.",
+          "position": {
+            "episode": "2.3.36A《喜欢开车的杨先生》Story",
+            "episodeDir": "2026-07-22-2.3.36A-喜欢开车的杨先生-Story",
+            "timeSeconds": 313.48,
+            "timestamp": "05:13",
+            "timingSource": "word",
+            "segment": {
+              "index": 31,
+              "startSeconds": 301.14,
+              "endSeconds": 315.62
+            }
+          },
+          "example": {
+            "text": "这段路程对新手来说会感觉如履薄冰，可是已经走到一半无法回头，只能硬着头皮往山上走。",
+            "translation": "This stretch of road might feel like walking on thin ice for a novice driver, but having already come halfway, there’s no turning back—you just have to grit your teeth and keep driving up the mountain.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              31
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 18
+        },
+        {
+          "term": "心有余悸",
+          "traditional": "心有餘悸",
+          "simplified": "心有余悸",
+          "pronunciation": {
+            "pinyin": "xīn yǒu yú jì",
+            "zhuyin": "ㄒㄧㄣ ㄧㄡˇ ㄩˊ ㄐㄧˋ"
+          },
+          "partOfSpeech": "idiom",
+          "level": "advanced",
+          "definition": "To continue feeling frightened when remembering a danger or shock that has already passed. It is often used in written narratives and more polished speech.",
+          "position": {
+            "episode": "2.3.36A《喜欢开车的杨先生》Story",
+            "episodeDir": "2026-07-22-2.3.36A-喜欢开车的杨先生-Story",
+            "timeSeconds": 386.5,
+            "timestamp": "06:26",
+            "timingSource": "word",
+            "segment": {
+              "index": 39,
+              "startSeconds": 383.24,
+              "endSeconds": 387.56
+            }
+          },
+          "example": {
+            "text": "只是过后每每想起都心有余悸。杨先生却不当一回事。",
+            "translation": "But whenever I think back on it now, I still feel a chill run down my spine. But Mr. Yang didn’t think much of it.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              39,
+              40
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 6
+        },
+        {
+          "term": "软硬兼施",
+          "traditional": "軟硬兼施",
+          "simplified": "软硬兼施",
+          "pronunciation": {
+            "pinyin": "ruǎn yìng jiān shī",
+            "zhuyin": "ㄖㄨㄢˇ ㄧㄥˋ ㄐㄧㄢ ㄕ"
+          },
+          "partOfSpeech": "idiom",
+          "level": "advanced",
+          "definition": "To use both gentle persuasion and forceful pressure to make someone comply. It often implies switching between coaxing and coercive tactics.",
+          "position": {
+            "episode": "2.3.36A《喜欢开车的杨先生》Story",
+            "episodeDir": "2026-07-22-2.3.36A-喜欢开车的杨先生-Story",
+            "timeSeconds": 422.56,
+            "timestamp": "07:03",
+            "timingSource": "word",
+            "segment": {
+              "index": 43,
+              "startSeconds": 420.8,
+              "endSeconds": 426.94
+            }
+          },
+          "example": {
+            "text": "不管他怎么软硬兼施我再也没有上大帽山。",
+            "translation": "No matter how much he tried to coax or pressure me, I never went back to Tai Mo Shan.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              43
+            ],
+            "speaker": "speaker_1"
+          },
+          "occurrencesInShow": 5
+        },
+        {
+          "term": "得天独厚",
+          "traditional": "得天獨厚",
+          "simplified": "得天独厚",
+          "pronunciation": {
+            "pinyin": "dé tiān dú hòu",
+            "zhuyin": "ㄉㄜˊ ㄊㄧㄢ ㄉㄨˊ ㄏㄡˋ"
+          },
+          "partOfSpeech": "idiom",
+          "level": "advanced",
+          "definition": "To possess exceptional natural or circumstantial advantages that others do not have. It is an approving expression often used for places, environments, resources, or talent.",
+          "position": {
+            "episode": "2.3.36A《喜欢开车的杨先生》Story",
+            "episodeDir": "2026-07-22-2.3.36A-喜欢开车的杨先生-Story",
+            "timeSeconds": 440.68,
+            "timestamp": "07:21",
+            "timingSource": "word",
+            "segment": {
+              "index": 45,
+              "startSeconds": 437.44,
+              "endSeconds": 446.24
+            }
+          },
+          "example": {
+            "text": "的确香港的自然环境得天独厚就连沿途的自然风光也百看不厌。",
+            "translation": "Indeed, Hong Kong’s natural environment is truly unique, and even the scenery along the way never gets old.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              45
+            ],
+            "speaker": "speaker_1"
+          },
+          "occurrencesInShow": 6
+        },
+        {
+          "term": "恰到好处",
+          "traditional": "恰到好處",
+          "simplified": "恰到好处",
+          "pronunciation": {
+            "pinyin": "qià dào hǎo chù",
+            "zhuyin": "ㄑㄧㄚˋ ㄉㄠˋ ㄏㄠˇ ㄔㄨˋ"
+          },
+          "partOfSpeech": "idiom",
+          "level": "upper-intermediate",
+          "definition": "Exactly right in degree, timing, or execution—neither excessive nor insufficient. It is used approvingly in both speech and writing.",
+          "position": {
+            "episode": "2.3.36A《喜欢开车的杨先生》Story",
+            "episodeDir": "2026-07-22-2.3.36A-喜欢开车的杨先生-Story",
+            "timeSeconds": 459.38,
+            "timestamp": "07:39",
+            "timingSource": "word",
+            "segment": {
+              "index": 46,
+              "startSeconds": 447.66,
+              "endSeconds": 463.08
+            }
+          },
+          "example": {
+            "text": "郊外的路径和设施通常非常便利又丝毫没有破坏大自然的美感一切人工干预恰到好处不多不少。",
+            "translation": "The trails and facilities in the countryside are usually very convenient, yet they do not detract from the beauty of nature in the slightest; all human intervention is just right—neither too much nor too little.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              46
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 4
+        },
+        {
+          "term": "渐冻症",
+          "traditional": "漸凍症",
+          "simplified": "渐冻症",
+          "pronunciation": {
+            "pinyin": "jiàn dòng zhèng",
+            "zhuyin": "ㄐㄧㄢˋ ㄉㄨㄥˋ ㄓㄥˋ"
+          },
+          "partOfSpeech": "noun",
+          "level": "advanced",
+          "definition": "The common Chinese name for amyotrophic lateral sclerosis (ALS), a progressive neurological disease that weakens the muscles used for voluntary movement. This is an everyday medical term rather than the formal name 肌萎缩侧索硬化症.",
+          "position": {
+            "episode": "3.1.31A《不向命运低头的人》Story",
+            "episodeDir": "2026-08-16-3.1.31A-不向命运低头的人-Story",
+            "timeSeconds": 104.8,
+            "timestamp": "01:45",
+            "timingSource": "word",
+            "segment": {
+              "index": 14,
+              "startSeconds": 104.0,
+              "endSeconds": 120.86
+            }
+          },
+          "example": {
+            "text": "确诊渐冻症那一天，蔡磊坐在医生办公室里，窗外阳光很亮，医生的声音却仿佛隔着一堵厚厚的墙传过来。",
+            "translation": "On the day he was diagnosed with ALS, Cai Lei sat in the doctor’s office. The sunlight streaming through the window was bright, yet the doctor’s voice seemed to come through as if from behind a thick wall.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              14
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 4
+        },
+        {
+          "term": "不听使唤",
+          "traditional": "不聽使喚",
+          "simplified": "不听使唤",
+          "pronunciation": {
+            "pinyin": "bù tīng shǐ huàn",
+            "zhuyin": "ㄅㄨˋ ㄊㄧㄥ ㄕˇ ㄏㄨㄢˋ"
+          },
+          "partOfSpeech": "idiom",
+          "level": "upper-intermediate",
+          "definition": "To stop responding to someone’s control or intentions. It is a colloquial expression often used of a body part or machine, and sometimes of an uncooperative person.",
+          "position": {
+            "episode": "3.1.31A《不向命运低头的人》Story",
+            "episodeDir": "2026-08-16-3.1.31A-不向命运低头的人-Story",
+            "timeSeconds": 186.5,
+            "timestamp": "03:06",
+            "timingSource": "word",
+            "segment": {
+              "index": 20,
+              "startSeconds": 176.22,
+              "endSeconds": 187.8
+            }
+          },
+          "example": {
+            "text": "夜深人静时，她一个人坐在黑暗里，手指已经开始不听使唤。",
+            "translation": "Late at night, when all was quiet, she sat alone in the darkness, her fingers already beginning to tremble uncontrollably.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              20
+            ],
+            "speaker": "speaker_1"
+          },
+          "occurrencesInShow": 1
+        },
+        {
+          "term": "病理",
+          "traditional": "病理",
+          "simplified": "病理",
+          "pronunciation": {
+            "pinyin": "bìng lǐ",
+            "zhuyin": "ㄅㄧㄥˋ ㄌㄧˇ"
+          },
+          "partOfSpeech": "noun",
+          "level": "advanced",
+          "definition": "The pathology of a disease: the processes, mechanisms, and bodily changes involved in its development. This is a formal medical term.",
+          "position": {
+            "episode": "3.1.31A《不向命运低头的人》Story",
+            "episodeDir": "2026-08-16-3.1.31A-不向命运低头的人-Story",
+            "timeSeconds": 237.32,
+            "timestamp": "03:57",
+            "timingSource": "word",
+            "segment": {
+              "index": 25,
+              "startSeconds": 232.06,
+              "endSeconds": 247.72
+            }
+          },
+          "example": {
+            "text": "他开始阅读大量医学资料，请医生讲解病理，联系科研团队，像做一场巨大的项目管理一样，去参与推动渐冻症研究。",
+            "translation": "He began reading vast amounts of medical literature, asking doctors to explain the pathology, and reaching out to research teams—approaching the task like a massive project management endeavor—to actively contribute to and advance ALS research.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              25
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 1
+        },
+        {
+          "term": "外骨骼",
+          "traditional": "外骨骼",
+          "simplified": "外骨骼",
+          "pronunciation": {
+            "pinyin": "wài gǔ gé",
+            "zhuyin": "ㄨㄞˋ ㄍㄨˇ ㄍㄜˊ"
+          },
+          "partOfSpeech": "noun",
+          "level": "advanced",
+          "definition": "An exoskeleton; in medical and engineering contexts, often a wearable mechanical structure that supports the body or assists movement. This is a technical term.",
+          "position": {
+            "episode": "3.1.31A《不向命运低头的人》Story",
+            "episodeDir": "2026-08-16-3.1.31A-不向命运低头的人-Story",
+            "timeSeconds": 321.4,
+            "timestamp": "05:21",
+            "timingSource": "word",
+            "segment": {
+              "index": 31,
+              "startSeconds": 310.12,
+              "endSeconds": 325.54
+            }
+          },
+          "example": {
+            "text": "他常常去实验室看科研团队工作，穿着稍微笨重的外骨骼辅助设备。",
+            "translation": "He often visited the lab to watch the research team at work, wearing a slightly bulky exoskeleton assistive device.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              31
+            ],
+            "speaker": "speaker_1"
+          },
+          "occurrencesInShow": 1
+        },
+        {
+          "term": "笃定",
+          "traditional": "篤定",
+          "simplified": "笃定",
+          "pronunciation": {
+            "pinyin": "dǔ dìng",
+            "zhuyin": "ㄉㄨˇ ㄉㄧㄥˋ"
+          },
+          "partOfSpeech": "adjective",
+          "level": "advanced",
+          "definition": "Firmly certain, composed, and unwavering in one’s beliefs or attitude. It has a polished, somewhat literary tone and often conveys quiet confidence.",
+          "position": {
+            "episode": "3.1.31A《不向命运低头的人》Story",
+            "episodeDir": "2026-08-16-3.1.31A-不向命运低头的人-Story",
+            "timeSeconds": 363.18,
+            "timestamp": "06:03",
+            "timingSource": "word",
+            "segment": {
+              "index": 34,
+              "startSeconds": 354.7,
+              "endSeconds": 364.96
+            }
+          },
+          "example": {
+            "text": "在对外发声时，她没有把自己放成可怜的病人，而是一个清醒、笃定、有责任的人",
+            "translation": "When speaking publicly, she didn’t portray herself as a pitiful patient, but rather as a clear-headed, determined, and responsible person.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              34
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 1
+        }
+      ]
+    },
+    {
+      "showId": "TeaTime-Chinese-茶歇中文",
+      "title": "TeaTime Chinese 茶歇中文",
+      "episodesUsed": [
+        {
+          "dir": "2024-11-23-EP93-张骞和丝绸之路-Zhang-Qian-and-the-Silk-Road",
+          "title": "第93集: 张骞和丝绸之路 Zhang Qian and the Silk Road",
+          "durationSeconds": 1418.8
+        },
+        {
+          "dir": "2024-12-24-EP94-一起读琼瑶的-陌生人-Read-The-Stranger-by-Chiung-Yao",
+          "title": "第94集 : 一起读琼瑶的《陌生人》Read «The Stranger » by Chiung Yao",
+          "durationSeconds": 1756.3
+        },
+        {
+          "dir": "2024-12-25-EP95-2024年总结-Concluding-2024",
+          "title": "第95集: 2024年总结 Concluding 2024",
+          "durationSeconds": 860.6
+        },
+        {
+          "dir": "2025-10-20-EP96-在中国的所见所闻-What-I-saw-in-China",
+          "title": "第96集: 在中国的所见所闻 What I saw in China",
+          "durationSeconds": 1387.9
+        },
+        {
+          "dir": "2026-09-03-EP97-奥德赛-和茶歇中文的回来-The-Odyssey-and-the-Comeback-of-TeaTime-Chinese",
+          "title": "第97集 : 《奥德赛》和茶歇中文的回来 The Odyssey and the Comeback of TeaTime Chinese",
+          "durationSeconds": 1689.0
+        }
+      ],
+      "transcriptScript": {
+        "dominant": "mixed",
+        "traditionalOnlyChars": 220,
+        "simplifiedOnlyChars": 3977,
+        "note": "Character counts over the show's whole transcript. The ASR output is not script-pure, so `term` is the surface form as transcribed; `traditional` and `simplified` are the normalised pair."
+      },
+      "vocabularyCount": 12,
+      "vocabulary": [
+        {
+          "term": "朝代",
+          "traditional": "朝代",
+          "simplified": "朝代",
+          "pronunciation": {
+            "pinyin": "cháo dài",
+            "zhuyin": "ㄔㄠˊ ㄉㄞˋ"
+          },
+          "partOfSpeech": "noun",
+          "level": "upper-intermediate",
+          "definition": "A dynasty: a period in which China was ruled by a particular imperial family. Mainly used in historical and cultural discussion.",
+          "position": {
+            "episode": "第93集: 张骞和丝绸之路 Zhang Qian and the Silk Road",
+            "episodeDir": "2024-11-23-EP93-张骞和丝绸之路-Zhang-Qian-and-the-Silk-Road",
+            "timeSeconds": 207.62,
+            "timestamp": "03:28",
+            "timingSource": "word",
+            "segment": {
+              "index": 25,
+              "startSeconds": 200.3,
+              "endSeconds": 210.02
+            }
+          },
+          "example": {
+            "text": "他生活在两千多年前的中国，那时的朝代叫做汉朝。",
+            "translation": "He lived in China more than 2,000 years ago, during a dynasty known as the Han Dynasty.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              25
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 1
+        },
+        {
+          "term": "匈奴人",
+          "traditional": "匈奴人",
+          "simplified": "匈奴人",
+          "pronunciation": {
+            "pinyin": "xiōng nú rén",
+            "zhuyin": "ㄒㄩㄥ ㄋㄨˊ ㄖㄣˊ"
+          },
+          "partOfSpeech": "noun",
+          "level": "advanced",
+          "definition": "A member of the Xiongnu, an ancient nomadic confederation that lived north of early imperial China. This is a specialized historical term.",
+          "position": {
+            "episode": "第93集: 张骞和丝绸之路 Zhang Qian and the Silk Road",
+            "episodeDir": "2024-11-23-EP93-张骞和丝绸之路-Zhang-Qian-and-the-Silk-Road",
+            "timeSeconds": 362.5,
+            "timestamp": "06:02",
+            "timingSource": "word",
+            "segment": {
+              "index": 46,
+              "startSeconds": 350.72,
+              "endSeconds": 364.02
+            }
+          },
+          "example": {
+            "text": "在北方生活着一群人，他們不是中国人，不是汉人，而是匈奴人。",
+            "translation": "A group of people lived in the north; they were not Chinese, nor were they Han Chinese—they were the Xiongnu.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              46
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 8
+        },
+        {
+          "term": "人马",
+          "traditional": "人馬",
+          "simplified": "人马",
+          "pronunciation": {
+            "pinyin": "rén mǎ",
+            "zhuyin": "ㄖㄣˊ ㄇㄚˇ"
+          },
+          "partOfSpeech": "noun",
+          "level": "upper-intermediate",
+          "definition": "A body of people or forces belonging to a leader; historically, it can suggest both troops and horses. In modern informal use, it may also mean a team or contingent.",
+          "position": {
+            "episode": "第93集: 张骞和丝绸之路 Zhang Qian and the Silk Road",
+            "episodeDir": "2024-11-23-EP93-张骞和丝绸之路-Zhang-Qian-and-the-Silk-Road",
+            "timeSeconds": 691.95,
+            "timestamp": "11:32",
+            "timingSource": "word",
+            "segment": {
+              "index": 89,
+              "startSeconds": 687.87,
+              "endSeconds": 696.73
+            }
+          },
+          "example": {
+            "text": "一天晚上，张骞带着他的人马偷偷地离开了匈奴的地方。",
+            "translation": "One night, Zhang Qian and his men secretly left the Xiongnu territory.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              89
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 1
+        },
+        {
+          "term": "插播",
+          "traditional": "插播",
+          "simplified": "插播",
+          "pronunciation": {
+            "pinyin": "chā bō",
+            "zhuyin": "ㄔㄚ ㄅㄛ"
+          },
+          "partOfSpeech": "verb",
+          "level": "advanced",
+          "definition": "To insert a brief advertisement, announcement, or news item into a broadcast or program. This is a media and broadcasting term.",
+          "position": {
+            "episode": "第93集: 张骞和丝绸之路 Zhang Qian and the Silk Road",
+            "episodeDir": "2024-11-23-EP93-张骞和丝绸之路-Zhang-Qian-and-the-Silk-Road",
+            "timeSeconds": 1355.74,
+            "timestamp": "22:36",
+            "timingSource": "word",
+            "segment": {
+              "index": 163,
+              "startSeconds": 1353.3,
+              "endSeconds": 1357.88
+            }
+          },
+          "example": {
+            "text": "在节目的最后我想插播一条小广告。有的听众朋友可能已经知道，我们从十一月开始推出了一个新的播客节目叫茶歇新闻。",
+            "translation": "At the end of the show, I’d like to air a short commercial. As some of our listeners may already know, we launched a new podcast called “Tea Break News” in November.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              163,
+              164
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 1
+        },
+        {
+          "term": "二五折",
+          "traditional": "二五折",
+          "simplified": "二五折",
+          "pronunciation": {
+            "pinyin": "èr wǔ zhé",
+            "zhuyin": "ㄦˋ ㄨˇ ㄓㄜˊ"
+          },
+          "partOfSpeech": "phrase",
+          "level": "upper-intermediate",
+          "definition": "Twenty-five percent of the original price—that is, 75% off. Chinese discount expressions state the percentage the customer pays rather than the percentage saved.",
+          "position": {
+            "episode": "第94集 : 一起读琼瑶的《陌生人》Read «The Stranger » by Chiung Yao",
+            "episodeDir": "2024-12-24-EP94-一起读琼瑶的-陌生人-Read-The-Stranger-by-Chiung-Yao",
+            "timeSeconds": 1741.87,
+            "timestamp": "29:02",
+            "timingSource": "word",
+            "segment": {
+              "index": 260,
+              "startSeconds": 1733.63,
+              "endSeconds": 1743.63
+            }
+          },
+          "example": {
+            "text": "你也可以用我们的 promocode teatime，然后你就会有二五折的优惠。",
+            "translation": "You can also use our promo code “teatime” to get a 25% discount.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              260
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 2
+        },
+        {
+          "term": "所见所闻",
+          "traditional": "所見所聞",
+          "simplified": "所见所闻",
+          "pronunciation": {
+            "pinyin": "suǒ jiàn suǒ wén",
+            "zhuyin": "ㄙㄨㄛˇ ㄐㄧㄢˋ ㄙㄨㄛˇ ㄨㄣˊ"
+          },
+          "partOfSpeech": "set phrase",
+          "level": "upper-intermediate",
+          "definition": "What someone has personally seen and heard; their firsthand observations and experiences. This formal four-character expression is common in titles and written accounts.",
+          "position": {
+            "episode": "第96集: 在中国的所见所闻 What I saw in China",
+            "episodeDir": "2025-10-20-EP96-在中国的所见所闻-What-I-saw-in-China",
+            "timeSeconds": 4.62,
+            "timestamp": "00:05",
+            "timingSource": "word",
+            "segment": {
+              "index": 0,
+              "startSeconds": 0.66,
+              "endSeconds": 5.9
+            }
+          },
+          "example": {
+            "text": "茶歇中文第96集，在中国的所见所闻。",
+            "translation": "Tea Break Chinese Episode 96: What I Saw and Experienced in China.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              0
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 7
+        },
+        {
+          "term": "普普通通",
+          "traditional": "普普通通",
+          "simplified": "普普通通",
+          "pronunciation": {
+            "pinyin": "pǔ pǔ tōng tōng",
+            "zhuyin": "ㄆㄨˇ ㄆㄨˇ ㄊㄨㄥ ㄊㄨㄥ"
+          },
+          "partOfSpeech": "adjective",
+          "level": "upper-intermediate",
+          "definition": "Perfectly ordinary or completely unremarkable. This colloquial AABB reduplication gives more emphasis than 普通.",
+          "position": {
+            "episode": "第96集: 在中国的所见所闻 What I saw in China",
+            "episodeDir": "2025-10-20-EP96-在中国的所见所闻-What-I-saw-in-China",
+            "timeSeconds": 365.49,
+            "timestamp": "06:05",
+            "timingSource": "word",
+            "segment": {
+              "index": 47,
+              "startSeconds": 358.5,
+              "endSeconds": 370.43
+            }
+          },
+          "example": {
+            "text": "比如说在法国，如果你去饭店吃饭一顿普普通通的饭最少也要十欧元。",
+            "translation": "For example, in France, if you go to a restaurant for a simple meal, it’ll cost at least ten euros.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              47
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 1
+        },
+        {
+          "term": "独生子女",
+          "traditional": "獨生子女",
+          "simplified": "独生子女",
+          "pronunciation": {
+            "pinyin": "dú shēng zǐ nǚ",
+            "zhuyin": "ㄉㄨˊ ㄕㄥ ㄗˇ ㄋㄩˇ"
+          },
+          "partOfSpeech": "noun",
+          "level": "upper-intermediate",
+          "definition": "An only child, especially in the context of Chinese family structure and the former one-child policy. It is a common social and demographic term.",
+          "position": {
+            "episode": "第96集: 在中国的所见所闻 What I saw in China",
+            "episodeDir": "2025-10-20-EP96-在中国的所见所闻-What-I-saw-in-China",
+            "timeSeconds": 1114.53,
+            "timestamp": "18:35",
+            "timingSource": "word",
+            "segment": {
+              "index": 141,
+              "startSeconds": 1106.45,
+              "endSeconds": 1115.59
+            }
+          },
+          "example": {
+            "text": "很多年轻人跟我一样，是家里唯一的孩子，也就是独生子女。",
+            "translation": "Many young people, like me, are the only child in their family—that is, only children.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              141
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 1
+        },
+        {
+          "term": "不由得",
+          "traditional": "不由得",
+          "simplified": "不由得",
+          "pronunciation": {
+            "pinyin": "bù yóu de",
+            "zhuyin": "ㄅㄨˋ ㄧㄡˊ ˙ㄉㄜ"
+          },
+          "partOfSpeech": "adverb",
+          "level": "upper-intermediate",
+          "definition": "Involuntarily or unable to help doing something; it introduces a natural, spontaneous reaction. It is somewhat more literary than 忍不住.",
+          "position": {
+            "episode": "第97集 : 《奥德赛》和茶歇中文的回来 The Odyssey and the Comeback of TeaTime Chinese",
+            "episodeDir": "2026-09-03-EP97-奥德赛-和茶歇中文的回来-The-Odyssey-and-the-Comeback-of-TeaTime-Chinese",
+            "timeSeconds": 58.38,
+            "timestamp": "00:58",
+            "timingSource": "word",
+            "segment": {
+              "index": 9,
+              "startSeconds": 56.46,
+              "endSeconds": 70.3
+            }
+          },
+          "example": {
+            "text": "看了电影，我不由得想到我自己的生活，想到茶歇中文。“不由得”是什么意思？",
+            "translation": "After watching the movie, I couldn’t help but think about my own life and the Chinese I learned during the tea break. What does “couldn’t help but” mean?",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              9
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 5
+        },
+        {
+          "term": "长话短说",
+          "traditional": "長話短說",
+          "simplified": "长话短说",
+          "pronunciation": {
+            "pinyin": "cháng huà duǎn shuō",
+            "zhuyin": "ㄔㄤˊ ㄏㄨㄚˋ ㄉㄨㄢˇ ㄕㄨㄛ"
+          },
+          "partOfSpeech": "idiom",
+          "level": "upper-intermediate",
+          "definition": "To make a long story short; used to move quickly to the main point or summarize a complicated account. It is a common four-character conversational expression.",
+          "position": {
+            "episode": "第97集 : 《奥德赛》和茶歇中文的回来 The Odyssey and the Comeback of TeaTime Chinese",
+            "episodeDir": "2026-09-03-EP97-奥德赛-和茶歇中文的回来-The-Odyssey-and-the-Comeback-of-TeaTime-Chinese",
+            "timeSeconds": 410.33,
+            "timestamp": "06:50",
+            "timingSource": "word",
+            "segment": {
+              "index": 52,
+              "startSeconds": 409.73,
+              "endSeconds": 413.59
+            }
+          },
+          "example": {
+            "text": "我们长话短说，现在来听故事。你准备好了吗？",
+            "translation": "To make a long story short, let’s hear the story now. Are you ready?",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              52,
+              53
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 1
+        },
+        {
+          "term": "上弦",
+          "traditional": "上弦",
+          "simplified": "上弦",
+          "pronunciation": {
+            "pinyin": "shàng xián",
+            "zhuyin": "ㄕㄤˋ ㄒㄧㄢˊ"
+          },
+          "partOfSpeech": "verb",
+          "level": "advanced",
+          "definition": "To string a bow by attaching and tightening its bowstring. It is a specialized verb-object expression; in other contexts, 上弦 can also mean winding a mechanical device.",
+          "position": {
+            "episode": "第97集 : 《奥德赛》和茶歇中文的回来 The Odyssey and the Comeback of TeaTime Chinese",
+            "episodeDir": "2026-09-03-EP97-奥德赛-和茶歇中文的回来-The-Odyssey-and-the-Comeback-of-TeaTime-Chinese",
+            "timeSeconds": 1298.52,
+            "timestamp": "21:39",
+            "timingSource": "word",
+            "segment": {
+              "index": 159,
+              "startSeconds": 1296.1,
+              "endSeconds": 1303.13
+            }
+          },
+          "example": {
+            "text": "谁能给这个弓上弦？Who can string this bow？",
+            "translation": "Who can string this bow?",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              159
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 3
+        },
+        {
+          "term": "破破烂烂",
+          "traditional": "破破爛爛",
+          "simplified": "破破烂烂",
+          "pronunciation": {
+            "pinyin": "pò pò làn làn",
+            "zhuyin": "ㄆㄛˋ ㄆㄛˋ ㄌㄢˋ ㄌㄢˋ"
+          },
+          "partOfSpeech": "adjective",
+          "level": "upper-intermediate",
+          "definition": "Tattered, ragged, or badly worn and damaged. This vivid, colloquial AABB adjective is more emphatic than 破烂.",
+          "position": {
+            "episode": "第97集 : 《奥德赛》和茶歇中文的回来 The Odyssey and the Comeback of TeaTime Chinese",
+            "episodeDir": "2026-09-03-EP97-奥德赛-和茶歇中文的回来-The-Odyssey-and-the-Comeback-of-TeaTime-Chinese",
+            "timeSeconds": 1424.5,
+            "timestamp": "23:44",
+            "timingSource": "word",
+            "segment": {
+              "index": 172,
+              "startSeconds": 1419.48,
+              "endSeconds": 1426.36
+            }
+          },
+          "example": {
+            "text": "他出来一看，看见了那个衣服破破烂烂的老人。",
+            "translation": "He went out and saw the old man in tattered clothes.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              172
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 1
+        }
+      ]
+    },
+    {
+      "showId": "大人的Small-Talk",
+      "title": "大人的Small Talk",
+      "episodesUsed": [
+        {
+          "dir": "2026-08-26-EP701-男友對我很好-經濟條件卻跟不上我的人生規劃-我該降低期待-還是重新尋找能一起走下去的人",
+          "title": "EP701 男友對我很好，經濟條件卻跟不上我的人生規劃。我該降低期待，還是重新尋找能一起走下去的人？",
+          "durationSeconds": 1211.9
+        },
+        {
+          "dir": "2026-08-30-EP702-從機長箱-Game-Boy-到-Excel-表格-真正的職涯機會-或許就藏在沒人解決的小問題裡",
+          "title": "EP702 從機長箱、Game Boy 到 Excel 表格：真正的職涯機會，或許就藏在沒人解決的小問題裡！",
+          "durationSeconds": 2594.7
+        },
+        {
+          "dir": "2026-09-02-EP703-你總是因為別人的一句話糾結老半天-辨識內耗的三種型態-重新拿回情緒主導權-諮商心理師-許庭韶-專訪",
+          "title": "EP703 你總是因為別人的一句話糾結老半天？辨識內耗的三種型態，重新拿回情緒主導權｜諮商心理師 許庭韶 專訪",
+          "durationSeconds": 2792.9
+        }
+      ],
+      "transcriptScript": {
+        "dominant": "mixed",
+        "traditionalOnlyChars": 530,
+        "simplifiedOnlyChars": 8868,
+        "note": "Character counts over the show's whole transcript. The ASR output is not script-pure, so `term` is the surface form as transcribed; `traditional` and `simplified` are the normalised pair."
+      },
+      "vocabularyCount": 15,
+      "vocabulary": [
+        {
+          "term": "情绪勒索",
+          "traditional": "情緒勒索",
+          "simplified": "情绪勒索",
+          "pronunciation": {
+            "pinyin": "qíng xù lè suǒ",
+            "zhuyin": "ㄑㄧㄥˊ ㄒㄩˋ ㄌㄜˋ ㄙㄨㄛˇ"
+          },
+          "partOfSpeech": "noun",
+          "level": "upper-intermediate",
+          "definition": "Emotional blackmail: the use of guilt, fear, obligation, or affection to pressure someone into complying. This is a common term in relationship and popular-psychology discussions.",
+          "position": {
+            "episode": "EP701 男友對我很好，經濟條件卻跟不上我的人生規劃。我該降低期待，還是重新尋找能一起走下去的人？",
+            "episodeDir": "2026-08-26-EP701-男友對我很好-經濟條件卻跟不上我的人生規劃-我該降低期待-還是重新尋找能一起走下去的人",
+            "timeSeconds": 151.64,
+            "timestamp": "02:32",
+            "timingSource": "word",
+            "segment": {
+              "index": 22,
+              "startSeconds": 144.44,
+              "endSeconds": 158.46
+            }
+          },
+          "example": {
+            "text": "那我们之间相处得还不错，那坊间呢两性专家常提到的反面教材，像是受委屈啊，情绪勒索啊，争吵啊，磨合不顺等等等等，这些呀在我们身上几乎都没有发生。",
+            "translation": "We get along pretty well. None of the negative examples often cited by relationship experts—like feeling wronged, emotional blackmail, arguments, or difficulties adjusting to each other—have really happened between us.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              22
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 1
+        },
+        {
+          "term": "劳健保",
+          "traditional": "勞健保",
+          "simplified": "劳健保",
+          "pronunciation": {
+            "pinyin": "láo jiàn bǎo",
+            "zhuyin": "ㄌㄠˊ ㄐㄧㄢˋ ㄅㄠˇ"
+          },
+          "partOfSpeech": "noun",
+          "level": "advanced",
+          "definition": "Taiwanese shorthand for labor insurance and National Health Insurance, especially when discussing basic employee benefits. It is Taiwan-specific institutional vocabulary.",
+          "position": {
+            "episode": "EP701 男友對我很好，經濟條件卻跟不上我的人生規劃。我該降低期待，還是重新尋找能一起走下去的人？",
+            "episodeDir": "2026-08-26-EP701-男友對我很好-經濟條件卻跟不上我的人生規劃-我該降低期待-還是重新尋找能一起走下去的人",
+            "timeSeconds": 237.16,
+            "timestamp": "03:57",
+            "timingSource": "word",
+            "segment": {
+              "index": 32,
+              "startSeconds": 225.18,
+              "endSeconds": 238.16
+            }
+          },
+          "example": {
+            "text": "此外啊，工程行款项入帐的时间不固定，薪水由父母发放，不仅啊发薪不准时，还常常被克扣，甚至连基本的劳健保都没有。",
+            "translation": "On top of that, payments from the engineering firm come in at irregular intervals, and my salary is paid by my parents—not only are the payments often late, but they’re frequently docked, and I don’t even have basic labor and health insurance.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              32
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 2
+        },
+        {
+          "term": "怨怼",
+          "traditional": "怨懟",
+          "simplified": "怨怼",
+          "pronunciation": {
+            "pinyin": "yuàn duì",
+            "zhuyin": "ㄩㄢˋ ㄉㄨㄟˋ"
+          },
+          "partOfSpeech": "noun",
+          "level": "advanced",
+          "definition": "Deep, lingering resentment or bitterness toward someone after grievances have accumulated. The word has a formal or literary tone.",
+          "position": {
+            "episode": "EP701 男友對我很好，經濟條件卻跟不上我的人生規劃。我該降低期待，還是重新尋找能一起走下去的人？",
+            "episodeDir": "2026-08-26-EP701-男友對我很好-經濟條件卻跟不上我的人生規劃-我該降低期待-還是重新尋找能一起走下去的人",
+            "timeSeconds": 297.3,
+            "timestamp": "04:57",
+            "timingSource": "word",
+            "segment": {
+              "index": 38,
+              "startSeconds": 292.26,
+              "endSeconds": 298.6
+            }
+          },
+          "example": {
+            "text": "他却没办法陪我实践，没办法携手前进，我觉得我心里会有怨怼，也会有遗憾。",
+            "translation": "But he can’t help me make this dream a reality—he can’t walk this path with me—and I feel that resentment and regret will build up inside me.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              38
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 1
+        },
+        {
+          "term": "停损",
+          "traditional": "停損",
+          "simplified": "停损",
+          "pronunciation": {
+            "pinyin": "tíng sǔn",
+            "zhuyin": "ㄊㄧㄥˊ ㄙㄨㄣˇ"
+          },
+          "partOfSpeech": "verb",
+          "level": "upper-intermediate",
+          "definition": "To cut one’s losses and stop further damage. Originally financial jargon for executing a stop-loss, it is widely extended in Taiwanese Mandarin to careers and relationships.",
+          "position": {
+            "episode": "EP701 男友對我很好，經濟條件卻跟不上我的人生規劃。我該降低期待，還是重新尋找能一起走下去的人？",
+            "episodeDir": "2026-08-26-EP701-男友對我很好-經濟條件卻跟不上我的人生規劃-我該降低期待-還是重新尋找能一起走下去的人",
+            "timeSeconds": 359.16,
+            "timestamp": "05:59",
+            "timingSource": "word",
+            "segment": {
+              "index": 48,
+              "startSeconds": 357.56,
+              "endSeconds": 360.44
+            }
+          },
+          "example": {
+            "text": "那方案B呢，是停损跟重寻。我是不是应该果断放弃这段舒适的关系，重新出发去寻找另外一个可以让我产生灵魂共鸣又有能力陪我一起实践这个梦想的人。",
+            "translation": "So what about Plan B? It’s about cutting my losses and starting over. Should I decisively let go of this comfortable relationship and start over, searching for someone else with whom I can connect on a soulful level—someone capable of joining me in making this dream a reality?",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              48,
+              49
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 2
+        },
+        {
+          "term": "贫贱夫妻百事哀",
+          "traditional": "貧賤夫妻百事哀",
+          "simplified": "贫贱夫妻百事哀",
+          "pronunciation": {
+            "pinyin": "pín jiàn fū qī bǎi shì āi",
+            "zhuyin": "ㄆㄧㄣˊ ㄐㄧㄢˋ ㄈㄨ ㄑㄧ ㄅㄞˇ ㄕˋ ㄞ"
+          },
+          "partOfSpeech": "set phrase",
+          "level": "advanced",
+          "definition": "A proverb meaning that poverty makes every aspect of married life difficult or sorrowful. It is commonly quoted when discussing the strain that financial hardship places on a relationship.",
+          "position": {
+            "episode": "EP701 男友對我很好，經濟條件卻跟不上我的人生規劃。我該降低期待，還是重新尋找能一起走下去的人？",
+            "episodeDir": "2026-08-26-EP701-男友對我很好-經濟條件卻跟不上我的人生規劃-我該降低期待-還是重新尋找能一起走下去的人",
+            "timeSeconds": 432.98,
+            "timestamp": "07:13",
+            "timingSource": "word",
+            "segment": {
+              "index": 61,
+              "startSeconds": 430.68,
+              "endSeconds": 440.38
+            }
+          },
+          "example": {
+            "text": "那我觉得这个我可以理解，毕竟贫贱夫妻百事哀，财务的安全感确实是很多人生活稳定的这个基础啊基石。",
+            "translation": "I can understand that, after all, “poverty brings sorrow to a couple,” and financial security is indeed the foundation—the cornerstone—of a stable life for many people.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              61
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 1
+        },
+        {
+          "term": "避之唯恐不及",
+          "traditional": "避之唯恐不及",
+          "simplified": "避之唯恐不及",
+          "pronunciation": {
+            "pinyin": "bì zhī wéi kǒng bù jí",
+            "zhuyin": "ㄅㄧˋ ㄓ ㄨㄟˊ ㄎㄨㄥˇ ㄅㄨˋ ㄐㄧˊ"
+          },
+          "partOfSpeech": "idiom",
+          "level": "advanced",
+          "definition": "To avoid someone or something at all costs, as though afraid one cannot get away fast enough. It is emphatic and somewhat formal.",
+          "position": {
+            "episode": "EP702 從機長箱、Game Boy 到 Excel 表格：真正的職涯機會，或許就藏在沒人解決的小問題裡！",
+            "episodeDir": "2026-08-30-EP702-從機長箱-Game-Boy-到-Excel-表格-真正的職涯機會-或許就藏在沒人解決的小問題裡",
+            "timeSeconds": 59.06,
+            "timestamp": "00:59",
+            "timingSource": "word",
+            "segment": {
+              "index": 9,
+              "startSeconds": 54.68,
+              "endSeconds": 60.0
+            }
+          },
+          "example": {
+            "text": "这些潜规则呢，很多上班族啊觉得是黑暗的职场政治，避之唯恐不及。",
+            "translation": "As for these unwritten rules, many office workers see them as the dark side of workplace politics and try to avoid them at all costs.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              9
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 1
+        },
+        {
+          "term": "抽丝剥茧",
+          "traditional": "抽絲剝繭",
+          "simplified": "抽丝剥茧",
+          "pronunciation": {
+            "pinyin": "chōu sī bō jiǎn",
+            "zhuyin": "ㄔㄡ ㄙ ㄅㄛ ㄐㄧㄢˇ"
+          },
+          "partOfSpeech": "idiom",
+          "level": "advanced",
+          "definition": "To unravel a complicated matter layer by layer in order to reveal its underlying logic or truth. This vivid idiom is often used for analysis, investigations, and explanations.",
+          "position": {
+            "episode": "EP702 從機長箱、Game Boy 到 Excel 表格：真正的職涯機會，或許就藏在沒人解決的小問題裡！",
+            "episodeDir": "2026-08-30-EP702-從機長箱-Game-Boy-到-Excel-表格-真正的職涯機會-或許就藏在沒人解決的小問題裡",
+            "timeSeconds": 62.04,
+            "timestamp": "01:02",
+            "timingSource": "word",
+            "segment": {
+              "index": 10,
+              "startSeconds": 60.7,
+              "endSeconds": 66.54
+            }
+          },
+          "example": {
+            "text": "但是啊，我们会带大家抽丝剥茧，了解其中的逻辑，并且呢教大家如何回应。",
+            "translation": "But we’ll take you through it step by step, unravel the logic behind it, and teach you how to respond.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              10
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 2
+        },
+        {
+          "term": "土炮",
+          "traditional": "土炮",
+          "simplified": "土炮",
+          "pronunciation": {
+            "pinyin": "tǔ pào",
+            "zhuyin": "ㄊㄨˇ ㄆㄠˋ"
+          },
+          "partOfSpeech": "adjective",
+          "level": "advanced",
+          "definition": "Makeshift, homemade, or improvised with simple local methods rather than professional resources. This is informal Taiwanese slang and can imply roughness but also ingenuity.",
+          "position": {
+            "episode": "EP702 從機長箱、Game Boy 到 Excel 表格：真正的職涯機會，或許就藏在沒人解決的小問題裡！",
+            "episodeDir": "2026-08-30-EP702-從機長箱-Game-Boy-到-Excel-表格-真正的職涯機會-或許就藏在沒人解決的小問題裡",
+            "timeSeconds": 475.32,
+            "timestamp": "07:55",
+            "timingSource": "word",
+            "segment": {
+              "index": 66,
+              "startSeconds": 474.89,
+              "endSeconds": 477.88
+            }
+          },
+          "example": {
+            "text": "好就土炮，就弄成一个他心中好用的箱子。",
+            "translation": "Just make a simple, practical box that works well for him.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              66
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 1
+        },
+        {
+          "term": "削足适履",
+          "traditional": "削足適履",
+          "simplified": "削足适履",
+          "pronunciation": {
+            "pinyin": "xuē zú shì lǚ",
+            "zhuyin": "ㄒㄩㄝ ㄗㄨˊ ㄕˋ ㄌㄩˇ"
+          },
+          "partOfSpeech": "idiom",
+          "level": "advanced",
+          "definition": "Literally, “cut one’s feet to fit the shoes”; figuratively, to distort oneself or reality in order to conform to rigid requirements. It is a literary idiom often used critically.",
+          "position": {
+            "episode": "EP702 從機長箱、Game Boy 到 Excel 表格：真正的職涯機會，或許就藏在沒人解決的小問題裡！",
+            "episodeDir": "2026-08-30-EP702-從機長箱-Game-Boy-到-Excel-表格-真正的職涯機會-或許就藏在沒人解決的小問題裡",
+            "timeSeconds": 1029.94,
+            "timestamp": "17:10",
+            "timingSource": "word",
+            "segment": {
+              "index": 139,
+              "startSeconds": 1027.78,
+              "endSeconds": 1039.26
+            }
+          },
+          "example": {
+            "text": "然后我们这些人呢，就想办法叫削足适履啊，我們把自己削成這個标准的职涯、职业、职位该有的样子，而不去问你自己的天赋跟热情。",
+            "translation": "And then the rest of us try to force a square peg into a round hole—we mold ourselves into the standard image of what a career, profession, or position should look like, without asking about our own talents and passions.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              139
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 2
+        },
+        {
+          "term": "八竿子打不着",
+          "traditional": "八竿子打不著",
+          "simplified": "八竿子打不着",
+          "pronunciation": {
+            "pinyin": "bā gān zi dǎ bù zháo",
+            "zhuyin": "ㄅㄚ ㄍㄢ ˙ㄗ ㄉㄚˇ ㄅㄨˋ ㄓㄠˊ"
+          },
+          "partOfSpeech": "idiom",
+          "level": "advanced",
+          "definition": "To have absolutely no connection with someone or something. This is a highly colloquial expression, often followed by 跟……有关系 or simply used with 跟.",
+          "position": {
+            "episode": "EP702 從機長箱、Game Boy 到 Excel 表格：真正的職涯機會，或許就藏在沒人解決的小問題裡！",
+            "episodeDir": "2026-08-30-EP702-從機長箱-Game-Boy-到-Excel-表格-真正的職涯機會-或許就藏在沒人解決的小問題裡",
+            "timeSeconds": 1731.04,
+            "timestamp": "28:51",
+            "timingSource": "word",
+            "segment": {
+              "index": 257,
+              "startSeconds": 1729.9,
+              "endSeconds": 1733.2
+            }
+          },
+          "example": {
+            "text": "所以跟这个游戏啊八竿子打不着关系，他是修机器的。",
+            "translation": "So it has absolutely nothing to do with this game—he was a machine repairman.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              257
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 1
+        },
+        {
+          "term": "痛点",
+          "traditional": "痛點",
+          "simplified": "痛点",
+          "pronunciation": {
+            "pinyin": "tòng diǎn",
+            "zhuyin": "ㄊㄨㄥˋ ㄉㄧㄢˇ"
+          },
+          "partOfSpeech": "noun",
+          "level": "upper-intermediate",
+          "definition": "A “pain point”: a recurring problem, frustration, or unmet need experienced by customers, users, or employees. It is common jargon in business and product development.",
+          "position": {
+            "episode": "EP702 從機長箱、Game Boy 到 Excel 表格：真正的職涯機會，或許就藏在沒人解決的小問題裡！",
+            "episodeDir": "2026-08-30-EP702-從機長箱-Game-Boy-到-Excel-表格-真正的職涯機會-或許就藏在沒人解決的小問題裡",
+            "timeSeconds": 2439.71,
+            "timestamp": "40:40",
+            "timingSource": "word",
+            "segment": {
+              "index": 368,
+              "startSeconds": 2437.45,
+              "endSeconds": 2445.85
+            }
+          },
+          "example": {
+            "text": "因为你解决的问题是公司大家的痛点，我相信一定有资源的人愿意资-直属你，而且你又没有要求我要加薪，对不对？",
+            "translation": "Since the problems you’ve solved are pain points for everyone at the company, I’m sure there will be someone with the resources who’s willing to sponsor you—and you didn’t even ask me for a raise, right?",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              368
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 2
+        },
+        {
+          "term": "陽春",
+          "traditional": "陽春",
+          "simplified": "阳春",
+          "pronunciation": {
+            "pinyin": "yáng chūn",
+            "zhuyin": "ㄧㄤˊ ㄔㄨㄣ"
+          },
+          "partOfSpeech": "adjective",
+          "level": "advanced",
+          "definition": "Basic, bare-bones, or lacking polished features and extras. This informal sense of 陽春 is especially common in Taiwanese Mandarin.",
+          "position": {
+            "episode": "EP702 從機長箱、Game Boy 到 Excel 表格：真正的職涯機會，或許就藏在沒人解決的小問題裡！",
+            "episodeDir": "2026-08-30-EP702-從機長箱-Game-Boy-到-Excel-表格-真正的職涯機會-或許就藏在沒人解決的小問題裡",
+            "timeSeconds": 2462.95,
+            "timestamp": "41:03",
+            "timingSource": "word",
+            "segment": {
+              "index": 372,
+              "startSeconds": 2457.79,
+              "endSeconds": 2472.93
+            }
+          },
+          "example": {
+            "text": "第一个觀察身边有哪些问题沒有被解决；第二个創作，好，试着用quick and dirty 陽春的方式看能不能解决这个问题；再来做出成品之后無偿分享给大家，看看，不是我们要耍大方，而是要看看大家用的结果如何。",
+            "translation": "First, observe what problems around you haven’t been solved; second, create—okay, try using a quick-and-dirty, basic approach to see if you can solve the problem; then, after you’ve created the final product, share it with everyone for free. It’s not that we’re trying to be generous, but rather to see how it works for everyone.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              372
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 2
+        },
+        {
+          "term": "内耗",
+          "traditional": "內耗",
+          "simplified": "内耗",
+          "pronunciation": {
+            "pinyin": "nèi hào",
+            "zhuyin": "ㄋㄟˋ ㄏㄠˋ"
+          },
+          "partOfSpeech": "verb",
+          "level": "upper-intermediate",
+          "definition": "To drain oneself mentally through overthinking, anxiety, self-criticism, or unresolved internal conflict. This is a contemporary buzzword in psychology, workplace, and social-media discussions.",
+          "position": {
+            "episode": "EP703 你總是因為別人的一句話糾結老半天？辨識內耗的三種型態，重新拿回情緒主導權｜諮商心理師 許庭韶 專訪",
+            "episodeDir": "2026-09-02-EP703-你總是因為別人的一句話糾結老半天-辨識內耗的三種型態-重新拿回情緒主導權-諮商心理師-許庭韶-專訪",
+            "timeSeconds": 162.5,
+            "timestamp": "02:42",
+            "timingSource": "word",
+            "segment": {
+              "index": 22,
+              "startSeconds": 150.66,
+              "endSeconds": 164.52
+            }
+          },
+          "example": {
+            "text": "那，那如果你有在 follow 我们的听众，你或许知道，就是呢庭韶老师在大人学这边今年开了一堂新的课程，那代号呢是 V041，名称叫做“不内耗心理养成课”。",
+            "translation": "So, if you’re one of our regular listeners, you might know that Teacher Ting-Shao launched a new course this year on “Adult Learning.” The code is V041, and it’s called “A Course on Cultivating a Mindset Free from Self-Sabotage.”",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              22
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 68
+        },
+        {
+          "term": "玻璃心",
+          "traditional": "玻璃心",
+          "simplified": "玻璃心",
+          "pronunciation": {
+            "pinyin": "bō lí xīn",
+            "zhuyin": "ㄅㄛ ㄌㄧˊ ㄒㄧㄣ"
+          },
+          "partOfSpeech": "adjective",
+          "level": "upper-intermediate",
+          "definition": "Emotionally fragile or easily hurt by criticism. Literally “glass-hearted,” this is informal internet slang and can be teasing or dismissive.",
+          "position": {
+            "episode": "EP703 你總是因為別人的一句話糾結老半天？辨識內耗的三種型態，重新拿回情緒主導權｜諮商心理師 許庭韶 專訪",
+            "episodeDir": "2026-09-02-EP703-你總是因為別人的一句話糾結老半天-辨識內耗的三種型態-重新拿回情緒主導權-諮商心理師-許庭韶-專訪",
+            "timeSeconds": 666.95,
+            "timestamp": "11:07",
+            "timingSource": "word",
+            "segment": {
+              "index": 148,
+              "startSeconds": 664.43,
+              "endSeconds": 669.13
+            }
+          },
+          "example": {
+            "text": "然后或者有些人就觉得我就是比较容易玻璃心，我就比较在意-",
+            "translation": "Or maybe some people just think I’m a bit thin-skinned, so I tend to take things to heart—",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              148
+            ],
+            "speaker": "speaker_2"
+          },
+          "occurrencesInShow": 4
+        },
+        {
+          "term": "沙盘推演",
+          "traditional": "沙盤推演",
+          "simplified": "沙盘推演",
+          "pronunciation": {
+            "pinyin": "shā pán tuī yǎn",
+            "zhuyin": "ㄕㄚ ㄆㄢˊ ㄊㄨㄟ ㄧㄢˇ"
+          },
+          "partOfSpeech": "noun",
+          "level": "advanced",
+          "definition": "A structured simulation or rehearsal of possible scenarios and responses. Originally associated with military planning, it is now common in business and figurative use.",
+          "position": {
+            "episode": "EP703 你總是因為別人的一句話糾結老半天？辨識內耗的三種型態，重新拿回情緒主導權｜諮商心理師 許庭韶 專訪",
+            "episodeDir": "2026-09-02-EP703-你總是因為別人的一句話糾結老半天-辨識內耗的三種型態-重新拿回情緒主導權-諮商心理師-許庭韶-專訪",
+            "timeSeconds": 1076.02,
+            "timestamp": "17:56",
+            "timingSource": "word",
+            "segment": {
+              "index": 278,
+              "startSeconds": 1071.22,
+              "endSeconds": 1076.78
+            }
+          },
+          "example": {
+            "text": "可是有可能他给我一个暗示，所以我就在内心做了各种沙盘推演。",
+            "translation": "But maybe they gave me a hint, so I run all kinds of scenarios through my head.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              278
+            ],
+            "speaker": "speaker_2"
+          },
+          "occurrencesInShow": 3
+        }
+      ]
+    },
+    {
+      "showId": "法客電台-BY-法律白話文運動-Plain-Law-Movement",
+      "title": "法客電台 BY 法律白話文運動 Plain Law Movement",
+      "episodesUsed": [
+        {
+          "dir": "2026-08-26-EP220-政治歸政治-你挺這鞭還是那鞭",
+          "title": "政治歸政治 #220｜你挺這鞭還是那鞭",
+          "durationSeconds": 4409.4
+        },
+        {
+          "dir": "2026-09-01-EP55-政治歸YO智-回留言-建國派對-普發一萬-還有推特假貴智",
+          "title": "#55 政治歸YO智｜回留言：建國派對、普發一萬、還有推特假貴智？",
+          "durationSeconds": 5265.8
+        },
+        {
+          "dir": "2026-09-02-法客話題-218-接軌國際貿易新標竿-企業防制強迫勞動良好範例-feat.國立陽明交通大學科技法律研究所教授-邱羽凡",
+          "title": "法客話題 ＃218 接軌國際貿易新標竿—企業防制強迫勞動良好範例 feat.國立陽明交通大學科技法律研究所教授 邱羽凡",
+          "durationSeconds": 3582.5
+        }
+      ],
+      "transcriptScript": {
+        "dominant": "mixed",
+        "traditionalOnlyChars": 2651,
+        "simplifiedOnlyChars": 20746,
+        "note": "Character counts over the show's whole transcript. The ASR output is not script-pure, so `term` is the surface form as transcribed; `traditional` and `simplified` are the normalised pair."
+      },
+      "vocabularyCount": 15,
+      "vocabulary": [
+        {
+          "term": "数位产品护照",
+          "traditional": "數位產品護照",
+          "simplified": "数位产品护照",
+          "pronunciation": {
+            "pinyin": "shù wèi chǎn pǐn hù zhào",
+            "zhuyin": "ㄕㄨˋ ㄨㄟˋ ㄔㄢˇ ㄆㄧㄣˇ ㄏㄨˋ ㄓㄠˋ"
+          },
+          "partOfSpeech": "noun",
+          "level": "advanced",
+          "definition": "A “digital product passport”: a digital record of a product’s materials, origin, repairability, and recycling information, often accessed through a QR code. This is specialized sustainability and EU regulatory terminology.",
+          "position": {
+            "episode": "政治歸政治 #220｜你挺這鞭還是那鞭",
+            "episodeDir": "2026-08-26-EP220-政治歸政治-你挺這鞭還是那鞭",
+            "timeSeconds": 39.82,
+            "timestamp": "00:40",
+            "timingSource": "word",
+            "segment": {
+              "index": 23,
+              "startSeconds": 38.48,
+              "endSeconds": 40.94
+            }
+          },
+          "example": {
+            "text": "因為欧盟最近就有在推数位产品护照啊。",
+            "translation": "Because the EU has recently been promoting the Digital Product Passport.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              23
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 6
+        },
+        {
+          "term": "产销履历",
+          "traditional": "產銷履歷",
+          "simplified": "产销履历",
+          "pronunciation": {
+            "pinyin": "chǎn xiāo lǚ lì",
+            "zhuyin": "ㄔㄢˇ ㄒㄧㄠ ㄌㄩˇ ㄌㄧˋ"
+          },
+          "partOfSpeech": "noun",
+          "level": "upper-intermediate",
+          "definition": "A traceability record documenting an agricultural product’s production and distribution history. This official term is especially common in Taiwan.",
+          "position": {
+            "episode": "政治歸政治 #220｜你挺這鞭還是那鞭",
+            "episodeDir": "2026-08-26-EP220-政治歸政治-你挺這鞭還是那鞭",
+            "timeSeconds": 80.68,
+            "timestamp": "01:21",
+            "timingSource": "word",
+            "segment": {
+              "index": 50,
+              "startSeconds": 79.26,
+              "endSeconds": 81.25
+            }
+          },
+          "example": {
+            "text": "所以这个就跟那个农产品的产销履历一样很像嘛。",
+            "translation": "So this is just like the production and sales history for agricultural products.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              50
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 2
+        },
+        {
+          "term": "隐形冠军",
+          "traditional": "隱形冠軍",
+          "simplified": "隐形冠军",
+          "pronunciation": {
+            "pinyin": "yǐn xíng guàn jūn",
+            "zhuyin": "ㄧㄣˇ ㄒㄧㄥˊ ㄍㄨㄢˋ ㄐㄩㄣ"
+          },
+          "partOfSpeech": "noun",
+          "level": "upper-intermediate",
+          "definition": "A little-known company or industry that is nevertheless a world leader in a specialized market—a “hidden champion.” The term is used in business and economics.",
+          "position": {
+            "episode": "政治歸政治 #220｜你挺這鞭還是那鞭",
+            "episodeDir": "2026-08-26-EP220-政治歸政治-你挺這鞭還是那鞭",
+            "timeSeconds": 87.92,
+            "timestamp": "01:28",
+            "timingSource": "word",
+            "segment": {
+              "index": 52,
+              "startSeconds": 82.9,
+              "endSeconds": 89.5
+            }
+          },
+          "example": {
+            "text": "那我跟大家说这件事情跟台湾很有关系啊，因为我们是做这个机能布跟这个棉纺外交的隐形冠军，我们是隐形冠军哦。",
+            "translation": "So let me tell everyone that this has a lot to do with Taiwan, because we’re the “hidden champions” in functional fabrics and cotton textile diplomacy—we’re hidden champions, you know.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              52
+            ],
+            "speaker": "speaker_1"
+          },
+          "occurrencesInShow": 4
+        },
+        {
+          "term": "正港",
+          "traditional": "正港",
+          "simplified": "正港",
+          "pronunciation": {
+            "pinyin": "zhèng gǎng",
+            "zhuyin": "ㄓㄥˋ ㄍㄤˇ"
+          },
+          "partOfSpeech": "adjective",
+          "level": "intermediate",
+          "definition": "Genuine, authentic, or truly representative of a place or type. This is an informal Taiwan expression influenced by Taiwanese Hokkien.",
+          "position": {
+            "episode": "政治歸政治 #220｜你挺這鞭還是那鞭",
+            "episodeDir": "2026-08-26-EP220-政治歸政治-你挺這鞭還是那鞭",
+            "timeSeconds": 154.66,
+            "timestamp": "02:35",
+            "timingSource": "word",
+            "segment": {
+              "index": 79,
+              "startSeconds": 154.66,
+              "endSeconds": 155.88
+            }
+          },
+          "example": {
+            "text": "正港的台南人啊。你的学长。我的学长啊，也是你的学长啊，江浩佑。",
+            "translation": "A true Tainan native. Your senior. My senior—who’s also your senior—Jiang Haoyou.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              79,
+              80,
+              81
+            ],
+            "speaker": "speaker_1"
+          },
+          "occurrencesInShow": 6
+        },
+        {
+          "term": "集选区制",
+          "traditional": "集選區制",
+          "simplified": "集选区制",
+          "pronunciation": {
+            "pinyin": "jí xuǎn qū zhì",
+            "zhuyin": "ㄐㄧˊ ㄒㄩㄢˇ ㄑㄩ ㄓˋ"
+          },
+          "partOfSpeech": "noun",
+          "level": "advanced",
+          "definition": "The Group Representation Constituency system, in which a party fields a team of candidates and the entire team wins or loses together. This is specialized electoral terminology used especially in discussions of Singapore.",
+          "position": {
+            "episode": "政治歸政治 #220｜你挺這鞭還是那鞭",
+            "episodeDir": "2026-08-26-EP220-政治歸政治-你挺這鞭還是那鞭",
+            "timeSeconds": 749.04,
+            "timestamp": "12:29",
+            "timingSource": "word",
+            "segment": {
+              "index": 392,
+              "startSeconds": 745.76,
+              "endSeconds": 750.8
+            }
+          },
+          "example": {
+            "text": "这聊，就聊到新加坡的选举哦，他说這我人生第一次听到集选区制这个，这个概念。",
+            "translation": "So, we were talking about elections in Singapore, and he said this was the first time in his life he’d heard of the “group representation constituency” system—that concept.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              392
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 2
+        },
+        {
+          "term": "裁量",
+          "traditional": "裁量",
+          "simplified": "裁量",
+          "pronunciation": {
+            "pinyin": "cái liàng",
+            "zhuyin": "ㄘㄞˊ ㄌㄧㄤˋ"
+          },
+          "partOfSpeech": "noun",
+          "level": "advanced",
+          "definition": "Discretion: the legally permitted authority of a judge or official to choose among possible decisions. This is a formal legal and administrative term.",
+          "position": {
+            "episode": "政治歸政治 #220｜你挺這鞭還是那鞭",
+            "episodeDir": "2026-08-26-EP220-政治歸政治-你挺這鞭還是那鞭",
+            "timeSeconds": 2109.48,
+            "timestamp": "35:09",
+            "timingSource": "word",
+            "segment": {
+              "index": 1042,
+              "startSeconds": 2104.66,
+              "endSeconds": 2121.58
+            }
+          },
+          "example": {
+            "text": "反正呢最后的研究就是会发现，就是呃，因为鞭刑是由法官的裁量去施加的，所以在比较受鞭者跟未受鞭者，然后比較的状况底下，会发现其实是比较没有办法去证明鞭刑是有格外的嚇阻力的。",
+            "translation": "Anyway, the final conclusion of the study is that, well, since caning is imposed at the judge’s discretion, when comparing those who have been caned with those who haven’t, it’s actually quite difficult to prove that caning has any additional deterrent effect.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              1042
+            ],
+            "speaker": "speaker_1"
+          },
+          "occurrencesInShow": 1
+        },
+        {
+          "term": "乱世用重典",
+          "traditional": "亂世用重典",
+          "simplified": "乱世用重典",
+          "pronunciation": {
+            "pinyin": "luàn shì yòng zhòng diǎn",
+            "zhuyin": "ㄌㄨㄢˋ ㄕˋ ㄩㄥˋ ㄓㄨㄥˋ ㄉㄧㄢˇ"
+          },
+          "partOfSpeech": "set phrase",
+          "level": "upper-intermediate",
+          "definition": "“Troubled times call for harsh punishments”: a saying used to argue that severe disorder should be met with severe laws or penalties. It commonly appears in political and criminal-justice debate.",
+          "position": {
+            "episode": "政治歸政治 #220｜你挺這鞭還是那鞭",
+            "episodeDir": "2026-08-26-EP220-政治歸政治-你挺這鞭還是那鞭",
+            "timeSeconds": 2193.09,
+            "timestamp": "36:33",
+            "timingSource": "word",
+            "segment": {
+              "index": 1073,
+              "startSeconds": 2189.55,
+              "endSeconds": 2194.59
+            }
+          },
+          "example": {
+            "text": "所以就变成是，对专家来说会觉得说我们一直是觉得说要重刑化、乱世用重典，先不管是不是乱世——",
+            "translation": "So it comes down to this: experts tend to think that we’ve always believed in imposing harsher punishments—that “in times of chaos, harsh laws are necessary”—regardless of whether we’re actually in a time of chaos or not—",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              1073
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 1
+        },
+        {
+          "term": "背信",
+          "traditional": "背信",
+          "simplified": "背信",
+          "pronunciation": {
+            "pinyin": "bèi xìn",
+            "zhuyin": "ㄅㄟˋ ㄒㄧㄣˋ"
+          },
+          "partOfSpeech": "noun",
+          "level": "advanced",
+          "definition": "Breach of trust: the offense of harming another person’s interests while entrusted with managing their affairs. This is primarily a formal legal term.",
+          "position": {
+            "episode": "政治歸政治 #220｜你挺這鞭還是那鞭",
+            "episodeDir": "2026-08-26-EP220-政治歸政治-你挺這鞭還是那鞭",
+            "timeSeconds": 2833.56,
+            "timestamp": "47:14",
+            "timingSource": "word",
+            "segment": {
+              "index": 1342,
+              "startSeconds": 2830.48,
+              "endSeconds": 2834.6
+            }
+          },
+          "example": {
+            "text": "是啊，陈青青不是违反特别背信罪起-- 被起诉吗？",
+            "translation": "Yeah, wasn’t Chen Qingqing indicted for violating the special breach of trust law—?",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              1342
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 2
+        },
+        {
+          "term": "过失犯罪",
+          "traditional": "過失犯罪",
+          "simplified": "过失犯罪",
+          "pronunciation": {
+            "pinyin": "guò shī fàn zuì",
+            "zhuyin": "ㄍㄨㄛˋ ㄕ ㄈㄢˋ ㄗㄨㄟˋ"
+          },
+          "partOfSpeech": "noun",
+          "level": "upper-intermediate",
+          "definition": "A negligent offense: a crime caused by carelessness rather than deliberate intent. This is formal criminal-law terminology.",
+          "position": {
+            "episode": "政治歸政治 #220｜你挺這鞭還是那鞭",
+            "episodeDir": "2026-08-26-EP220-政治歸政治-你挺這鞭還是那鞭",
+            "timeSeconds": 3599.33,
+            "timestamp": "59:59",
+            "timingSource": "word",
+            "segment": {
+              "index": 1707,
+              "startSeconds": 3598.97,
+              "endSeconds": 3599.98
+            }
+          },
+          "example": {
+            "text": "你就不要过失犯罪。对啊。你就不要不小心推到别人，別人跌到。",
+            "translation": "You just don’t want to commit a crime of negligence. Exactly. You just have to be careful not to accidentally bump into someone and cause them to fall.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              1707,
+              1708,
+              1709
+            ],
+            "speaker": "speaker_1"
+          },
+          "occurrencesInShow": 1
+        },
+        {
+          "term": "交差了事",
+          "traditional": "交差了事",
+          "simplified": "交差了事",
+          "pronunciation": {
+            "pinyin": "jiāo chāi liǎo shì",
+            "zhuyin": "ㄐㄧㄠ ㄔㄞ ㄌㄧㄠˇ ㄕˋ"
+          },
+          "partOfSpeech": "idiom",
+          "level": "upper-intermediate",
+          "definition": "To do the bare minimum simply so that one can report a task as completed, without caring about its quality or substance. It has a critical, often conversational tone.",
+          "position": {
+            "episode": "政治歸政治 #220｜你挺這鞭還是那鞭",
+            "episodeDir": "2026-08-26-EP220-政治歸政治-你挺這鞭還是那鞭",
+            "timeSeconds": 4343.23,
+            "timestamp": "1:12:23",
+            "timingSource": "word",
+            "segment": {
+              "index": 2051,
+              "startSeconds": 4341.53,
+              "endSeconds": 4343.83
+            }
+          },
+          "example": {
+            "text": "他其实可能就是要交差了事。哦，也有可能。",
+            "translation": "He’s probably just going through the motions. Oh, that’s possible, too.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              2051,
+              2052
+            ],
+            "speaker": "speaker_1"
+          },
+          "occurrencesInShow": 2
+        },
+        {
+          "term": "抖内",
+          "traditional": "抖內",
+          "simplified": "抖内",
+          "pronunciation": {
+            "pinyin": "dǒu nèi",
+            "zhuyin": "ㄉㄡˇ ㄋㄟˋ"
+          },
+          "partOfSpeech": "verb",
+          "level": "intermediate",
+          "definition": "To donate or tip money to an online creator, streamer, or program. This is informal internet slang, especially common in Taiwan, derived from English “donate.”",
+          "position": {
+            "episode": "#55 政治歸YO智｜回留言：建國派對、普發一萬、還有推特假貴智？",
+            "episodeDir": "2026-09-01-EP55-政治歸YO智-回留言-建國派對-普發一萬-還有推特假貴智",
+            "timeSeconds": 1715.92,
+            "timestamp": "28:36",
+            "timingSource": "word",
+            "segment": {
+              "index": 781,
+              "startSeconds": 1713.2,
+              "endSeconds": 1719.5
+            }
+          },
+          "example": {
+            "text": "然后这次工程师前阵子也有另外一则抖内留言，他说：\"好久不见，近期股票赚了一些钱来抖内消业障。",
+            "translation": "Also, the engineer left another donation message a while back, saying, “Long time no see. I made some money from the stock market recently, so I’m making this donation to atone for my karma.”",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              781
+            ],
+            "speaker": "speaker_3"
+          },
+          "occurrencesInShow": 8
+        },
+        {
+          "term": "诱导讯问",
+          "traditional": "誘導訊問",
+          "simplified": "诱导讯问",
+          "pronunciation": {
+            "pinyin": "yòu dǎo xùn wèn",
+            "zhuyin": "ㄧㄡˋ ㄉㄠˇ ㄒㄩㄣˋ ㄨㄣˋ"
+          },
+          "partOfSpeech": "noun",
+          "level": "advanced",
+          "definition": "Leading questioning: questioning that suggests or steers someone toward the desired answer, especially in an interrogation or courtroom examination. This is formal legal terminology.",
+          "position": {
+            "episode": "#55 政治歸YO智｜回留言：建國派對、普發一萬、還有推特假貴智？",
+            "episodeDir": "2026-09-01-EP55-政治歸YO智-回留言-建國派對-普發一萬-還有推特假貴智",
+            "timeSeconds": 2679.27,
+            "timestamp": "44:39",
+            "timingSource": "word",
+            "segment": {
+              "index": 1092,
+              "startSeconds": 2677.39,
+              "endSeconds": 2679.87
+            }
+          },
+          "example": {
+            "text": "这就是为什么，这就是为什么詰問真人不可以用诱导讯问。",
+            "translation": "That’s why—that’s why you can’t use leading questions when cross-examining a real person.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              1092
+            ],
+            "speaker": "speaker_4"
+          },
+          "occurrencesInShow": 1
+        },
+        {
+          "term": "瑜亮情结",
+          "traditional": "瑜亮情結",
+          "simplified": "瑜亮情结",
+          "pronunciation": {
+            "pinyin": "yú liàng qíng jié",
+            "zhuyin": "ㄩˊ ㄌㄧㄤˋ ㄑㄧㄥˊ ㄐㄧㄝˊ"
+          },
+          "partOfSpeech": "noun",
+          "level": "advanced",
+          "definition": "A rivalry complex between two similarly talented people, alluding to the rivalry between Zhou Yu and Zhuge Liang in the Three Kingdoms tradition. It is a literary-cultural expression often used somewhat humorously.",
+          "position": {
+            "episode": "#55 政治歸YO智｜回留言：建國派對、普發一萬、還有推特假貴智？",
+            "episodeDir": "2026-09-01-EP55-政治歸YO智-回留言-建國派對-普發一萬-還有推特假貴智",
+            "timeSeconds": 3440.18,
+            "timestamp": "57:20",
+            "timingSource": "word",
+            "segment": {
+              "index": 1416,
+              "startSeconds": 3435.09,
+              "endSeconds": 3441.28
+            }
+          },
+          "example": {
+            "text": "我觉得接下来讲得可好，我觉得大聲跟GD应该是好的，但是大聲跟太陽我不知道会不会有点瑜亮情结，我不知道。",
+            "translation": "I think what’s coming next is great. I think Da Sheng and GD should be a good pairing, but I’m not sure if there might be a bit of a “Yu-Liang complex” between Da Sheng and Tai Yang—I just don’t know.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              1416
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 1
+        },
+        {
+          "term": "九漏鱼",
+          "traditional": "九漏魚",
+          "simplified": "九漏鱼",
+          "pronunciation": {
+            "pinyin": "jiǔ lòu yú",
+            "zhuyin": "ㄐㄧㄡˇ ㄌㄡˋ ㄩˊ"
+          },
+          "partOfSpeech": "slang",
+          "level": "advanced",
+          "definition": "An online insult for someone considered poorly educated or ignorant, derived from 九年义务教育漏网之鱼, “someone who slipped through the net of nine-year compulsory education.” It is mocking and derogatory, so it should be used cautiously.",
+          "position": {
+            "episode": "#55 政治歸YO智｜回留言：建國派對、普發一萬、還有推特假貴智？",
+            "episodeDir": "2026-09-01-EP55-政治歸YO智-回留言-建國派對-普發一萬-還有推特假貴智",
+            "timeSeconds": 4281.51,
+            "timestamp": "1:11:22",
+            "timingSource": "word",
+            "segment": {
+              "index": 1665,
+              "startSeconds": 4276.99,
+              "endSeconds": 4286.15
+            }
+          },
+          "example": {
+            "text": "好几次都很想吐槽，这样一来就似乎变成对岸説的九漏鱼了，拜托再加油，就连文字都不知不觉被渗透如此之深。\"",
+            "translation": "Several times I really wanted to call them out on this—it makes it seem like what they call “the fish with nine holes” over there. Come on, try harder—even the written language has been so deeply infiltrated without us even realizing it.\"",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              1665
+            ],
+            "speaker": "speaker_3"
+          },
+          "occurrencesInShow": 4
+        },
+        {
+          "term": "工资切结书",
+          "traditional": "工資切結書",
+          "simplified": "工资切结书",
+          "pronunciation": {
+            "pinyin": "gōng zī qiè jié shū",
+            "zhuyin": "ㄍㄨㄥ ㄗ ㄑㄧㄝˋ ㄐㄧㄝˊ ㄕㄨ"
+          },
+          "partOfSpeech": "noun",
+          "level": "advanced",
+          "definition": "A signed wage declaration or undertaking recording matters such as a worker’s pay, recruitment costs, and debts. This is specialized Taiwanese labor and migrant-worker documentation terminology.",
+          "position": {
+            "episode": "法客話題 ＃218 接軌國際貿易新標竿—企業防制強迫勞動良好範例 feat.國立陽明交通大學科技法律研究所教授 邱羽凡",
+            "episodeDir": "2026-09-02-法客話題-218-接軌國際貿易新標竿-企業防制強迫勞動良好範例-feat.國立陽明交通大學科技法律研究所教授-邱羽凡",
+            "timeSeconds": 2919.57,
+            "timestamp": "48:40",
+            "timingSource": "word",
+            "segment": {
+              "index": 851,
+              "startSeconds": 2914.83,
+              "endSeconds": 2920.39
+            }
+          },
+          "example": {
+            "text": "所以呢有个东西我想请各位如果是企——经营企业或仲介可能会很了解，一个叫做工资切结书。",
+            "translation": "So there’s something I’d like to ask everyone about—if you’re running a business or working as a broker, you’re probably quite familiar with it: it’s called a wage declaration form.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              851
+            ],
+            "speaker": "speaker_2"
+          },
+          "occurrencesInShow": 6
+        }
+      ]
+    },
+    {
+      "showId": "電扶梯走左邊-with-Jacky-Left-Side-Escalator",
+      "title": "電扶梯走左邊 with Jacky (Left Side Escalator)",
+      "episodesUsed": [
+        {
+          "dir": "2026-05-03-EP207-Jocelyn-9.4.0-音樂夢到金曲新人入圍-找到自己自信跟成長的-Sweet-Spot",
+          "title": "#207 Jocelyn 9.4.0 - 音樂夢到金曲新人入圍，找到自己自信跟成長的 Sweet Spot",
+          "durationSeconds": 2920.0
+        },
+        {
+          "dir": "2026-05-10-EP208-Rita-靈魂相談室-當下的力量-靈性裡的自律-盡人事聽天命",
+          "title": "#208 Rita/靈魂相談室 - 當下的力量，靈性裡的自律，盡人事聽天命",
+          "durationSeconds": 4773.6
+        },
+        {
+          "dir": "2026-05-17-EP209-林可彤-從名模-作家-創業-新移民生活-不同角色裡重新定義自己",
+          "title": "#209 林可彤 - 從名模/作家/創業/新移民生活，不同角色裡重新定義自己",
+          "durationSeconds": 5889.6
+        },
+        {
+          "dir": "2026-05-24-EP210-王冠翔-Sean-賺事-賺人-賺影響力-最速總經理從低潮跑出來的配速-能量管理學",
+          "title": "#210 王冠翔 Sean - 賺事/賺人/賺影響力，最速總經理從低潮跑出來的配速/能量管理學",
+          "durationSeconds": 6231.3
+        }
+      ],
+      "transcriptScript": {
+        "dominant": "traditional",
+        "traditionalOnlyChars": 27671,
+        "simplifiedOnlyChars": 200,
+        "note": "Character counts over the show's whole transcript. The ASR output is not script-pure, so `term` is the surface form as transcribed; `traditional` and `simplified` are the normalised pair."
+      },
+      "vocabularyCount": 15,
+      "vocabulary": [
+        {
+          "term": "剖開來",
+          "traditional": "剖開來",
+          "simplified": "剖开来",
+          "pronunciation": {
+            "pinyin": "pōu kāi lái",
+            "zhuyin": "ㄆㄡ ㄎㄞ ㄌㄞˊ"
+          },
+          "partOfSpeech": "verb",
+          "level": "upper-intermediate",
+          "definition": "To cut oneself open figuratively by exposing one’s deepest feelings and vulnerabilities for others to examine. This is vivid, emotionally charged language rather than a neutral expression for self-disclosure.",
+          "position": {
+            "episode": "#207 Jocelyn 9.4.0 - 音樂夢到金曲新人入圍，找到自己自信跟成長的 Sweet Spot",
+            "episodeDir": "2026-05-03-EP207-Jocelyn-9.4.0-音樂夢到金曲新人入圍-找到自己自信跟成長的-Sweet-Spot",
+            "timeSeconds": 4.51,
+            "timestamp": "00:05",
+            "timingSource": "segment",
+            "segment": {
+              "index": 1,
+              "startSeconds": 4.51,
+              "endSeconds": 12.71
+            }
+          },
+          "example": {
+            "text": "嗯，畢竟做音樂這條路特別吧，你是不斷的要把自己剖開來給別人看的，所以",
+            "translation": "Well, after all, the path of making music is unique—you have to constantly lay yourself bare for others to see, so",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              1
+            ]
+          },
+          "occurrencesInShow": 2
+        },
+        {
+          "term": "入圍",
+          "traditional": "入圍",
+          "simplified": "入围",
+          "pronunciation": {
+            "pinyin": "rù wéi",
+            "zhuyin": "ㄖㄨˋ ㄨㄟˊ"
+          },
+          "partOfSpeech": "verb",
+          "level": "upper-intermediate",
+          "definition": "To be shortlisted or nominated for an award or competition. It indicates reaching the final selection stage, not necessarily winning.",
+          "position": {
+            "episode": "#207 Jocelyn 9.4.0 - 音樂夢到金曲新人入圍，找到自己自信跟成長的 Sweet Spot",
+            "episodeDir": "2026-05-03-EP207-Jocelyn-9.4.0-音樂夢到金曲新人入圍-找到自己自信跟成長的-Sweet-Spot",
+            "timeSeconds": 138.18,
+            "timestamp": "02:18",
+            "timingSource": "segment",
+            "segment": {
+              "index": 17,
+              "startSeconds": 138.18,
+              "endSeconds": 141.94
+            }
+          },
+          "example": {
+            "text": "它是一個金曲新人入圍的。創作歌手。非常的年輕上進也剛出了他的第一章創作專輯。",
+            "translation": "she was a Golden Melody Award nominee in the Best New Artist category. She’s a singer-songwriter. She’s very young and ambitious, and has just released her first original album.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              17,
+              18
+            ]
+          },
+          "occurrencesInShow": 5
+        },
+        {
+          "term": "出道",
+          "traditional": "出道",
+          "simplified": "出道",
+          "pronunciation": {
+            "pinyin": "chū dào",
+            "zhuyin": "ㄔㄨ ㄉㄠˋ"
+          },
+          "partOfSpeech": "verb",
+          "level": "upper-intermediate",
+          "definition": "To make one’s professional debut, especially as a singer, actor, idol, or other entertainer. It is a standard term in the Mandarin-language entertainment industry.",
+          "position": {
+            "episode": "#207 Jocelyn 9.4.0 - 音樂夢到金曲新人入圍，找到自己自信跟成長的 Sweet Spot",
+            "episodeDir": "2026-05-03-EP207-Jocelyn-9.4.0-音樂夢到金曲新人入圍-找到自己自信跟成長的-Sweet-Spot",
+            "timeSeconds": 790.15,
+            "timestamp": "13:10",
+            "timingSource": "segment",
+            "segment": {
+              "index": 122,
+              "startSeconds": 790.15,
+              "endSeconds": 796.39
+            }
+          },
+          "example": {
+            "text": "出道哦，我覺得很多人看不到後面那些可能經歷過的一些就是很很困難的事",
+            "translation": "Making my debut—I feel like a lot of people don’t see the really, really difficult things I might have gone through behind the scenes.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              122
+            ]
+          },
+          "occurrencesInShow": 1
+        },
+        {
+          "term": "一線之隔",
+          "traditional": "一線之隔",
+          "simplified": "一线之隔",
+          "pronunciation": {
+            "pinyin": "yī xiàn zhī gé",
+            "zhuyin": "ㄧ ㄒㄧㄢˋ ㄓ ㄍㄜˊ"
+          },
+          "partOfSpeech": "set phrase",
+          "level": "upper-intermediate",
+          "definition": "A very fine dividing line between two conditions or qualities. It is commonly used when two things may look similar but are fundamentally different.",
+          "position": {
+            "episode": "#207 Jocelyn 9.4.0 - 音樂夢到金曲新人入圍，找到自己自信跟成長的 Sweet Spot",
+            "episodeDir": "2026-05-03-EP207-Jocelyn-9.4.0-音樂夢到金曲新人入圍-找到自己自信跟成長的-Sweet-Spot",
+            "timeSeconds": 1623.99,
+            "timestamp": "27:04",
+            "timingSource": "segment",
+            "segment": {
+              "index": 236,
+              "startSeconds": 1623.99,
+              "endSeconds": 1629.23
+            }
+          },
+          "example": {
+            "text": "最重然。後，這就是自信跟自大的一線之隔。",
+            "translation": "Ultimately, that’s the fine line between confidence and arrogance.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              236
+            ]
+          },
+          "occurrencesInShow": 1
+        },
+        {
+          "term": "韻腳",
+          "traditional": "韻腳",
+          "simplified": "韵脚",
+          "pronunciation": {
+            "pinyin": "yùn jiǎo",
+            "zhuyin": "ㄩㄣˋ ㄐㄧㄠˇ"
+          },
+          "partOfSpeech": "noun",
+          "level": "upper-intermediate",
+          "definition": "A rhyme or rhyming ending, especially the final sound or syllable of a line of poetry, lyrics, or rap. This is a technical term used in writing and music.",
+          "position": {
+            "episode": "#207 Jocelyn 9.4.0 - 音樂夢到金曲新人入圍，找到自己自信跟成長的 Sweet Spot",
+            "episodeDir": "2026-05-03-EP207-Jocelyn-9.4.0-音樂夢到金曲新人入圍-找到自己自信跟成長的-Sweet-Spot",
+            "timeSeconds": 1919.15,
+            "timestamp": "31:59",
+            "timingSource": "segment",
+            "segment": {
+              "index": 286,
+              "startSeconds": 1919.15,
+              "endSeconds": 1924.47
+            }
+          },
+          "example": {
+            "text": "然後一些韻腳，我覺得很厲害，所以我會喜歡把這些東西寫進歌裡面，我希望",
+            "translation": "And some of the rhymes—I think they’re really impressive—so I like to incorporate those into my songs. I hope",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              286
+            ]
+          },
+          "occurrencesInShow": 1
+        },
+        {
+          "term": "苦樂參半",
+          "traditional": "苦樂參半",
+          "simplified": "苦乐参半",
+          "pronunciation": {
+            "pinyin": "kǔ lè cān bàn",
+            "zhuyin": "ㄎㄨˇ ㄌㄜˋ ㄘㄢ ㄅㄢˋ"
+          },
+          "partOfSpeech": "idiom",
+          "level": "upper-intermediate",
+          "definition": "Containing both hardship and happiness; bittersweet. This formal four-character expression is often used to summarize a life experience or period of time.",
+          "position": {
+            "episode": "#207 Jocelyn 9.4.0 - 音樂夢到金曲新人入圍，找到自己自信跟成長的 Sweet Spot",
+            "episodeDir": "2026-05-03-EP207-Jocelyn-9.4.0-音樂夢到金曲新人入圍-找到自己自信跟成長的-Sweet-Spot",
+            "timeSeconds": 2102.83,
+            "timestamp": "35:03",
+            "timingSource": "segment",
+            "segment": {
+              "index": 316,
+              "startSeconds": 2102.83,
+              "endSeconds": 2114.83
+            }
+          },
+          "example": {
+            "text": "苦樂參半的人生現實狀態，這樣就是。你無法避免有很掙扎很艱難很痛苦的，",
+            "translation": "The reality of life—a mix of joy and sorrow—that’s just how it is. You can’t avoid having moments of struggle, hardship, and pain,",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              316
+            ]
+          },
+          "occurrencesInShow": 2
+        },
+        {
+          "term": "走貴人運",
+          "traditional": "走貴人運",
+          "simplified": "走贵人运",
+          "pronunciation": {
+            "pinyin": "zǒu guì rén yùn",
+            "zhuyin": "ㄗㄡˇ ㄍㄨㄟˋ ㄖㄣˊ ㄩㄣˋ"
+          },
+          "partOfSpeech": "phrase",
+          "level": "advanced",
+          "definition": "To be going through a period in which one is especially fortunate in meeting 貴人—helpful or influential people who provide timely support and opportunities. The expression comes from Chinese fortune-telling language and is also used casually.",
+          "position": {
+            "episode": "#207 Jocelyn 9.4.0 - 音樂夢到金曲新人入圍，找到自己自信跟成長的 Sweet Spot",
+            "episodeDir": "2026-05-03-EP207-Jocelyn-9.4.0-音樂夢到金曲新人入圍-找到自己自信跟成長的-Sweet-Spot",
+            "timeSeconds": 2187.04,
+            "timestamp": "36:27",
+            "timingSource": "segment",
+            "segment": {
+              "index": 328,
+              "startSeconds": 2187.04,
+              "endSeconds": 2194.64
+            }
+          },
+          "example": {
+            "text": "貴人很多啦，我覺得我我比較是屬於走貴人運，那那個路我覺得有些人真的是",
+            "translation": "I’ve had a lot of people who’ve helped me along the way—I feel like I’ve been pretty lucky in that regard. As for that path, I think some people really are…",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              328
+            ]
+          },
+          "occurrencesInShow": 1
+        },
+        {
+          "term": "問世",
+          "traditional": "問世",
+          "simplified": "问世",
+          "pronunciation": {
+            "pinyin": "wèn shì",
+            "zhuyin": "ㄨㄣˋ ㄕˋ"
+          },
+          "partOfSpeech": "verb",
+          "level": "upper-intermediate",
+          "definition": "To be published, released, invented, or otherwise introduced to the world. It is more formal and literary than ordinary words such as 發行 or 出版.",
+          "position": {
+            "episode": "#207 Jocelyn 9.4.0 - 音樂夢到金曲新人入圍，找到自己自信跟成長的 Sweet Spot",
+            "episodeDir": "2026-05-03-EP207-Jocelyn-9.4.0-音樂夢到金曲新人入圍-找到自己自信跟成長的-Sweet-Spot",
+            "timeSeconds": 2437.24,
+            "timestamp": "40:37",
+            "timingSource": "segment",
+            "segment": {
+              "index": 368,
+              "startSeconds": 2437.24,
+              "endSeconds": 2442.32
+            }
+          },
+          "example": {
+            "text": "我終於有一個實體專輯要問世了。好，我通常最後的都會想問這個問題，",
+            "translation": "I finally have a physical album coming out. Okay, I usually save this question for last,",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              368
+            ]
+          },
+          "occurrencesInShow": 1
+        },
+        {
+          "term": "流年",
+          "traditional": "流年",
+          "simplified": "流年",
+          "pronunciation": {
+            "pinyin": "liú nián",
+            "zhuyin": "ㄌㄧㄡˊ ㄋㄧㄢˊ"
+          },
+          "partOfSpeech": "noun",
+          "level": "advanced",
+          "definition": "A particular year viewed in terms of the fortune and events it may bring, especially in astrology or Chinese fortune-telling. 看流年 means to examine someone’s prospects for a given year.",
+          "position": {
+            "episode": "#208 Rita/靈魂相談室 - 當下的力量，靈性裡的自律，盡人事聽天命",
+            "episodeDir": "2026-05-10-EP208-Rita-靈魂相談室-當下的力量-靈性裡的自律-盡人事聽天命",
+            "timeSeconds": 944.23,
+            "timestamp": "15:44",
+            "timingSource": "segment",
+            "segment": {
+              "index": 183,
+              "startSeconds": 944.23,
+              "endSeconds": 950.39
+            }
+          },
+          "example": {
+            "text": "星盤的解讀，比如說在大部分的占星的應用裡面，大家可能會用占星去看流年",
+            "translation": "Astrological chart readings—for example, in most astrological applications, people might use astrology to look at transits",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              183
+            ]
+          },
+          "occurrencesInShow": 1
+        },
+        {
+          "term": "翻舊帳",
+          "traditional": "翻舊帳",
+          "simplified": "翻旧帐",
+          "pronunciation": {
+            "pinyin": "fān jiù zhàng",
+            "zhuyin": "ㄈㄢ ㄐㄧㄡˋ ㄓㄤˋ"
+          },
+          "partOfSpeech": "idiom",
+          "level": "upper-intermediate",
+          "definition": "To bring up old mistakes, conflicts, or grievances again, usually during a current argument. It is a colloquial and disapproving expression.",
+          "position": {
+            "episode": "#208 Rita/靈魂相談室 - 當下的力量，靈性裡的自律，盡人事聽天命",
+            "episodeDir": "2026-05-10-EP208-Rita-靈魂相談室-當下的力量-靈性裡的自律-盡人事聽天命",
+            "timeSeconds": 2352.16,
+            "timestamp": "39:12",
+            "timingSource": "segment",
+            "segment": {
+              "index": 468,
+              "startSeconds": 2352.16,
+              "endSeconds": 2355.56
+            }
+          },
+          "example": {
+            "text": "何事情跟決策都沒有原則，跟他很愛翻舊帳。",
+            "translation": "But he has no principles when it comes to matters or decisions, and he really loves to bring up the past.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              468
+            ]
+          },
+          "occurrencesInShow": 1
+        },
+        {
+          "term": "靠臉吃飯",
+          "traditional": "靠臉吃飯",
+          "simplified": "靠脸吃饭",
+          "pronunciation": {
+            "pinyin": "kào liǎn chī fàn",
+            "zhuyin": "ㄎㄠˋ ㄌㄧㄢˇ ㄔ ㄈㄢˋ"
+          },
+          "partOfSpeech": "phrase",
+          "level": "upper-intermediate",
+          "definition": "To make a living primarily through one’s physical appearance. This colloquial expression is often used of models, actors, influencers, and other public-facing professions.",
+          "position": {
+            "episode": "#209 林可彤 - 從名模/作家/創業/新移民生活，不同角色裡重新定義自己",
+            "episodeDir": "2026-05-17-EP209-林可彤-從名模-作家-創業-新移民生活-不同角色裡重新定義自己",
+            "timeSeconds": 1028.67,
+            "timestamp": "17:09",
+            "timingSource": "segment",
+            "segment": {
+              "index": 193,
+              "startSeconds": 1028.67,
+              "endSeconds": 1032.51
+            }
+          },
+          "example": {
+            "text": "就一道疤，我是模特兒，我是靠臉吃飯的，我不可以臉上一道疤。",
+            "translation": "—just a scar. I’m a model; my face is my livelihood. I can’t have a scar on my face.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              193
+            ]
+          },
+          "occurrencesInShow": 1
+        },
+        {
+          "term": "一塌糊塗",
+          "traditional": "一塌糊塗",
+          "simplified": "一塌糊涂",
+          "pronunciation": {
+            "pinyin": "yī tā hú tú",
+            "zhuyin": "ㄧ ㄊㄚ ㄏㄨˊ ㄊㄨˊ"
+          },
+          "partOfSpeech": "idiom",
+          "level": "upper-intermediate",
+          "definition": "Completely chaotic, ruined, or out of control; after a verb, it can intensify the action. In 哭得一塌糊塗, it means to cry uncontrollably or be a total mess from crying.",
+          "position": {
+            "episode": "#209 林可彤 - 從名模/作家/創業/新移民生活，不同角色裡重新定義自己",
+            "episodeDir": "2026-05-17-EP209-林可彤-從名模-作家-創業-新移民生活-不同角色裡重新定義自己",
+            "timeSeconds": 1970.34,
+            "timestamp": "32:50",
+            "timingSource": "segment",
+            "segment": {
+              "index": 379,
+              "startSeconds": 1970.34,
+              "endSeconds": 1976.82
+            }
+          },
+          "example": {
+            "text": "們早就知道，然後就就我媽就哭的一塌糊塗，對啊，然後 2 個弟弟也很可愛，要",
+            "translation": "’ve known all along.” Then my mom just burst into tears. Yeah, and my two younger brothers are really cute, too. I have to",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              379
+            ]
+          },
+          "occurrencesInShow": 2
+        },
+        {
+          "term": "配速",
+          "traditional": "配速",
+          "simplified": "配速",
+          "pronunciation": {
+            "pinyin": "pèi sù",
+            "zhuyin": "ㄆㄟˋ ㄙㄨˋ"
+          },
+          "partOfSpeech": "verb",
+          "level": "upper-intermediate",
+          "definition": "To set or manage one’s pace, particularly while running or racing. 配速 is also used as a noun for the pace maintained over a given distance.",
+          "position": {
+            "episode": "#210 王冠翔 Sean - 賺事/賺人/賺影響力，最速總經理從低潮跑出來的配速/能量管理學",
+            "episodeDir": "2026-05-24-EP210-王冠翔-Sean-賺事-賺人-賺影響力-最速總經理從低潮跑出來的配速-能量管理學",
+            "timeSeconds": 19.47,
+            "timestamp": "00:19",
+            "timingSource": "segment",
+            "segment": {
+              "index": 4,
+              "startSeconds": 19.47,
+              "endSeconds": 22.95
+            }
+          },
+          "example": {
+            "text": "發揮你的這個極限，所以怎麼樣配速穩定這件事很重要。",
+            "translation": "your potential. So, maintaining a steady pace is really important.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              4
+            ]
+          },
+          "occurrencesInShow": 6
+        },
+        {
+          "term": "自顧不暇",
+          "traditional": "自顧不暇",
+          "simplified": "自顾不暇",
+          "pronunciation": {
+            "pinyin": "zì gù bù xiá",
+            "zhuyin": "ㄗˋ ㄍㄨˋ ㄅㄨˋ ㄒㄧㄚˊ"
+          },
+          "partOfSpeech": "idiom",
+          "level": "advanced",
+          "definition": "To be so overwhelmed with one’s own difficulties that one has no time or capacity to look after anyone or anything else. It is a relatively formal four-character expression.",
+          "position": {
+            "episode": "#210 王冠翔 Sean - 賺事/賺人/賺影響力，最速總經理從低潮跑出來的配速/能量管理學",
+            "episodeDir": "2026-05-24-EP210-王冠翔-Sean-賺事-賺人-賺影響力-最速總經理從低潮跑出來的配速-能量管理學",
+            "timeSeconds": 2043.83,
+            "timestamp": "34:04",
+            "timingSource": "segment",
+            "segment": {
+              "index": 416,
+              "startSeconds": 2043.83,
+              "endSeconds": 2050.19
+            }
+          },
+          "example": {
+            "text": "他們，因為我覺得我那時候自顧不暇，我，我會這麼說啦，我覺得我那時候就",
+            "translation": "They—because I feel like I was so caught up in my own struggles back then—I’d put it this way: I felt like at that time I was just…",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              416
+            ]
+          },
+          "occurrencesInShow": 2
+        },
+        {
+          "term": "習得性無助",
+          "traditional": "習得性無助",
+          "simplified": "习得性无助",
+          "pronunciation": {
+            "pinyin": "xí dé xìng wú zhù",
+            "zhuyin": "ㄒㄧˊ ㄉㄜˊ ㄒㄧㄥˋ ㄨˊ ㄓㄨˋ"
+          },
+          "partOfSpeech": "noun",
+          "level": "advanced",
+          "definition": "Learned helplessness: a psychological state in which repeated failure or lack of control causes someone to stop trying, even when improvement may be possible. This is a technical psychology term.",
+          "position": {
+            "episode": "#210 王冠翔 Sean - 賺事/賺人/賺影響力，最速總經理從低潮跑出來的配速/能量管理學",
+            "episodeDir": "2026-05-24-EP210-王冠翔-Sean-賺事-賺人-賺影響力-最速總經理從低潮跑出來的配速-能量管理學",
+            "timeSeconds": 5047.63,
+            "timestamp": "1:24:08",
+            "timingSource": "segment",
+            "segment": {
+              "index": 1057,
+              "startSeconds": 5047.63,
+              "endSeconds": 5054.19
+            }
+          },
+          "example": {
+            "text": "習得性無助，他發現打不過他發現可能很容易失敗的時候呢，他可能會反而退",
+            "translation": "experience learned helplessness—when they realize they can’t win or that they might fail easily, they might actually back down",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              1057
+            ]
+          },
+          "occurrencesInShow": 1
+        }
+      ]
+    },
+    {
+      "showId": "馬力歐陪你喝一杯",
+      "title": "馬力歐陪你喝一杯",
+      "episodesUsed": [
+        {
+          "dir": "2026-08-21-S8EP174-新北市長候選人-蘇巧慧-認識自己-認識世界-找到對的位子-就會發光發熱",
+          "title": "S8EP174 新北市長候選人｜蘇巧慧：認識自己、認識世界、找到對的位子，就會發光發熱",
+          "durationSeconds": 4172.2
+        },
+        {
+          "dir": "2026-08-24-EP131-管理通靈信箱-同事責任感太強-為何反而成為溝通阻礙",
+          "title": "管理通靈信箱｜EP131｜同事責任感太強，為何反而成為溝通阻礙？",
+          "durationSeconds": 1572.1
+        },
+        {
+          "dir": "2026-08-28-S8EP175-高醫外傷重症醫師-唐貞綾-戰爭時沒有人能照顧你-你要學會照顧自己",
+          "title": "S8EP175 高醫外傷重症醫師｜唐貞綾：戰爭時沒有人能照顧你，你要學會照顧自己",
+          "durationSeconds": 3856.8
+        },
+        {
+          "dir": "2026-08-31-EP132-管理通靈信箱-團隊裡沒人夠格當主管-我該硬著頭皮挑一個嗎",
+          "title": "管理通靈信箱｜EP132｜團隊裡沒人夠格當主管，我該硬著頭皮挑一個嗎？",
+          "durationSeconds": 1328.8
+        },
+        {
+          "dir": "2026-09-04-S8EP176-防衛韌性委員會委員-劉玉皙-戰爭發生時-只要人民能活下去就是贏",
+          "title": "S8EP176 防衛韌性委員會委員｜劉玉皙：戰爭發生時，只要人民能活下去就是贏",
+          "durationSeconds": 3884.7
+        }
+      ],
+      "transcriptScript": {
+        "dominant": "mixed",
+        "traditionalOnlyChars": 2197,
+        "simplifiedOnlyChars": 20361,
+        "note": "Character counts over the show's whole transcript. The ASR output is not script-pure, so `term` is the surface form as transcribed; `traditional` and `simplified` are the normalised pair."
+      },
+      "vocabularyCount": 14,
+      "vocabulary": [
+        {
+          "term": "九合一选举",
+          "traditional": "九合一選舉",
+          "simplified": "九合一选举",
+          "pronunciation": {
+            "pinyin": "jiǔ hé yī xuǎn jǔ",
+            "zhuyin": "ㄐㄧㄡˇ ㄏㄜˊ ㄧ ㄒㄩㄢˇ ㄐㄩˇ"
+          },
+          "partOfSpeech": "noun",
+          "level": "upper-intermediate",
+          "definition": "Taiwan’s “nine-in-one” local elections, in which nine categories of local public office are elected on the same day. This is Taiwan-specific political terminology.",
+          "position": {
+            "episode": "S8EP174 新北市長候選人｜蘇巧慧：認識自己、認識世界、找到對的位子，就會發光發熱",
+            "episodeDir": "2026-08-21-S8EP174-新北市長候選人-蘇巧慧-認識自己-認識世界-找到對的位子-就會發光發熱",
+            "timeSeconds": 43.36,
+            "timestamp": "00:43",
+            "timingSource": "word",
+            "segment": {
+              "index": 17,
+              "startSeconds": 43.08,
+              "endSeconds": 45.3
+            }
+          },
+          "example": {
+            "text": "我们九合一选举系列又来啦！这一集我们踏出台北市，邀请了新北市市长候选人，也就是现任立委苏巧慧。",
+            "translation": "Our \"Nine-in-One Elections\" series is back! In this episode, we’re venturing outside Taipei City to interview New Taipei City mayoral candidate Su Chiao-hui, who is currently a legislator.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              17,
+              18
+            ],
+            "speaker": "speaker_1"
+          },
+          "occurrencesInShow": 1
+        },
+        {
+          "term": "扫市场",
+          "traditional": "掃市場",
+          "simplified": "扫市场",
+          "pronunciation": {
+            "pinyin": "sǎo shì chǎng",
+            "zhuyin": "ㄙㄠˇ ㄕˋ ㄔㄤˇ"
+          },
+          "partOfSpeech": "verb",
+          "level": "upper-intermediate",
+          "definition": "In Taiwanese election campaigning, to canvass at a traditional market by walking around, greeting vendors and shoppers, and soliciting votes. This is colloquial political vocabulary.",
+          "position": {
+            "episode": "S8EP174 新北市長候選人｜蘇巧慧：認識自己、認識世界、找到對的位子，就會發光發熱",
+            "episodeDir": "2026-08-21-S8EP174-新北市長候選人-蘇巧慧-認識自己-認識世界-找到對的位子-就會發光發熱",
+            "timeSeconds": 56.86,
+            "timestamp": "00:57",
+            "timingSource": "word",
+            "segment": {
+              "index": 19,
+              "startSeconds": 51.66,
+              "endSeconds": 58.87
+            }
+          },
+          "example": {
+            "text": "我们今天聊了当初她为什么想要参选公职，她也跟我分享了第一次踏入市场，要扫市场拜票时候的心得感想。",
+            "translation": "Today we talked about why she decided to run for public office, and she also shared her thoughts and feelings with me about her first time going out into the community to canvass for votes.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              19
+            ],
+            "speaker": "speaker_1"
+          },
+          "occurrencesInShow": 4
+        },
+        {
+          "term": "滔滔不绝",
+          "traditional": "滔滔不絕",
+          "simplified": "滔滔不绝",
+          "pronunciation": {
+            "pinyin": "tāo tāo bù jué",
+            "zhuyin": "ㄊㄠ ㄊㄠ ㄅㄨˋ ㄐㄩㄝˊ"
+          },
+          "partOfSpeech": "idiom",
+          "level": "upper-intermediate",
+          "definition": "To talk continuously and fluently, with words pouring out; often used for someone speaking enthusiastically or at great length.",
+          "position": {
+            "episode": "S8EP174 新北市長候選人｜蘇巧慧：認識自己、認識世界、找到對的位子，就會發光發熱",
+            "episodeDir": "2026-08-21-S8EP174-新北市長候選人-蘇巧慧-認識自己-認識世界-找到對的位子-就會發光發熱",
+            "timeSeconds": 76.48,
+            "timestamp": "01:16",
+            "timingSource": "word",
+            "segment": {
+              "index": 21,
+              "startSeconds": 70.84,
+              "endSeconds": 80.76
+            }
+          },
+          "example": {
+            "text": "我问她为什么想要参选新北市市长，以及对于新北市的想法跟愿景，她立刻滔滔不绝地跟我分享她的想法，这次参选的口号，还有主要政见。",
+            "translation": "I asked her why she wanted to run for mayor of New Taipei City, as well as her thoughts and vision for the city, and she immediately began sharing her ideas with me at great length—including her campaign slogan and key policy platforms.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              21
+            ],
+            "speaker": "speaker_1"
+          },
+          "occurrencesInShow": 1
+        },
+        {
+          "term": "盘整",
+          "traditional": "盤整",
+          "simplified": "盘整",
+          "pronunciation": {
+            "pinyin": "pán zhěng",
+            "zhuyin": "ㄆㄢˊ ㄓㄥˇ"
+          },
+          "partOfSpeech": "verb",
+          "level": "upper-intermediate",
+          "definition": "To consolidate, organize, and review scattered information so that it can be analyzed or acted upon. This usage is especially common in Taiwanese business and professional speech.",
+          "position": {
+            "episode": "S8EP174 新北市長候選人｜蘇巧慧：認識自己、認識世界、找到對的位子，就會發光發熱",
+            "episodeDir": "2026-08-21-S8EP174-新北市長候選人-蘇巧慧-認識自己-認識世界-找到對的位子-就會發光發熱",
+            "timeSeconds": 676.96,
+            "timestamp": "11:17",
+            "timingSource": "word",
+            "segment": {
+              "index": 300,
+              "startSeconds": 672.1,
+              "endSeconds": 682.56
+            }
+          },
+          "example": {
+            "text": "去解决解决解决這件事情，呃，搜集资讯，分析盘整，找出爭點，然后去做决定做判断，其实对我来讲是一个很像在解谜。",
+            "translation": "Solving, solving, solving this issue—uh, gathering information, analyzing and assessing, identifying the points of contention, and then making decisions and judgments—actually feels a lot like solving a puzzle to me.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              300
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 2
+        },
+        {
+          "term": "爭點",
+          "traditional": "爭點",
+          "simplified": "争点",
+          "pronunciation": {
+            "pinyin": "zhēng diǎn",
+            "zhuyin": "ㄓㄥ ㄉㄧㄢˇ"
+          },
+          "partOfSpeech": "noun",
+          "level": "advanced",
+          "definition": "The central issue on which parties disagree, especially in legal analysis, negotiation, or litigation. It is a formal professional term.",
+          "position": {
+            "episode": "S8EP174 新北市長候選人｜蘇巧慧：認識自己、認識世界、找到對的位子，就會發光發熱",
+            "episodeDir": "2026-08-21-S8EP174-新北市長候選人-蘇巧慧-認識自己-認識世界-找到對的位子-就會發光發熱",
+            "timeSeconds": 677.82,
+            "timestamp": "11:18",
+            "timingSource": "word",
+            "segment": {
+              "index": 300,
+              "startSeconds": 672.1,
+              "endSeconds": 682.56
+            }
+          },
+          "example": {
+            "text": "去解决解决解决這件事情，呃，搜集资讯，分析盘整，找出爭點，然后去做决定做判断，其实对我来讲是一个很像在解谜。",
+            "translation": "Solving, solving, solving this issue—uh, gathering information, analyzing and assessing, identifying the points of contention, and then making decisions and judgments—actually feels a lot like solving a puzzle to me.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              300
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 2
+        },
+        {
+          "term": "會勘",
+          "traditional": "會勘",
+          "simplified": "会勘",
+          "pronunciation": {
+            "pinyin": "huì kān",
+            "zhuyin": "ㄏㄨㄟˋ ㄎㄢ"
+          },
+          "partOfSpeech": "verb",
+          "level": "advanced",
+          "definition": "To conduct a joint on-site inspection involving officials or representatives from multiple agencies. This is Taiwanese administrative and public-policy terminology.",
+          "position": {
+            "episode": "S8EP174 新北市長候選人｜蘇巧慧：認識自己、認識世界、找到對的位子，就會發光發熱",
+            "episodeDir": "2026-08-21-S8EP174-新北市長候選人-蘇巧慧-認識自己-認識世界-找到對的位子-就會發光發熱",
+            "timeSeconds": 1916.84,
+            "timestamp": "31:57",
+            "timingSource": "word",
+            "segment": {
+              "index": 781,
+              "startSeconds": 1913.84,
+              "endSeconds": 1929.74
+            }
+          },
+          "example": {
+            "text": "所以我现在短短的幾句话，其實当时是第1要會勘，而且會勘了 N 次，然后要找到有人願意捐地，然后再來你要能够说服中央的主管部會，負擔的-- 負責的機關，要能夠知道有這個計劃，",
+            "translation": "so in these few brief sentences, what I’m actually referring to is that, first, we had to conduct site surveys—and we did them countless times—then find someone willing to donate the land, and then you have to be able to persuade the relevant central government agencies—the responsible authorities—to take on the burden and ensure they’re aware of this plan,",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              781
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 2
+        },
+        {
+          "term": "眉角",
+          "traditional": "眉角",
+          "simplified": "眉角",
+          "pronunciation": {
+            "pinyin": "méi jiǎo",
+            "zhuyin": "ㄇㄟˊ ㄐㄧㄠˇ"
+          },
+          "partOfSpeech": "noun",
+          "level": "upper-intermediate",
+          "definition": "The subtle know-how, hidden details, or knack needed to handle something properly. This is colloquial Taiwanese Mandarin influenced by Southern Min.",
+          "position": {
+            "episode": "S8EP174 新北市長候選人｜蘇巧慧：認識自己、認識世界、找到對的位子，就會發光發熱",
+            "episodeDir": "2026-08-21-S8EP174-新北市長候選人-蘇巧慧-認識自己-認識世界-找到對的位子-就會發光發熱",
+            "timeSeconds": 2072.54,
+            "timestamp": "34:33",
+            "timingSource": "word",
+            "segment": {
+              "index": 821,
+              "startSeconds": 2066.26,
+              "endSeconds": 2082.3
+            }
+          },
+          "example": {
+            "text": "所以对我来讲，你说我什么时候开始了解这个工作，掌握到它的眉角，是真的就是说我在地方这样走，然后跟部会这样沟通，我也知道什么时候他交的作业是比教系只是文书资料[笑]。",
+            "translation": "So for me, when you ask when I started to understand this job and get a handle on its intricacies, it really came from being out in the community, communicating with government agencies, and realizing when the work they assigned went beyond just paperwork [laughs].",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              821
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 1
+        },
+        {
+          "term": "责任感爆表",
+          "traditional": "責任感爆表",
+          "simplified": "责任感爆表",
+          "pronunciation": {
+            "pinyin": "zé rèn gǎn bào biǎo",
+            "zhuyin": "ㄗㄜˊ ㄖㄣˋ ㄍㄢˇ ㄅㄠˋ ㄅㄧㄠˇ"
+          },
+          "partOfSpeech": "phrase",
+          "level": "upper-intermediate",
+          "definition": "To have an off-the-charts sense of responsibility. 爆表 literally means that a gauge has exceeded its maximum and is colloquial and emphatic.",
+          "position": {
+            "episode": "管理通靈信箱｜EP131｜同事責任感太強，為何反而成為溝通阻礙？",
+            "episodeDir": "2026-08-24-EP131-管理通靈信箱-同事責任感太強-為何反而成為溝通阻礙",
+            "timeSeconds": 160.06,
+            "timestamp": "02:40",
+            "timingSource": "word",
+            "segment": {
+              "index": 33,
+              "startSeconds": 158.2,
+              "endSeconds": 166.24
+            }
+          },
+          "example": {
+            "text": "我的问题是如何让这几位责任感爆表、自我要求高的主管们可以放下焦虑进行有效沟通？",
+            "translation": "My question is: How can I help these managers—who are incredibly responsible and hold themselves to high standards—let go of their anxiety and communicate effectively?",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              33
+            ],
+            "speaker": "speaker_1"
+          },
+          "occurrencesInShow": 2
+        },
+        {
+          "term": "架空",
+          "traditional": "架空",
+          "simplified": "架空",
+          "pronunciation": {
+            "pinyin": "jià kōng",
+            "zhuyin": "ㄐㄧㄚˋ ㄎㄨㄥ"
+          },
+          "partOfSpeech": "verb",
+          "level": "upper-intermediate",
+          "definition": "To leave someone in an official position while stripping them of real authority, making the role merely nominal. It is commonly used in organizational and political contexts.",
+          "position": {
+            "episode": "管理通靈信箱｜EP131｜同事責任感太強，為何反而成為溝通阻礙？",
+            "episodeDir": "2026-08-24-EP131-管理通靈信箱-同事責任感太強-為何反而成為溝通阻礙",
+            "timeSeconds": 391.7,
+            "timestamp": "06:32",
+            "timingSource": "word",
+            "segment": {
+              "index": 72,
+              "startSeconds": 385.04,
+              "endSeconds": 392.06
+            }
+          },
+          "example": {
+            "text": "那你——我这样做完之后，我的经验告诉我一件事，就是说这样会的确会把那个总经理给架空。",
+            "translation": "So, you—after I did that, my experience taught me one thing: that this approach would indeed sideline the general manager.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              72
+            ],
+            "speaker": "speaker_1"
+          },
+          "occurrencesInShow": 3
+        },
+        {
+          "term": "阳奉阴违",
+          "traditional": "陽奉陰違",
+          "simplified": "阳奉阴违",
+          "pronunciation": {
+            "pinyin": "yáng fèng yīn wéi",
+            "zhuyin": "ㄧㄤˊ ㄈㄥˋ ㄧㄣ ㄨㄟˊ"
+          },
+          "partOfSpeech": "idiom",
+          "level": "advanced",
+          "definition": "To pretend to obey openly while secretly acting in opposition. This idiom is strongly critical and often describes insincere compliance with orders or policy.",
+          "position": {
+            "episode": "管理通靈信箱｜EP131｜同事責任感太強，為何反而成為溝通阻礙？",
+            "episodeDir": "2026-08-24-EP131-管理通靈信箱-同事責任感太強-為何反而成為溝通阻礙",
+            "timeSeconds": 856.22,
+            "timestamp": "14:16",
+            "timingSource": "word",
+            "segment": {
+              "index": 165,
+              "startSeconds": 854.98,
+              "endSeconds": 859.44
+            }
+          },
+          "example": {
+            "text": "你说会不会就阳奉阴违，就是讲难听一点，会不会有这种心态？",
+            "translation": "Do you think there might be a case of paying lip service while acting otherwise? To put it bluntly, could there be that kind of mindset?",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              165
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 1
+        },
+        {
+          "term": "次专科",
+          "traditional": "次專科",
+          "simplified": "次专科",
+          "pronunciation": {
+            "pinyin": "cì zhuān kē",
+            "zhuyin": "ㄘˋ ㄓㄨㄢ ㄎㄜ"
+          },
+          "partOfSpeech": "noun",
+          "level": "advanced",
+          "definition": "A medical subspecialty within a broader specialty, such as trauma surgery within surgery. This is specialized Taiwanese medical terminology.",
+          "position": {
+            "episode": "S8EP175 高醫外傷重症醫師｜唐貞綾：戰爭時沒有人能照顧你，你要學會照顧自己",
+            "episodeDir": "2026-08-28-S8EP175-高醫外傷重症醫師-唐貞綾-戰爭時沒有人能照顧你-你要學會照顧自己",
+            "timeSeconds": 636.18,
+            "timestamp": "10:36",
+            "timingSource": "word",
+            "segment": {
+              "index": 306,
+              "startSeconds": 633.02,
+              "endSeconds": 645.4
+            }
+          },
+          "example": {
+            "text": "所以因为你在描述的時候也说，就是這-这些次专科好像都不太赚钱，就我覺得大家可能，可能比較不太理解为什么这些次专科好像不太賺錢，就包含心-心脏外科跟這個外傷外科这样子。",
+            "translation": "So, as you mentioned in your description, these subspecialties don’t seem to be very profitable. I think people might not quite understand why these subspecialties—including cardiac surgery and trauma surgery—don’t seem to be very profitable.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              306
+            ],
+            "speaker": "speaker_1"
+          },
+          "occurrencesInShow": 2
+        },
+        {
+          "term": "正面表列",
+          "traditional": "正面表列",
+          "simplified": "正面表列",
+          "pronunciation": {
+            "pinyin": "zhèng miàn biǎo liè",
+            "zhuyin": "ㄓㄥˋ ㄇㄧㄢˋ ㄅㄧㄠˇ ㄌㄧㄝˋ"
+          },
+          "partOfSpeech": "noun",
+          "level": "advanced",
+          "definition": "A “positive-list” regulatory system that explicitly states what is permitted; activities not listed are generally not authorized. This is formal legal and administrative terminology.",
+          "position": {
+            "episode": "S8EP175 高醫外傷重症醫師｜唐貞綾：戰爭時沒有人能照顧你，你要學會照顧自己",
+            "episodeDir": "2026-08-28-S8EP175-高醫外傷重症醫師-唐貞綾-戰爭時沒有人能照顧你-你要學會照顧自己",
+            "timeSeconds": 1228.48,
+            "timestamp": "20:28",
+            "timingSource": "word",
+            "segment": {
+              "index": 548,
+              "startSeconds": 1224.4,
+              "endSeconds": 1229.26
+            }
+          },
+          "example": {
+            "text": "对，因为呃，我们的救護法规也很有趣，它是正面表列。",
+            "translation": "Right, because, um, our emergency medical regulations are quite interesting—they use a positive list approach.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              548
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 1
+        },
+        {
+          "term": "制空权",
+          "traditional": "制空權",
+          "simplified": "制空权",
+          "pronunciation": {
+            "pinyin": "zhì kōng quán",
+            "zhuyin": "ㄓˋ ㄎㄨㄥ ㄑㄩㄢˊ"
+          },
+          "partOfSpeech": "noun",
+          "level": "advanced",
+          "definition": "Control or military superiority in the airspace over a conflict zone; air superiority. This is formal military terminology.",
+          "position": {
+            "episode": "S8EP175 高醫外傷重症醫師｜唐貞綾：戰爭時沒有人能照顧你，你要學會照顧自己",
+            "episodeDir": "2026-08-28-S8EP175-高醫外傷重症醫師-唐貞綾-戰爭時沒有人能照顧你-你要學會照顧自己",
+            "timeSeconds": 1912.52,
+            "timestamp": "31:53",
+            "timingSource": "word",
+            "segment": {
+              "index": 826,
+              "startSeconds": 1910.5,
+              "endSeconds": 1913.0
+            }
+          },
+          "example": {
+            "text": "但他们很不幸是因为乌克兰没有制空权。",
+            "translation": "But unfortunately, Ukraine doesn’t have air superiority.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              826
+            ],
+            "speaker": "speaker_0"
+          },
+          "occurrencesInShow": 1
+        },
+        {
+          "term": "本职学能",
+          "traditional": "本職學能",
+          "simplified": "本职学能",
+          "pronunciation": {
+            "pinyin": "běn zhí xué néng",
+            "zhuyin": "ㄅㄣˇ ㄓˊ ㄒㄩㄝˊ ㄋㄥˊ"
+          },
+          "partOfSpeech": "noun",
+          "level": "advanced",
+          "definition": "The core professional knowledge and practical skills required for one’s assigned job. The expression is common in Taiwanese official, military, and workplace language.",
+          "position": {
+            "episode": "管理通靈信箱｜EP132｜團隊裡沒人夠格當主管，我該硬著頭皮挑一個嗎？",
+            "episodeDir": "2026-08-31-EP132-管理通靈信箱-團隊裡沒人夠格當主管-我該硬著頭皮挑一個嗎",
+            "timeSeconds": 135.52,
+            "timestamp": "02:16",
+            "timingSource": "word",
+            "segment": {
+              "index": 26,
+              "startSeconds": 131.92,
+              "endSeconds": 137.68
+            }
+          },
+          "example": {
+            "text": "作业反应不够灵敏，行政杂务积极，但是本职学能上不能完全上轨道。",
+            "translation": "They aren’t responsive enough when it comes to tasks, are proactive with administrative duties, but haven’t fully gotten their core job responsibilities on track.",
+            "translationSource": "deepl",
+            "segmentIndexes": [
+              26
+            ],
+            "speaker": "speaker_1"
+          },
+          "occurrencesInShow": 1
+        }
+      ]
+    }
+  ]
+}

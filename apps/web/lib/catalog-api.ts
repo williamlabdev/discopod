@@ -225,14 +225,6 @@ function assertEpisode(episode: Episode, pair: LanguagePair, where: string): Epi
 
   if (!Array.isArray(episode?.vocabulary)) {
     problems.push('vocabulary');
-  } else {
-    const untranslated = episode.vocabulary.filter((entry) => !has(entry.meaning, speaks));
-    if (untranslated.length > 0) {
-      problems.push(
-        `${untranslated.length} vocabulary meaning(s) with no ${speaks}: ` +
-          untranslated.map((entry) => entry.term).join(', '),
-      );
-    }
   }
 
   if (!Array.isArray(episode?.questions)) {

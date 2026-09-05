@@ -7,6 +7,7 @@ interface Args {
   source: string;
   out: string;
   overlayVi: string;
+  vocab?: string;
 }
 
 interface Metadata {
@@ -38,6 +39,22 @@ interface SrtCue {
   startMs: number;
   endMs: number;
   lines: string[];
+}
+
+interface VocabSeed {
+  shows?: Array<{
+    showId: string;
+    vocabulary?: VocabSeedEntry[];
+  }>;
+}
+
+interface VocabSeedEntry {
+  traditional?: string;
+  term: string;
+  partOfSpeech: string;
+  definition: string;
+  position?: { episodeDir?: string };
+  example?: { text?: string };
 }
 
 const SHOWS: Record<string, { showId: string; title: string; publisher: string; scriptConversion?: 'manual' }> = {
@@ -84,9 +101,9 @@ function parseArgs(argv: string[]): Args {
     if (item.startsWith('--')) args[item.slice(2)] = argv[++i];
   }
   if (!args.source || !args.out || !args['overlay-vi']) {
-    throw new Error('Usage: tsx podcasts-from-folder.ts --source <dir> --out <seed.json> --overlay-vi <overlay.json>');
+    throw new Error('Usage: tsx podcasts-from-folder.ts --source <dir> --out <seed.json> --overlay-vi <overlay.json> [--vocab vocab.seed.json]');
   }
-  return { source: args.source, out: args.out, overlayVi: args['overlay-vi'] };
+  return { source: args.source, out: args.out, overlayVi: args['overlay-vi'], vocab: args.vocab };
 }
 
 function parseTime(value: string): number {
@@ -184,6 +201,34 @@ function cueTranslationsByRoundedSecond(cues: SrtCue[]): Map<string, string> {
   return byKey;
 }
 
+function vocabByEpisode(path: string | undefined): Map<string, VocabSeedEntry[]> {
+  if (!path) return new Map();
+  const seed = readJson<VocabSeed>(path);
+  const byEpisode = new Map<string, VocabSeedEntry[]>();
+  for (const show of seed.shows ?? []) {
+    for (const entry of show.vocabulary ?? []) {
+      const episodeDir = entry.position?.episodeDir;
+      if (!episodeDir) continue;
+      const key = `${show.showId}/${episodeDir}`;
+      byEpisode.set(key, [...(byEpisode.get(key) ?? []), entry]);
+    }
+  }
+  return byEpisode;
+}
+
+function vocabularyFor(
+  vocab: Map<string, VocabSeedEntry[]>,
+  showFolder: string,
+  episodeFolder: string,
+): Array<{ term: string; type: string; meaning: { en: string }; example: string }> {
+  return (vocab.get(`${showFolder}/${episodeFolder}`) ?? []).map((entry) => ({
+    term: entry.traditional ?? entry.term,
+    type: entry.partOfSpeech,
+    meaning: { en: entry.definition },
+    example: entry.example?.text ?? '',
+  }));
+}
+
 function ensureParent(path: string): void {
   mkdirSync(dirname(path), { recursive: true });
 }
@@ -193,6 +238,7 @@ function main(): void {
   const { readdirSync, statSync } = require('node:fs') as typeof import('node:fs');
   const seed: unknown[] = [];
   const viOverlay: Record<string, { transcript: Record<string, string> }> = {};
+  const vocab = vocabByEpisode(args.vocab);
   let nextId = 200;
 
   for (const showFolder of readdirSync(args.source).sort()) {
@@ -247,6 +293,8 @@ function main(): void {
 
       viOverlay[id] = { transcript: Object.fromEntries([...viByKey.entries()].filter(([, value]) => value)) };
 
+      const vocabulary = vocabularyFor(vocab, showFolder, episodeFolder);
+
       seed.push({
         id: Number(id),
         showId: show.showId,
@@ -278,7 +326,7 @@ function main(): void {
         scriptConversion: show.scriptConversion,
         verifiedLesson: false,
         transcript: rowTranscript,
-        vocabulary: [],
+        vocabulary,
         questions: [],
       });
     }

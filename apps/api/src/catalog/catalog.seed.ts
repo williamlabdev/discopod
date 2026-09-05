@@ -159,7 +159,7 @@ interface SeedRow {
   scriptConversion?: 'manual';
   verifiedLesson?: boolean;
   transcript: { time: string; seconds?: number; endSeconds?: number; speaker?: string; text: string; translation?: string; highlight?: string }[];
-  vocabulary: { term: string; type: string; meaning: string; example: string }[];
+  vocabulary: { term: string; type: string; meaning: string | Localized; example: string }[];
   questions: { prompt: string; options: string[]; answer: number }[];
 }
 
