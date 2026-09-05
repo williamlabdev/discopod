@@ -67,7 +67,7 @@ export interface Show {
   /** What is spoken in the audio. Not a script — see ADR 0006. */
   language: SpokenLanguage;
   topics: string[];
-  description: string;
+  description?: string;
   profile: DifficultyProfile;
   sourceUrl?: string;
   /** Terms the audio is used under. Absent is "not stated", never "free". */
@@ -100,8 +100,12 @@ export interface Episode {
   id: string;
   showId: string;
   title: string;
-  /** Read before listening, so it is the learner's language, not the show's. */
-  description: Localized;
+  /**
+   * Read before listening, so it is the learner's language, not the show's.
+   * Optional: an ingested episode has none, and absent is rendered as absent
+   * rather than filled in from the title or the transcript. ADR 0021.
+   */
+  description?: Localized;
   durationSeconds: number;
   audioUrl?: string;
   publisherTranscript: boolean;
@@ -203,10 +207,15 @@ function assertEpisode(episode: Episode, pair: LanguagePair, where: string): Epi
     problems.push('profile.speechRate{value,unit}');
   }
   if (!has(episode?.learningGoal, speaks)) problems.push(`learningGoal[${speaks}]`);
-  // An API still sending a bare string here is one from before ADR 0010, when
-  // the blurb was written in the language being learned — the one language the
-  // reader of a blurb is known not to have yet.
-  if (!has(episode?.description, speaks)) problems.push(`description[${speaks}]`);
+  // Checked only when there is one. ADR 0021: an episode nobody wrote a
+  // description for ships none, and that is a legitimate shape rather than a
+  // broken payload — the card omits the line. A description that *is* present
+  // is still a per-language claim, and a bare string here is still an API from
+  // before ADR 0010, when the blurb was written in the language being learned —
+  // the one language the reader of a blurb is known not to have yet.
+  if (episode?.description !== undefined && !has(episode.description, speaks)) {
+    problems.push(`description[${speaks}]`);
+  }
   if (!Array.isArray(episode?.transcript) || episode.transcript.length === 0) {
     problems.push('transcript');
   }

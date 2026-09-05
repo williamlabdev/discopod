@@ -74,6 +74,7 @@ function defaultLevel(catalogue: DiscoverCatalogue): LearningLevel {
 
 function searchableText(card: EpisodeCard) {
   return [card.showTitle, card.publisher, card.topic, card.episodeTitle, card.description, card.level, card.cefr, ...card.tags]
+    .filter(Boolean)
     .join(' ')
     .toLowerCase();
 }
@@ -371,7 +372,11 @@ export function Discover({
                         <span className="shrink-0 rounded-full bg-secondary px-2.5 py-1 text-xs font-medium text-secondary-foreground" title={card.fitReason}>{card.suitability}% fit</span>
                       </div>
                       <p className="mt-4 text-sm font-medium leading-5">{card.episodeTitle}</p>
-                      <p className="mt-2 line-clamp-2 text-sm leading-5 text-muted-foreground">{card.description}</p>
+                      {/* Omitted, not emptied: an episode nobody wrote a blurb for
+                          shows its title and nothing under it. ADR 0021. */}
+                      {card.description && (
+                        <p className="mt-2 line-clamp-2 text-sm leading-5 text-muted-foreground">{card.description}</p>
+                      )}
                       <div className="mt-4 rounded-xl bg-secondary/55 p-3">
                         <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-primary">Why it fits your level</p>
                         <p className="mt-1.5 text-xs leading-5 text-muted-foreground">{card.levelReason}</p>

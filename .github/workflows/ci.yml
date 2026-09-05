@@ -107,7 +107,14 @@ jobs:
           test -f apps/web/out/vi/zh-Hant/episode/200.html
           test ! -e apps/web/out/vi/en.html
           grep -q 'Tiếng Việt' apps/web/out/index.html
-          grep -q 'tiếng' apps/web/out/vi/zh-Hant.html
+          # Both tokens come from a `Localized` field the seed writes in Vietnamese,
+          # on the two surfaces that render one: `levelReason.vi` on a discover card,
+          # `learningGoal.vi` on an episode page. This used to be a single `tiếng` on
+          # the discover page, which ADR 0021 removed along with the generated
+          # `description` that was the only thing putting it there — the word was
+          # never the point, a rendered `vi` key was.
+          grep -q 'giọng nói' apps/web/out/vi/zh-Hant.html
+          grep -q 'Quan thoại' apps/web/out/vi/zh-Hant/episode/200.html
           # The word count is the count of entries carrying a `vi` meaning, so this
           # line is absent for the whole pair the moment vocabulary stops being
           # translated — which is what it looked like before ADR 0018 was finished.

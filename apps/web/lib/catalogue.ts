@@ -47,7 +47,8 @@ export interface EpisodeCard {
   topic: string;
   tags: string[];
   episodeTitle: string;
-  description: string;
+  /** Absent when nobody wrote one. Never stand in for it — ADR 0021. */
+  description?: string;
   level: LearningLevel;
   cefr?: string;
   tocfl?: TocflBand;
@@ -236,7 +237,12 @@ function toCard(ranked: RankedEpisode, show: Show | undefined, pair: LanguagePai
     topic: topics[0] ?? 'Listening',
     tags: topics.slice(1),
     episodeTitle: episode.title,
-    description: pick(episode.description, pair.speaks, `Episode ${episode.id} description`),
+    // Absent on every ingested episode (ADR 0021), so the card has to be able
+    // to render without one. Present still means "written for this learner's
+    // language", which is why it goes through `pick` when it is there.
+    description: episode.description
+      ? pick(episode.description, pair.speaks, `Episode ${episode.id} description`)
+      : undefined,
     level: episode.profile.level,
     cefr: episode.profile.cefr,
     tocfl: episode.profile.tocfl,

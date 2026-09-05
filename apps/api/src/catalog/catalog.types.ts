@@ -75,8 +75,12 @@ export interface Show {
    * So it stays scalar until a show blurb has both a reader and a way to be
    * translated. Whoever gives it the first, give it the second in the same
    * change.
+   *
+   * Optional since ADR 0021, for the same reason `Episode.description` is: it
+   * was taken from the first episode's row, and on an ingested show that row's
+   * description was generated. A show nobody has written a blurb for has none.
    */
-  description: string;
+  description?: string;
   profile: DifficultyProfile;
   sourceUrl?: string;
   /**
@@ -146,8 +150,15 @@ export interface Episode {
    * cannot yet follow the audio; writing it in the language being learned hands
    * the one sentence that decides "is this for me?" to the one person who
    * cannot read it. See ADR 0010.
+   *
+   * Optional since ADR 0021. An ingested episode carries no description at all:
+   * nobody wrote one, and the generated stand-in was a sentence about the
+   * episode that the episode had not earned. Absent means absent — a renderer
+   * omits the line, and never substitutes the title, the first cue, or a
+   * summary of its own. When it *is* present it is still a per-language claim,
+   * so a missing key stays an exclusion (ADR 0003), never a fallback.
    */
-  description: Localized;
+  description?: Localized;
   durationSeconds: number;
   audioUrl?: string;
   /** True when the audio and transcript come from the publisher, not from our own ASR. */
