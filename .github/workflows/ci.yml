@@ -88,13 +88,16 @@ jobs:
           test -f apps/web/out/index.html
           grep -q '繁體中文' apps/web/out/index.html
           # One page per pair, and the pair really is a route segment (ADR 0003).
-          test -f apps/web/out/en/en.html
+          # Both directions the product serves, and no third one: a pair whose
+          # sides match is not published at all (ADR 0012).
+          test -f apps/web/out/en/zh-Hant.html
           test -f apps/web/out/zh-Hant/en.html
+          test ! -e apps/web/out/en/en.html
           # The catalogue really came from the API, not from a file in apps/web:
           # episode 7 is the one verified row left in the seed (ADR 0004), and
           # the fit percentage is computed by the API's ranker, never authored.
-          test -f apps/web/out/en/en/episode/7.html
-          grep -q '% fit' apps/web/out/en/en.html
+          test -f apps/web/out/zh-Hant/en/episode/7.html
+          grep -q '% fit' apps/web/out/en/zh-Hant.html
 
       # Boot the API and check the health endpoint Render will probe.
       - name: Smoke test the API

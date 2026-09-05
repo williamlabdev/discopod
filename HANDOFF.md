@@ -310,6 +310,17 @@ mistake — but assume the same for every asset you delete: the file keeps being
 "I removed it from the repo" is not "it is gone". Clearing it needs Render's own cache
 clear or a redeploy that replaces the publish directory wholesale; neither was done here.
 
+**The site serves two directions, and only two** (2026-09-05). It was publishing three
+pairs: `en → zh-Hant` (an English speaker learning Chinese, episode 102), `zh-Hant → en`
+(a Chinese speaker learning English, episode 7 through its overlay) — and `en → en`,
+English audio explained in English, which teaches nobody anything and was the *first*
+option on the pair chooser with `DEFAULT_PAIR` pointing at it. ADR 0003 decision 6 declared
+that pair deliberately when it was the only one with content; that reason expired the
+moment both real directions had an episode. `listPairs` now skips any pair whose two sides
+match, `DEFAULT_PAIR` is `en → zh-Hant`, and the export goes from 9 HTML files to 7. No
+data was deleted — episode 7's English explanations are what the Chinese overlay was
+translated from. [ADR 0012](docs/adr/0012-two-directions-and-en-to-en-is-not-one.md).
+
 **Saved words survive a restart** (2026-09-05). They used to live in a `Map` inside
 `VocabularyService`, so every API restart threw away everything anyone had saved — the one
 thing in this app that cannot be regenerated from git. There is now a `pg`-backed adapter
