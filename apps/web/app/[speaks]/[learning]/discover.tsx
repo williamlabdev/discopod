@@ -49,6 +49,25 @@ const LEVEL_COPY: Record<LearningLevel, { range: string; note: string }> = {
 
 const learningLevels = LEARNING_LEVELS.map((name) => ({ name, ...LEVEL_COPY[name] }));
 
+/**
+ * The level the page opens on, and the one "reset" returns to.
+ *
+ * This was a hardcoded `'Beginner'`, which is right for a pair whose catalogue
+ * has beginner episodes and wrong for one that does not. `en → zh-Hant` has
+ * none — spoken Wikipedia starts at Intermediate — so the page opened on an
+ * empty grid and a "No beginner match yet" panel, directly under a hero
+ * recommending an Intermediate episode. Nothing was broken; the page was just
+ * asking the reader to find the catalogue by clicking.
+ *
+ * The level filter is a view of the catalogue, so its resting position comes
+ * from the catalogue: the easiest level that actually has something in it. A
+ * pair with nothing at any level falls back to Beginner, because the empty
+ * state still has to name a level.
+ */
+function defaultLevel(catalogue: DiscoverCatalogue): LearningLevel {
+  return LEARNING_LEVELS.find((level) => catalogue.byLevel[level].length > 0) ?? LEARNING_LEVELS[0];
+}
+
 function searchableText(card: EpisodeCard) {
   return [card.showTitle, card.publisher, card.topic, card.episodeTitle, card.description, card.level, card.cefr, ...card.tags]
     .join(' ')
@@ -66,7 +85,8 @@ export function Discover({
   const home = pairPath(pair);
   const [query, setQuery] = useState('');
   const [activeInterest, setActiveInterest] = useState('All');
-  const [activeLevel, setActiveLevel] = useState<LearningLevel>('Beginner');
+  const initialLevel = useMemo(() => defaultLevel(catalogue), [catalogue]);
+  const [activeLevel, setActiveLevel] = useState<LearningLevel>(initialLevel);
   const [saved, setSaved] = useState<string[]>([]);
   const [playing, setPlaying] = useState<string | null>(null);
   const [showAll, setShowAll] = useState(false);
@@ -96,7 +116,7 @@ export function Discover({
   const clearFilters = () => {
     setQuery('');
     setActiveInterest('All');
-    setActiveLevel('Beginner');
+    setActiveLevel(initialLevel);
     setShowAll(false);
   };
 
@@ -127,7 +147,10 @@ export function Discover({
         if (typeof value !== 'string' || !value.trim()) throw new Error('query must be a non-empty string');
         if (level !== undefined && !learningLevels.some((item) => item.name === level)) throw new Error('level must be Beginner, Intermediate, or Advanced');
         const nextQuery = value.trim();
-        const nextLevel = (typeof level === 'string' ? level : 'Beginner') as LearningLevel;
+        // An omitted level means "wherever this pair starts", for the same
+        // reason the page does: searching a level this pair has nothing at
+        // returns zero and says nothing about the query.
+        const nextLevel = (typeof level === 'string' ? level : initialLevel) as LearningLevel;
         const matches = catalogue.byLevel[nextLevel].filter((card) => searchableText(card).includes(nextQuery.toLowerCase()));
         setActiveInterest('All');
         setActiveLevel(nextLevel);
@@ -160,7 +183,7 @@ export function Discover({
     });
 
     return () => lifecycle.abort();
-  }, [catalogue, everyCard]);
+  }, [catalogue, everyCard, initialLevel]);
 
   return (
     <main className="min-h-screen overflow-hidden bg-background text-foreground">
