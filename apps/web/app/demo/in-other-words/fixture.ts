@@ -12,6 +12,19 @@
  * `docs/REQUIREMENTS.md` §R24 — the hard expression kept verbatim and explained
  * in place, nothing added that was not in the original. They are what a passing
  * generation looks like, not output from one.
+ *
+ * The show and the episode are invented, which this repo otherwise does not do:
+ * ADR 0004 removed six seeded episodes for carrying invented transcripts under
+ * the names of real publishers. The difference is the one that rule turns on —
+ * `The Cell Desk` is nobody, credited to nobody, on a page that says it is a
+ * mock-up. **Keep it that way.** Never move this fixture onto a real show's
+ * name, and never move it into the catalogue.
+ *
+ * It is invented rather than lifted from a catalogue episode because no episode
+ * in the catalogue is at a level where rung 2 has anything to do: the English
+ * side is beginner VOA lessons, where there is no expression hard enough to
+ * need elaborating and a restatement would only pad. The cue below is the
+ * worked example from §R24 itself, so the demo and the spec cannot drift.
  */
 
 export interface DemoCue {

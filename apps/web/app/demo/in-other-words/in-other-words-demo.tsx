@@ -147,10 +147,12 @@ export function InOtherWordsDemo() {
         {/* Say plainly what this page is. A demo that looks like the product is
             how a fixture ends up quoted as evidence that the feature works. */}
         <p className="mt-4 rounded-2xl border border-border bg-card p-4 text-sm leading-6 text-muted-foreground">
-          <strong className="text-foreground">This is a mock-up.</strong> The episode, the cues and the
-          restatements are hand-written to the R24 spec — nothing here was generated, cached or validated.
-          The real restatements are a build artifact generated into the catalogue (ADR 0005), and that
-          generator has not been built.
+          <strong className="text-foreground">This is a mock-up.</strong> The show, the episode, the cues
+          and the restatements are hand-written to the R24 spec — nothing here was generated, cached or
+          validated, and <em>The Cell Desk</em> is not a real programme. The real restatements are a build
+          artifact generated into the catalogue (ADR 0005), and that generator has not been built. The
+          catalogue&rsquo;s own episodes are not used here because none of them is at a level where rung 2
+          has anything to elaborate.
         </p>
 
         <section className="mt-9 rounded-[24px] border border-border bg-card px-5 py-2 sm:px-8">

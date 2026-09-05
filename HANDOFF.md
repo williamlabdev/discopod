@@ -406,6 +406,18 @@ comment in `apps/web/app/layout.tsx` first — it lists the three things the old
 — and re-adds `openGraph.images`, `twitter.images` and `card: 'summary_large_image'`
 together, in one change. An image is worth having; it is not worth having stale.
 
+**R24 has a UI mock, and that is all it has.** `/demo/in-other-words` renders the three
+rungs — original, elaborated restatement with the hard expression kept and marked, then the
+translation — from a hand-written fixture under `apps/web/app/demo/`, deliberately outside
+`lib/` so nothing else can import it and outside `/[speaks]/[learning]/` so it cannot look
+like a catalogue episode that carries a restatement. One cue ships the degraded case on
+purpose (criterion 9: generation dropped the tapped expression, so rung 2 is hidden and rung
+3 offered directly), because a demo that only shows the feature succeeding hides the exact
+behaviour R24's risk section turns on. The show and episode are invented, which is the one
+place in this repo that happens; the page says so, the fixture header says why it is allowed
+here and ADR 0004 says what would make it not. **Nothing is generated** — the generator R24
+needs is a build-time artifact per ADR 0005 and does not exist.
+
 ## Traps already paid for — do not re-learn these
 
 - **Lockfile, twice over.** Regenerate only with `--package-lock-only --include=dev`, and run

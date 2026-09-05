@@ -15,7 +15,11 @@ cannot be built without changing that shape says so in its own "Blocked on" sect
 
 - **Priority:** P1 — the highest-value item in P1 and cheaper than anything else in it.
 - **Status:** Unblocked, not started. Rungs 1–3 are buildable;
-  criteria 12–13 (telemetry) are deferred.
+  criteria 12–13 (telemetry) are deferred. A UI mock of the three rungs is at
+  `/demo/in-other-words` (`apps/web/app/demo/in-other-words/`) — hand-written fixture,
+  no generator, no catalogue episode behind it. It shows what criteria 1–5 and 9 look
+  like on screen; it is evidence about the shape of the interaction and about nothing
+  else.
 - **Shaped by:** [ADR 0005](adr/0005-generated-learner-support-is-a-build-artifact.md) —
   restatements are generated at build time into the catalogue, ADR 0002 stands, telemetry
   waits for the level estimator. See "Blocked on" below for what that changes.
