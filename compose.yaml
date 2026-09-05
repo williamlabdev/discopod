@@ -1,4 +1,21 @@
 services:
+  # The API's datastore. Unset `DATABASE_URL` on the api service and the whole
+  # stack still runs — it falls back to nothing, it runs the in-memory adapters,
+  # and saved words are lost on restart. See ADR 0011.
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: discopod
+      POSTGRES_PASSWORD: discopod
+      POSTGRES_DB: discopod
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U discopod -d discopod']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
   api:
     build:
       context: .
@@ -6,8 +23,15 @@ services:
     environment:
       PORT: 3001
       WEB_ORIGIN: http://localhost:3000
+      DATABASE_URL: postgres://discopod:discopod@postgres:5432/discopod
     ports:
       - "3001:3001"
+    # `service_healthy`, not the bare form: an unreachable DATABASE_URL is a
+    # boot failure by design, so starting before Postgres accepts connections
+    # would crash the API rather than make it wait.
+    depends_on:
+      postgres:
+        condition: service_healthy
 
   web:
     build:
@@ -21,3 +45,6 @@ services:
       - "3000:3000"
     depends_on:
       - api
+
+volumes:
+  postgres-data:

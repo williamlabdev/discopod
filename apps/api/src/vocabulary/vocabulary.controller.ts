@@ -13,7 +13,7 @@ export class VocabularyController {
   constructor(private readonly vocabulary: VocabularyService) {}
 
   @Get()
-  list(@Headers('x-learner-id') learnerId = 'anonymous'): SavedWord[] {
+  list(@Headers('x-learner-id') learnerId = 'anonymous'): Promise<SavedWord[]> {
     return this.vocabulary.list(learnerId);
   }
 
@@ -21,7 +21,7 @@ export class VocabularyController {
   save(
     @Body() body: SaveWordDto,
     @Headers('x-learner-id') learnerId = 'anonymous',
-  ): SavedWord {
+  ): Promise<SavedWord> {
     return this.vocabulary.save(learnerId, body);
   }
 }
