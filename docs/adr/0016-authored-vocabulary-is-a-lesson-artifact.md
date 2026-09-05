@@ -1,6 +1,7 @@
 # ADR 0016 — Authored vocabulary is a lesson artifact, not a podcast-episode field
 
-- **Status:** Accepted
+- **Status:** Accepted; **decision 1 superseded by [ADR 0020](0020-extracted-vocabulary-is-quoted-from-the-episode.md), 2026-09-05** for `vocabulary` only — its `questions: []` half stands, and decisions 2 and 3 are
+  untouched.
 - **Date:** 2026-09-05
 - **Owner of the judgement calls:** William
 - **Touches:** [ADR 0011](0011-postgres-is-a-publication-of-the-seed.md) decision 4 —
@@ -39,6 +40,17 @@ matter, made by an author under the constraint of choosing five.
 Every episode the podcast ingest emits carries an empty vocabulary array and an empty
 questions array on the seed row. The type stays the same; the arrays are permitted to be
 empty, and empty means "this episode is not a lesson with authored teaching content."
+
+> **Superseded by [ADR 0020](0020-extracted-vocabulary-is-quoted-from-the-episode.md),
+> 2026-09-05, for `vocabulary` only.** An ingested episode may now ship a word list, and
+> 21 of 25 do. ADR 0020 does not argue this ADR was wrong about authoring: it identifies a
+> third shape this ADR had no name for. An *extracted* entry claims only that the term
+> occurs in the episode and that the example is the line it occurs in — both checked at
+> ingest — and makes none of the claims about importance or completeness that the
+> paragraph above rejects. `questions: []` is unchanged, and all 25 episodes still ship it.
+> Decisions 2 and 3 below are untouched and still load-bearing: four episodes have no
+> entries, so the conditional UI stays, and `vocabularyCoverage` is still not a ranking
+> signal on ingested rows.
 
 ### 2. The Vocabulary tab and `newWords` line are conditional
 
