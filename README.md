@@ -245,10 +245,9 @@ explicitly not a second catalogue.
 | Styling | Tailwind CSS 4 | Responsive styling |
 | Backend | NestJS 11 | REST API and domain logic |
 | Runtime | Node.js 22.13+ | Application runtime |
-| Database | PostgreSQL 17 | Saved vocabulary; catalogue publication |
 | Data | JSON seed files | Single source of catalogue data |
 | Validation | class-validator / class-transformer | API request validation |
-| Testing | Jest + Supertest | API and integration testing |
+| Testing | Jest | API and integration testing |
 | Containerization | Docker | Local full-stack development |
 | Deployment | Render / Node-compatible hosts | Web and API hosting |
 
