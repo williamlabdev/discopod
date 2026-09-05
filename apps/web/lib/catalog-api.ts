@@ -130,8 +130,29 @@ export interface Episode {
   questions: ComprehensionQuestion[];
 }
 
+/**
+ * Ranked-list payload. Episode detail fields are fetched only from
+ * `/episodes/:id`; excluding them keeps the cacheable list response below
+ * Next.js's 2 MB build-cache limit.
+ */
+export type EpisodeSummary = Pick<
+  Episode,
+  | 'id'
+  | 'showId'
+  | 'title'
+  | 'description'
+  | 'durationSeconds'
+  | 'publisherTranscript'
+  | 'profile'
+  | 'transcriptLanguage'
+  | 'vocabulary'
+  | 'ratedBy'
+  | 'overlayVerified'
+  | 'authoredBy'
+>;
+
 export interface RankedEpisode {
-  episode: Episode;
+  episode: EpisodeSummary;
   /** 0-100, computed by the API. Never stored, never authored by hand. */
   suitability: number;
   /** Why this ranks here, in the learner's words. The product invariant. */
@@ -161,7 +182,7 @@ async function get<T>(path: string): Promise<T> {
   let response: Response;
 
   try {
-    // force-cache so the build fetches each URL once, however many routes ask.
+    // These calls are build inputs shared by many statically generated routes.
     response = await fetch(url, { cache: 'force-cache' });
   } catch (cause) {
     throw new Error(`Catalogue API unreachable at ${url}`, { cause });
@@ -192,7 +213,10 @@ async function get<T>(path: string): Promise<T> {
  * simply be in a language the route does not claim. A silent wrong answer is
  * the one worth an explicit check.
  */
-function assertEpisode(episode: Episode, pair: LanguagePair, where: string): Episode {
+function episodeProblems(
+  episode: EpisodeSummary,
+  pair: LanguagePair,
+): string[] {
   const { speaks } = pair;
   const problems: string[] = [];
 
@@ -206,7 +230,6 @@ function assertEpisode(episode: Episode, pair: LanguagePair, where: string): Epi
   if (typeof episode?.profile?.speechRate?.value !== 'number' || !episode.profile.speechRate.unit) {
     problems.push('profile.speechRate{value,unit}');
   }
-  if (!has(episode?.learningGoal, speaks)) problems.push(`learningGoal[${speaks}]`);
   // Checked only when there is one. ADR 0021: an episode nobody wrote a
   // description for ships none, and that is a legitimate shape rather than a
   // broken payload — the card omits the line. A description that *is* present
@@ -215,9 +238,6 @@ function assertEpisode(episode: Episode, pair: LanguagePair, where: string): Epi
   // the one language the reader of a blurb is known not to have yet.
   if (episode?.description !== undefined && !has(episode.description, speaks)) {
     problems.push(`description[${speaks}]`);
-  }
-  if (!Array.isArray(episode?.transcript) || episode.transcript.length === 0) {
-    problems.push('transcript');
   }
   // An API that omits this is one from before ADR 0006, when the transcript's
   // script was inferred from the show's language. Worth catching by name: the
@@ -231,11 +251,19 @@ function assertEpisode(episode: Episode, pair: LanguagePair, where: string): Epi
         `(the API ignored ?learning=)`,
     );
   }
+  if (!Array.isArray(episode?.vocabulary)) problems.push('vocabulary');
 
-  if (!Array.isArray(episode?.vocabulary)) {
-    problems.push('vocabulary');
+  return problems;
+}
+
+function assertEpisode(episode: Episode, pair: LanguagePair, where: string): Episode {
+  const { speaks } = pair;
+  const problems = episodeProblems(episode, pair);
+
+  if (!has(episode?.learningGoal, speaks)) problems.push(`learningGoal[${speaks}]`);
+  if (!Array.isArray(episode?.transcript) || episode.transcript.length === 0) {
+    problems.push('transcript');
   }
-
   if (!Array.isArray(episode?.questions)) {
     problems.push('questions');
   } else if (
@@ -255,10 +283,14 @@ function assertEpisode(episode: Episode, pair: LanguagePair, where: string): Epi
 
 function assertRanked(ranked: RankedEpisode, pair: LanguagePair, where: string): RankedEpisode {
   // The vision's one hard rule: nothing is ranked without saying why.
-  if (!ranked?.reason) {
-    throw new Error(`Ranked episode ${ranked?.episode?.id ?? '(no id)'} from ${where} has no reason`);
+  const problems = episodeProblems(ranked?.episode, pair);
+  if (!ranked?.reason) problems.push('ranking reason');
+  if (problems.length > 0) {
+    throw new Error(
+      `Ranked episode ${ranked?.episode?.id ?? '(no id)'} from ${where} is missing: ` +
+        problems.join('; '),
+    );
   }
-  assertEpisode(ranked.episode, pair, where);
   return ranked;
 }
 

@@ -228,6 +228,30 @@ export interface Episode {
   questions: ComprehensionQuestion[];
 }
 
+/**
+ * The discovery-list representation. Full transcripts and exercises belong to
+ * `GET /episodes/:id`; repeating them for every ranked card makes this response
+ * several megabytes and exceeds Next.js's per-entry build cache limit.
+ *
+ * This is an explicit allowlist so a future large detail field cannot silently
+ * leak back into the list response.
+ */
+export type EpisodeSummary = Pick<
+  Episode,
+  | 'id'
+  | 'showId'
+  | 'title'
+  | 'description'
+  | 'durationSeconds'
+  | 'publisherTranscript'
+  | 'profile'
+  | 'transcriptLanguage'
+  | 'vocabulary'
+  | 'ratedBy'
+  | 'overlayVerified'
+  | 'authoredBy'
+>;
+
 export interface EpisodeQuery {
   /**
    * The learner's own language. Not a display preference: it selects which
@@ -256,7 +280,7 @@ export interface EpisodeQuery {
 }
 
 export interface RankedEpisode {
-  episode: Episode;
+  episode: EpisodeSummary;
   /** 0-100. Derived, never stored — see CatalogService.scoreFor. */
   suitability: number;
   /**
