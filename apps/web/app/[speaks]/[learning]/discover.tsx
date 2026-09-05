@@ -19,10 +19,13 @@ import {
   X,
 } from 'lucide-react';
 
+import Link from 'next/link';
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { LEARNING_LEVELS, type DiscoverCatalogue, type EpisodeCard, type LearningLevel } from '@/lib/catalogue';
 import { LANGUAGE_NAMES, pairPath, type LanguagePair } from '@/lib/language';
+import { readList, writeList } from '@/lib/learner-store';
 
 type WebMcpTool = {
   name: string;
@@ -87,6 +90,9 @@ export function Discover({
   const [activeInterest, setActiveInterest] = useState('All');
   const initialLevel = useMemo(() => defaultLevel(catalogue), [catalogue]);
   const [activeLevel, setActiveLevel] = useState<LearningLevel>(initialLevel);
+  // Starts empty on purpose: this page prerenders, so the first render on the
+  // device has to match the HTML that came off the build. The saved list is
+  // read one tick later, in the effect below.
   const [saved, setSaved] = useState<string[]>([]);
   const [playing, setPlaying] = useState<string | null>(null);
   const [showAll, setShowAll] = useState(false);
@@ -109,8 +115,25 @@ export function Discover({
 
   const visible = showAll ? filtered : filtered.slice(0, 3);
 
+  // Deferred a tick, like the episode page's own rehydration: reading the
+  // device is synchronising with something outside React, and setting state
+  // straight from an effect body is what `react-compiler` rejects.
+  useEffect(() => {
+    queueMicrotask(() => setSaved(readList(pair)));
+  }, [pair]);
+
+  /**
+   * Saving used to be `useState` and nothing else, so the bookmark survived
+   * until the reader reloaded. The list is per pair — a learner reading
+   * Mandarin has no use for the English list — and it is the same list the
+   * `/list` page reads back.
+   */
   const toggleSaved = (id: string) => {
-    setSaved((current) => (current.includes(id) ? current.filter((item) => item !== id) : [...current, id]));
+    setSaved((current) => {
+      const next = current.includes(id) ? current.filter((item) => item !== id) : [...current, id];
+      writeList(pair, next);
+      return next;
+    });
   };
 
   const clearFilters = () => {
@@ -195,7 +218,8 @@ export function Discover({
           </a>
           <nav className="hidden items-center gap-8 text-sm text-muted-foreground md:flex" aria-label="Main navigation">
             <a className="text-foreground" href="#discover">Discover</a>
-            <a className="transition-colors hover:text-foreground" href="#library">My learning list <span className="ml-1 rounded-full bg-secondary px-2 py-0.5 text-[11px] text-secondary-foreground">{saved.length}</span></a>
+            <Link className="transition-colors hover:text-foreground" href={`${home}/list`}>My learning list{saved.length > 0 && <span className="ml-1 rounded-full bg-secondary px-2 py-0.5 text-[11px] text-secondary-foreground">{saved.length}</span>}</Link>
+            <Link className="transition-colors hover:text-foreground" href={`${home}/words`}>Vocabulary</Link>
           </nav>
           <div className="flex items-center gap-2">
             <Button variant="outline" className="hidden h-10 rounded-full border-foreground/15 bg-transparent px-5 sm:inline-flex">Sign in</Button>
@@ -206,7 +230,8 @@ export function Discover({
           {mobileNavOpen && (
             <nav className="absolute left-0 right-0 top-[70px] z-30 flex flex-col gap-2 rounded-2xl border border-border bg-card p-3 shadow-xl md:hidden" aria-label="Mobile navigation">
               <a className="rounded-xl px-4 py-3 font-medium hover:bg-secondary" href="#discover" onClick={() => setMobileNavOpen(false)}>Discover</a>
-              <a className="rounded-xl px-4 py-3 font-medium hover:bg-secondary" href="#library" onClick={() => setMobileNavOpen(false)}>My learning list · {saved.length} saved</a>
+              <Link className="rounded-xl px-4 py-3 font-medium hover:bg-secondary" href={`${home}/list`} onClick={() => setMobileNavOpen(false)}>My learning list{saved.length > 0 && ` · ${saved.length} saved`}</Link>
+              <Link className="rounded-xl px-4 py-3 font-medium hover:bg-secondary" href={`${home}/words`} onClick={() => setMobileNavOpen(false)}>Vocabulary</Link>
               <Button className="mt-1 h-11 rounded-xl">Sign in</Button>
             </nav>
           )}
@@ -388,8 +413,8 @@ export function Discover({
         <section id="library" className="mt-20 rounded-[30px] bg-foreground p-8 text-background sm:p-12 lg:p-14">
           <p className="mb-5 text-xs font-semibold uppercase tracking-[0.16em] text-background/55">Your learning list</p>
           <h2 className="max-w-2xl font-serif text-4xl leading-[1.03] tracking-[-0.045em] sm:text-5xl">A better way to practice listening.</h2>
-          <p className="mt-5 max-w-xl text-sm leading-6 text-background/65">Save episodes for your next study session. Every listen comes with a readable transcript and vocabulary help. You have {saved.length} {saved.length === 1 ? 'lesson' : 'lessons'} waiting.</p>
-          <Button className="mt-8 h-11 rounded-full bg-background px-5 text-foreground hover:bg-background/85">Open my learning list<ArrowRight /></Button>
+          <p className="mt-5 max-w-xl text-sm leading-6 text-background/65">Save episodes for your next study session. Every listen comes with a readable transcript and vocabulary help.{saved.length > 0 && ` You have ${saved.length} ${saved.length === 1 ? 'lesson' : 'lessons'} waiting.`}</p>
+          <Link className="mt-8 inline-flex h-11 items-center gap-1.5 rounded-full bg-background px-5 text-sm font-medium text-foreground transition hover:bg-background/85" href={`${home}/list`}>Open my learning list<ArrowRight className="size-4" /></Link>
         </section>
 
         <footer className="mt-8 flex flex-col gap-3 border-t border-border py-8 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">

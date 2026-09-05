@@ -493,6 +493,26 @@ place in this repo that happens; the page says so, the fixture header says why i
 here and ADR 0004 says what would make it not. **Nothing is generated** — the generator R24
 needs is a build-time artifact per ADR 0005 and does not exist.
 
+**The learning list and the vocabulary list exist now** — `/[speaks]/[learning]/list` and
+`/[speaks]/[learning]/words`, both prerendered per pair. Two things they changed underneath:
+discover's bookmark was `useState` and nothing else, so it never survived a reload, and the
+storage schema was built and parsed inline in the episode page by its only reader. Both now
+go through `apps/web/lib/learner-store.ts`, which owns the key format, the parser and the
+list. The episode page imports it rather than keeping a second copy.
+
+What the pages deliberately do not do: **no progress bar.** The catalogue's `duration` is the
+publisher's stated length, not measured from the file we ship, so a percentage would be drawn
+against a denominator nobody has checked — the list prints the position (`00:18`) instead.
+And **no `t=` jump**: a saved word shows its timestamp because that is the fact stored with
+it, but the link to the episode is a plain link, because nothing on the episode page reads a
+start time out of the URL yet.
+
+Both pages fall back to a **labelled sample** when the device has nothing stored. The episodes
+and the vocabulary in it are real — straight from the pair's own catalogue, so every title,
+level, gloss and link is true — and the learner state around them (positions, counts, "you
+saved this") is invented, said so in a panel above it, and never written to storage. Same rule
+as the R24 demo: a mock-up may borrow real content, and must not claim to be real state.
+
 ## Traps already paid for — do not re-learn these
 
 - **Lockfile, twice over.** Regenerate only with `--package-lock-only --include=dev`, and run
