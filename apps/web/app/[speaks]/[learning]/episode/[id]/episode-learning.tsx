@@ -27,14 +27,25 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { AutoTranslated } from '../../auto-translated';
 import type { EpisodeDetail } from '@/lib/catalogue';
+import { interfaceCopy } from '@/lib/interface-copy';
 import { LANGUAGE_NAMES, pairPath, type LanguagePair } from '@/lib/language';
 import { legacyProgressKey, progressKey } from '@/lib/learner-store';
-import { createSavedWord, readSavedWords, type SavedWord } from '@/lib/saved-words';
+import {
+  createSavedWord,
+  readSavedWords,
+  type SavedWord,
+} from '@/lib/saved-words';
 
 /** Any Han character. Mirrors `HAN` in `lib/catalogue.ts` and means the same thing. */
 const HAN = /\p{Script=Han}/u;
 
-function TranscriptLine({ text, highlight }: { text: string; highlight?: string }) {
+function TranscriptLine({
+  text,
+  highlight,
+}: {
+  text: string;
+  highlight?: string;
+}) {
   if (!highlight) return <>{text}</>;
   // indexOf, not split: a term that occurs twice in one cue splits into three
   // parts, and taking [before, after] would drop everything past the second
@@ -58,14 +69,23 @@ function TranscriptLine({ text, highlight }: { text: string; highlight?: string 
   return (
     <>
       {text.slice(0, at)}
-      <mark className={`rounded bg-[#f5d8ad] ${pad} text-inherit`}>{highlight}</mark>
+      <mark className={`rounded bg-[#f5d8ad] ${pad} text-inherit`}>
+        {highlight}
+      </mark>
       {text.slice(at + highlight.length)}
     </>
   );
 }
 
-export function EpisodeLearning({ episode, pair }: { episode: EpisodeDetail; pair: LanguagePair }) {
+export function EpisodeLearning({
+  episode,
+  pair,
+}: {
+  episode: EpisodeDetail;
+  pair: LanguagePair;
+}) {
   const home = pairPath(pair);
+  const copy = interfaceCopy(pair.speaks);
   const audioRef = useRef<HTMLAudioElement>(null);
   const [playing, setPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -101,7 +121,10 @@ export function EpisodeLearning({ episode, pair }: { episode: EpisodeDetail; pai
   const storageKey = progressKey(pair, episode.id);
   const legacyStorageKey = legacyProgressKey(pair, episode.id);
   const hasAudio = Boolean(episode.audioSrc);
-  const progress = hasAudio && audioDuration ? (currentTime / audioDuration) * 100 : demoProgress;
+  const progress =
+    hasAudio && audioDuration
+      ? (currentTime / audioDuration) * 100
+      : demoProgress;
   const activeTranscriptIndex = useMemo(() => {
     let active = 0;
     episode.transcript.forEach((line, index) => {
@@ -112,9 +135,13 @@ export function EpisodeLearning({ episode, pair }: { episode: EpisodeDetail; pai
 
   // No toggle when there is nothing to toggle: an `en → en` pair has no
   // translations at all, and a control that reveals nothing is a broken one.
-  const hasTranslations = episode.transcript.some((line) => Boolean(line.translation));
+  const hasTranslations = episode.transcript.some((line) =>
+    Boolean(line.translation),
+  );
 
-  const correctCount = episode.questions.filter((question, index) => answers[index] === question.answer).length;
+  const correctCount = episode.questions.filter(
+    (question, index) => answers[index] === question.answer,
+  ).length;
   const formatTime = (value: number) => {
     if (!Number.isFinite(value)) return '00:00';
     const minutes = Math.floor(value / 60);
@@ -149,7 +176,10 @@ export function EpisodeLearning({ episode, pair }: { episode: EpisodeDetail; pai
       setDemoProgress(Math.min(100, Math.max(0, seconds)));
       return;
     }
-    const next = Math.min(audioRef.current.duration || seconds, Math.max(0, seconds));
+    const next = Math.min(
+      audioRef.current.duration || seconds,
+      Math.max(0, seconds),
+    );
     audioRef.current.currentTime = next;
     setCurrentTime(next);
   };
@@ -159,14 +189,29 @@ export function EpisodeLearning({ episode, pair }: { episode: EpisodeDetail; pai
       try {
         const stored =
           window.localStorage.getItem(storageKey) ??
-          (legacyStorageKey ? window.localStorage.getItem(legacyStorageKey) : null);
+          (legacyStorageKey
+            ? window.localStorage.getItem(legacyStorageKey)
+            : null);
         if (stored) {
-          const value = JSON.parse(stored) as { currentTime?: number; complete?: boolean; savedWords?: unknown; answers?: Record<number, number>; checked?: boolean };
+          const value = JSON.parse(stored) as {
+            currentTime?: number;
+            complete?: boolean;
+            savedWords?: unknown;
+            answers?: Record<number, number>;
+            checked?: boolean;
+          };
           setCurrentTime(value.currentTime ?? 0);
           setComplete(Boolean(value.complete));
           // Words saved before this stored bare terms; readSavedWords rebuilds
           // their sentence, speaker and timestamp rather than dropping them.
-          setSavedWords(readSavedWords(pair, value.savedWords, episode.id, episode.vocabulary));
+          setSavedWords(
+            readSavedWords(
+              pair,
+              value.savedWords,
+              episode.id,
+              episode.vocabulary,
+            ),
+          );
           setAnswers(value.answers ?? {});
           setChecked(Boolean(value.checked));
         }
@@ -180,34 +225,76 @@ export function EpisodeLearning({ episode, pair }: { episode: EpisodeDetail; pai
   useEffect(() => {
     if (!hydrated) return;
     try {
-      window.localStorage.setItem(storageKey, JSON.stringify({ currentTime, complete, savedWords, answers, checked }));
+      window.localStorage.setItem(
+        storageKey,
+        JSON.stringify({ currentTime, complete, savedWords, answers, checked }),
+      );
     } catch {
       // Progress persistence is an enhancement, not a playback requirement.
     }
-  }, [answers, checked, complete, currentTime, hydrated, savedWords, storageKey]);
+  }, [
+    answers,
+    checked,
+    complete,
+    currentTime,
+    hydrated,
+    savedWords,
+    storageKey,
+  ]);
 
   return (
     <main className="min-h-screen bg-background text-foreground">
       <div className="mx-auto max-w-[1240px] px-5 pb-16 sm:px-8 lg:px-12">
         <header className="flex h-20 items-center justify-between border-b border-border/70">
-          <Link className="flex items-center gap-2.5 font-semibold tracking-[-0.03em]" href={home}>
-            <span className="grid size-9 place-items-center rounded-full bg-foreground text-background"><Headphones className="size-[18px]" /></span>
+          <Link
+            className="flex items-center gap-2.5 font-semibold tracking-[-0.03em]"
+            href={home}
+          >
+            <span className="grid size-9 place-items-center rounded-full bg-foreground text-background">
+              <Headphones className="size-[18px]" />
+            </span>
             <span className="text-xl">DiscoPod</span>
           </Link>
-          <Link className="flex items-center gap-2 text-sm font-medium text-muted-foreground transition hover:text-foreground" href={home}><ArrowLeft className="size-4" />Back to discover</Link>
+          <Link
+            className="flex items-center gap-2 text-sm font-medium text-muted-foreground transition hover:text-foreground"
+            href={home}
+          >
+            <ArrowLeft className="size-4" />
+            {copy.episode.backToDiscover}
+          </Link>
         </header>
 
         <section className="grid gap-8 py-10 lg:grid-cols-[360px_1fr] lg:items-center lg:py-14">
-          <div className={`${episode.tone} ${episode.ink} relative aspect-square overflow-hidden rounded-[28px] p-7 shadow-[0_24px_70px_rgba(48,42,35,0.12)]`}>
-            <span className="text-xs font-semibold uppercase tracking-[0.14em] opacity-60">{episode.showTitle}</span>
-            <h1 className="mt-12 max-w-[9ch] font-serif text-[clamp(2.5rem,5vw,4.25rem)] leading-[0.9] tracking-[-0.055em]">{episode.episodeTitle}</h1>
-            <span className="absolute bottom-6 left-6 rounded-full bg-white/55 px-3 py-1.5 text-xs font-semibold backdrop-blur-sm">{episode.level}{episode.tocfl ?? episode.cefr ? ` · ${episode.tocfl ?? episode.cefr}` : ''}</span>
-            <span className="absolute -bottom-12 -right-10 size-40 rounded-full border-[24px] border-white/25" aria-hidden="true" />
+          <div
+            className={`${episode.tone} ${episode.ink} relative aspect-square overflow-hidden rounded-[28px] p-7 shadow-[0_24px_70px_rgba(48,42,35,0.12)]`}
+          >
+            <span className="text-xs font-semibold uppercase tracking-[0.14em] opacity-60">
+              {episode.showTitle}
+            </span>
+            <h1 className="mt-12 max-w-[9ch] font-serif text-[clamp(2.5rem,5vw,4.25rem)] leading-[0.9] tracking-[-0.055em]">
+              {episode.episodeTitle}
+            </h1>
+            <span className="absolute bottom-6 left-6 rounded-full bg-white/55 px-3 py-1.5 text-xs font-semibold backdrop-blur-sm">
+              {copy.common.level[episode.level].label}
+              {(episode.tocfl ?? episode.cefr)
+                ? ` · ${episode.tocfl ?? episode.cefr}`
+                : ''}
+            </span>
+            <span
+              className="absolute -bottom-12 -right-10 size-40 rounded-full border-[24px] border-white/25"
+              aria-hidden="true"
+            />
           </div>
           <div>
             <div className="flex flex-wrap items-center gap-2">
-              <p className="text-xs font-semibold uppercase tracking-[0.15em] text-primary">Listening lesson · {episode.topic}</p>
-              {episode.publisherTranscript && <span className="rounded-full bg-[#e4f0e9] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] text-[#416b55]">Real audio + transcript</span>}
+              <p className="text-xs font-semibold uppercase tracking-[0.15em] text-primary">
+                {copy.episode.listeningLesson} · {episode.topic}
+              </p>
+              {episode.publisherTranscript && (
+                <span className="rounded-full bg-[#e4f0e9] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] text-[#416b55]">
+                  {copy.episode.realAudioTranscript}
+                </span>
+              )}
             </div>
             {/* This heading was a constant, and it was a claim about the
                 episode: "a real conversation". True of the VOA lesson, where
@@ -216,19 +303,44 @@ export function EpisodeLearning({ episode, pair }: { episode: EpisodeDetail; pai
                 making is that the audio is real rather than a textbook
                 recording, and that survives a single speaker — the word
                 "conversation" is the part that does not. */}
-            <h2 className="mt-3 max-w-3xl font-serif text-4xl leading-[1.02] tracking-[-0.045em] sm:text-6xl">{episode.speakerCount > 1 ? 'Learn from a real conversation.' : 'Learn from real speech.'}</h2>
-            <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground">{episode.learningGoal}</p>
+            <h2 className="mt-3 max-w-3xl font-serif text-4xl leading-[1.02] tracking-[-0.045em] sm:text-6xl">
+              {episode.speakerCount > 1
+                ? copy.episode.multiSpeakerHeading
+                : copy.episode.singleSpeakerHeading}
+            </h2>
+            <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground">
+              {episode.learningGoal}
+            </p>
             <div className="mt-7 flex flex-wrap gap-3 text-sm">
-              <span className="flex items-center gap-2 rounded-full bg-secondary px-3 py-2"><Clock3 className="size-4" />{episode.duration}</span>
-              <span className="flex items-center gap-2 rounded-full bg-secondary px-3 py-2"><Gauge className="size-4" />{episode.speed}</span>
-              {episode.newWords > 0 && <span className="flex items-center gap-2 rounded-full bg-secondary px-3 py-2"><BookOpenText className="size-4" />{episode.newWords} new words</span>}
-              {episode.ratedBy === 'transcript-only' && <span className="flex items-center gap-2 rounded-full bg-secondary px-3 py-2 text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">Transcript-only rating</span>}
+              <span className="flex items-center gap-2 rounded-full bg-secondary px-3 py-2">
+                <Clock3 className="size-4" />
+                {episode.duration}
+              </span>
+              <span className="flex items-center gap-2 rounded-full bg-secondary px-3 py-2">
+                <Gauge className="size-4" />
+                {episode.speed}
+              </span>
+              {episode.newWords > 0 && (
+                <span className="flex items-center gap-2 rounded-full bg-secondary px-3 py-2">
+                  <BookOpenText className="size-4" />
+                  {copy.common.newWords(episode.newWords)}
+                </span>
+              )}
+              {episode.ratedBy === 'transcript-only' && (
+                <span className="flex items-center gap-2 rounded-full bg-secondary px-3 py-2 text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+                  {copy.episode.transcriptOnly}
+                </span>
+              )}
               {/* The transcript panel has its own badge, on `overlayVerified`,
                   which is about the cue translations alone. This one is about
                   the goal line above it and the meanings in the Vocabulary tab
                   — the learner-language prose that is on screen before the
                   transcript is. */}
-              {episode.autoTranslated && <span className="flex items-center gap-2 rounded-full bg-secondary px-3 py-2"><AutoTranslated /></span>}
+              {episode.autoTranslated && (
+                <span className="flex items-center gap-2 rounded-full bg-secondary px-3 py-2">
+                  <AutoTranslated language={pair.speaks} />
+                </span>
+              )}
             </div>
             {/* A link credits the author; it does not name the terms, and under
                 share-alike those are two obligations rather than one. So a show
@@ -241,11 +353,45 @@ export function EpisodeLearning({ episode, pair }: { episode: EpisodeDetail; pai
                 licence when this line was written, and false of the VOA lessons
                 that ship byte for byte. Overclaiming a modification is the same
                 failure as concealing one, so the sentence follows the flag. */}
-            {episode.sourceUrl && <p className="mt-5 text-xs leading-5 text-muted-foreground">Audio and transcript: <a className="font-semibold text-foreground underline decoration-border underline-offset-4" href={episode.sourceUrl} rel="noreferrer" target="_blank">{episode.sourceLabel}</a>. {episode.licence ? <>{episode.audioModified ? 'Excerpted and re-timed for language learning, under ' : "The publisher's own file, unmodified; only the cue timings were added here. Under "}<a className="font-semibold text-foreground underline decoration-border underline-offset-4" href={episode.licence.url} rel="license noreferrer" target="_blank">{episode.licence.name}</a>.</> : <>Used with credit for language learning.</>}</p>}
+            {episode.sourceUrl && (
+              <p className="mt-5 text-xs leading-5 text-muted-foreground">
+                {copy.episode.sourcePrefix}:{' '}
+                <a
+                  className="font-semibold text-foreground underline decoration-border underline-offset-4"
+                  href={episode.sourceUrl}
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  {episode.sourceLabel}
+                </a>
+                .{' '}
+                {episode.licence ? (
+                  <>
+                    {episode.audioModified
+                      ? copy.episode.sourceModifiedUnder
+                      : copy.episode.sourceUnmodifiedUnder}
+                    <a
+                      className="font-semibold text-foreground underline decoration-border underline-offset-4"
+                      href={episode.licence.url}
+                      rel="license noreferrer"
+                      target="_blank"
+                    >
+                      {episode.licence.name}
+                    </a>
+                    .
+                  </>
+                ) : (
+                  copy.episode.sourceCreditOnly
+                )}
+              </p>
+            )}
           </div>
         </section>
 
-        <section className="rounded-[26px] border border-border bg-card p-5 shadow-[0_14px_45px_rgba(48,42,35,0.06)] sm:p-7" aria-label="Episode player">
+        <section
+          className="rounded-[26px] border border-border bg-card p-5 shadow-[0_14px_45px_rgba(48,42,35,0.06)] sm:p-7"
+          aria-label={copy.episode.player}
+        >
           {episode.audioSrc && (
             <audio
               ref={audioRef}
@@ -254,12 +400,21 @@ export function EpisodeLearning({ episode, pair }: { episode: EpisodeDetail; pai
               onLoadedMetadata={(event) => {
                 setAudioDuration(event.currentTarget.duration);
                 event.currentTarget.playbackRate = speed;
-                if (currentTime > 0 && currentTime < event.currentTarget.duration) event.currentTarget.currentTime = currentTime;
+                if (
+                  currentTime > 0 &&
+                  currentTime < event.currentTarget.duration
+                )
+                  event.currentTarget.currentTime = currentTime;
               }}
-              onTimeUpdate={(event) => setCurrentTime(event.currentTarget.currentTime)}
+              onTimeUpdate={(event) =>
+                setCurrentTime(event.currentTarget.currentTime)
+              }
               onPlay={() => setPlaying(true)}
               onPause={() => setPlaying(false)}
-              onEnded={() => { setPlaying(false); setComplete(true); }}
+              onEnded={() => {
+                setPlaying(false);
+                setComplete(true);
+              }}
             >
               {/* Captions are in the language being taught, so the tag and the
                   label come from the pair. They were pinned to English, which
@@ -279,73 +434,283 @@ export function EpisodeLearning({ episode, pair }: { episode: EpisodeDetail; pai
             </audio>
           )}
           <div className="flex items-center gap-4 sm:gap-5">
-            <Button className="size-14 shrink-0 rounded-full" size="icon" aria-label={playing ? 'Pause lesson' : 'Play lesson'} onClick={togglePlayback}>{playing ? <Pause className="fill-current" /> : <Play className="ml-1 fill-current" />}</Button>
+            <Button
+              className="size-14 shrink-0 rounded-full"
+              size="icon"
+              aria-label={
+                playing ? copy.episode.pauseLesson : copy.episode.playLesson
+              }
+              onClick={togglePlayback}
+            >
+              {playing ? (
+                <Pause className="fill-current" />
+              ) : (
+                <Play className="ml-1 fill-current" />
+              )}
+            </Button>
             <div className="flex-1">
-              <button className="block h-5 w-full py-2" type="button" aria-label="Seek episode" onClick={(event) => { const rect = event.currentTarget.getBoundingClientRect(); const ratio = (event.clientX - rect.left) / rect.width; if (hasAudio) seekTo(ratio * audioDuration); else setDemoProgress(Math.round(ratio * 100)); }}>
-                <span className="block h-1.5 overflow-hidden rounded-full bg-secondary"><span className="block h-full rounded-full bg-primary" style={{ width: `${progress}%` }} /></span>
+              <button
+                className="block h-5 w-full py-2"
+                type="button"
+                aria-label={copy.episode.seekEpisode}
+                onClick={(event) => {
+                  const rect = event.currentTarget.getBoundingClientRect();
+                  const ratio = (event.clientX - rect.left) / rect.width;
+                  if (hasAudio) seekTo(ratio * audioDuration);
+                  else setDemoProgress(Math.round(ratio * 100));
+                }}
+              >
+                <span className="block h-1.5 overflow-hidden rounded-full bg-secondary">
+                  <span
+                    className="block h-full rounded-full bg-primary"
+                    style={{ width: `${progress}%` }}
+                  />
+                </span>
               </button>
-              <div className="mt-1 flex justify-between text-xs text-muted-foreground"><span>{hasAudio ? formatTime(currentTime) : `${Math.round(progress)}%`}</span><span>{hasAudio && audioDuration ? formatTime(audioDuration) : episode.duration}</span></div>
+              <div className="mt-1 flex justify-between text-xs text-muted-foreground">
+                <span>
+                  {hasAudio
+                    ? formatTime(currentTime)
+                    : `${Math.round(progress)}%`}
+                </span>
+                <span>
+                  {hasAudio && audioDuration
+                    ? formatTime(audioDuration)
+                    : episode.duration}
+                </span>
+              </div>
             </div>
-            <Button variant="ghost" size="icon" className="hidden rounded-full md:inline-flex" aria-label="Replay 10 seconds" onClick={() => seekTo(hasAudio ? currentTime - 10 : demoProgress - 10)}><SkipBack /></Button>
-            <Button variant="ghost" size="icon" className="hidden rounded-full md:inline-flex" aria-label="Skip 10 seconds" onClick={() => seekTo(hasAudio ? currentTime + 10 : demoProgress + 10)}><SkipForward /></Button>
-            <Button variant="outline" className="hidden rounded-full sm:inline-flex" onClick={cycleSpeed}>{speed}×</Button>
-            <Button variant={complete ? 'secondary' : 'outline'} className="hidden rounded-full lg:inline-flex" onClick={() => setComplete((current) => !current)}>{complete ? <Check /> : <CheckCircle2 />}{complete ? 'Completed' : 'Mark complete'}</Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="hidden rounded-full md:inline-flex"
+              aria-label={copy.episode.replayTen}
+              onClick={() =>
+                seekTo(hasAudio ? currentTime - 10 : demoProgress - 10)
+              }
+            >
+              <SkipBack />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="hidden rounded-full md:inline-flex"
+              aria-label={copy.episode.skipTen}
+              onClick={() =>
+                seekTo(hasAudio ? currentTime + 10 : demoProgress + 10)
+              }
+            >
+              <SkipForward />
+            </Button>
+            <Button
+              variant="outline"
+              className="hidden rounded-full sm:inline-flex"
+              onClick={cycleSpeed}
+            >
+              {speed}×
+            </Button>
+            <Button
+              variant={complete ? 'secondary' : 'outline'}
+              className="hidden rounded-full lg:inline-flex"
+              onClick={() => setComplete((current) => !current)}
+            >
+              {complete ? <Check /> : <CheckCircle2 />}
+              {complete ? copy.episode.completed : copy.episode.markComplete}
+            </Button>
           </div>
-          <div className="mt-4 flex items-center justify-between border-t border-border/70 pt-4 sm:hidden"><button className="text-xs font-semibold" onClick={cycleSpeed} type="button">Speed {speed}×</button><button className="flex items-center gap-1.5 text-xs font-semibold" onClick={() => setComplete((current) => !current)} type="button">{complete && <Check className="size-3.5" />}{complete ? 'Completed' : 'Mark complete'}</button></div>
-          {hasAudio && <p className="mt-4 border-t border-border/70 pt-4 text-xs text-muted-foreground">Your listening position, saved words, and quiz answers stay on this device.</p>}
+          <div className="mt-4 flex items-center justify-between border-t border-border/70 pt-4 sm:hidden">
+            <button
+              className="text-xs font-semibold"
+              onClick={cycleSpeed}
+              type="button"
+            >
+              {copy.episode.speed} {speed}×
+            </button>
+            <button
+              className="flex items-center gap-1.5 text-xs font-semibold"
+              onClick={() => setComplete((current) => !current)}
+              type="button"
+            >
+              {complete && <Check className="size-3.5" />}
+              {complete ? copy.episode.completed : copy.episode.markComplete}
+            </button>
+          </div>
+          {hasAudio && (
+            <p className="mt-4 border-t border-border/70 pt-4 text-xs text-muted-foreground">
+              {copy.episode.deviceStorage}
+            </p>
+          )}
         </section>
 
         <Tabs defaultValue="transcript" className="mt-8">
-          <TabsList variant="line" className="h-auto w-full justify-start gap-7 border-b border-border p-0 sm:gap-10">
-            <TabsTrigger value="transcript" className="h-auto flex-none px-0 pb-4">Transcript</TabsTrigger>
-            {episode.vocabulary.length > 0 && <TabsTrigger value="vocabulary" className="h-auto flex-none px-0 pb-4">Vocabulary <span className="rounded-full bg-secondary px-2 py-0.5 text-[10px]">{episode.vocabulary.length}</span></TabsTrigger>}
-            {episode.questions.length > 0 && <TabsTrigger value="practice" className="h-auto flex-none px-0 pb-4">Practice</TabsTrigger>}
+          <TabsList
+            variant="line"
+            className="h-auto w-full justify-start gap-7 border-b border-border p-0 sm:gap-10"
+          >
+            <TabsTrigger
+              value="transcript"
+              className="h-auto flex-none px-0 pb-4"
+            >
+              {copy.episode.transcript}
+            </TabsTrigger>
+            {episode.vocabulary.length > 0 && (
+              <TabsTrigger
+                value="vocabulary"
+                className="h-auto flex-none px-0 pb-4"
+              >
+                {copy.common.vocabulary}{' '}
+                <span className="rounded-full bg-secondary px-2 py-0.5 text-[10px]">
+                  {episode.vocabulary.length}
+                </span>
+              </TabsTrigger>
+            )}
+            {episode.questions.length > 0 && (
+              <TabsTrigger
+                value="practice"
+                className="h-auto flex-none px-0 pb-4"
+              >
+                {copy.episode.practice}
+              </TabsTrigger>
+            )}
           </TabsList>
 
-          <TabsContent value="transcript" className="grid gap-8 py-8 lg:grid-cols-[minmax(0,1fr)_300px]">
+          <TabsContent
+            value="transcript"
+            className="grid gap-8 py-8 lg:grid-cols-[minmax(0,1fr)_300px]"
+          >
             <div className="rounded-[24px] border border-border bg-card px-5 py-2 sm:px-8">
               {hasTranslations && (
                 <div className="flex items-center justify-end border-b border-border/70 py-3">
                   <div className="flex items-center gap-3">
-                    {episode.overlayVerified === false && <AutoTranslated />}
-                    <button type="button" onClick={() => setShowTranslation((value) => !value)} aria-pressed={showTranslation} className="rounded-full border border-border px-3 py-1.5 text-xs font-semibold text-muted-foreground transition hover:text-foreground">
-                      {showTranslation ? 'Hide translation' : 'Show translation'}
+                    {episode.overlayVerified === false && (
+                      <AutoTranslated language={pair.speaks} />
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => setShowTranslation((value) => !value)}
+                      aria-pressed={showTranslation}
+                      className="rounded-full border border-border px-3 py-1.5 text-xs font-semibold text-muted-foreground transition hover:text-foreground"
+                    >
+                      {showTranslation
+                        ? copy.episode.hideTranslation
+                        : copy.episode.showTranslation}
                     </button>
                   </div>
                 </div>
               )}
               {episode.transcript.map((line, index) => (
-                <button key={`${line.time}-${index}`} type="button" onClick={() => seekTo(hasAudio ? (line.seconds ?? 0) : Math.min(95, 8 + index * 18))} className={`group -mx-2 grid w-[calc(100%+1rem)] grid-cols-[58px_1fr] rounded-xl border-b border-border/70 px-2 py-5 text-left transition last:border-0 sm:grid-cols-[74px_1fr] ${hasAudio && activeTranscriptIndex === index ? 'bg-secondary/75' : 'hover:bg-secondary/40'}`}>
-                  <span className="pt-1 text-xs font-semibold text-primary">{line.time}</span>
-                  <span className="text-base leading-7 transition group-hover:text-primary sm:text-lg sm:leading-8">{line.speaker && <strong className="mr-2 text-sm">{line.speaker}</strong>}<TranscriptLine text={line.text} highlight={line.highlight} />{showTranslation && line.translation && <span className="mt-1 block text-sm leading-6 text-muted-foreground">{line.translation}</span>}</span>
+                <button
+                  key={`${line.time}-${index}`}
+                  type="button"
+                  onClick={() =>
+                    seekTo(
+                      hasAudio
+                        ? (line.seconds ?? 0)
+                        : Math.min(95, 8 + index * 18),
+                    )
+                  }
+                  className={`group -mx-2 grid w-[calc(100%+1rem)] grid-cols-[58px_1fr] rounded-xl border-b border-border/70 px-2 py-5 text-left transition last:border-0 sm:grid-cols-[74px_1fr] ${hasAudio && activeTranscriptIndex === index ? 'bg-secondary/75' : 'hover:bg-secondary/40'}`}
+                >
+                  <span className="pt-1 text-xs font-semibold text-primary">
+                    {line.time}
+                  </span>
+                  <span className="text-base leading-7 transition group-hover:text-primary sm:text-lg sm:leading-8">
+                    {line.speaker && (
+                      <strong className="mr-2 text-sm">{line.speaker}</strong>
+                    )}
+                    <TranscriptLine
+                      text={line.text}
+                      highlight={line.highlight}
+                    />
+                    {showTranslation && line.translation && (
+                      <span className="mt-1 block text-sm leading-6 text-muted-foreground">
+                        {line.translation}
+                      </span>
+                    )}
+                  </span>
                 </button>
               ))}
             </div>
             <aside className="space-y-4 lg:sticky lg:top-6 lg:self-start">
-              <div className="rounded-[22px] bg-secondary/60 p-5"><p className="text-xs font-semibold uppercase tracking-[0.12em] text-primary">Learning focus</p><h3 className="mt-2 font-serif text-2xl">{episode.learningGoal}</h3><p className="mt-3 text-sm leading-6 text-muted-foreground">Don&apos;t stop at every unfamiliar word. First listen for the speaker&apos;s main idea, then replay each section.</p></div>
-              <div className="rounded-[22px] border border-border bg-card p-5"><div className="flex items-center gap-2"><Volume2 className="size-4 text-primary" /><h3 className="font-semibold">Listening tip</h3></div><p className="mt-2 text-sm leading-6 text-muted-foreground">Tap any transcript line to jump to that part of the episode. The current line follows the audio.</p></div>
+              <div className="rounded-[22px] bg-secondary/60 p-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-primary">
+                  {copy.episode.learningFocus}
+                </p>
+                <h3 className="mt-2 font-serif text-2xl">
+                  {episode.learningGoal}
+                </h3>
+                <p className="mt-3 text-sm leading-6 text-muted-foreground">
+                  {copy.episode.focusAdvice}
+                </p>
+              </div>
+              <div className="rounded-[22px] border border-border bg-card p-5">
+                <div className="flex items-center gap-2">
+                  <Volume2 className="size-4 text-primary" />
+                  <h3 className="font-semibold">{copy.episode.listeningTip}</h3>
+                </div>
+                <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                  {copy.episode.listeningTipBody}
+                </p>
+              </div>
             </aside>
           </TabsContent>
 
           <TabsContent value="vocabulary" className="py-8">
-            <div className="mb-6 flex flex-col justify-between gap-3 sm:flex-row sm:items-end"><div><p className="text-xs font-semibold uppercase tracking-[0.12em] text-primary">From this episode</p><h3 className="mt-1 font-serif text-3xl tracking-[-0.035em]">Words worth keeping</h3></div><p className="text-sm text-muted-foreground">{savedWords.length} saved to your word list</p></div>
+            <div className="mb-6 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-primary">
+                  {copy.episode.fromEpisode}
+                </p>
+                <h3 className="mt-1 font-serif text-3xl tracking-[-0.035em]">
+                  {copy.episode.wordsWorthKeeping}
+                </h3>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                {copy.episode.savedToWordList(savedWords.length)}
+              </p>
+            </div>
             <div className="grid gap-4 md:grid-cols-2">
               {episode.vocabulary.map((word) => {
-                const isSaved = savedWords.some((item) => item.term === word.term);
+                const isSaved = savedWords.some(
+                  (item) => item.term === word.term,
+                );
                 const heard = word.occurrence;
                 return (
-                  <article key={word.term} className="rounded-[22px] border border-border bg-card p-5 sm:p-6">
+                  <article
+                    key={word.term}
+                    className="rounded-[22px] border border-border bg-card p-5 sm:p-6"
+                  >
                     <div className="flex items-start justify-between gap-4">
                       <div>
-                        <div className="flex items-baseline gap-2"><h4 className="font-serif text-2xl">{word.term}</h4><span className="text-xs italic text-muted-foreground">{word.type}</span></div>
+                        <div className="flex items-baseline gap-2">
+                          <h4 className="font-serif text-2xl">{word.term}</h4>
+                          <span className="text-xs italic text-muted-foreground">
+                            {word.type}
+                          </span>
+                        </div>
                         <p className="mt-3 text-sm leading-6">{word.meaning}</p>
                       </div>
                       <Button
                         variant={isSaved ? 'secondary' : 'outline'}
                         size="icon"
                         className="rounded-full"
-                        aria-label={`${isSaved ? 'Remove' : 'Save'} ${word.term}`}
-                        onClick={() => setSavedWords((current) => (isSaved ? current.filter((item) => item.term !== word.term) : [...current, createSavedWord(pair, episode.id, word)]))}
+                        aria-label={
+                          isSaved
+                            ? copy.episode.removeWord(word.term)
+                            : copy.episode.saveWord(word.term)
+                        }
+                        onClick={() =>
+                          setSavedWords((current) =>
+                            isSaved
+                              ? current.filter(
+                                  (item) => item.term !== word.term,
+                                )
+                              : [
+                                  ...current,
+                                  createSavedWord(pair, episode.id, word),
+                                ],
+                          )
+                        }
                       >
                         {isSaved ? <Check /> : <Bookmark />}
                       </Button>
@@ -357,17 +722,28 @@ export function EpisodeLearning({ episode, pair }: { episode: EpisodeDetail; pai
                         authored example and say so, rather than passing the example
                         off as something the learner will hear. The fallback claims
                         only that the search failed, not that the word is absent. */}
-                    <p className="mt-5 border-l-2 border-primary/40 pl-3 text-sm italic leading-6 text-muted-foreground">“{heard?.sentence ?? word.example}”</p>
+                    <p className="mt-5 border-l-2 border-primary/40 pl-3 text-sm italic leading-6 text-muted-foreground">
+                      “{heard?.sentence ?? word.example}”
+                    </p>
                     <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[11px] text-muted-foreground">
                       {heard ? (
                         <>
-                          {heard.speaker && <span className="font-semibold text-foreground">{heard.speaker}</span>}
-                          <button type="button" onClick={() => seekTo(heard.seconds)} className="flex items-center gap-1 rounded-full bg-secondary px-2.5 py-1 font-semibold transition hover:bg-secondary/70">
-                            <Play className="size-3 fill-current" />Hear it at {formatTime(heard.seconds)}
+                          {heard.speaker && (
+                            <span className="font-semibold text-foreground">
+                              {heard.speaker}
+                            </span>
+                          )}
+                          <button
+                            type="button"
+                            onClick={() => seekTo(heard.seconds)}
+                            className="flex items-center gap-1 rounded-full bg-secondary px-2.5 py-1 font-semibold transition hover:bg-secondary/70"
+                          >
+                            <Play className="size-3 fill-current" />
+                            {copy.episode.hearAt(formatTime(heard.seconds))}
                           </button>
                         </>
                       ) : (
-                        <span>Example sentence — we couldn’t locate this word in the transcript.</span>
+                        <span>{copy.episode.exampleNotLocated}</span>
                       )}
                     </div>
                   </article>
@@ -378,28 +754,133 @@ export function EpisodeLearning({ episode, pair }: { episode: EpisodeDetail; pai
 
           <TabsContent value="practice" className="py-8">
             <div className="mx-auto max-w-3xl">
-              <div className="mb-7 rounded-[22px] bg-foreground p-6 text-background sm:p-8"><div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-background/60"><Sparkles className="size-4" />Quick check</div><h3 className="mt-3 font-serif text-3xl tracking-[-0.035em]">What did you understand?</h3><p className="mt-2 text-sm leading-6 text-background/65">Choose one answer for each question. You can retry as many times as you like.</p></div>
+              <div className="mb-7 rounded-[22px] bg-foreground p-6 text-background sm:p-8">
+                <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-background/60">
+                  <Sparkles className="size-4" />
+                  {copy.episode.quickCheck}
+                </div>
+                <h3 className="mt-3 font-serif text-3xl tracking-[-0.035em]">
+                  {copy.episode.understoodHeading}
+                </h3>
+                <p className="mt-2 text-sm leading-6 text-background/65">
+                  {copy.episode.practiceBody}
+                </p>
+              </div>
               <div className="space-y-5">
                 {episode.questions.map((question, questionIndex) => (
-                  <fieldset key={question.prompt} className="rounded-[22px] border border-border bg-card p-5 sm:p-6">
-                    <legend className="px-1 font-semibold"><span className="mr-2 text-primary">{questionIndex + 1}.</span>{question.prompt}</legend>
+                  <fieldset
+                    key={question.prompt}
+                    className="rounded-[22px] border border-border bg-card p-5 sm:p-6"
+                  >
+                    <legend className="px-1 font-semibold">
+                      <span className="mr-2 text-primary">
+                        {questionIndex + 1}.
+                      </span>
+                      {question.prompt}
+                    </legend>
                     <div className="mt-5 grid gap-2">
                       {question.options.map((option, optionIndex) => {
                         const selected = answers[questionIndex] === optionIndex;
-                        const correct = checked && optionIndex === question.answer;
-                        const wrong = checked && selected && optionIndex !== question.answer;
-                        return <button key={option} type="button" onClick={() => { setAnswers((current) => ({ ...current, [questionIndex]: optionIndex })); setChecked(false); }} className={`flex items-center gap-3 rounded-xl border px-4 py-3 text-left text-sm transition ${correct ? 'border-[#76a58c] bg-[#e4f0e9]' : wrong ? 'border-[#d47b68] bg-[#f8e7e2]' : selected ? 'border-foreground bg-secondary' : 'border-border hover:bg-secondary/55'}`}><span className={`grid size-6 shrink-0 place-items-center rounded-full border text-xs font-semibold ${selected || correct ? 'border-foreground bg-foreground text-background' : 'border-border'}`}>{String.fromCharCode(65 + optionIndex)}</span>{option}{correct && <Check className="ml-auto size-4" />}</button>;
+                        const correct =
+                          checked && optionIndex === question.answer;
+                        const wrong =
+                          checked &&
+                          selected &&
+                          optionIndex !== question.answer;
+                        return (
+                          <button
+                            key={option}
+                            type="button"
+                            onClick={() => {
+                              setAnswers((current) => ({
+                                ...current,
+                                [questionIndex]: optionIndex,
+                              }));
+                              setChecked(false);
+                            }}
+                            className={`flex items-center gap-3 rounded-xl border px-4 py-3 text-left text-sm transition ${correct ? 'border-[#76a58c] bg-[#e4f0e9]' : wrong ? 'border-[#d47b68] bg-[#f8e7e2]' : selected ? 'border-foreground bg-secondary' : 'border-border hover:bg-secondary/55'}`}
+                          >
+                            <span
+                              className={`grid size-6 shrink-0 place-items-center rounded-full border text-xs font-semibold ${selected || correct ? 'border-foreground bg-foreground text-background' : 'border-border'}`}
+                            >
+                              {String.fromCharCode(65 + optionIndex)}
+                            </span>
+                            {option}
+                            {correct && <Check className="ml-auto size-4" />}
+                          </button>
+                        );
                       })}
                     </div>
                   </fieldset>
                 ))}
               </div>
-              {checked ? <div className="mt-5 flex items-center justify-between rounded-[18px] bg-secondary p-4"><div className="flex items-center gap-3"><span className="grid size-9 place-items-center rounded-full bg-primary text-primary-foreground"><Lightbulb className="size-4" /></span><p className="text-sm font-semibold">You got {correctCount} of {episode.questions.length} correct.</p></div><Button variant="ghost" className="rounded-full" onClick={() => { setAnswers({}); setChecked(false); }}><RotateCcw />Try again</Button></div> : <Button className="mt-5 h-11 rounded-full px-6" disabled={Object.keys(answers).length !== episode.questions.length} onClick={() => setChecked(true)}>Check answers<CheckCircle2 /></Button>}
+              {checked ? (
+                <div className="mt-5 flex items-center justify-between rounded-[18px] bg-secondary p-4">
+                  <div className="flex items-center gap-3">
+                    <span className="grid size-9 place-items-center rounded-full bg-primary text-primary-foreground">
+                      <Lightbulb className="size-4" />
+                    </span>
+                    <p className="text-sm font-semibold">
+                      {copy.episode.score(
+                        correctCount,
+                        episode.questions.length,
+                      )}
+                    </p>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    className="rounded-full"
+                    onClick={() => {
+                      setAnswers({});
+                      setChecked(false);
+                    }}
+                  >
+                    <RotateCcw />
+                    {copy.episode.tryAgain}
+                  </Button>
+                </div>
+              ) : (
+                <Button
+                  className="mt-5 h-11 rounded-full px-6"
+                  disabled={
+                    Object.keys(answers).length !== episode.questions.length
+                  }
+                  onClick={() => setChecked(true)}
+                >
+                  {copy.episode.checkAnswers}
+                  <CheckCircle2 />
+                </Button>
+              )}
             </div>
           </TabsContent>
         </Tabs>
 
-        <section className="mt-12 flex flex-col items-start justify-between gap-5 rounded-[26px] bg-secondary/60 p-6 sm:flex-row sm:items-center sm:p-8"><div><p className="text-xs font-semibold uppercase tracking-[0.12em] text-primary">Keep learning</p><h3 className="mt-2 font-serif text-3xl">Ready for another episode?</h3></div><div className="flex gap-2"><Link className="grid size-11 place-items-center rounded-full border border-border bg-card" href={`${home}/episode/${episode.previousId}`} aria-label="Previous lesson"><ChevronLeft /></Link><Link className="flex h-11 items-center gap-2 rounded-full bg-foreground px-5 text-sm font-semibold text-background" href={`${home}/episode/${episode.nextId}`}>Next lesson<ChevronRight className="size-4" /></Link></div></section>
+        <section className="mt-12 flex flex-col items-start justify-between gap-5 rounded-[26px] bg-secondary/60 p-6 sm:flex-row sm:items-center sm:p-8">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-primary">
+              {copy.episode.keepLearning}
+            </p>
+            <h3 className="mt-2 font-serif text-3xl">
+              {copy.episode.anotherEpisode}
+            </h3>
+          </div>
+          <div className="flex gap-2">
+            <Link
+              className="grid size-11 place-items-center rounded-full border border-border bg-card"
+              href={`${home}/episode/${episode.previousId}`}
+              aria-label={copy.episode.previousLesson}
+            >
+              <ChevronLeft />
+            </Link>
+            <Link
+              className="flex h-11 items-center gap-2 rounded-full bg-foreground px-5 text-sm font-semibold text-background"
+              href={`${home}/episode/${episode.nextId}`}
+            >
+              {copy.episode.nextLesson}
+              <ChevronRight className="size-4" />
+            </Link>
+          </div>
+        </section>
       </div>
     </main>
   );

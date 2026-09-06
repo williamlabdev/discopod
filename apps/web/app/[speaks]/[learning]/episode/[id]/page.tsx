@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 
 import { pairFromParams, type PairParams } from '../../pair';
 import { loadEpisodeDetail, loadEpisodeIds, loadPairs } from '@/lib/catalogue';
+import { interfaceCopy } from '@/lib/interface-copy';
 import { LANGUAGE_NAMES } from '@/lib/language';
 import { EpisodeLearning } from './episode-learning';
 
@@ -24,23 +25,34 @@ export async function generateStaticParams() {
   const perPair = await Promise.all(
     pairs.map(async (pair) => {
       const ids = await loadEpisodeIds(pair);
-      return ids.map((id) => ({ speaks: pair.speaks, learning: pair.learning, id }));
+      return ids.map((id) => ({
+        speaks: pair.speaks,
+        learning: pair.learning,
+        id,
+      }));
     }),
   );
   return perPair.flat();
 }
 
-export async function generateMetadata({ params }: EpisodePageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: EpisodePageProps): Promise<Metadata> {
   const pair = await pairFromParams(params);
   const { id } = await params;
+  const copy = interfaceCopy(pair.speaks);
   const episode = await loadEpisodeDetail(pair, id);
-  if (!episode) return { title: 'Lesson not found — DiscoPod' };
+  if (!episode) return { title: copy.metadata.lessonNotFound };
 
   // The taught language is the pair's, not a constant. This said "English"
   // unconditionally, which would have put an English label on a Mandarin lesson
   // the moment the catalogue had one — in the page title, which is the one piece
   // of copy that follows the link out of the app.
-  const title = `${episode.episodeTitle} — ${episode.level} ${LANGUAGE_NAMES[pair.learning]} lesson`;
+  const title = copy.metadata.lessonTitle(
+    episode.episodeTitle,
+    copy.common.level[episode.level].label,
+    LANGUAGE_NAMES[pair.learning],
+  );
   const description = `${episode.showTitle}: ${episode.learningGoal}`;
   return {
     title,

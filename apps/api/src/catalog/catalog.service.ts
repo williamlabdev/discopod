@@ -50,6 +50,29 @@ const pairOrDefault = (pair?: Partial<LanguagePair>): LanguagePair => ({
   learning: pair?.learning ?? DEFAULT_PAIR.learning,
 });
 
+type ScoredEpisode = Omit<RankedEpisode, 'episode'> & { episode: Episode };
+
+function toRankedEpisode({ episode, suitability, reason }: ScoredEpisode): RankedEpisode {
+  return {
+    episode: {
+      id: episode.id,
+      showId: episode.showId,
+      title: episode.title,
+      description: episode.description,
+      durationSeconds: episode.durationSeconds,
+      publisherTranscript: episode.publisherTranscript,
+      profile: episode.profile,
+      transcriptLanguage: episode.transcriptLanguage,
+      vocabulary: episode.vocabulary,
+      ratedBy: episode.ratedBy,
+      overlayVerified: episode.overlayVerified,
+      authoredBy: episode.authoredBy,
+    },
+    suitability,
+    reason,
+  };
+}
+
 @Injectable()
 export class CatalogService {
   constructor(private readonly repository: CatalogRepository) {}
@@ -173,8 +196,8 @@ export class CatalogService {
 
     const ranked = filtered.map((episode) => this.rank(episode, level, speaks));
 
-    if (query.sort === 'recent') return ranked;
-    return ranked.sort((a, b) => b.suitability - a.suitability);
+    if (query.sort === 'recent') return ranked.map(toRankedEpisode);
+    return ranked.sort((a, b) => b.suitability - a.suitability).map(toRankedEpisode);
   }
 
   /**
@@ -202,7 +225,8 @@ export class CatalogService {
       .map((episode) => this.rank(episode, level, speaks))
       .sort((a, b) => b.suitability - a.suitability);
 
-    return ranked.find((item) => item.episode.profile.level === level) ?? ranked[0];
+    const first = ranked.find((item) => item.episode.profile.level === level) ?? ranked[0];
+    return toRankedEpisode(first);
   }
 
   /**
@@ -213,7 +237,7 @@ export class CatalogService {
    * actually get before quitting) needs listening data we do not have yet, and
    * is deliberately absent rather than faked.
    */
-  private rank(episode: Episode, level: LearningLevel, speaks: LanguageTag): RankedEpisode {
+  private rank(episode: Episode, level: LearningLevel, speaks: LanguageTag): ScoredEpisode {
     const { profile } = episode;
     // speaksTo already refused any episode whose unit has no thresholds, so
     // this cannot be undefined for an episode that reached the ranking.

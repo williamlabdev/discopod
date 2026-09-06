@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 
 import { pairFromParams, type PairParams } from '../pair';
 import { loadEpisodeDetail, loadEpisodeIds, loadPairs } from '@/lib/catalogue';
+import { interfaceCopy } from '@/lib/interface-copy';
 import { LANGUAGE_NAMES } from '@/lib/language';
 import { VocabularyList, type EpisodeVocabulary } from './vocabulary-list';
 
@@ -17,20 +18,34 @@ import { VocabularyList, type EpisodeVocabulary } from './vocabulary-list';
  */
 export async function generateStaticParams() {
   const pairs = await loadPairs();
-  return pairs.map((pair) => ({ speaks: pair.speaks, learning: pair.learning }));
+  return pairs.map((pair) => ({
+    speaks: pair.speaks,
+    learning: pair.learning,
+  }));
 }
 
-export async function generateMetadata({ params }: { params: PairParams }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: PairParams;
+}): Promise<Metadata> {
   const pair = await pairFromParams(params);
-  const title = `Vocabulary — ${LANGUAGE_NAMES[pair.learning]} on DiscoPod`;
-  const description = 'Every word you saved, with the sentence it was said in.';
+  const copy = interfaceCopy(pair.speaks).metadata;
+  const title = copy.wordsTitle(LANGUAGE_NAMES[pair.learning]);
+  const description = copy.wordsDescription;
   return { title, description, openGraph: { title, description, images: [] } };
 }
 
-export default async function VocabularyPage({ params }: { params: PairParams }) {
+export default async function VocabularyPage({
+  params,
+}: {
+  params: PairParams;
+}) {
   const pair = await pairFromParams(params);
   const ids = await loadEpisodeIds(pair);
-  const details = await Promise.all(ids.map((id) => loadEpisodeDetail(pair, id)));
+  const details = await Promise.all(
+    ids.map((id) => loadEpisodeDetail(pair, id)),
+  );
 
   const episodes: EpisodeVocabulary[] = details.flatMap((episode) =>
     episode

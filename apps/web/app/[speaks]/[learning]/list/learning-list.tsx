@@ -2,12 +2,22 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
-import { AudioLines, BookOpenText, Check, Clock3, Play, RotateCcw, Sparkles, X } from 'lucide-react';
+import {
+  AudioLines,
+  BookOpenText,
+  Check,
+  Clock3,
+  Play,
+  RotateCcw,
+  Sparkles,
+  X,
+} from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { AutoTranslated } from '../auto-translated';
 import type { EpisodeCard } from '@/lib/catalogue';
-import { pairPath, type LanguagePair } from '@/lib/language';
+import { interfaceCopy } from '@/lib/interface-copy';
+import { pairPath, type LanguagePair, type LanguageTag } from '@/lib/language';
 import {
   formatPosition,
   readAllProgress,
@@ -77,8 +87,15 @@ const SAMPLE_STATE = [
   { currentTime: 0, complete: true, savedWords: 7, answeredCount: 3 },
 ];
 
-export function LearningList({ cards, pair }: { cards: EpisodeCard[]; pair: LanguagePair }) {
+export function LearningList({
+  cards,
+  pair,
+}: {
+  cards: EpisodeCard[];
+  pair: LanguagePair;
+}) {
   const home = pairPath(pair);
+  const copy = interfaceCopy(pair.speaks);
 
   // Null until the device has been read. Rendering `[]` would let the page say
   // "nothing saved yet" for a frame to a learner who has twelve episodes saved.
@@ -92,16 +109,25 @@ export function LearningList({ cards, pair }: { cards: EpisodeCard[]; pair: Lang
   useEffect(() => {
     queueMicrotask(() => {
       setSavedIds(readList(pair));
-      setProgress(readAllProgress(pair, cards.map((card) => ({ id: card.id }))));
+      setProgress(
+        readAllProgress(
+          pair,
+          cards.map((card) => ({ id: card.id })),
+        ),
+      );
     });
   }, [cards, pair]);
 
   const entries = useMemo((): Entry[] => {
     if (savedIds === null) return [];
-    const progressById = new Map(progress.map((item) => [item.episodeId, item]));
+    const progressById = new Map(
+      progress.map((item) => [item.episodeId, item]),
+    );
     return cards
       .filter(
-        (card) => savedIds.includes(card.id) || hasPosition(progressById.get(card.id) ?? null),
+        (card) =>
+          savedIds.includes(card.id) ||
+          hasPosition(progressById.get(card.id) ?? null),
       )
       .map((card) => ({
         card,
@@ -118,18 +144,19 @@ export function LearningList({ cards, pair }: { cards: EpisodeCard[]; pair: Lang
       const state = SAMPLE_STATE[index];
       return {
         card,
-        progress: state.savedWords === 0 && !state.complete && state.currentTime === 0
-          ? null
-          : {
-              episodeId: card.id,
-              currentTime: state.currentTime,
-              complete: state.complete,
-              // Counted, never listed: the vocabulary list must not show a word
-              // this learner has not saved, so the sample stops at a number.
-              savedWords: [],
-              answeredCount: state.answeredCount,
-              checked: state.complete,
-            },
+        progress:
+          state.savedWords === 0 && !state.complete && state.currentTime === 0
+            ? null
+            : {
+                episodeId: card.id,
+                currentTime: state.currentTime,
+                complete: state.complete,
+                // Counted, never listed: the vocabulary list must not show a word
+                // this learner has not saved, so the sample stops at a number.
+                savedWords: [],
+                answeredCount: state.answeredCount,
+                checked: state.complete,
+              },
         onList: true,
       };
     });
@@ -174,7 +201,9 @@ export function LearningList({ cards, pair }: { cards: EpisodeCard[]; pair: Lang
       writeListeningPosition(pair, id, { currentTime: 0, complete: false });
       setProgress((current) =>
         current.map((item) =>
-          item.episodeId === id ? { ...item, currentTime: 0, complete: false } : item,
+          item.episodeId === id
+            ? { ...item, currentTime: 0, complete: false }
+            : item,
         ),
       );
     }
@@ -184,7 +213,9 @@ export function LearningList({ cards, pair }: { cards: EpisodeCard[]; pair: Lang
     if (!undo) return;
     if (undo.wasOnList) {
       setSavedIds((current) => {
-        const next = current?.includes(undo.id) ? current : [...(current ?? []), undo.id];
+        const next = current?.includes(undo.id)
+          ? current
+          : [...(current ?? []), undo.id];
         writeList(pair, next);
         return next;
       });
@@ -197,7 +228,11 @@ export function LearningList({ cards, pair }: { cards: EpisodeCard[]; pair: Lang
       setProgress((current) =>
         current.map((item) =>
           item.episodeId === undo.id
-            ? { ...item, currentTime: undo.currentTime, complete: undo.complete }
+            ? {
+                ...item,
+                currentTime: undo.currentTime,
+                complete: undo.complete,
+              }
             : item,
         ),
       );
@@ -212,29 +247,34 @@ export function LearningList({ cards, pair }: { cards: EpisodeCard[]; pair: Lang
           active="list"
           listCount={savedIds === null ? null : savedIds.length}
           pair={pair}
-          wordCount={savedIds === null ? null : progress.reduce((total, item) => total + item.savedWords.length, 0)}
+          wordCount={
+            savedIds === null
+              ? null
+              : progress.reduce(
+                  (total, item) => total + item.savedWords.length,
+                  0,
+                )
+          }
         />
 
         <header className="pb-10 pt-12">
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-            Your learning list
+            {copy.list.eyebrow}
           </p>
           <h1 className="mt-3 max-w-2xl font-serif text-4xl leading-[1.05] tracking-[-0.045em] sm:text-5xl">
-            Where you left off.
+            {copy.list.heading}
           </h1>
           <p className="mt-4 max-w-xl text-sm leading-6 text-muted-foreground">
-            Everything here is stored on this device only, under {pair.speaks} → {pair.learning}.
-            Nothing is uploaded, and clearing your browser data clears this list.
+            {copy.list.deviceOnly(`${pair.speaks} → ${pair.learning}`)}
           </p>
         </header>
 
-        {isSample && <SampleNotice />}
+        {isSample && <SampleNotice copy={copy} />}
 
         {undo && (
           <div className="mb-8 flex flex-col gap-3 rounded-[18px] border border-border bg-secondary/40 p-4 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-sm text-muted-foreground">
-              Removed <span className="font-medium text-foreground">{undo.title}</span>. Any words
-              you saved from it are still in your word list.
+              {copy.list.removed(undo.title)} {copy.list.wordsRemain}
             </p>
             <Button
               className="shrink-0 rounded-full"
@@ -243,44 +283,52 @@ export function LearningList({ cards, pair }: { cards: EpisodeCard[]; pair: Lang
               variant="outline"
             >
               <RotateCcw className="size-4" />
-              Undo
+              {copy.list.undo}
             </Button>
           </div>
         )}
 
         {savedIds === null ? (
-          <p className="py-10 text-sm text-muted-foreground">Reading this device…</p>
+          <p className="py-10 text-sm text-muted-foreground">
+            {copy.common.readingDevice}
+          </p>
         ) : (
           <div className="space-y-12">
             <Section
+              copy={copy}
               cards={inProgress}
               home={home}
+              language={pair.speaks}
               onRemove={remove}
               readOnly={isSample}
               sampleWords={isSample ? sampleWords : null}
               shown={shown}
-              subtitle="Picked up where the audio stopped, not where a percentage says you are."
-              title="Continue listening"
+              subtitle={copy.list.continueBody}
+              title={copy.list.continueTitle}
             />
             <Section
+              copy={copy}
               cards={notStarted}
               home={home}
+              language={pair.speaks}
               onRemove={remove}
               readOnly={isSample}
               sampleWords={isSample ? sampleWords : null}
               shown={shown}
-              subtitle="Saved from discover, not opened yet."
-              title="Saved for later"
+              subtitle={copy.list.savedBody}
+              title={copy.list.savedTitle}
             />
             <Section
+              copy={copy}
               cards={finished}
               home={home}
+              language={pair.speaks}
               onRemove={remove}
               readOnly={isSample}
               sampleWords={isSample ? sampleWords : null}
               shown={shown}
-              subtitle="Listened to the end. Worth a second pass without the transcript."
-              title="Finished"
+              subtitle={copy.list.finishedBody}
+              title={copy.list.finishedTitle}
             />
           </div>
         )}
@@ -290,23 +338,21 @@ export function LearningList({ cards, pair }: { cards: EpisodeCard[]; pair: Lang
           href={home}
         >
           <Sparkles className="size-4" />
-          Find something to add
+          {copy.list.findSomething}
         </Link>
       </div>
     </main>
   );
 }
 
-function SampleNotice() {
+function SampleNotice({ copy }: { copy: ReturnType<typeof interfaceCopy> }) {
   return (
     <div className="rounded-[22px] border border-dashed border-border bg-secondary/40 p-5 sm:p-6">
-      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-primary">Sample list</p>
+      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-primary">
+        {copy.list.sampleTitle}
+      </p>
       <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
-        You have not saved anything yet, so this is a made-up list showing what the page does. The
-        episodes are real and the links work; the positions and the saved-word counts are invented,
-        and none of it has been written to this device — which is also why these rows have no remove
-        button, as there is nothing here to remove. Save an episode on discover and it replaces this
-        immediately.
+        {copy.list.sampleBody}
       </p>
     </div>
   );
@@ -314,7 +360,9 @@ function SampleNotice() {
 
 function Section({
   cards,
+  copy,
   home,
+  language,
   onRemove,
   readOnly,
   sampleWords,
@@ -323,7 +371,9 @@ function Section({
   title,
 }: {
   cards: Entry[];
+  copy: ReturnType<typeof interfaceCopy>;
   home: string;
+  language: LanguageTag;
   onRemove: (entry: Entry) => void;
   readOnly: boolean;
   sampleWords: ((index: number) => number) | null;
@@ -336,19 +386,25 @@ function Section({
     <section>
       <div className="flex items-baseline justify-between gap-4 border-b border-border/70 pb-3">
         <h2 className="font-serif text-2xl tracking-[-0.03em]">{title}</h2>
-        <span className="shrink-0 text-xs text-muted-foreground">{cards.length}</span>
+        <span className="shrink-0 text-xs text-muted-foreground">
+          {cards.length}
+        </span>
       </div>
       <p className="mt-2 text-sm text-muted-foreground">{subtitle}</p>
       <ul className="mt-5 space-y-3">
         {cards.map((entry) => (
           <Row
+            copy={copy}
             entry={entry}
+            language={language}
             home={home}
             key={entry.card.id}
             onRemove={onRemove}
             readOnly={readOnly}
             wordCount={
-              sampleWords ? sampleWords(shown.indexOf(entry)) : (entry.progress?.savedWords.length ?? 0)
+              sampleWords
+                ? sampleWords(shown.indexOf(entry))
+                : (entry.progress?.savedWords.length ?? 0)
             }
           />
         ))}
@@ -359,13 +415,17 @@ function Section({
 
 function Row({
   entry,
+  copy,
   home,
+  language,
   onRemove,
   readOnly,
   wordCount,
 }: {
+  copy: ReturnType<typeof interfaceCopy>;
   entry: Entry;
   home: string;
+  language: LanguageTag;
   onRemove: (entry: Entry) => void;
   readOnly: boolean;
   wordCount: number;
@@ -404,7 +464,7 @@ function Row({
           {progress?.complete ? (
             <span className="inline-flex items-center gap-1 text-primary">
               <Check className="size-3.5" />
-              Finished
+              {copy.list.finished}
             </span>
           ) : progress && progress.currentTime > 0 ? (
             /* A position, not a percentage. The catalogue's `duration` is the
@@ -413,23 +473,23 @@ function Row({
                denominator is a confident lie. `00:42` is checkable. */
             <span className="inline-flex items-center gap-1">
               <Play className="size-3.5" />
-              Stopped at {formatPosition(progress.currentTime)}
+              {copy.list.stoppedAt(formatPosition(progress.currentTime))}
             </span>
           ) : progress ? (
             /* Opened, and the audio never moved — which is what saving a word
                off the transcript without pressing play looks like. Reporting
                that as "stopped at 00:00" would be true and useless. */
-            <span>Opened, not played yet</span>
+            <span>{copy.list.openedNotPlayed}</span>
           ) : (
-            <span>Not started</span>
+            <span>{copy.list.notStarted}</span>
           )}
           {wordCount > 0 && (
             <span className="inline-flex items-center gap-1">
               <BookOpenText className="size-3.5" />
-              {wordCount} {wordCount === 1 ? 'word' : 'words'} saved
+              {copy.list.savedWords(wordCount)}
             </span>
           )}
-          {card.autoTranslated && <AutoTranslated />}
+          {card.autoTranslated && <AutoTranslated language={language} />}
         </div>
       </div>
 
@@ -438,7 +498,7 @@ function Row({
           className="inline-flex h-10 items-center gap-2 rounded-full bg-foreground px-4 text-sm font-medium text-background transition hover:bg-foreground/85"
           href={`${home}/episode/${card.id}`}
         >
-          {progress && !progress.complete ? 'Continue' : 'Open'}
+          {progress && !progress.complete ? copy.list.continue : copy.list.open}
         </Link>
         {/* One button, one meaning. A row is here because it was saved, or
             because it was listened to, or both — and a learner clicking X wants
@@ -446,7 +506,7 @@ function Row({
             stated in the undo line, not guessed at from an icon. */}
         {!readOnly && (
           <Button
-            aria-label={`Remove ${card.episodeTitle} from my learning list`}
+            aria-label={copy.list.removeFromList(card.episodeTitle)}
             className="size-10 rounded-full"
             onClick={() => onRemove(entry)}
             size="icon"

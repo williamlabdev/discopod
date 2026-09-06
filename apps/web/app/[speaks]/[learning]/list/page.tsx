@@ -1,7 +1,13 @@
 import type { Metadata } from 'next';
 
 import { pairFromParams, type PairParams } from '../pair';
-import { LEARNING_LEVELS, loadDiscoverCatalogue, loadPairs, type EpisodeCard } from '@/lib/catalogue';
+import {
+  LEARNING_LEVELS,
+  loadDiscoverCatalogue,
+  loadPairs,
+  type EpisodeCard,
+} from '@/lib/catalogue';
+import { interfaceCopy } from '@/lib/interface-copy';
 import { LANGUAGE_NAMES } from '@/lib/language';
 import { LearningList } from './learning-list';
 
@@ -18,17 +24,29 @@ import { LearningList } from './learning-list';
  */
 export async function generateStaticParams() {
   const pairs = await loadPairs();
-  return pairs.map((pair) => ({ speaks: pair.speaks, learning: pair.learning }));
+  return pairs.map((pair) => ({
+    speaks: pair.speaks,
+    learning: pair.learning,
+  }));
 }
 
-export async function generateMetadata({ params }: { params: PairParams }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: PairParams;
+}): Promise<Metadata> {
   const pair = await pairFromParams(params);
-  const title = `My learning list — ${LANGUAGE_NAMES[pair.learning]} on DiscoPod`;
-  const description = 'The episodes you saved, where you stopped, and what you saved from them.';
+  const copy = interfaceCopy(pair.speaks).metadata;
+  const title = copy.listTitle(LANGUAGE_NAMES[pair.learning]);
+  const description = copy.listDescription;
   return { title, description, openGraph: { title, description, images: [] } };
 }
 
-export default async function LearningListPage({ params }: { params: PairParams }) {
+export default async function LearningListPage({
+  params,
+}: {
+  params: PairParams;
+}) {
   const pair = await pairFromParams(params);
   const catalogue = await loadDiscoverCatalogue(pair);
 

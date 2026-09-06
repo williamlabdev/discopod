@@ -26,9 +26,18 @@ import { has, pick, pickOptional, type LanguagePair } from './language';
 
 export { fetchPairs as loadPairs };
 export type { LanguagePair };
-import { formatDuration, formatSpeechRate, formatVoices, paletteFor } from './presentation';
+import {
+  formatDuration,
+  formatSpeechRate,
+  formatVoices,
+  paletteFor,
+} from './presentation';
 
-export const LEARNING_LEVELS: LearningLevel[] = ['Beginner', 'Intermediate', 'Advanced'];
+export const LEARNING_LEVELS: LearningLevel[] = [
+  'Beginner',
+  'Intermediate',
+  'Advanced',
+];
 
 export type { LearningLevel };
 
@@ -127,7 +136,12 @@ export interface VocabularyItem {
   type: string;
   meaning: string;
   example: string;
-  occurrence?: { sentence: string; speaker?: string; timestampMs: number; seconds: number };
+  occurrence?: {
+    sentence: string;
+    speaker?: string;
+    timestampMs: number;
+    seconds: number;
+  };
 }
 
 export interface EpisodeDetail extends EpisodeCard {
@@ -156,7 +170,11 @@ function escapeRegExp(value: string): string {
  * and a dropped silent e ("make"/"making").
  */
 function wordProbe(word: string): string {
-  const stems = new Set([word, word.replace(/y$/i, 'i'), word.replace(/e$/i, '')]);
+  const stems = new Set([
+    word,
+    word.replace(/y$/i, 'i'),
+    word.replace(/e$/i, ''),
+  ]);
   return `(?:${[...stems].map(escapeRegExp).join('|')})`;
 }
 
@@ -224,7 +242,11 @@ function formatCueTime(startMs: number): string {
   return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 }
 
-function toCard(ranked: RankedEpisode, show: Show | undefined, pair: LanguagePair): EpisodeCard {
+function toCard(
+  ranked: RankedEpisode,
+  show: Show | undefined,
+  pair: LanguagePair,
+): EpisodeCard {
   const { episode } = ranked;
   const { tone, ink } = paletteFor(episode.showId);
   const topics = show?.topics ?? [];
@@ -241,19 +263,29 @@ function toCard(ranked: RankedEpisode, show: Show | undefined, pair: LanguagePai
     // to render without one. Present still means "written for this learner's
     // language", which is why it goes through `pick` when it is there.
     description: episode.description
-      ? pick(episode.description, pair.speaks, `Episode ${episode.id} description`)
+      ? pick(
+          episode.description,
+          pair.speaks,
+          `Episode ${episode.id} description`,
+        )
       : undefined,
     level: episode.profile.level,
     cefr: episode.profile.cefr,
     tocfl: episode.profile.tocfl,
     suitability: ranked.suitability,
     fitReason: ranked.reason,
-    levelReason: pick(episode.profile.reason, pair.speaks, `Episode ${episode.id} profile.reason`),
+    levelReason: pick(
+      episode.profile.reason,
+      pair.speaks,
+      `Episode ${episode.id} profile.reason`,
+    ),
     speed: formatSpeechRate(episode.profile.speechRate),
-    voices: formatVoices(episode.profile.speakerCount),
+    voices: formatVoices(episode.profile.speakerCount, pair.speaks),
     speakerCount: episode.profile.speakerCount,
-    duration: formatDuration(episode.durationSeconds),
-    newWords: episode.vocabulary.filter((entry) => has(entry.meaning, pair.speaks)).length,
+    duration: formatDuration(episode.durationSeconds, pair.speaks),
+    newWords: episode.vocabulary.filter((entry) =>
+      has(entry.meaning, pair.speaks),
+    ).length,
     publisherTranscript: episode.publisherTranscript,
     ratedBy: episode.ratedBy,
     overlayVerified: episode.overlayVerified,
@@ -283,7 +315,9 @@ export interface DiscoverCatalogue {
   topics: string[];
 }
 
-export async function loadDiscoverCatalogue(pair: LanguagePair): Promise<DiscoverCatalogue> {
+export async function loadDiscoverCatalogue(
+  pair: LanguagePair,
+): Promise<DiscoverCatalogue> {
   const shows = await showsById();
   const perLevel = await Promise.all(
     LEARNING_LEVELS.map(async (level) => {
@@ -293,23 +327,32 @@ export async function loadDiscoverCatalogue(pair: LanguagePair): Promise<Discove
       ]);
       return [
         level,
-        ranked.map((item) => toCard(item, shows.get(item.episode.showId), pair)),
+        ranked.map((item) =>
+          toCard(item, shows.get(item.episode.showId), pair),
+        ),
         first ? toCard(first, shows.get(first.episode.showId), pair) : null,
       ] as const;
     }),
   );
 
-  const byLevel = Object.fromEntries(perLevel.map(([level, cards]) => [level, cards])) as Record<
-    LearningLevel,
-    EpisodeCard[]
-  >;
+  const byLevel = Object.fromEntries(
+    perLevel.map(([level, cards]) => [level, cards]),
+  ) as Record<LearningLevel, EpisodeCard[]>;
   const startHere = Object.fromEntries(
     perLevel.map(([level, , first]) => [level, first]),
   ) as Record<LearningLevel, EpisodeCard | null>;
 
-  const topics = [...new Set([...shows.values()].map((show) => show.topics[0]).filter(Boolean))];
+  const topics = [
+    ...new Set(
+      [...shows.values()].map((show) => show.topics[0]).filter(Boolean),
+    ),
+  ];
 
-  return { byLevel, startHere, topics: topics.sort((a, b) => a.localeCompare(b)) };
+  return {
+    byLevel,
+    startHere,
+    topics: topics.sort((a, b) => a.localeCompare(b)),
+  };
 }
 
 /**
@@ -337,7 +380,9 @@ export async function loadEpisodeDetail(
   const ranked = await fetchRankedEpisodes(pair, episode.profile.level);
   const entry = ranked.find((item) => item.episode.id === id);
   if (!entry) {
-    throw new Error(`Episode ${id} exists but is absent from the ${episode.profile.level} ranking`);
+    throw new Error(
+      `Episode ${id} exists but is absent from the ${episode.profile.level} ranking`,
+    );
   }
 
   // Neighbours come from the full ordering, not from id arithmetic: ids are
@@ -351,7 +396,11 @@ export async function loadEpisodeDetail(
 
   return {
     ...toCard(entry, show, pair),
-    learningGoal: pick(episode.learningGoal, pair.speaks, `Episode ${id} learningGoal`),
+    learningGoal: pick(
+      episode.learningGoal,
+      pair.speaks,
+      `Episode ${id} learningGoal`,
+    ),
     audioSrc: episode.audioUrl,
     // Episode first, show second. A show's source is right only when every
     // episode under it shares one; `zh-wikipedia-spoken` is three different
@@ -374,13 +423,25 @@ export async function loadEpisodeDetail(
       .map((entry_) => ({
         term: entry_.term,
         type: entry_.partOfSpeech,
-        meaning: pick(entry_.meaning, pair.speaks, `Episode ${id} vocabulary "${entry_.term}" meaning`),
+        meaning: pick(
+          entry_.meaning,
+          pair.speaks,
+          `Episode ${id} vocabulary "${entry_.term}" meaning`,
+        ),
         example: entry_.example,
         occurrence: findOccurrence(entry_.term, episode.transcript),
       })),
     questions: episode.questions.map((question, index) => ({
-      prompt: pick(question.prompt, pair.speaks, `Episode ${id} question ${index + 1} prompt`),
-      options: pick(question.options, pair.speaks, `Episode ${id} question ${index + 1} options`),
+      prompt: pick(
+        question.prompt,
+        pair.speaks,
+        `Episode ${id} question ${index + 1} prompt`,
+      ),
+      options: pick(
+        question.options,
+        pair.speaks,
+        `Episode ${id} question ${index + 1} options`,
+      ),
       answer: question.answerIndex,
     })),
     previousId,
