@@ -93,6 +93,58 @@ That creates a natural two-sided use case for DiscoPod:
 
 Instead of asking learners to consume generic practice material, DiscoPod can let them learn through topics they already care about — **technology, business, pop culture, sports, science, storytelling, news, or anything with a podcast feed.** Interest becomes the motivation loop.
 
+We also developed a Chinese podcast prototype for Vietnamese learners, inspired by the experience of one of our teammates from Vietnam.
+#### Worked pair: a Vietnamese speaker learning Mandarin
+
+The pair model earns its keep where the learner's first language changes what is
+hard. Vietnamese → Mandarin is the sharpest case on the roadmap, and it breaks two
+assumptions that hold for every pair the app serves today.
+
+**Sino-Vietnamese transfer inverts vocabulary coverage.** A large share of Vietnamese
+vocabulary is Sino-Vietnamese in origin, and that share rises in formal, academic and
+news registers — the exact registers that make a politics or economics episode score
+as difficult. 政府 is *chính phủ*; 醫院 is *bệnh viện*; 學生 is *học sinh*. The learner
+meets these as words they already own. Vocabulary coverage computed against a
+frequency list calibrated on an English-speaking learner will overstate difficulty for
+this pair, and it will overstate it most on the material this learner is best equipped
+to follow.
+
+**Recognition does not survive the script.** Vietnamese is written in quốc ngữ, a Latin
+orthography. A learner who knows *chính phủ* by sound and meaning has never seen 政府.
+Semantic and phonological transfer is high; orthographic transfer is zero. For every
+pair shipped today, listening and reading advance together. Here they come apart —
+listening can run well ahead of character recognition, and a transcript rendered only
+in characters is worth less to this learner than to anyone else the app serves.
+
+Three consequences the codebase has to carry:
+
+- **`LanguageTag` gains `vi`, and the exclusion rule becomes load-bearing.** Every
+  `Localized` key — `profile.reason`, `learningGoal`, vocabulary meanings, question
+  prompts, cue translations — needs a Vietnamese value or the content drops. Partial
+  coverage produces a smaller catalogue, never an English one. Adding a learner
+  language is a content commitment, not a locale file.
+- **Reading aids gain a third form.** Pinyin gives the Mandarin sound; zhuyin gives it
+  to a Traditional reader. The Sino-Vietnamese reading gives this learner something
+  neither can: a hook from an unfamiliar character to a word already in their
+  vocabulary. It exists for no other pair, and omitting it would waste the single
+  largest advantage this learner has.
+- **Accent and tone load are not pair-neutral.** Vietnamese is tonal. Tone perception
+  transfers in a way it does not for a speaker of a non-tonal language, so scoring
+  accent load identically across pairs mismeasures this one. The signal belongs to the
+  pair, not to the episode alone.
+
+Speech-rate units are unaffected in this direction: the unit follows the show language,
+and these shows are Mandarin, so characters per minute stands. The reverse pair —
+Mandarin speakers learning Vietnamese — would need a third unit, since quốc ngữ
+separates syllables rather than words and words per minute is undefined against it.
+
+**What the Sino-Vietnamese reading is not.** It is a hook, not an equivalence. The
+readings and their modern Mandarin counterparts have drifted apart in meaning often
+enough that presenting one as a translation would teach errors. It is surfaced as a
+reading aid and labelled as one, under the same discipline that keeps machine
+translation from being presented as verified.
+([ADR 0020](docs/adr/0020-sino-vietnamese-is-a-reading-aid-not-a-translation.md))
+
 ### The Market Gap: Lessons Teach the Language. We Want to Train the Ear.
 
 We are not trying to build another all-purpose language course. Existing products already solve important parts of language learning extremely well.
